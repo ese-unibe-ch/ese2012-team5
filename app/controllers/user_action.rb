@@ -1,3 +1,3 @@
-class Item < Sinatra::Application
+class UserAction < Sinatra::Application
   # To change this template use File | Settings | File Templates.
 end

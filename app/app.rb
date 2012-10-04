@@ -8,16 +8,16 @@ require '../app/models/marketplace/item'
 require '../app/controllers/main'
 require '../app/controllers/authentication'
 require '../app/controllers/transaction'
-require '../app/controllers/user'
-require '../app/controllers/item'
+require '../app/controllers/user_action'
+require '../app/controllers/item_action'
 
 class App < Sinatra::Base
 
   use Authentication
   use Main
   use Transaction
-  use User
-  use Item
+  use UserAction
+  use ItemAction
 
   enable :sessions
   set :public_folder, 'app/public'
