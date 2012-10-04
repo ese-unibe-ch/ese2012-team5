@@ -1,26 +1,20 @@
-<<<<<<< HEAD
-class Authentication < Sinatra::Application
-  # To change this template use File | Settings | File Templates.
-end
-=======
 require 'tilt/haml'
-require 'app/modelsuser'
+require 'app/models/marketplace/user'
 
 class Authentication < Sinatra::Application
 
   get "/login" do
-    message = session[:message]
-    session[:message] = nil
-    haml :login , :locals => { :message => message }
+    haml :login
   end
 
   post "/login" do
-    name = params[:user_name]
+    username = params[:username]
     password = params[:password]
-    user = Marketplace::User.with_name name
+    user = Marketplace::User.by_name(username)
 
-    if name == "" or password == "" or user.nil? or password != name
-      session[:message] = "Login failed"
+    # we need to implement the bcrypt here... somehow
+    # while registration the password will be stored as a hash in user.password
+    if username == "" or password == "" or user.nil? or password != username
       redirect "/login"
     else
       session[:name] = name
@@ -29,10 +23,8 @@ class Authentication < Sinatra::Application
   end
 
   get "/logout" do
-    session[:name] = nil
     redirect "/login"
   end
 
 
 end
->>>>>>> test commit
