@@ -1,5 +1,6 @@
 require 'tilt/haml'
-require 'app/models/marketplace/user'
+require 'bcrypt'
+require '../app/models/marketplace/user'
 
 class Authentication < Sinatra::Application
 
@@ -12,13 +13,19 @@ class Authentication < Sinatra::Application
     password = params[:password]
     user = Marketplace::User.by_name(username)
 
+
+    if username == "" or password == "" or user.nil?
+      redirect "/login"
+    end
+
     # we need to implement the bcrypt here... somehow
     # while registration the password will be stored as a hash in user.password
-    if username == "" or password == "" or user.nil? or password != username
-      redirect "/login"
-    else
+    if password == BCrypt::Password.new(user.password)  # note at oli: i don't know if this is correct method
       session[:name] = name
       redirect "/"
+    else
+      redirect "/login"
+      # later may pass message that password was wrong
     end
   end
 
@@ -30,6 +37,7 @@ class Authentication < Sinatra::Application
     haml :register
   end
 
+  # method incomplete
   post "/register" do
     username = params[:username]
     password = params[:password]
@@ -42,6 +50,7 @@ class Authentication < Sinatra::Application
 
     new_user = Marketplace::User.create(username)
     # add password to user
+    new_user.password = BCrypt::Password.create(password) # note at oli: i don't know if this is correct method
 
     # later may pass message that registration succeded
     redirect "/login"
