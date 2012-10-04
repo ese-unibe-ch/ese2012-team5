@@ -18,11 +18,32 @@ class Authentication < Sinatra::Application
       redirect "/login"
     else
       session[:name] = name
-      redirect '/'
+      redirect "/"
     end
   end
 
   get "/logout" do
+    redirect "/login"
+  end
+
+  get "/register" do
+    haml :register
+  end
+
+  post "/register" do
+    username = params[:username]
+    password = params[:password]
+    existing_user = Marketplace::User.by_name(username)
+
+    if(existing_user != nil)
+      redirect "/register"
+      # later may pass message that user already exists
+    end
+
+    new_user = Marketplace::User.create(username)
+    # add password to user
+
+    # later may pass message that registration succeded
     redirect "/login"
   end
 
