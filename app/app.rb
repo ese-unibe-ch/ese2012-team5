@@ -2,8 +2,8 @@ require 'rubygems'
 require 'sinatra'
 require 'tilt/haml'
 
-require '../app/models/user'
-require '../app/models/item'
+require '../app/models/marketplace/user'
+require '../app/models/marketplace/item'
 
 require '../app/controllers/main'
 require '../app/controllers/authentication'
@@ -23,6 +23,7 @@ class App < Sinatra::Base
   set :public_folder, 'app/public'
 
   configure :development do
+    # add dummy users here
   end
 
 end

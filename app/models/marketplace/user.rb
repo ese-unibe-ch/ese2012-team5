@@ -7,7 +7,7 @@ module Marketplace
     @@users = Array.new
 
     attr_accessor :name, :credits, :items, :picture, :password
-
+    # please note: the :password will store a hash of the correct password
 
     def create(name)
     end
