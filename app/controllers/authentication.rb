@@ -1,6 +1,6 @@
 require 'tilt/haml'
 require 'bcrypt'
-require '../app/models/marketplace/user'
+require '../models/marketplace/user'
 
 class Authentication < Sinatra::Application
 
@@ -43,17 +43,22 @@ class Authentication < Sinatra::Application
     password = params[:password]
     existing_user = Marketplace::User.by_name(username)
 
-    if(existing_user != nil)
+    if username_taken?(username)
       redirect "/register"
       # later may pass message that user already exists
     end
 
     new_user = Marketplace::User.create(username)
+    new_user.save()
     # add password to user
     new_user.password = BCrypt::Password.create(password) # note at oli: i don't know if this is correct method
 
     # later may pass message that registration succeded
     redirect "/login"
+  end
+
+  def username_taken?(username)
+    nil != Marketplace::User.by_name(username)
   end
 
 
