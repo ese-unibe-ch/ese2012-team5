@@ -1,6 +1,9 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 %h1 Login
 
+- if info != nil
+   %h2 #{info}
+
 %form( action="/login" method="POST" )
    Username
    %input(type="text" name="username")
