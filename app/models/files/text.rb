@@ -1,9 +1,18 @@
 module Files
-  attr_reader :image_paths
-  #...
 
-  def initialize
-   #...
-    @image_paths = []
+  class Images
+
+    attr_accessor :images
+
+
+    def initialize
+      @images = []
+    end
+
+    def add_image(filename)
+      @images.put(filename)
+    end
+
   end
+
 end

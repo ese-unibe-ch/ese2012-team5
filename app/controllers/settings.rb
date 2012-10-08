@@ -1,30 +1,34 @@
 class Authentication < Sinatra::Application
 
+  @@id = 1
+
   get "/settings" do
     user = session[:name]
+    redirect '/login' unless user != nil
     haml :settings , :locals => { :user => user }
   end
 
-  post "/text/:id/images" do
-    text = Text.by_id(params[:id].to_i)
-    return 404 unless text
-    return 401 unless text.editable? user
+  post "/upload" do
     file = params[:file_upload]
+    user = session[:name]
+
     return 413 if file[:tempfile].size > 400*1024
 
-    filename = id_image_to_filename(text.id, file[:filename])
+    filename = id_to_filename(@@id)
+    user.picture = filename
+    @@id = @@id + 1
 
     FileUtils::cp(file[:tempfile].path, File.join("public", "images", filename))
 
-    redirect to("/text/#{params[:id]}/")
+    redirect to("/upload/#{filename}")
   end
 
-  def id_image_to_filename(id, path)
-    "#{id}_#{path}"
+  def id_to_filename(id)
+    "#{id}"
   end
 
-  get "/text/:id/images/:pic" do
-    send_file(File.join("public","images", id_image_to_filename(params[:id], params[:pic])))
+  get "/upload/:filename" do
+    send_file(File.join("public","images", params[:filename]))
   end
 
 end
