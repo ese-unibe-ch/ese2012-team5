@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require 'bcrypt'
 require 'tilt/haml'
 
 require 'models/marketplace/user.rb'

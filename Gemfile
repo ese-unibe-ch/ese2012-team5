@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 gem 'sinatra'
-gem 'sinatra-contrib' #why is that here?
+gem 'sinatra-contrib'
 gem 'haml'
+gem 'bcrypt-ruby'
