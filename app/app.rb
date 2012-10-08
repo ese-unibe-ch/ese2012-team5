@@ -2,14 +2,14 @@ require 'rubygems'
 require 'sinatra'
 require 'tilt/haml'
 
-require '../app/models/marketplace/user'
-require '../app/models/marketplace/item'
+require 'models/marketplace/user.rb'
+require 'models/marketplace/item.rb'
 
-require '../app/controllers/main'
-require '../app/controllers/authentication'
-require '../app/controllers/transaction'
-require '../app/controllers/user'
-require '../app/controllers/item'
+require 'controllers/main.rb'
+require 'controllers/authentication.rb'
+require 'controllers/transaction.rb'
+require 'controllers/user.rb'
+require 'controllers/item.rb'
 
 class App < Sinatra::Base
 
@@ -23,7 +23,31 @@ class App < Sinatra::Base
   set :public_folder, 'app/public'
 
   configure :development do
-    # add dummy users here
+    daniel = Marketplace::User.create('Daniel')
+    joel = Marketplace::User.create('Joel')
+    lukas = Marketplace::User.create('Lukas')
+    oliver = Marketplace::User.create('Oliver')
+    rene = Marketplace::User.create('Rene')
+    urs = Marketplace::User.create('Urs')
+    item1 = Marketplace::Item.create('Table', 100, daniel)
+    item2 = Marketplace::Item.create('Dvd', 10, joel)
+    item3 = Marketplace::Item.create('Bed', 50, lukas)
+    item4 = Marketplace::Item.create('Book', 20, oliver)
+    item5 = Marketplace::Item.create('Shoes', 80, rene)
+    item6 = Marketplace::Item.create('Trousers', 60, urs)
+    item1.active = true
+    item2.active = true
+    item3.active = true
+    item4.active = true
+    item5.active = true
+    item6.active = true
+    daniel.save
+    joel.save
+    lukas.save
+    oliver.save
+    rene.save
+    urs.save
+    puts(Marketplace::User.all)
   end
 
 end
