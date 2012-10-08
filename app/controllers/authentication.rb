@@ -1,11 +1,10 @@
-require 'tilt/haml'
-require 'bcrypt'
-require '../models/marketplace/user'
-
+# handles login and register
 class Authentication < Sinatra::Application
 
   get "/login" do
-    haml :login
+    message = session[:message]
+    session[:message] = nil
+    haml :login, :locals => { :info => message}
   end
 
   post "/login" do
@@ -13,53 +12,61 @@ class Authentication < Sinatra::Application
     password = params[:password]
     user = Marketplace::User.by_name(username)
 
-
-    if username == "" or password == "" or user.nil?
+    # check for any empty input or username don't exist
+    if username == "" or password == ""
+      session[:message] = "empty username or password"
+      redirect "/login"
+      elsif user.nil?
+      session[:message] = "username don't exists"
       redirect "/login"
     end
 
-    # we need to implement the bcrypt here... somehow
-    # while registration the password will be stored as a hash in user.password
-    if password == BCrypt::Password.new(user.password)  # note at oli: i don't know if this is correct method
+    # check password
+    real_password = BCrypt::Password.new(user.password)
+    if password == real_password
       session[:name] = name
       redirect "/"
     else
+      session[:message] = "login failed"
       redirect "/login"
-      # later may pass message that password was wrong
     end
   end
 
+
   get "/logout" do
+    session[:name] = nil
+    session[:message] = "logged out"
     redirect "/login"
   end
 
+
   get "/register" do
-    haml :register
+    message = session[:message]
+    session[:message] = nil
+    haml :register, :locals => { :info => message}
   end
 
-  # method incomplete
   post "/register" do
     username = params[:username]
     password = params[:password]
     existing_user = Marketplace::User.by_name(username)
 
     if username_taken?(username)
+      session[:message] = "username already in use"
       redirect "/register"
-      # later may pass message that user already exists
     end
 
     new_user = Marketplace::User.create(username)
+    new_user.password = BCrypt::Password.create(password)
     new_user.save()
-    # add password to user
-    new_user.password = BCrypt::Password.create(password) # note at oli: i don't know if this is correct method
 
-    # later may pass message that registration succeded
+    session[:message] = "#{new_user.name} created, please log in"
     redirect "/login"
   end
+
 
   def username_taken?(username)
     nil != Marketplace::User.by_name(username)
   end
-
 
 end
