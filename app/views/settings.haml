@@ -1,7 +1,10 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 %h1 Settings
-%p
-%h2 picture upload
+
+- if info != nil
+  %h2 #{info}
+
+%h2 picture upload (.gif dont work yet)
 %form(action = "/upload" method = "POST" enctype="multipart/form-data")
   %input(type='file' name="file_upload" accept="image/*")
   %input(type='submit' value='upload')

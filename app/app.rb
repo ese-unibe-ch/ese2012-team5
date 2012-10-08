@@ -9,6 +9,7 @@ require 'models/marketplace/item.rb'
 require 'controllers/main.rb'
 require 'controllers/authentication.rb'
 require 'controllers/transaction.rb'
+require 'controllers/settings.rb'
 require 'controllers/user.rb'
 require 'controllers/item.rb'
 
@@ -19,6 +20,7 @@ class App < Sinatra::Base
   use Transaction
   use User
   use Item
+  use Settings
 
   enable :sessions
   set :public_folder, 'app/public'
