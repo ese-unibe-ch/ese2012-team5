@@ -24,12 +24,12 @@ class App < Sinatra::Base
   set :public_folder, 'app/public'
 
   configure :development do
-    daniel = Marketplace::User.create('Daniel')
-    joel = Marketplace::User.create('Joel')
-    lukas = Marketplace::User.create('Lukas')
-    oliver = Marketplace::User.create('Oliver')
-    rene = Marketplace::User.create('Rene')
-    urs = Marketplace::User.create('Urs')
+    daniel = Marketplace::User.create('Daniel','hallo')
+    joel = Marketplace::User.create('Joel','test')
+    lukas = Marketplace::User.create('Lukas','lol')
+    oliver = Marketplace::User.create('Oliver','aha')
+    rene = Marketplace::User.create('Rene','wtt')
+    urs = Marketplace::User.create('Urs','123')
     item1 = Marketplace::Item.create('Table', 100, daniel)
     item2 = Marketplace::Item.create('Dvd', 10, joel)
     item3 = Marketplace::Item.create('Bed', 50, lukas)

@@ -6,12 +6,13 @@ module Marketplace
 
     attr_accessor :name, :credits, :items, :picture, :password, :email, :details
 
-    # constructor
+    # constructor with password
     # @param [String] name of the new user
     # @return [Item] created item
-    def self.create(name)
+    def self.create(name, password)
       user = self.new
       user.name = name
+      user.password = BCrypt::Password.create(password)
       user
     end
 
