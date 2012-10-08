@@ -4,7 +4,7 @@ module Marketplace
     # static class variable: list with all existing users in the whole system
     @@users = []
 
-    attr_accessor :name, :credits, :items, :picture, :password, :email
+    attr_accessor :name, :credits, :items, :picture, :password, :email, :details
 
     # constructor
     # @param [String] name of the new user
