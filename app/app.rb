@@ -6,11 +6,15 @@ require 'tilt/haml'
 require 'models/marketplace/user'
 require 'models/marketplace/item'
 
+require 'models/files/text'
+
 require '../app/controllers/main'
 require '../app/controllers/authentication'
 require '../app/controllers/transaction'
 require '../app/controllers/user'
 require '../app/controllers/item'
+
+require '../app/controllers/settings'
 
 class App < Sinatra::Base
 
