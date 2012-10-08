@@ -1,23 +1,24 @@
 require 'rubygems'
 require 'sinatra'
+require 'bcrypt'
 require 'tilt/haml'
 
-require '../app/models/marketplace/user'
-require '../app/models/marketplace/item'
+require 'models/marketplace/user'
+require 'models/marketplace/item'
 
 require '../app/controllers/main'
 require '../app/controllers/authentication'
 require '../app/controllers/transaction'
-require '../app/controllers/user_action'
-require '../app/controllers/item_action'
+require '../app/controllers/user'
+require '../app/controllers/item'
 
 class App < Sinatra::Base
 
   use Authentication
   use Main
   use Transaction
-  use UserAction
-  use ItemAction
+  use User
+  use Item
 
   enable :sessions
   set :public_folder, 'app/public'
