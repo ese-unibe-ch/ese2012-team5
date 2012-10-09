@@ -1,33 +1,38 @@
-require 'rubygems'
-require 'sinatra'
-require 'tilt/haml'
-
-require '../app/models/marketplace/user'
-require '../app/models/marketplace/item'
 class Item < Sinatra::Application
-  # To change this template use File | Settings | File Templates.
-    get "/items"  do
+
+  get "/items" do
 
 
-      items= Marketplace::Item.all
-      actualUser = Marketplace::User.by_name(session[:name])
-      haml :item   , :locals => { :items => items, user => actualUser}
+    items= Marketplace::Item.all
+    actualUser = Marketplace::User.by_name(session[:name])
+    haml :item, :locals => {:items => items, user => actualUser}
 
+  end
+
+  post "/items" do
+
+
+    items= Marketplace::Item.all
+
+    itemToBuy = Marketplace::Item.by_id(Integer(params[:Item]))
+
+    actualUser.buy(itemToBuy)
+
+    haml :item, :locals => {:items => items, user => actualUser}
+
+  end
+
+  #link to correct item page
+  get "/item/:id" do
+    current_item = Marketplace::Item.by_id(params[:id].to_i)
+
+    #check if a session is in progress and if the current user is owner
+    if session[:name] == current_item.owner
+      haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
+                                          :item => current_item}
+    else
+      haml :item_profile, :locals => {:items => Marketplace::Item.all,
+                                      :item => current_item}
     end
-
-    post "/items"  do
-
-
-      items= Marketplace::Item.all
-
-      itemToBuy = Marketplace::Item.by_id(Integer(params[:Item]))
-
-      actualUser.buy(itemToBuy)
-
-      haml :item   , :locals => { :items => items, user => actualUser}
-
-    end
-
-
-
+  end
 end

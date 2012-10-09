@@ -11,23 +11,26 @@
 
 
 -#List of all Items, for each user a new Table
--for user in users
-  %p
-  %table{:border => 1}
-    %tbody
-      %tr
-        %th Item
-        %th Value
-        %th Active
-        %th Owner
-    - for item in user.items
-      %tr
-        %td #{item.name}
-        %td #{item.price}
-        %td
-          - if item.active
-            %p yes
-          - else
-            %p no
-        %td
-          %a{:href => "/user/#{user.name}"} #{user.name}
+
+%p
+%table{:border => 1}
+  %tbody
+    %tr
+      %th Item
+      %th Value
+      %th Active
+      %th Owner
+  - for user in users
+    - if user.name != current_user
+      - for item in user.items
+        %tr
+          %td
+            %a{:href => "/item/#{item.id}"}#{item.name}
+          %td #{item.price}
+          %td
+            - if item.active
+              %p yes
+            - else
+              %p no
+          %td
+            %a{:href => "/user/#{user.name}"} #{user.name}

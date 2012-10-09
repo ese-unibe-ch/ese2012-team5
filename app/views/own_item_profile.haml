@@ -1,0 +1,17 @@
+%link(rel="stylesheet" type="text/css" href="/design.css")
+
+-#Header
+%h1 Item: #{item.name}
+
+%p Price: #{item.price}
+%p On sale: #{item.active}
+
+
+-#TODO Edit-> by id if active!
+%a{:href => "/edit/:id"} Edit
+
+
+%a{:href => "/"} Home
+
+
+
