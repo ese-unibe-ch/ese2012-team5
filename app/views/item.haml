@@ -1,0 +1,13 @@
+User: #{user.name}
+- for item in items
+  -if item.active && item.owner.name!=user.name
+    %tr
+      %hr/
+
+      %form( action="/items" method="POST" )
+        #{item}
+
+          %input(type="hidden" name="item" value="#{item.id}")
+
+
+          %input(type="submit" value="buy")
