@@ -19,7 +19,8 @@
       %th Active
   - for item in user.items
     %tr
-      %td #{item.name}
+      %td
+        %a{:href => "/item/#{item.id}"} #{item.name}
       %td #{item.price}
       %td
         - if item.active
