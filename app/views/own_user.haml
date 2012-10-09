@@ -1,8 +1,11 @@
 %link(rel="stylesheet" type="text/css" href="/design.css")
 
 -#Header
-%h1 Profile of #{current_name}
+%h1 #{current_name}
 
+-#Links
+%a{:href => "/logout"} Logout
+%a{:href => "/settings"} Edit Profile
 
 -#Profile Picture
 %img{:alt => "Profile Picture", :src => "public/images/#{user.picture}"}
