@@ -1,11 +1,8 @@
 %link(rel="stylesheet" type="text/css" href="/design.css")
 
--#Header
-%h1 Welcome #{current_name}
-
 -#Links
-%a{:href => "/user"} User
-%a{:href => "/logout"} Logout
+%a{:href => "/login"} Login
+%a{:href => "/register"} Register
 
 -#List of all Items, for each user a new Table
 -for user in users
