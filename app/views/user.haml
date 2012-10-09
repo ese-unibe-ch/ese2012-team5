@@ -1,11 +1,14 @@
 %link(rel="stylesheet" type="text/css" href="/design.css")
 
 -#Header
-%h1 Profile of #{current_name}
+%h1 Profile of #{user.name}
 
 
--#Profile Picture
-%img{:alt => "Profile Picture", :src => "public/images/#{user.picture}"}
+%a{:href => "/"} back
+%p
+%img(src="../images/#{user.picture}")
+%p
+%p
 
 -#List of users Items
 %table{:border => 1}
@@ -23,4 +26,3 @@
           %p yes
         - else
           %p no
-%p

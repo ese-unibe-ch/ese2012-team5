@@ -1,7 +1,3 @@
-require 'haml'
-require 'app/models/marketplace/user'
-require 'app/controllers/item'
-
 class Main < Sinatra::Application
 
   get "/" do
@@ -9,7 +5,7 @@ class Main < Sinatra::Application
       #if logged in redirect to main
       haml :main, :locals => {:time => Time.now,
                               :users => Marketplace::User.all,
-                              :current_name => session[:name]}
+                              :current_user => session[:name]}
     else
       #if not redirect to mainguest
       haml :mainguest, :locals => {:time => Time.now,

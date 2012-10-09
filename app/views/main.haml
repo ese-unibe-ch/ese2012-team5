@@ -1,14 +1,18 @@
 %link(rel="stylesheet" type="text/css" href="/design.css")
 
 -#Header
-%h1 Welcome #{current_name}
+%h1 Welcome #{current_user}
 
--#Links
-%a{:href => "/user"} User
+
+%a{:href => "/user/#{current_user}"} Profile
+%p
 %a{:href => "/logout"} Logout
+%p
+
 
 -#List of all Items, for each user a new Table
 -for user in users
+  %p
   %table{:border => 1}
     %tbody
       %tr
@@ -25,5 +29,5 @@
             %p yes
           - else
             %p no
-        %td  #{item.owner}
-%p
+        %td
+          %a{:href => "/user/#{user.name}"} #{user.name}

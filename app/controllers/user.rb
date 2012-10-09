@@ -1,6 +1,4 @@
-require 'haml'
-require 'app/models/marketplace/user'
-require 'app/controllers/item'
+
 
 class User < Sinatra::Application
 
