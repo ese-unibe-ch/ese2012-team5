@@ -26,6 +26,6 @@
       %input(name = 'activation' type='hidden' value ='activate')
       %input(type='submit' value = 'activate')
 
-   %form(action = "/edit/#{item.id}" method="POST")
 
-      %input(type='submit' value = 'edit')
+
+   %a{:href => "/edit/#{item.id}"} Edit
