@@ -15,7 +15,8 @@ Your current picture:
 %img(src="images/#{user.picture}")
 
 %h2 list of interests (not yet supported))
-%form(action = "/interests" method = "POST")
-  %input(type='text' name="interests" )
-  %input(type='hidden' name="user" value="#{user}")
-  %input(type='submit' value='submit')
+
+%form( action="/interests" method="POST" )
+  %textarea(cols="50" rows="4" name="interests") #{user.interests}
+  %input(type="hidden" name="user" value="#{user.name}")
+  %input(type="submit" value="submit")

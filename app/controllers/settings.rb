@@ -32,4 +32,15 @@ class Settings < Sinatra::Application
     send_file(File.join("public","images", params[:filename]))
   end
 
+  post '/interests' do
+    user_name = params[:user]
+    interests = params[:interests]
+
+    user = Marketplace::User.by_name(user_name)
+
+    user.update_interests(interests)
+
+    redirect '/settings'
+  end
+
 end
