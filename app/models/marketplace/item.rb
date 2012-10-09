@@ -20,6 +20,7 @@ module Marketplace
       item.price = price
       item.owner = owner
       owner.add_item(item)
+      item.save
       item
     end
 
