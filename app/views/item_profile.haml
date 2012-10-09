@@ -11,6 +11,11 @@
 
 %a{:href => "/"} Home
 
-%a{:href => "/item/#{item.id}"} Buy
 
 
+
+
+%form(action = "/item/#{item.id}" method="POST")
+
+     %input(name = 'buyItemId' type='hidden' value = '#{item.id}' )
+     %input(type='submit' value = 'buy')
