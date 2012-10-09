@@ -27,7 +27,7 @@ class Item < Sinatra::Application
     current_item = Marketplace::Item.by_id(params[:id].to_i)
 
     #check if a session is in progress and if the current user is owner
-    if session[:name] == current_item.owner
+    if session[:name] == current_item.owner.name
       haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
                                           :item => current_item}
     else
