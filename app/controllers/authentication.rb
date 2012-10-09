@@ -64,10 +64,7 @@ class Authentication < Sinatra::Application
       redirect '/register'
     end
 
-    if password != password_conf
-      session[:message] = "password and confirmation don't match"
-      redirect '/register'
-    end
+    validate(password, password_conf)
 
     new_user = Marketplace::User.create(username, password)
     new_user.save()
@@ -78,6 +75,26 @@ class Authentication < Sinatra::Application
 
   def username_taken?(username)
     nil != Marketplace::User.by_name(username)
+  end
+
+  def validate(password, password_conf)
+    if !(password =~ /[0-9]/)
+      session[:message] = "no number in password"
+      redirect '/register'
+    end
+    if !(password =~ /[A-Z]/)
+      session[:message] = "no uppercase letter in password"
+      redirect '/register'
+    end
+    if !(password =~ /[a-z]/)
+      session[:message] = "no lowercase letter in password"
+      redirect '/register'
+    end
+
+    if password != password_conf
+      session[:message] = "password and confirmation don't match"
+      redirect '/register'
+    end
   end
 
 end
