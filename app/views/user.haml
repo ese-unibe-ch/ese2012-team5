@@ -1,0 +1,15 @@
+User: #{user.name}
+
+- for item in user.items
+   %tr
+      %hr/
+
+      %form( action="/users" method="POST" )
+         #{item}
+
+         %input(type="hidden" name="item" value="#{item.id}")
+
+         - if item.active
+            %input(type="submit" value="deactivate")
+         - else
+            %input(type="submit" value="activate")
