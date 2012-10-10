@@ -1,0 +1,21 @@
+%link(rel="stylesheet" type="text/css" href="/design.css")
+
+-#Header
+%h1 Item: #{item.name}
+
+
+%p Price: #{item.price}
+%p On sale: #{item.active}
+%p Owner:
+%a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
+
+%a{:href => "/"} Home
+
+
+
+
+
+%form(action = "/item/#{item.id}" method="POST")
+
+     %input(name = 'buyItemId' type='hidden' value = '#{item.id}' )
+     %input(type='submit' value = 'buy')

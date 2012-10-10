@@ -1,0 +1,31 @@
+%link(rel="stylesheet" type="text/css" href="/design.css")
+
+-#Header
+%h1 Item: #{item.name}
+
+%p Price: #{item.price}
+%p On sale: #{item.active}
+
+
+-#TODO Edit-> by id if active!
+
+
+
+%a{:href => "/"} Home
+
+-if item.active
+   %form(action = "/item/#{item.id}" method="POST")
+
+      %input(name = 'activation' type='hidden' value ='deactivate')
+      %input(type='submit' value = 'deactivate')
+
+-else
+
+   %form(action = "/item/#{item.id}" method="POST")
+
+      %input(name = 'activation' type='hidden' value ='activate')
+      %input(type='submit' value = 'activate')
+
+
+
+   %a{:href => "/edit/#{item.id}"} Edit
