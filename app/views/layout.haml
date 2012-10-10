@@ -14,17 +14,17 @@
         %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
           - if !session[:name]
             %td
-              Login
               %tr
               %td
                 %form( action="/login" method="POST" )
                   %label
                     Username
                     %input(type="text" name="username")
+                  %p
                   %label
                     Password
                     %input(type="password" name="password")
-                  %input(type="submit" text="submit")
+                    %input(type="submit" text="submit")
 
 
 

@@ -7,7 +7,7 @@ class Transaction < Sinatra::Application
 
     #check if a session is in progress and if the current user is owner
     if session[:name] == current_item.owner.name
-      haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
+      haml :item_profile_own, :locals => {:items => Marketplace::Item.all,
                                           :item => current_item}
     else
       haml :item_profile, :locals => {:items => Marketplace::Item.all,
@@ -16,7 +16,8 @@ class Transaction < Sinatra::Application
   end
 
   post "/item/:id" do
-    current_item = Marketplace::Item.by_id(params[:id].to_i)
+    id = params[:id].to_i
+    current_item = Marketplace::Item.by_id(id)
 
 
     #only possible action while activity
@@ -33,26 +34,14 @@ class Transaction < Sinatra::Application
       if params[:activation] == 'activate'
         current_item.activate
       end
-
-
-      haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
-                                          :item => current_item}
     else
 
 
       actualUser = Marketplace::User.by_name(session[:name])
 
       actualUser.buy(current_item)
-
-      if actualUser.name == current_item.owner.name
-        haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
-                                            :item => current_item}
-      else
-
-
-        haml :item_profile, :locals => {:items => Marketplace::Item.all,
-                                        :item => current_item}
-      end
     end
+    redirect "/item/#{id}"
   end
+
 end

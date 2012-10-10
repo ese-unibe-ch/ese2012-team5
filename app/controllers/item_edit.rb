@@ -30,7 +30,7 @@ class ItemEdit < Sinatra::Application
       session[:message] = "empty name!"
       redirect "/edit/#{id}"
     end
-    puts new_price
+
     if(!(new_price.is_a? Integer))
       session[:message] = "price was not a number!"
       redirect "/edit/#{id}"
