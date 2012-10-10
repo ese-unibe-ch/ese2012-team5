@@ -20,6 +20,7 @@ module Marketplace
     def initialize
       self.credits = 100
       self.picture = "default_profile.jpg"
+      self.details = "nothing"
       self.items = Array.new
     end
 

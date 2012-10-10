@@ -5,8 +5,11 @@
 
 %a{:href => "/"} back
 
-.right
-  %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
+%table
+  %td
+    #{user.details}
+  %td
+    %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
 %p
 %p
 
