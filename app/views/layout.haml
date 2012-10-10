@@ -14,22 +14,22 @@
       #logoII
         %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
           -if session[:name]
-            %td
+            %td(align="right")
               %a{:href => "/user/#{:name}"} Profile
               %p
               %a{:href => "/logout"} Logout
               %p
           -else
             %td
-              Enter with:
+
               %tr
-              %td
+              %td(align="right")
                 %form( action="/login" method="POST" )
                   %label
-                    Username
+                    Username:
                     %input(type="text" name="username" text="username" value="Username" onfocus="this.value=''" STYLE="background-color: ")
                   %label
-                    Password&nbsp
+                    Password:&nbsp
                     %input(type="password" name="password" text="password" value="Password" onfocus="this.value=''" STYLE="background-color: silver")
                   %input(type="submit" text="submit")
                   %label
