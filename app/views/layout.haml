@@ -10,7 +10,7 @@
   #body
     -#Shows the logo on top of the page
     #logo
-      %img{:src => url("images/logo_01.png"), :alt => "Logo"}
+      %img{:src => url("images/logo_01.png"), :alt => "ItemMarket1"}
       #logoII
         %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
           -if session[:name]
@@ -21,16 +21,16 @@
               %p
           -else
             %td
-              Login
+              Enter with:
               %tr
               %td
                 %form( action="/login" method="POST" )
                   %label
                     Username
-                    %input(type="text" name="username")
+                    %input(type="text" name="username" text="username" value="Username" onfocus="this.value=''" STYLE="background-color: ")
                   %label
-                    Password
-                    %input(type="password" name="password")
+                    Password&nbsp
+                    %input(type="password" name="password" text="password" value="Password" onfocus="this.value=''" STYLE="background-color: silver")
                   %input(type="submit" text="submit")
                   %label
                     or
