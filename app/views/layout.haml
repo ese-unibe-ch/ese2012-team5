@@ -1,0 +1,58 @@
+!!!5
+%head
+  %title
+    Marketplace
+  -# Load css and favicon
+  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("design.css")}
+  %link{:rel => "shortcut icon", :type=>"image/png", :href => url("images/favicon.png")}
+%body
+  #body
+    -#Shows the logo on top of the page
+    #logo
+      %img{:src => url("images/logo_01.png"), :alt => "Logo"}
+      #logoII
+        %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
+          - if !session[:name]
+            %td
+              Login
+              %tr
+              %td
+                %form( action="/login" method="POST" )
+                  %label
+                    Username
+                    %input(type="text" name="username")
+                  %label
+                    Password
+                    %input(type="password" name="password")
+                  %input(type="submit" text="submit")
+
+
+
+    #page
+      -#The navigation
+      #menu
+        #head_entry
+          %h2 Navigation
+        %ul.no_indented
+          - if session[:name]
+            %li.menu_entry
+              %a{:href => url("/")} Home
+            %li.menu_entry
+              %a{:href => url("/user/#{session[:name]}")} Your profile
+            %li.menu_entry
+              %a{:href => url("/users")} All users
+            %li.menu_entry
+              %a{:href => url("/add_item")} Add Item
+            %li.menu_entry
+              %a{:href => url("/settings")} Settings
+            %li.menu_entry
+              %a{:href => url("/logout")} Logout
+          - else
+            %li.menu_entry
+              %a{:href => url("/login")} Login
+            %li.menu_entry
+              %a{:href => url("/register")} Register
+
+      -# Here are the other haml files added
+      #content
+        = yield

@@ -1,14 +1,15 @@
-%link(rel="stylesheet" type="text/css" href="/design.css")
+%link(rel="stylesheet" type="text/css" href="/style.css")
 
--#Header
 %h1 #{user.name}
 
 
-%a{:href => "/"} Home
-%p
-%a{:href => "/settings"} Edit Profile
-%p
-%img(src="../images/#{user.picture}")
+%a{:href => "/"} back
+
+%table
+  %td
+    #{user.details}
+  %td
+    %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
 %p
 %p
 

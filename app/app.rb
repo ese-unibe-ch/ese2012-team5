@@ -24,6 +24,9 @@ class App < Sinatra::Base
 
   enable :sessions
   set :public_folder, 'app/public'
+  set :show_exceptions, false
+  set :root, File.dirname(__FILE__)
+  set :public_folder, Proc.new { File.join(root, "public")}
 
   configure :development do
     daniel = Marketplace::User.create('Daniel','hallo')
