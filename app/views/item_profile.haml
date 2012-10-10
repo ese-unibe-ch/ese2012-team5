@@ -1,21 +1,23 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
--#Header
 %h1 Item: #{item.name}
 
-
-%p Price: #{item.price}
-%p On sale: #{item.active}
-%p Owner:
+%p
+%p
+Price: #{item.price}
+%p
+On sale: #{item.active}
+%p
+Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
+
+-if(session[:name])
+  %form(action = "/item/#{item.id}" method="POST")
+    %input(name = 'buyItemId' type='hidden' value = '#{item.id}' )
+    %input(type='submit' value = 'buy')
+
+%p
+%p
+%p
 %a{:href => "/"} Home
-
-
-
-
-
-%form(action = "/item/#{item.id}" method="POST")
-
-     %input(name = 'buyItemId' type='hidden' value = '#{item.id}' )
-     %input(type='submit' value = 'buy')

@@ -7,11 +7,11 @@
 
 %form( method="POST" )
    Name
-   %input(type="text" name="newName" value="#{item.name}")
+   %input(type="text" name="name" value="#{item.name}")
    %p
    Price
-   %input(type="text" name="newPrice" value="#{item.price}")
+   %input(type="text" name="price" value="#{item.price}")
    %p
-   %input(type="submit" value="change")
+   %input(type="submit" value="Change")
 
-%a{:href => "/item/#{item.id}"} discard
+%a{:href => "/item/#{item.id}"} Discard

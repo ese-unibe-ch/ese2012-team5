@@ -23,7 +23,7 @@
   - for item in user.items
     %tr
       %td
-        %a{:href => "/item/#{item.id}"} #{item.name} #{item.name}
+        %a{:href => "/item/#{item.id}"} #{item.name}
       %td #{item.price}
       %td
         - if item.active

@@ -1,35 +1,58 @@
 class Transaction < Sinatra::Application
 
-  get "/edit/:id" do
-    current_item = Marketplace::Item.by_id(params[:id].to_i)
-    message = session[:message]
-    session[:message] = nil
-    haml :edit_item, :locals => {:items => Marketplace::Item.all,
-                                 :item => current_item,
-                                  :info => message}
 
+  #link to correct item page
+  get "/item/:id" do
+    current_item = Marketplace::Item.by_id(params[:id].to_i)
+
+    #check if a session is in progress and if the current user is owner
+    if session[:name] == current_item.owner.name
+      haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
+                                          :item => current_item}
+    else
+      haml :item_profile, :locals => {:items => Marketplace::Item.all,
+                                      :item => current_item}
+    end
   end
 
+  post "/item/:id" do
+    current_item = Marketplace::Item.by_id(params[:id].to_i)
 
-  post "/edit/:id" do
 
-    id = params[:id].to_i
-    new_name = params[:newName]
-    new_price = params[:newPrice]
+    #only possible action while activity
 
-    current_item = Marketplace::Item.by_id(id)
+    #check if a session is in progress and if the current user is owner
+    if session[:name] == current_item.owner.name
 
-    if(new_name == nil or new_name == "")
-      session[:message] = "empty name!"
-      redirect "/edit/#{id}"
-    elsif(!(new_price.is_a? Integer))
-      session[:message] = "price was not a number!"
-      redirect "/edit/#{id}"
+
+      #allows to activate and deactivate item
+      if params[:activation] == 'deactivate'
+        current_item.deactivate
+      end
+
+      if params[:activation] == 'activate'
+        current_item.activate
+      end
+
+
+      haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
+                                          :item => current_item}
+    else
+
+
+      actualUser = Marketplace::User.by_name(session[:name])
+
+      actualUser.buy(current_item)
+
+      if actualUser.name == current_item.owner.name
+        haml :own_item_profile, :locals => {:items => Marketplace::Item.all,
+                                            :item => current_item}
+      else
+
+
+        haml :item_profile, :locals => {:items => Marketplace::Item.all,
+                                        :item => current_item}
+      end
     end
-
-    current_item.name = new_name
-    current_item.price = new_price
-
-    redirect "/item/#{id}"
   end
 end

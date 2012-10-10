@@ -8,18 +8,18 @@ require 'models/marketplace/item.rb'
 
 require 'controllers/main.rb'
 require 'controllers/authentication.rb'
-require 'controllers/transaction.rb'
+require 'controllers/item_edit.rb'
 require 'controllers/settings.rb'
 require 'controllers/user.rb'
-require 'controllers/item.rb'
+require 'controllers/transaction.rb'
 
 class App < Sinatra::Base
 
   use Authentication
   use Main
-  use Transaction
+  use ItemEdit
   use User
-  use Item
+  use Transaction
   use Settings
 
   enable :sessions
