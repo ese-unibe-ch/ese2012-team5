@@ -1,15 +1,11 @@
-%link(rel="stylesheet" type="text/css" href="/design.css")
+%link(rel="stylesheet" type="text/css" href="/style.css")
 
 -#Header
 %h1 Welcome #{current_user}
 
 
-%a{:href => "/user/#{current_user}"} Profile
-%p
-%a{:href => "/logout"} Logout
-%p
-
-
+Dummycontent
+List of users and their items
 -#List of all Items, for each user a new Table
 -for user in users
   %ps

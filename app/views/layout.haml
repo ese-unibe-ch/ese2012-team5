@@ -13,18 +13,20 @@
       %img{:src => url("images/logo_01.png"), :alt => "Logo"}
       #logoII
         %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
-          %td
-            Login
-            %tr
+          - if !session[:name]
             %td
-              %form( action="/login" method="POST" )
-                %label
-                  Username
-                  %input(type="text" name="username")
-                %label
-                  Password
-                  %input(type="password" name="password")
-                %input(type="submit" text="submit")
+              Login
+              %tr
+              %td
+                %form( action="/login" method="POST" )
+                  %label
+                    Username
+                    %input(type="text" name="username")
+                  %label
+                    Password
+                    %input(type="password" name="password")
+                  %input(type="submit" text="submit")
+
 
 
     #page
@@ -39,11 +41,11 @@
             %li.menu_entry
               %a{:href => url("/user/#{session[:name]}")} Your profile
             %li.menu_entry
-              %a{:href => url("/user")} All users
+              %a{:href => url("/users")} All users
             %li.menu_entry
-              %a{:href => url("/additem")} Add Item
+              %a{:href => url("/add_item")} Add Item
             %li.menu_entry
-              %a{:href => url("/change_password")} Change Password
+              %a{:href => url("/settings")} Settings
             %li.menu_entry
               %a{:href => url("/logout")} Logout
           - else
