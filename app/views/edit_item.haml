@@ -1,8 +1,9 @@
 %link(rel="stylesheet" type="text/css" href="/design.css")
 
--#Header
 %h1 Item: #{item.name}
 
+- if info != nil
+   %h2 #{info}
 
 %form( method="POST" )
    Name
@@ -13,6 +14,4 @@
    %p
    %input(type="submit" value="change")
 
-%form( action="/item/#{item.id}" method="POST" )
-
-   %input(type="submit" value="discard")
+%a{:href => "/item/#{item.id}"} discard

@@ -1,27 +1,35 @@
 class Transaction < Sinatra::Application
+
   get "/edit/:id" do
     current_item = Marketplace::Item.by_id(params[:id].to_i)
-
-
+    message = session[:message]
+    session[:message] = nil
     haml :edit_item, :locals => {:items => Marketplace::Item.all,
-                                 :item => current_item}
+                                 :item => current_item,
+                                  :info => message}
 
   end
 
 
   post "/edit/:id" do
-    current_item = Marketplace::Item.by_id(params[:id].to_i)
 
+    id = params[:id].to_i
+    new_name = params[:newName]
+    new_price = params[:newPrice]
 
-    current_item.name=params[:newName]
+    current_item = Marketplace::Item.by_id(id)
 
-    current_item.price=params[:newPrice]
+    if(new_name == nil or new_name == "")
+      session[:message] = "empty name!"
+      redirect "/edit/#{id}"
+    elsif(!(new_price.is_a? Integer))
+      session[:message] = "price was not a number!"
+      redirect "/edit/#{id}"
+    end
 
+    current_item.name = new_name
+    current_item.price = new_price
 
-    haml :edit_item, :locals => {:items => Marketplace::Item.all,
-                                 :item => current_item}
-
-
-    redirect "/"
+    redirect "/item/#{id}"
   end
 end
