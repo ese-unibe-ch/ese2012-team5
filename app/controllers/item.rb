@@ -11,7 +11,7 @@ class Item < Sinatra::Application
 
       items= Marketplace::Item.all
       actualUser = Marketplace::User.by_name(session[:name])
-      haml :item   , :locals => { :items => items, user => actualUser}
+      haml :item   , :locals => { :items => items, :user => actualUser}
 
     end
 

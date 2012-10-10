@@ -4,7 +4,7 @@
   %title
     Marketplace
   -# Load css and favicon
-  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("design.css")}
+  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("style.css")}
   %link{:rel => "shortcut icon", :type=>"image/png", :href => url("images/favicon.png")}
 %body
   #body
@@ -13,18 +13,29 @@
       %img{:src => url("images/logo_01.png"), :alt => "Logo"}
       #logoII
         %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
-          %td
-            Login
-            %tr
+          -if session[:name]
             %td
-              %form( action="/login" method="POST" )
-                %label
-                  Username
-                  %input(type="text" name="username")
-                %label
-                  Password
-                  %input(type="password" name="password")
-                %input(type="submit" text="submit")
+              %a{:href => "/user/#{:name}"} Profile
+              %p
+              %a{:href => "/logout"} Logout
+              %p
+          -else
+            %td
+              Login
+              %tr
+              %td
+                %form( action="/login" method="POST" )
+                  %label
+                    Username
+                    %input(type="text" name="username")
+                  %label
+                    Password
+                    %input(type="password" name="password")
+                  %input(type="submit" text="submit")
+                  %label
+                    or
+                  %a{:href => "/register"} Register
+
 
 
     #page
