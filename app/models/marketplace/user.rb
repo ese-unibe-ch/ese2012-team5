@@ -4,7 +4,7 @@ module Marketplace
     # static class variable: list with all existing users in the whole system
     @@users = []
 
-    attr_accessor :name, :credits, :items, :picture, :password, :email, :interests
+    attr_accessor :name, :credits, :items, :picture, :password, :email, :details
 
     # constructor with password
     # @param [String] name of the new user
@@ -14,7 +14,6 @@ module Marketplace
       user = self.new
       user.name = name
       user.password = BCrypt::Password.create(password)
-      user.interests = ""
       user
     end
 
@@ -40,11 +39,6 @@ module Marketplace
     # save this user to the static user list
     def save
       @@users << self
-    end
-
-    # updates interests of user
-    def update_interests(interests)
-      self.interests = interests
     end
 
     def enough_credits(amount)

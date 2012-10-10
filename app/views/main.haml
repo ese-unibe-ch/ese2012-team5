@@ -1,4 +1,4 @@
-%link(rel="stylesheet" type="text/css" href="/design.css")
+%link(rel="stylesheet" type="text/css" href="/style.css")
 
 -#Header
 %h1 Welcome #{current_user}
@@ -18,8 +18,8 @@ List of users and their items
         %th Owner
     - for item in user.items
       %tr
-          %td
-            %a{:href => "/item/#{item.id}"}#{item.name}
+        %td
+          %a{:href => "/item/#{item.id}"}#{item.name}
           %td #{item.price}
           %td
             - if item.active
