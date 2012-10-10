@@ -62,6 +62,9 @@ class Authentication < Sinatra::Application
     if username_taken?(username)
       session[:message] = "username already in use"
       redirect '/register'
+    elsif(username == nil or username == "")
+      session[:message] = "username was empty"
+      redirect '/register'
     end
 
     validate(password, password_conf, 4)
