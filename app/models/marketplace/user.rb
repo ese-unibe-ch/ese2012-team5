@@ -19,6 +19,7 @@ module Marketplace
     # initial properties of a user
     def initialize
       self.credits = 100
+      self.picture = "default_profile.jpg"
       self.items = Array.new
     end
 
