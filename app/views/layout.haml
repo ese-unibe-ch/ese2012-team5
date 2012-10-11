@@ -19,11 +19,11 @@
                 %form( action="/login" method="POST" )
                   %label
                     Username
-                    %input(type="text" name="username")
+                    %input(type="text" name="username" value="Username" onfocus="this.value=''")
                   %p
                   %label
                     Password
-                    %input(type="password" name="password")
+                    %input(type="password" name="password" value="Password" onfocus="this.value=''")
                     %input(type="submit" text="submit")
 
 
