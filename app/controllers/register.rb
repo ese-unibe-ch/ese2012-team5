@@ -1,53 +1,5 @@
-# handles login and register
-class Authentication < Sinatra::Application
+class Register < Sinatra::Application
 
-  #
-  # LOGIN
-  #
-  get '/login' do
-    redirect '/' unless session[:name] == nil
-    message = session[:message]
-    session[:message] = nil
-    haml :login, :locals => { :info => message}
-  end
-
-  post '/login' do
-    username = params[:username]
-    password = params[:password]
-    user = Marketplace::User.by_name(username)
-
-    # check for any empty input or non-existent user
-    if username == "" or password == ""
-      session[:message] = "empty username or password - login failed!"
-      redirect '/login'
-      elsif user.nil?
-      session[:message] = "user doesn't exist - login failed!"
-      redirect '/login'
-    end
-
-    # Check password. Compares user input with hashed password via == method. Doesn't compare in plain text!
-    proper_password = BCrypt::Password.new(user.password)
-    if proper_password == password
-      session[:name] = username
-      redirect "/"
-    else
-      session[:message] = "wrong password - try again!!"
-      redirect '/login'
-    end
-  end
-
-  #
-  # LOGOUT
-  #
-  get '/logout' do
-    session[:name] = nil
-    session[:message] = "logged out"
-    redirect '/login'
-  end
-
-  #
-  # REGISTER
-  #
   get '/register' do
     message = session[:message]
     session[:message] = nil
@@ -62,9 +14,6 @@ class Authentication < Sinatra::Application
     if username_taken?(username)
       session[:message] = "username already in use"
       redirect '/register'
-    elsif(username == nil or username == "")
-      session[:message] = "username was empty"
-      redirect '/register'
     end
 
     validate(password, password_conf, 4)
@@ -76,6 +25,8 @@ class Authentication < Sinatra::Application
     redirect '/login'
   end
 
+  #checks if username is already in use
+  # @param [String] username name to check
   def username_taken?(username)
     nil != Marketplace::User.by_name(username)
   end

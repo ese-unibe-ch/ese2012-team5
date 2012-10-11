@@ -7,7 +7,8 @@ require 'models/marketplace/user.rb'
 require 'models/marketplace/item.rb'
 
 require 'controllers/main.rb'
-require 'controllers/authentication.rb'
+require 'controllers/login.rb'
+require 'controllers/register.rb'
 require 'controllers/item_edit.rb'
 require 'controllers/settings.rb'
 require 'controllers/user.rb'
@@ -15,7 +16,8 @@ require 'controllers/transaction.rb'
 
 class App < Sinatra::Base
 
-  use Authentication
+  use Login
+  use Register
   use Main
   use ItemEdit
   use User
@@ -53,7 +55,6 @@ class App < Sinatra::Base
     oliver.save
     rene.save
     urs.save
-    puts(Marketplace::User.all)
   end
 
 end
