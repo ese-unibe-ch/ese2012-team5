@@ -28,7 +28,7 @@ class ItemEdit < Sinatra::Application
     current_item = Marketplace::Item.by_id(id)
 
     #check if the name is valid
-    if(new_name == nil or new_name == "")
+    if(new_name == nil or new_name == "" or new_name.strip! == "")
       session[:message] = "empty name!"
       redirect "/edit/#{id}"
     end
