@@ -15,13 +15,12 @@
         %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
           -if session[:name]
             %td(align="right")
-              %a{:href => "/user/#{:name}"} Profile
+              %a{:href => "/user/#{session[:name]}"} Profile
               %p
               %a{:href => "/logout"} Logout
               %p
           -else
             %td
-
               %tr
               %td(align="right")
                 %form( action="/login" method="POST" )
