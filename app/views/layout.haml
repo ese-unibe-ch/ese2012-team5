@@ -4,7 +4,7 @@
   %title
     Marketplace
   -# Load css and favicon
-  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("style.css")}
+  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("design.css")}
   %link{:rel => "shortcut icon", :type=>"image/png", :href => url("images/favicon.png")}
 %body
   #body
@@ -50,11 +50,11 @@
             %li.menu_entry
               %a{:href => url("/user/#{session[:name]}")} Your profile
             %li.menu_entry
-              %a{:href => url("/user")} All users
+              %a{:href => url("/users")} All users
             %li.menu_entry
-              %a{:href => url("/additem")} Add Item
+              %a{:href => url("/add_item")} Add Item
             %li.menu_entry
-              %a{:href => url("/change_password")} Change Password
+              %a{:href => url("/settings")} Settings
             %li.menu_entry
               %a{:href => url("/logout")} Logout
           - else
