@@ -9,22 +9,40 @@
   #body
     -#Shows the logo on top of the page
     #logo
-      %img{:src => url("images/logo_01.png"), :alt => "Logo"}
-      #logoII
-        %table{:border => "0", :background => url("images/logo_02.png"), :width => "286", :height => "105"}
-          - if !session[:name]
-            %td
-              %tr
-              %td
-                %form( action="/login" method="POST" )
-                  %label
-                    Username
-                    %input(type="text" name="username" value="Username" onfocus="this.value=''")
-                  %p
-                  %label
-                    Password
-                    %input(type="password" name="password" value="Password" onfocus="this.value=''")
-                    %input(type="submit" text="submit")
+      - if !session[:name]
+        #topLoginInfo
+          %form( action="/login" method="POST")
+            %label
+              Username:
+              %input(type="text" name="username" value="Username" onfocus="this.value=''")
+              %br
+            %label
+              Password:
+              %input(type="password" name="password" style="border='de8231'" value="Password" onfocus="this.value=''")
+              %br
+            %input(type="submit" text="submit" style="padding-top='3'")
+            %label
+              or
+            %a{:href => "/register"} Register
+      -elsif session[:name]
+        #topUserInfo
+          %img{:height => "40", :width => "40", :align => "left", :src => "../images/#{Marketplace::User.by_name(session[:name]).picture}"}
+          %label
+            Logged in as:&nbsp
+            %br
+            #{session[:name]}
+            %br
+            Your current credit:&nbsp
+            %br
+            #{Marketplace::User.by_name(session[:name]).credits}
+        #topButton1
+          %a{:href => url("/user/#{session[:name]}")} Goto my profile
+        #topButton2
+          %a{:href => "/logout"} Logout
+
+
+
+
 
 
 

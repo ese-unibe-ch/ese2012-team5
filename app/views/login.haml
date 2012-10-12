@@ -6,9 +6,12 @@
 
 %form( action="/login" method="POST" )
    Username
-   %input(type="text" name="username")
+   %input(type="text" name="username" value="Username" onfocus="this.value=''")
    %p
    Password
-   %input(type="password" name="password")
+   %input(type="password" name="password"value="Password" onfocus="this.value=''")
    %p
    %input(type="submit" value="Login")
+   %label
+   or
+   %a{:href => "/register"} Register

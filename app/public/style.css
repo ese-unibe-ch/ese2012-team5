@@ -19,29 +19,88 @@ body {
 
 #body {
     margin: 0 auto 0 auto;
-    width: 800px;
+    width: 804px;
     position: relative;
 }
 
 #logo {
-    margin: 10px 0 0px 0;
+    background-image : url(images/itemMarket.png);
+    margin: 10px 0 5px 0;
+    position: relative;
     vertical-align : top;
+    width : 800px;
+    height: 105px;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border:2px solid #616161;
+     }
 
-}
-
-#logoII{
-    margin: 0px 0 10px 0;
-    float: right;
-    vertical-align : top;
+#topLoginInfo{
     font: Arial;
-
+    font-size: 10.5pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    margin: 1px 1 1px 1;
+    position: absolute;
+    vertical-align: top;
+    left:641px;
+    padding: 1.5px 3.5px 1.5px 1.5px;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border-left:2px solid #616161;
+    max-width:155px ;
+    min-height: 103px;
 }
+#topUserInfo{
+    font: Arial;
+    font-size: 12pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    margin: 1px 1 1px 1;
+    position: absolute;
+    left:641px;
+    vertical-align: top;
+    padding: 1.5px 3.5px 1.5px 1.5px;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border-left:2px solid #616161;
+    min-height: 103px;
+    min-width: 153px;
+    max-width: 155px;
+}
+
+#topButton1{
+    font: Arial;
+    font-size: 12pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    border-top:2px solid #616161;
+    border-right:2px solid #616161;
+    position: absolute;
+    left:643px;
+    bottom: 0;
+    min-width: 109px;
+}
+
+#topButton2{
+    font: Arial;
+    font-size: 12pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    border-left:2px solid #616161;
+    border-top:2px solid #616161;
+    position: absolute;
+    left:752px;
+    bottom: 0;
+    min-width: 46px;
+}
+
+
 
 #page {
     background-color: #FFF;
     min-height: 500px;
     width: 800px;
     overflow: auto;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border:2px solid #616161;
 }
 
 /********************************/
@@ -53,13 +112,6 @@ body {
     padding: 1px;
     vertical-align: bottom;
 }
-
-#head_login_reg{
-    position: relative;
-
-
-}
-
 
 #menu {
     margin-top: 20px;
