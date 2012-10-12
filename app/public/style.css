@@ -92,8 +92,6 @@ body {
     min-width: 46px;
 }
 
-
-
 #page {
     background-color: #FFF;
     min-height: 500px;
@@ -101,6 +99,51 @@ body {
     overflow: auto;
     box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
     border:2px solid #616161;
+}
+/********************************/
+/**************TableDesign*******/
+/********************************/
+
+#table_new{
+    border: 1px solid #e3e3e3;
+    background-color: #f2f2f2;
+    width: 100%;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+#table_new td, #table_new th {
+    padding: 5px;
+    color: #333;
+}
+#table_new thead {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    padding: .2em 0 .2em .5em;
+    text-align: left;
+    color: #4B4B4B;
+    background-color: #C8C8C8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#e3e3e3), color-stop(.6,#B3B3B3));
+    background-image: -moz-linear-gradient(top, #D6D6D6, #B0B0B0, #B3B3B3 90%);
+    border-bottom: solid 1px #999;
+}
+#table_new th {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 20px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: left;
+    text-shadow: white 1px 1px 1px;
+}
+#table_new td {
+    line-height: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid #fff;
+}
+#table_new td:hover {
+    background-color: #fff;
 }
 
 /********************************/
@@ -188,7 +231,7 @@ a:hover {
     color: #aaa;
 }
 
-h2 {
+h1 {
     color: #23496B;
     margin: 0px;
 }
