@@ -18,6 +18,7 @@
   %thead
     %th Picture
     %th Item
+    %th Quantity
     %th Value
     %th Active
     %th Buy
@@ -29,6 +30,8 @@
           Pic
         %td
           %a{:href => "/item/#{item.id}"} #{item.name}
+        %td
+          #{item.quantity}
         %td
           #{item.price}
         %td
