@@ -84,7 +84,7 @@ body
     min-width: 153px;
     max-width: 155px;
 }
-
+/*
 #topButton1
 {
     font: Arial;
@@ -114,6 +114,7 @@ body
     width: 50px;
     height: 20px;
 }
+*/
 /********************************/
 /***********Footer***************/
 /********************************/
@@ -133,9 +134,6 @@ body
     box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
     border:2px solid #616161;
 }
-
-
-
 
 
 /********************************/
@@ -195,10 +193,123 @@ body
     background-color: #fff;
 }
 
+#table_top
+{
+    width: 100%;
+}
+
+#table_top td, #table_top th
+{
+    padding: 2px;
+    color: #333;
+}
+
+#table_top td
+{
+    line-height: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid #fff;
+}
+
+#table_top td:hover
+{
+    background-color: #fff;
+}
+
+
+
+
 /********************************/
 /**************Menu_bar**********/
 /********************************/
+#head_entry {
+    position: relative;
+    padding: 1px;
+    vertical-align: bottom;
+}
 
+#head_login_reg{
+    position: relative;
+}
+
+#menu {
+    float:left;
+    height:24px;
+    width:793px;
+}
+
+.chromestyle{
+    width: 99%;
+    font-weight: normal;
+}
+
+ul.chromestyle{
+    border: 0px solid black;
+    width: 793px;
+    background: url(java/chromebg.jpg) center center repeat-x;
+    padding: 4px;
+    padding-right:3px;
+    margin: 0;
+    text-align: center;
+}
+
+li.chromestyle{
+    display: inline;
+    text-decoration-color: red;
+}
+
+a.chromestyle{
+    font: 15px Arial;
+    font-weight: normal;
+    color: black;
+    padding: 4px 7px;
+    margin: 0;
+    text-decoration: none;
+    border-right: 1px solid silver;
+}
+
+a.chromestyle:hover, .chromestyle a.selected{
+/*script dynamically adds a class of "selected" to the current active menu item*/
+    color: #666;
+}
+
+/* Style für Drop Down Menu */
+
+.dropmenudiv{
+    /*position: absolute; */
+    top: 0;
+    border: 1px solid gray;
+    border-bottom-width: 0;
+    font: 13px Arial;
+    font-weight: normal;
+    line-height:18px;
+    z-index:100;
+    background-color: #CCC;
+    width: 200px;
+    /*visibility: hidden;*/
+}
+
+a.dropmenudiv{
+    width: auto;
+    height: 20;
+    display: block;
+    text-indent: 3px;
+    border-bottom: 1px solid gray;
+    padding: 2px 0;
+    text-decoration: none;
+    font-weight: normal;
+    color: black;
+}
+
+a.dropmenudiv{ /*Hack für IE */
+    width: 100%;
+}
+
+a.dropmenudiv:hover{
+    background: url(java/chromebg-over.jpg) center center repeat-x;
+}
 
 /********************************/
 /**********Text/Link-styles******/
@@ -222,13 +333,11 @@ a{
     margin: 0px;
 }
 
-a.visited
+a:visited
 {
    color: #616161;
 }
 
- a.hover{
+a:hover{
     color: #616162;
  }
-
-

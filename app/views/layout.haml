@@ -27,20 +27,50 @@
             %a{:href => "/register"} Register
       -elsif session[:name]
         #topUserInfo
-          %img{:height => "40", :width => "40", :align => "left", :src => "../images/#{Marketplace::User.by_name(session[:name]).picture}"}
-          %label
-            Logged in as:&nbsp
-            %br
-            #{session[:name]}
-            %br
-            Current credit:&nbsp
-            %br
-            #{Marketplace::User.by_name(session[:name]).credits}
-        #topButton1
-          %a{:href => url("/user/#{session[:name]}")} My profile
-        #topButton2
-          %a{:href => "/logout"} Logout
+          %table#table_top
+            %tr
+              %td
+                %img{:height => "40", :width => "40", :align => "left", :src => "../images/#{Marketplace::User.by_name(session[:name]).picture}"}
+              %td
+                %label{style="float = 'auto'"}
+                Logged in as:&nbsp
+                %br
+                #{session[:name]}
+            %tr
+              %td{:colspan=>2}
+                Current credit:&nbsp
+                %br
+                #{Marketplace::User.by_name(session[:name]).credits}
     #main_page
+      #menu
+        #chromemenu.chromestyle
+          %ul.chromestyle
+            - if session[:name]
+              %li.chromestyle
+                %a.chromestyle{:href => url("/")} Home
+              %li.chromestyle
+                %a.chromestyle{:href => url("/user/#{session[:name]}")} Your profile
+              %li.chromestyle
+                %a.chromestyle{:href => url("/user/")} Edit profile
+              %li.chromestyle
+                %a.chromestyle{:href => url("/add_item")} Add Item
+              %li.chromestyle
+                %a.chromestyle(href="/settings" rel="dropmenu1") Test1
+              %li.chromestyle
+                %a.chromestyle(href="/settings" rel="dropmenu2") Test2
+              %li.chromestyle
+                %a.chromestyle{:href => url("/settings")} Settings
+              %li.chromestyle
+                %a.chromestyle{:href => url("/logout")} Logout
+            - else
+              %li.chromestyle
+                %a.chromestyle{:href => url("/login")} Login
+              %li.chromestyle
+                %a.chromestyle{:href => url("/register")} Register
+
+        :javascript
+          cssdropdown.startchrome("chromemenu")
+
       #content
         = yield
     #footer

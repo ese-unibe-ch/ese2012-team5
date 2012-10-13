@@ -1,15 +1,14 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 %h1 #{user.name}
+%br
 
 
-%a{:href => "/"} back
-
-%table
+%table#table_new
+  %td{:height => "205", :width => "205"}
+    %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
   %td
     #{user.details}
-  %td
-    %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
 %p
 %p
 

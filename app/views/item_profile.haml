@@ -1,13 +1,13 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 %h1 Item: #{item.name}
-
-%p
+%br
+%br
 %p
 Price: #{item.price}
-%p
+%br
 On sale: #{item.active}
-%p
+%br
 Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
