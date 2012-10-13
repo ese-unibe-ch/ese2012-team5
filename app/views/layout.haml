@@ -37,7 +37,7 @@
             %br
             #{Marketplace::User.by_name(session[:name]).credits}
         #topButton1
-          %a{:href => url("/user/#{session[:name]}")} Goto my profile
+          %a{:href => url("/user/#{session[:name]}")} My profile
         #topButton2
           %a{:href => "/logout"} Logout
     #main_page

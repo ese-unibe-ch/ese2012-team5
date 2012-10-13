@@ -96,7 +96,7 @@ body
     position: absolute;
     left:643px;
     bottom: 0;
-    width: 109px;
+    width: 105px;
     height: 20px;
 }
 
@@ -109,9 +109,9 @@ body
     border-left:2px solid #616161;
     border-top:2px solid #616161;
     position: absolute;
-    left:752px;
+    left:748px;
     bottom: 0;
-    width: 46px;
+    width: 50px;
     height: 20px;
 }
 /********************************/
@@ -196,7 +196,7 @@ body
 }
 
 /********************************/
-/**************Menu**************/
+/**************Menu_bar**********/
 /********************************/
 
 
@@ -208,7 +208,7 @@ h1
 {
     color: #616161;
     margin: 0px;
-    text-shadow: #e8e8e8 1px 1px 1px;
+    text-shadow: #2c2c2c 1px 1px 1px;
 }
 
 h2
