@@ -1,14 +1,15 @@
 !!!5
+
 %head
   %title
-    Marketplace
-  -# Load css and favicon
-  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("design.css")}
-  %link{:rel => "shortcut icon", :type=>"image/png", :href => url("images/favicon.png")}
+    itemMarket
+  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("style.css")}
+  %link{:rel => "icon", :type=>"image/png", :href => url("images/fav.png")}
+
+
 %body
-  #body
-    -#Shows the logo on top of the page
-    #logo
+  #pageContainer
+    #header
       - if !session[:name]
         #topLoginInfo
           %form( action="/login" method="POST")
@@ -39,38 +40,8 @@
           %a{:href => url("/user/#{session[:name]}")} Goto my profile
         #topButton2
           %a{:href => "/logout"} Logout
-
-
-
-
-
-
-
-    #page
-      -#The navigation
-      #menu
-        #head_entry
-          %h2 Navigation
-        %ul.no_indented
-          - if session[:name]
-            %li.menu_entry
-              %a{:href => url("/")} Home
-            %li.menu_entry
-              %a{:href => url("/user/#{session[:name]}")} Your profile
-            %li.menu_entry
-              %a{:href => url("/users")} All users
-            %li.menu_entry
-              %a{:href => url("/add_item")} Add Item
-            %li.menu_entry
-              %a{:href => url("/settings")} Settings
-            %li.menu_entry
-              %a{:href => url("/logout")} Logout
-          - else
-            %li.menu_entry
-              %a{:href => url("/login")} Login
-            %li.menu_entry
-              %a{:href => url("/register")} Register
-
-      -# Here are the other haml files added
+    #main_page
       #content
         = yield
+    #footer
+      %a{:href => "https://github.com/ese-unibe-ch/ese2012-team5"} Visit Team 5 on Github

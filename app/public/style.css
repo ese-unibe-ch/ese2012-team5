@@ -1,29 +1,45 @@
 /********************************/
-/********General layout**********/
+/********CSS Layout**************/
 /********************************/
 
-body {
-    background: url(images/body.png) repeat;
-    background-color: #2c614e;
-    font-family: Calibri, Verdana, Arial, sans-serif;
+body
+{
+    background: url(images/bg1.png) repeat;
+    font-family: Arial, sans-serif;
 }
 
-#content {
-    padding: 15px;
+#content
+{
     position: relative;
     float: left;
-    left: 170px;
-    width: 600px;
-    overflow: visible;
+    width: 772px;
+    padding: 12px;
+    overflow: auto;
 }
 
-#body {
+#pageContainer
+{
     margin: 0 auto 0 auto;
     width: 804px;
     position: relative;
 }
 
-#logo {
+#main_page
+{
+    background-color: #babbb7;
+    min-height: 600px;
+    width: 800px;
+    overflow: auto;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border:2px solid #616161;
+}
+
+/********************************/
+/********Header layout***********/
+/********************************/
+
+#header
+{
     background-image : url(images/itemMarket.png);
     margin: 10px 0 5px 0;
     position: relative;
@@ -32,9 +48,10 @@ body {
     height: 105px;
     box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
     border:2px solid #616161;
-     }
+}
 
-#topLoginInfo{
+#topLoginInfo
+{
     font: Arial;
     font-size: 10.5pt;
     text-align: center;
@@ -49,7 +66,9 @@ body {
     max-width:155px ;
     min-height: 103px;
 }
-#topUserInfo{
+
+#topUserInfo
+{
     font: Arial;
     font-size: 12pt;
     text-align: center;
@@ -66,7 +85,8 @@ body {
     max-width: 155px;
 }
 
-#topButton1{
+#topButton1
+{
     font: Arial;
     font-size: 12pt;
     text-align: center;
@@ -76,10 +96,12 @@ body {
     position: absolute;
     left:643px;
     bottom: 0;
-    min-width: 109px;
+    width: 109px;
+    height: 20px;
 }
 
-#topButton2{
+#topButton2
+{
     font: Arial;
     font-size: 12pt;
     text-align: center;
@@ -89,22 +111,39 @@ body {
     position: absolute;
     left:752px;
     bottom: 0;
-    min-width: 46px;
+    width: 46px;
+    height: 20px;
 }
+/********************************/
+/***********Footer***************/
+/********************************/
 
-#page {
-    background-color: #FFF;
-    min-height: 500px;
-    width: 800px;
-    overflow: auto;
+#footer
+{
+    background: url(images/footer.png) repeat;
+    font: arial;
+    text-align: center;
+    margin: 5px 0 10px 0;
+    padding-top: 0.8%;
+    padding-bottom: 0.8%;
+    position: relative;
+    bottom:10;
+    width : 800px;
+    height: 20px;
     box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
     border:2px solid #616161;
 }
+
+
+
+
+
 /********************************/
 /**************TableDesign*******/
 /********************************/
 
-#table_new{
+#table_new
+{
     border: 1px solid #e3e3e3;
     background-color: #f2f2f2;
     width: 100%;
@@ -112,11 +151,15 @@ body {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
 }
-#table_new td, #table_new th {
+
+#table_new td, #table_new th
+{
     padding: 5px;
     color: #333;
 }
-#table_new thead {
+
+#table_new thead
+{
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     padding: .2em 0 .2em .5em;
     text-align: left;
@@ -126,23 +169,29 @@ body {
     background-image: -moz-linear-gradient(top, #D6D6D6, #B0B0B0, #B3B3B3 90%);
     border-bottom: solid 1px #999;
 }
-#table_new th {
+
+#table_new th
+{
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 17px;
     line-height: 20px;
     font-style: normal;
     font-weight: normal;
     text-align: left;
-    text-shadow: white 1px 1px 1px;
+    text-shadow: #e8e8e8 1px 1px 1px;
 }
-#table_new td {
+
+#table_new td
+{
     line-height: 20px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     border-bottom: 1px solid #fff;
     border-top: 1px solid #fff;
 }
-#table_new td:hover {
+
+#table_new td:hover
+{
     background-color: #fff;
 }
 
@@ -150,155 +199,36 @@ body {
 /**************Menu**************/
 /********************************/
 
-#head_entry {
-    position: relative;
-    padding: 1px;
-    vertical-align: bottom;
-}
-
-#menu {
-    margin-top: 20px;
-    padding:0 10px 0 10px;
-    position: absolute;
-    left: 0;
-    float: left;
-    width: 150px;
-    border-right: 1px solid #23496B;;
-    top: 235px;
-    bottom:15px;
-}
-
-li.menu_entry {
-    list-style: none outside;
-    position: relative;
-    border-top: 1px dashed #aaa;
-    padding: 1px;
-    background-color: #fcfefe;
-}
-
-ul.no_indented{
-    padding: 0;
-}
 
 /********************************/
-/************Tooltip*************/
+/**********Text/Link-styles******/
 /********************************/
 
-
-a.tooltip
+h1
 {
-    position:relative;
-    z-index:1;
+    color: #616161;
+    margin: 0px;
+    text-shadow: #e8e8e8 1px 1px 1px;
 }
 
-a.tooltip:hover
+h2
 {
-    z-index:2;
-}
-
-a.tooltip span
-{
-    display: none;
-}
-
-a.tooltip:hover span
-{
-    display:block;
-    position:absolute;
-    top:20px;
-    left:20px;
-    width:250px;
-    border:1px dashed #ccc;
-    background-color:#246E82;
-    color:#FFF;
-    text-align: center;
-    padding: 5px;
-    font-size: 0.8em;
-}
-
-
-/********************************/
-/**********General styling*******/
-/********************************/
-
-
-a, a.visited {
-    color: #23496B;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #aaa;
-}
-
-h1 {
-    color: #23496B;
+    color: #616161;
     margin: 0px;
 }
 
-th {
-    text-align: left;
+a{
+    color: #616161;
+    margin: 0px;
 }
 
-/********************************/
-/*********Button styles**********/
-/********************************/
-
-
-.button_as_link {
-    background: none;
-    border: none;
-    color: #23496B;
+a.visited
+{
+   color: #616161;
 }
 
-.button_as_link:hover {
-    color: #aaa;
-    cursor: pointer;
-}
+ a.hover{
+    color: #616162;
+ }
 
-.button_margin{
-    margin: 2px 0 0 0;
-}
 
-/********************************/
-/************Messages************/
-/********************************/
-
-.error, .success {
-    margin-top: 25px;
-    border: solid 1px #000;
-    width: 200px;
-    padding: 0 0 0 1px;
-}
-
-.error{
-    background: #f66;
-}
-
-.success {
-    background: #8e8;
-}
-
-/********************************/
-/*********Basic styling**********/
-/********************************/
-
-.center {
-    text-align: center;
-}
-
-.inactive {
-    color: #aaa;
-}
-
-.right {
-    text-align: right;
-}
-
-.list {
-    border-top: dashed 1px #ccc;
-}
-
-.padding_left{
-    padding-left: 4px;
-}
