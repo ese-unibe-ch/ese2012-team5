@@ -11,11 +11,11 @@ On sale: #{item.active}
 Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
+%p
 
--if(session[:name])
-  %form(action = "/item/#{item.id}" method="POST")
-    %input(name = 'buyItemId' type='hidden' value = '#{item.id}' )
-    %input(type='submit' value = 'buy')
+%a{:href => "/buyItem/#{item.id}"} Buy
+
+
 
 %p
 %p

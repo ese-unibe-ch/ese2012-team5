@@ -12,7 +12,9 @@ require 'controllers/register.rb'
 require 'controllers/item_edit.rb'
 require 'controllers/settings.rb'
 require 'controllers/user.rb'
-require 'controllers/transaction.rb'
+require 'controllers/itemActions.rb'
+require 'controllers/activateItem.rb'
+require 'controllers/buy_item.rb'
 
 class App < Sinatra::Base
 
@@ -21,7 +23,7 @@ class App < Sinatra::Base
   use Main
   use ItemEdit
   use User
-  use Transaction
+  use ItemActions
   use Settings
 
   enable :sessions

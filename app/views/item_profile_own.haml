@@ -9,17 +9,16 @@ Price: #{item.price}
 On sale: #{item.active}
 
 %p
-
 -if item.active
-  %form(action = "/item/#{item.id}" method="POST")
-    %input(name = 'activation' type='hidden' value ='deactivate')
-    %input(type='submit' value = 'deactivate it')
+  %a{:href => "/activateItem/#{item.id}"} Deactivate item
 -else
-  %form(action = "/item/#{item.id}" method="POST")
-    %input(name = 'activation' type='hidden' value ='activate')
-    %input(type='submit' value = 'activate it')
-  %a{:href => "/edit/#{item.id}"} Edit item
+  %a{:href => "/activateItem/#{item.id}"} Activate item
 
+
+%p
+
+-if !item.active
+  %a{:href => "/edit/#{item.id}"} Edit
 %p
 %p
 %p
