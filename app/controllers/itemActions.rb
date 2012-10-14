@@ -11,6 +11,7 @@ class ItemActions < Sinatra::Application
                                           :item => current_item}
     else
 
+
       if current_user
         userCredits  = current_user.credits
       else

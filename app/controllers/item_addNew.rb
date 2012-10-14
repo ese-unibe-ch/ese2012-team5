@@ -3,7 +3,7 @@ class ItemEdit < Sinatra::Application
   get "/add_item" do
 
     current_user = Marketplace::User.by_name(session[:name])
-
+    #cheks if logged in
     if  current_user
       message = session[:message]
       session[:message] = nil
@@ -35,7 +35,7 @@ class ItemEdit < Sinatra::Application
       redirect "/add_item"
     end
 
-
+    #creation of item
     current_item = Marketplace::Item.create(name, price.to_i, current_user)
 
     redirect "/item/#{current_item.id}"
