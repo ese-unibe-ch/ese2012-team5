@@ -2,27 +2,27 @@
 
 %h1 Item: #{item.name}
 
-%p
-%p
-Price: #{item.price}
-%p
-On sale: #{item.active}
+-if info != nil
+  %h2 #{info}
 
-%p
+%br
+%br
+Price: #{item.price}
+%br
+State: #{item.active}
+%br
+Owner:
+%a{:href => "/user/#{item.owner.name}"} You ;)
+
+%br
 
 -if item.active
-  %form(action = "/item/#{item.id}" method="POST")
-    %input(name = 'activation' type='hidden' value ='deactivate')
-    %input(type='submit' value = 'deactivate it')
+  %form( action="/item/#{item.id}/activate" method="POST" )
+    %input(type="submit" value="Deactivate")
+  %form( action="/item/#{item.id}/edit" method="POST" )
+    %input(type="submit" disabled="disabled" value="Edit")
 -else
-  %form(action = "/item/#{item.id}" method="POST")
-    %input(name = 'activation' type='hidden' value ='activate')
-    %input(type='submit' value = 'activate it')
-  %a{:href => "/edit/#{item.id}"} Edit item
-
-%p
-%p
-%p
-
-
-%a{:href => "/"} Home
+  %form( action="/item/#{item.id}/activate" method="POST" )
+    %input(type="submit" value="Activate")
+  %form( action="/item/#{item.id}/edit" method="POST" )
+    %input(type="submit" value="Edit")

@@ -2,22 +2,23 @@
 
 %h1 Item: #{item.name}
 
-%p
-%p
+-if info != nil
+  %h2 #{info}
+
+%br
+%br
 Price: #{item.price}
-%p
-On sale: #{item.active}
-%p
+%br
+State: #{item.active}
+%br
 Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
+%br
 
--if(session[:name])
-  %form(action = "/item/#{item.id}" method="POST")
-    %input(name = 'buyItemId' type='hidden' value = '#{item.id}' )
-    %input(type='submit' value = 'buy')
-
-%p
-%p
-%p
-%a{:href => "/"} Home
+-if canBuy
+  %form( action="/item/#{item.id}/buy" method="POST" )
+    %input(type="submit" value="Buy")
+-else
+  %form( action="/item/#{item.id}/buy" method="POST" )
+    %input(type="submit" disabled="disabled" value="Buy")

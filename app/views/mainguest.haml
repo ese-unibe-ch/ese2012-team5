@@ -3,32 +3,37 @@
 -#Header
 %h1 Welcome Guest
 
-
-%a{:href => "/login"} Login
-%p
-%a{:href => "/register"} Register
-%p
-
+%a
+  These are some items you will be able to buy on this page.
+  If you haven't already got a Login feel free to register
+  and join the wonderful world of trading.
+%br
 
 -#List of all Items, for each user a new Table
-%p
-%table{:border => 1}
+%table#table_new
+  %thead
+    %th Picture
+    %th Item
+    %th Quantity
+    %th Value
+    %th Active
+    %th Owner
   %tbody
-    %tr
-      %th Item
-      %th Value
-      %th Active
-      %th Owner
-  - for user in users
-    - for item in user.items
-      %tr
-        %td
-          %a{:href => "/item/#{item.id}"} #{item.name}
-        %td #{item.price}
-        %td
-          - if item.active
-            %p yes
-          - else
-            %p no
-        %td
-          %a{:href => "/user/#{user.name}"} #{user.name}
+    - for user in users
+      - for item in user.items
+        %tr
+          %td
+            Pic
+          %td
+            %a{:href => "/item/#{item.id}"} #{item.name}
+          %td
+            #{item.quantity}
+          %td
+            #{item.price}
+          %td
+            - if item.active
+              %p yes
+            - else
+              %p no
+          %td
+            %a{:href => "/user/#{user.name}"} #{user.name}

@@ -1,14 +1,20 @@
 class User < Sinatra::Application
 
   get "/user/:name" do
+
     username = params[:name]
+    message = session[:message]
+    session[:message] = nil
 
     if username == session[:name]
-      haml :user_profile_own, :locals => {:time => Time.now,
-                                          :user => Marketplace::User.by_name(username) }
+      haml :user_profile_own, :locals => {  :user => Marketplace::User.by_name(username),
+                                            :info => message}
     else
-      haml :user_profile, :locals => {  :time => Time.now,
-                                        :user => Marketplace::User.by_name(username) }
+      haml :user_profile, :locals => {  :user => Marketplace::User.by_name(username),
+                                        :current_user => Marketplace::User.by_name(session[:name]),
+                                        :info => message}
     end
+
   end
+
 end

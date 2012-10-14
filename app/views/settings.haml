@@ -1,22 +1,21 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 %h1 Settings
+%br
 
-- if info != nil
+-if info != nil
   %h2 #{info}
 
-%a{:href => "/user/#{user.name}"} Back to profile
-
-%h2 picture upload (.gif dont work )
+%h2 picture upload (.gif dont work)
 %form(action = "/upload" method = "POST" enctype="multipart/form-data")
   %input(type='file' name="file_upload" accept="image/*")
   %input(type='submit' value='upload')
-%p
+
 Your current picture:
-%img(src="images/#{user.picture}")
+%img{:height => "200", :width => "200", :src => "images/#{user.picture}"}
+%br
 
 %h2 list of interests
-
 %form( action="/details" method="POST" )
   %textarea(cols="50" rows="4" name="details") #{user.details}
   %input(type="hidden" name="user" value="#{user.name}")
