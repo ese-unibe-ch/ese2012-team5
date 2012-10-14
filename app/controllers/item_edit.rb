@@ -5,7 +5,13 @@ class ItemEdit < Sinatra::Application
 
     id = params[:id].to_i
     current_item = Marketplace::Item.by_id(id)
+    current_user = Marketplace::User.by_name(session[:name])
 
+
+    if current_user != current_item.owner
+      session[:message] = "You can't edit a item of an other user"
+      redirect "/item/#{id}"
+    end
 
     if current_item.active
       session[:message] = "You can't edit a active item"
