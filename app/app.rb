@@ -15,6 +15,7 @@ require 'controllers/user.rb'
 require 'controllers/itemActions.rb'
 require 'controllers/activateItem.rb'
 require 'controllers/buy_item.rb'
+require 'controllers/item_addNew.rb'
 
 class App < Sinatra::Base
 
