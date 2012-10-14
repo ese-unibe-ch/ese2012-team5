@@ -1,9 +1,11 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 %h1 #{user.name}
+%br
 
 -if info != nil
-%br
+  %h2 #{info}
+
 
 %table#table_new
   %td{:height => "205", :width => "205"}
@@ -12,7 +14,6 @@
     Your Interests:
     %br
     #{user.details}
-
 %p
 %p
 
@@ -25,7 +26,6 @@
     %th Value
     %th Active
     %th Buy
-
   %tbody
     - for item in user.items
       %tr
@@ -43,6 +43,9 @@
           - else
             %p no
         %td
-          Buy
-
-
+          -if current_user != nil and item.price <= current_user.credits
+            %form( action="/item/#{item.id}/buy" method="POST" )
+              %input(type="submit" value="Buy")
+          -else
+            %form( action="/item/#{item.id}/buy" method="POST" )
+              %input(type="submit" disabled="disabled" value="Buy")

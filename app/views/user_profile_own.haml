@@ -6,6 +6,7 @@
 -if info != nil
   %h2 #{info}
 
+
 %table#table_new
   %td{:height => "205", :width => "205"}
     %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
@@ -24,7 +25,6 @@
     %th Quantity
     %th Value
     %th Active
-
   %tbody
     - for item in user.items
       %tr

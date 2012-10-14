@@ -6,15 +6,15 @@
   %h2 #{info}
 
 %br
-%p
+%br
 Price: #{item.price}
-%p
+%br
 State: #{item.active}
-%p
+%br
 Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
-%p
+%br
 
 -if canBuy
   %form( action="/item/#{item.id}/buy" method="POST" )

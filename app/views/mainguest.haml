@@ -10,7 +10,6 @@
 %br
 
 -#List of all Items, for each user a new Table
-%p
 %table#table_new
   %thead
     %th Picture
@@ -19,7 +18,6 @@
     %th Value
     %th Active
     %th Owner
-
   %tbody
     - for user in users
       - for item in user.items

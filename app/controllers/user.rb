@@ -11,6 +11,7 @@ class User < Sinatra::Application
                                             :info => message}
     else
       haml :user_profile, :locals => {  :user => Marketplace::User.by_name(username),
+                                        :current_user => Marketplace::User.by_name(session[:name]),
                                         :info => message}
     end
 

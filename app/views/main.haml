@@ -1,8 +1,9 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
--#Header
-%h1 Welcome #{current_user}
+%h1 Welcome #{current_user.name}
+
 %br
+
 -#List of users Items
 Own Items
 %table#table_new
@@ -11,9 +12,8 @@ Own Items
     %th Item
     %th Value
     %th Active
-
   %tbody
-    - for item in Marketplace::User.by_name(current_user).items
+    - for item in current_user.items
       %tr
         %td
           Pic
@@ -27,9 +27,10 @@ Own Items
           - else
             %p no
 %br
-List of Items by other users
--#List of all Items, for each user a new Table
 
+
+-#List of all Items, for each user a new Table
+List of Items by other users
 %table#table_new
   %thead
     %tr
@@ -61,4 +62,9 @@ List of Items by other users
             %td
               %a{:href => "/user/#{user.name}"} #{user.name}
             %td
-              Buy
+              -if item.price <= current_user.credits
+                %form( action="/item/#{item.id}/buy" method="POST" )
+                  %input(type="submit" value="Buy")
+              -else
+                %form( action="/item/#{item.id}/buy" method="POST" )
+                  %input(type="submit" disabled="disabled" value="Buy")

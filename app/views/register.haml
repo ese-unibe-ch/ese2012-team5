@@ -3,18 +3,17 @@
 %h1 Register
 %br
 
-- if info != nil
-   %h2 #{info}
-   %br
+-if info != nil
+  %h2 #{info}
 
 %form( action="/register" method="POST" )
-   %label Username
-   %input(type="text" name="username")
-   %p
-   %label Password
-   %input(type="password" name="password")
-   %p
-   %label confirm Password
-   %input(type="password" name="password_conf")
-   %p
-   %input(type="submit" value="Register")
+  %label Username
+  %input(type="text" name="username")
+  %p
+  %label Password
+  %input(type="password" name="password")
+  %p
+  %label confirm Password
+  %input(type="password" name="password_conf")
+  %p
+  %input(type="submit" value="Register")
