@@ -1,7 +1,12 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
+
+
 %h1 Item: #{item.name}
 
+%p
+
+Credits on your account: #{userCredits}
 %p
 %p
 Price: #{item.price}
@@ -12,10 +17,11 @@ Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
 %p
+-if item.price <= userCredits
+  %a{:href => "/buyItem/#{item.id}"} Buy
 
-%a{:href => "/buyItem/#{item.id}"} Buy
-
-
+-else
+  Not enough credits for this purchase
 
 %p
 %p
