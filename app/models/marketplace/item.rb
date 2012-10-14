@@ -5,7 +5,7 @@ module Marketplace
     @@items = []
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active
+    attr_accessor :id, :name, :price, :owner, :active, :quantity
 
     # constructor
     # @param [String] name of the new item
@@ -20,6 +20,7 @@ module Marketplace
       item.price = price
       item.owner = owner
       owner.add_item(item)
+      quantity = 1
       item.save
       item
     end

@@ -1,53 +1,228 @@
 /********************************/
-/********General layout**********/
+/********CSS Layout**************/
 /********************************/
 
-body {
-    background: url(images/body.png) repeat;
-    background-color: #2c614e;
-    font-family: Calibri, Verdana, Arial, sans-serif;
+body
+{
+    background: url(images/bg1.png) repeat;
+    font-family: Arial, sans-serif;
 }
 
-#content {
-    padding: 15px;
+#content
+{
     position: relative;
     float: left;
-    left: 170px;
-    width: 600px;
-    overflow: visible;
-}
-
-#body {
-    margin: 0 auto 0 auto;
-    width: 800px;
-    position: relative;
-}
-
-#logo {
-    margin: 10px 0 0px 0;
-    vertical-align : top;
-
-}
-
-#logoII{
-    margin: 0px 0 10px 0;
-    float: right;
-    vertical-align : top;
-    font: Arial;
-
-}
-
-#page {
-    background-color: #FFF;
-    min-height: 500px;
-    width: 800px;
+    width: 772px;
+    padding: 12px;
     overflow: auto;
 }
 
+#pageContainer
+{
+    margin: 0 auto 0 auto;
+    width: 804px;
+    position: relative;
+}
+
+#main_page
+{
+    background-color: #babbb7;
+    min-height: 600px;
+    width: 800px;
+    overflow: auto;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border:2px solid #616161;
+}
+
 /********************************/
-/**************Menu**************/
+/********Header layout***********/
 /********************************/
 
+#header
+{
+    background-image : url(images/itemMarket.png);
+    margin: 10px 0 5px 0;
+    position: relative;
+    vertical-align : top;
+    width : 800px;
+    height: 105px;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border:2px solid #616161;
+}
+
+#topLoginInfo
+{
+    font: Arial;
+    font-size: 10.5pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    margin: 1px 1 1px 1;
+    position: absolute;
+    vertical-align: top;
+    left:641px;
+    padding: 1.5px 3.5px 1.5px 1.5px;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border-left:2px solid #616161;
+    max-width:155px ;
+    min-height: 103px;
+}
+
+#topUserInfo
+{
+    font: Arial;
+    font-size: 12pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    margin: 1px 1 1px 1;
+    position: absolute;
+    left:641px;
+    vertical-align: top;
+    padding: 1.5px 3.5px 1.5px 1.5px;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border-left:2px solid #616161;
+    min-height: 103px;
+    min-width: 153px;
+    max-width: 155px;
+}
+/*
+#topButton1
+{
+    font: Arial;
+    font-size: 12pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    border-top:2px solid #616161;
+    border-right:2px solid #616161;
+    position: absolute;
+    left:643px;
+    bottom: 0;
+    width: 105px;
+    height: 20px;
+}
+
+#topButton2
+{
+    font: Arial;
+    font-size: 12pt;
+    text-align: center;
+    background: rgba(255, 252, 211, 0.40);
+    border-left:2px solid #616161;
+    border-top:2px solid #616161;
+    position: absolute;
+    left:748px;
+    bottom: 0;
+    width: 50px;
+    height: 20px;
+}
+*/
+/********************************/
+/***********Footer***************/
+/********************************/
+
+#footer
+{
+    background: url(images/footer.png) repeat;
+    font: arial;
+    text-align: center;
+    margin: 5px 0 10px 0;
+    padding-top: 0.8%;
+    padding-bottom: 0.8%;
+    position: relative;
+    bottom:10;
+    width : 800px;
+    height: 20px;
+    box-shadow:rgba(0,0,0,0.5) 0px 0px 24px;
+    border:2px solid #616161;
+}
+
+
+/********************************/
+/**************TableDesign*******/
+/********************************/
+
+#table_new
+{
+    border: 1px solid #e3e3e3;
+    background-color: #f2f2f2;
+    width: 100%;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+
+#table_new td, #table_new th
+{
+    padding: 5px;
+    color: #333;
+}
+
+#table_new thead
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    padding: .2em 0 .2em .5em;
+    text-align: left;
+    color: #4B4B4B;
+    background-color: #C8C8C8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#e3e3e3), color-stop(.6,#B3B3B3));
+    background-image: -moz-linear-gradient(top, #D6D6D6, #B0B0B0, #B3B3B3 90%);
+    border-bottom: solid 1px #999;
+}
+
+#table_new th
+{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 20px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: left;
+    text-shadow: #e8e8e8 1px 1px 1px;
+}
+
+#table_new td
+{
+    line-height: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid #fff;
+}
+
+#table_new td:hover
+{
+    background-color: #fff;
+}
+
+#table_top
+{
+    width: 100%;
+    height: 100%;
+}
+
+#table_top td, #table_top th
+{
+    padding: 2px;
+    color: #333;
+}
+
+#table_top td
+{
+    line-height: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+#table_top td:hover
+{
+    background-color: #fff;
+}
+
+
+
+
+/********************************/
+/**************Menu_bar**********/
+/********************************/
 #head_entry {
     position: relative;
     padding: 1px;
@@ -56,154 +231,112 @@ body {
 
 #head_login_reg{
     position: relative;
-
-
 }
-
 
 #menu {
-    margin-top: 20px;
-    padding:0 10px 0 10px;
-    position: absolute;
-    left: 0;
-    float: left;
-    width: 150px;
-    border-right: 1px solid #23496B;;
-    top: 235px;
-    bottom:15px;
+    float:left;
+    height:24px;
+    width:793px;
 }
 
-li.menu_entry {
-    list-style: none outside;
-    position: relative;
-    border-top: 1px dashed #aaa;
-    padding: 1px;
-    background-color: #fcfefe;
+.chromestyle{
+    width: 99%;
+    font-weight: normal;
 }
 
-ul.no_indented{
-    padding: 0;
-}
-
-/********************************/
-/************Tooltip*************/
-/********************************/
-
-
-a.tooltip
-{
-    position:relative;
-    z-index:1;
-}
-
-a.tooltip:hover
-{
-    z-index:2;
-}
-
-a.tooltip span
-{
-    display: none;
-}
-
-a.tooltip:hover span
-{
-    display:block;
-    position:absolute;
-    top:20px;
-    left:20px;
-    width:250px;
-    border:1px dashed #ccc;
-    background-color:#246E82;
-    color:#FFF;
+ul.chromestyle{
+    border: 0px solid black;
+    width: 793px;
+    background: url(java/chromebg.jpg) center center repeat-x;
+    padding: 4px;
+    padding-right:3px;
+    margin: 0;
     text-align: center;
-    padding: 5px;
-    font-size: 0.8em;
 }
 
+li.chromestyle{
+    display: inline;
+    text-decoration-color: red;
+}
 
-/********************************/
-/**********General styling*******/
-/********************************/
-
-
-a, a.visited {
-    color: #23496B;
+a.chromestyle{
+    font: 15px Arial;
+    font-weight: normal;
+    color: black;
+    padding: 4px 7px;
+    margin: 0;
     text-decoration: none;
+    border-right: 1px solid silver;
 }
 
-a:hover {
-    color: #aaa;
+a.chromestyle:hover, .chromestyle a.selected{
+/*script dynamically adds a class of "selected" to the current active menu item*/
+    color: #666;
 }
 
-h2 {
-    color: #23496B;
+/* Style für Drop Down Menu */
+
+.dropmenudiv{
+    /*position: absolute; */
+    top: 0;
+    border: 1px solid gray;
+    border-bottom-width: 0;
+    font: 13px Arial;
+    font-weight: normal;
+    line-height:18px;
+    z-index:100;
+    background-color: #CCC;
+    width: 200px;
+    /*visibility: hidden;*/
+}
+
+a.dropmenudiv{
+    width: auto;
+    height: 20;
+    display: block;
+    text-indent: 3px;
+    border-bottom: 1px solid gray;
+    padding: 2px 0;
+    text-decoration: none;
+    font-weight: normal;
+    color: black;
+}
+
+a.dropmenudiv{ /*Hack für IE */
+    width: 100%;
+}
+
+a.dropmenudiv:hover{
+    background: url(java/chromebg-over.jpg) center center repeat-x;
+}
+
+/********************************/
+/**********Text/Link-styles******/
+/********************************/
+
+h1
+{
+    color: #616161;
+    margin: 0px;
+    text-shadow: #2c2c2c 1px 1px 1px;
+}
+
+h2
+{
+    color: #616161;
     margin: 0px;
 }
 
-th {
-    text-align: left;
+a{
+    color: #616161;
+    margin: 0px;
 }
 
-/********************************/
-/*********Button styles**********/
-/********************************/
-
-
-.button_as_link {
-    background: none;
-    border: none;
-    color: #23496B;
+a:visited
+{
+   color: #616161;
 }
 
-.button_as_link:hover {
-    color: #aaa;
-    cursor: pointer;
-}
-
-.button_margin{
-    margin: 2px 0 0 0;
-}
-
-/********************************/
-/************Messages************/
-/********************************/
-
-.error, .success {
-    margin-top: 25px;
-    border: solid 1px #000;
-    width: 200px;
-    padding: 0 0 0 1px;
-}
-
-.error{
-    background: #f66;
-}
-
-.success {
-    background: #8e8;
-}
-
-/********************************/
-/*********Basic styling**********/
-/********************************/
-
-.center {
-    text-align: center;
-}
-
-.inactive {
-    color: #aaa;
-}
-
-.right {
-    text-align: right;
-}
-
-.list {
-    border-top: dashed 1px #ccc;
-}
-
-.padding_left{
-    padding-left: 4px;
-}
+a:hover{
+    color: #616162;
+ }
