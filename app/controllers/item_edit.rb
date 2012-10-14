@@ -32,6 +32,7 @@ class ItemEdit < Sinatra::Application
     id = params[:id].to_i
     new_name = params[:name]
     new_price = params[:price]
+    new_quantity = params[:quantity]
     current_item = Marketplace::Item.by_id(id)
 
 
@@ -49,8 +50,22 @@ class ItemEdit < Sinatra::Application
         redirect "/item/#{id}/edit"
     end
 
+    begin
+      !(Integer(new_quantity))
+
+    rescue ArgumentError
+      session[:message] = "quantity was not a number!"
+      redirect "/item/#{id}/edit"
+    end
+
+    if new_quantity.to_i <= 0
+      session[:message] = "quantity must be bigger than 0"
+      redirect "/item/#{id}/edit"
+    end
+
     current_item.name = new_name
     current_item.price = new_price.to_i
+    current_item.quantity = new_quantity.to_i
 
     redirect "/item/#{id}"
   end

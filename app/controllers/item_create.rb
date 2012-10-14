@@ -24,6 +24,7 @@ class ItemCreate < Sinatra::Application
 
     name = params[:name]
     price = params[:price]
+    quantity = params[:quantity]
     current_user = Marketplace::User.by_name(session[:name])
 
 
@@ -41,7 +42,20 @@ class ItemCreate < Sinatra::Application
       redirect '/createItem'
     end
 
-    current_item = Marketplace::Item.create(name, price.to_i, current_user)
+    begin
+      !(Integer(quantity))
+
+    rescue ArgumentError
+      session[:message] = "quantity was not a number!"
+      redirect '/createItem'
+    end
+
+    if quantity.to_i <= 0
+      session[:message] = "quantity must be bigger than 0"
+      redirect '/createItem'
+    end
+
+    current_item = Marketplace::Item.create(name, price.to_i, current_user, quantity)
 
     redirect "/item/#{current_item.id}"
   end

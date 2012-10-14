@@ -22,7 +22,6 @@ module Marketplace
       item.quantity = quantity
       item.owner = owner
       owner.add_item(item)
-      quantity = 1
       item.save
       item
     end
