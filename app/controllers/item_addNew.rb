@@ -9,7 +9,7 @@ class ItemEdit < Sinatra::Application
       session[:message] = nil
       haml :addNew_item, :locals => {:info => message}
     else
-      "You are not logged in"
+      haml :notLoggedIn
     end
   end
 
