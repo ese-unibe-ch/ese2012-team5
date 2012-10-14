@@ -1,29 +1,24 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
-
-
 %h1 Item: #{item.name}
 
-%p
+-if info != nil
+  %h2 #{info}
 
-Available credits: #{userCredits}
 %p
 %p
 Price: #{item.price}
 %p
-On sale: #{item.active}
+State: #{item.active}
 %p
 Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
 %p
--if item.price <= userCredits
-  %a{:href => "/buyItem/#{item.id}"} Buy
 
+-if canBuy
+  %form( action="/item/#{item.id}/buy" method="POST" )
+    %input(type="submit" value="Buy")
 -else
-  Not enough credits for this purchase
-
-%p
-%p
-%p
-%a{:href => "/"} Home
+  %form( action="/item/#{item.id}/buy" method="POST" )
+    %input(type="submit" disabled="disabled" value="Buy")
