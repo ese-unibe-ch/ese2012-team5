@@ -9,22 +9,30 @@ require 'models/marketplace/item.rb'
 require 'controllers/main.rb'
 require 'controllers/login.rb'
 require 'controllers/register.rb'
-require 'controllers/item_edit.rb'
 require 'controllers/settings.rb'
 require 'controllers/user.rb'
-require 'controllers/transaction.rb'
+require 'controllers/item.rb'
+require 'controllers/item_edit.rb'
+require 'controllers/item_activate.rb'
+require 'controllers/item_buy.rb'
+require 'controllers/item_create.rb'
+
 
 class App < Sinatra::Base
 
   use Login
   use Register
   use Main
-  use ItemEdit
   use User
-  use Transaction
+  use Item
+  use ItemEdit
+  use ItemActivate
+  use ItemBuy
+  use ItemCreate
   use Settings
 
   enable :sessions
+
   set :public_folder, 'app/public'
   set :show_exceptions, false
   set :root, File.dirname(__FILE__)

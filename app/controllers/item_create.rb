@@ -1,0 +1,49 @@
+class ItemCreate < Sinatra::Application
+
+  # Displays the view to create new items
+  get "/createItem" do
+
+    current_user = Marketplace::User.by_name(session[:name])
+
+
+    if current_user
+      message = session[:message]
+      session[:message] = nil
+      haml :item_create, :locals => {:info => message}
+    else
+      session[:message] = "Log in to create items"
+      redirect '/login'
+    end
+
+  end
+
+  # Will create a new item according to given params
+  # If name or price is not valid, creation will fail
+  # If creation succeeds, it will redirect to profile of new item
+  post "/createItem" do
+
+    name = params[:name]
+    price = params[:price]
+    current_user = Marketplace::User.by_name(session[:name])
+
+
+    if (name == nil or name == "" or name.strip! == "")
+      session[:message] = "empty name!"
+      redirect '/createItem'
+    end
+
+
+    begin
+      !(Integer(price))
+
+    rescue ArgumentError
+      session[:message] = "price was not a number!"
+      redirect '/createItem'
+    end
+
+    current_item = Marketplace::Item.create(name, price.to_i, current_user)
+
+    redirect "/item/#{current_item.id}"
+  end
+
+end
