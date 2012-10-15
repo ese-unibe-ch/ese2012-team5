@@ -63,7 +63,11 @@ List of Items by other users
               %a{:href => "/user/#{user.name}"} #{user.name}
             %td
               -if item.price <= current_user.credits
+                Amount (#{item.quantity} available):
+
+
                 %form( action="/item/#{item.id}/buy" method="POST" )
+                  %input(type="text" name="quantity" value=1 size=1)
                   %input(type="submit" value="Buy")
               -else
                 %form( action="/item/#{item.id}/buy" method="POST" )

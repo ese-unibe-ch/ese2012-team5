@@ -20,8 +20,10 @@ Owner:
 
 -if canBuy
   %form( action="/item/#{item.id}/buy" method="POST" )
-    Amount (max. #{item.quantity}):
-    %input(type="text" name="quantity" value=1)
+
+    Amount (#{item.quantity} available):
+
+    %input(type="text" name="quantity" value=1 size =1)
     %p
     %input(type="submit" value="Buy")
 -else

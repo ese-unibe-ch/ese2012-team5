@@ -27,7 +27,7 @@ class ItemBuy < Sinatra::Application
   end
 
   def user_can_buy_item?(current_user, current_item)
-    current_user.name != current_item.owner and current_item.price <= current_user.credits and current_item.active
+    current_user.name != current_item.owner and current_item.price*params[:quantity].to_i <= current_user.credits and current_item.active
   end
 
 end
