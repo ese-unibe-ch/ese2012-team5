@@ -1,7 +1,7 @@
 class ItemCreate < Sinatra::Application
 
   # Displays the view to create new items
-  get "/createItem" do
+  get "/add_item" do
 
     current_user = Marketplace::User.by_name(session[:name])
 
@@ -20,7 +20,7 @@ class ItemCreate < Sinatra::Application
   # Will create a new item according to given params
   # If name or price is not valid, creation will fail
   # If creation succeeds, it will redirect to profile of new item
-  post "/createItem" do
+  post "/add_item" do
 
     name = params[:name]
     price = params[:price]
@@ -30,7 +30,7 @@ class ItemCreate < Sinatra::Application
 
     if (name == nil or name == "" or name.strip! == "")
       session[:message] = "empty name!"
-      redirect '/createItem'
+      redirect '/add_item'
     end
 
 
@@ -39,7 +39,7 @@ class ItemCreate < Sinatra::Application
 
     rescue ArgumentError
       session[:message] = "price was not a number!"
-      redirect '/createItem'
+      redirect '/add_item'
     end
 
     begin
@@ -47,15 +47,15 @@ class ItemCreate < Sinatra::Application
 
     rescue ArgumentError
       session[:message] = "quantity was not a number!"
-      redirect '/createItem'
+      redirect '/add_item'
     end
 
     if quantity.to_i <= 0
       session[:message] = "quantity must be bigger than 0"
-      redirect '/createItem'
+      redirect '/add_item'
     end
 
-    current_item = Marketplace::Item.create(name, price.to_i, current_user, quantity)
+    current_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
 
     redirect "/item/#{current_item.id}"
   end

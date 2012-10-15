@@ -46,8 +46,10 @@ module Marketplace
     end
 
     # @param [Item] item the user want to buy
-    def buy(item)
-      if self.enough_credits(item.price)  && item.active
+    def buy(item, quantity)
+
+
+      if self.enough_credits(item.price*quantity)  && item.active
         self.remove_credits(item.price)
         item.owner.sell(item)
         item.owner = self
