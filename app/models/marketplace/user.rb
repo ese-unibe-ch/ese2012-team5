@@ -28,7 +28,7 @@ module Marketplace
     # @param [String] name the desired user
     # @return [User] desired user
     def self.by_name(name)
-      @@users.detect{|user_temp| user_temp.name == name}
+      @@users.detect { |user_temp| user_temp.name == name }
     end
 
     # @return [Array] all users of the whole system
@@ -49,12 +49,19 @@ module Marketplace
     def buy(item, quantity)
 
 
-      if self.enough_credits(item.price*quantity)  && item.active
-        self.remove_credits(item.price)
-        item.owner.sell(item)
-        item.owner = self
-        self.add_item(item)
-        item.deactivate
+      if self.enough_credits(item.price*quantity) && item.active
+        if quantity<item.quantity && quantity>0
+          item.split(quantity, self)
+
+        else
+
+          item.owner.sell(item)
+          item.owner = self
+          self.add_item(item)
+          item.deactivate
+        end
+        self.remove_credits(item.price*quantity)
+
       end
     end
 

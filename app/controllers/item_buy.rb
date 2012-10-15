@@ -16,7 +16,7 @@ class ItemBuy < Sinatra::Application
     end
 
     if user_can_buy_item?(current_user, current_item)
-      current_user.buy(current_item)
+      current_user.buy(current_item, 2)
       session[:message] = "You bought #{current_item.name}"
       redirect "/user/#{current_user.name}"
     else

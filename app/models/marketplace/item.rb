@@ -52,13 +52,13 @@ module Marketplace
     # new created items quantity will be the rest
     # @param [Integer] index where to split the item
     # @return [Item] new item with quantity 'rest'
-    def split(at)
-      if self.quantity >= at
+    def split(at, newOwner)
+      if self.quantity < at
         throw RangeError
       else
         rest = self.quantity - at
         self.quantity = rest
-        Item.create(self.name, self.price, at, self.owner)
+        Item.create(self.name, self.price, at, newOwner)
       end
     end
 
