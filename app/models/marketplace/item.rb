@@ -54,15 +54,6 @@ module Marketplace
       self.active = false
     end
 
-    def delete
-      self.id = nil
-      self.name = nil
-      self.price = nil
-      self.owner = nil
-      self.active = nil
-      self.quantity = nil
-    end
-
     def to_s
       "Name: #{name} Price:#{self.price} Active:#{self.active} Owner:#{self.owner.name}"
     end
