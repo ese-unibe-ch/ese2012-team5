@@ -47,6 +47,13 @@ module Marketplace
       @@items << self
     end
 
+    # removes this item from the static item list
+    # and from the current owner
+    def remove
+      self.owner.remove_item(self)
+      @@items.remove self
+    end
+
     # splits the item into two seperate items
     # this items quantity will be 'at' and the
     # new created items quantity will be the rest
@@ -59,6 +66,25 @@ module Marketplace
         rest = self.quantity - at
         self.quantity = rest
         Item.create(self.name, self.price, at, self.owner)
+      end
+    end
+
+    # merges two similar items together
+
+    def merge(item)
+      if mergeable?(item)
+        self.quantity = self.quantity + item.quantity
+        item.remove
+      else
+        throw TypeError
+      end
+    end
+
+    # checks if two items are similar
+    def mergeable?(item)
+      if self.name == item.name and
+         self.price == item.price and
+         self.owner == item.owner
       end
     end
 
