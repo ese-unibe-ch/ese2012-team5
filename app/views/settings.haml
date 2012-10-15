@@ -20,3 +20,13 @@ Your current picture:
   %textarea(cols="50" rows="4" name="details") #{user.details}
   %input(type="hidden" name="user" value="#{user.name}")
   %input(type="submit" value="submit")
+
+%h2 Delete account
+%p Note: this cannot be undone!
+%form( action="/delete_account" method="POST" )
+  %input(type="checkbox" name="confirm" value="true") Yes, I want to delete my account. I am aware that this cannot be undone.
+  %p
+  %label Please enter password to ensure verification:
+  %input(type="password" name="password")
+  %input(type="hidden" name="username" value="#{user.name}")
+  %input(type="submit" value="Delete my account")
