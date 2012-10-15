@@ -1,7 +1,7 @@
 class ItemCreate < Sinatra::Application
 
   # Displays the view to create new items
-  get "/add_item" do
+  get "/createItem" do
 
     current_user = Marketplace::User.by_name(session[:name])
 
@@ -20,7 +20,7 @@ class ItemCreate < Sinatra::Application
   # Will create a new item according to given params
   # If name or price is not valid, creation will fail
   # If creation succeeds, it will redirect to profile of new item
-  post "/add_item" do
+  post "/createItem" do
 
     name = params[:name]
     price = params[:price]
@@ -30,44 +30,42 @@ class ItemCreate < Sinatra::Application
 
     if (name == nil or name == "" or name.strip! == "")
       session[:message] = "empty name!"
-      redirect '/add_item'
+      redirect '/createItem'
     end
-
 
     begin
       !(Integer(price))
-
     rescue ArgumentError
       session[:message] = "price was not a number!"
-      redirect '/add_item'
+      redirect '/createItem'
     end
 
     begin
       !(Integer(quantity))
-
     rescue ArgumentError
       session[:message] = "quantity was not a number!"
-      redirect '/add_item'
+      redirect '/createItem'
     end
 
     if quantity.to_i <= 0
       session[:message] = "quantity must be bigger than 0"
-      redirect '/add_item'
+      redirect '/createItem'
     end
 
-    #this check if an Item with the same name already exists
-    same_name_item=false
-    current_user.items.each { |item| same_name_item = true if item.name.to_s == name }
-    #to create this ite after checkin is important because of false positive
-    current_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
+    # Create new item
+    new_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
 
-    if same_name_item
+    # Check if the creator already owns a similar item, do we need to merge these items?
+    need_merge = false
+    current_user.items.each{ |item| need_merge = true if !item.equal?(new_item) and item.mergeable?(new_item)}
 
-      haml :merge_items, :locals => {:new_item => current_item}
+    if need_merge
+      haml :item_merge, :locals => {:new_item => new_item}
     else
-
-      redirect "/item/#{current_item.id}"
+      session[:message] = "You have created #{new_item.name}"
+      redirect "/item/#{new_item.id}"
     end
+
   end
 
 end

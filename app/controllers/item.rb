@@ -10,24 +10,24 @@ class Item < Sinatra::Application
     message = session[:message]
     session[:message] = nil
 
-
     if current_user == current_item.owner
-      haml :item_profile_own, :locals => {:item => current_item,
-                                          :info => message}
+      haml :item_profile_own, :locals => {  :item => current_item,
+                                            :info => message        }
     else
-
-      # Decide if user is able to buy the item
-      if current_user
-        canBuy  = current_user.credits >= current_item.price
-      else
-        canBuy = false
-      end
-
-      haml :item_profile, :locals => {:item => current_item,
-                                      :info => message,
-                                      :canBuy => canBuy}
+      haml :item_profile, :locals => {  :item => current_item,
+                                        :info => message,
+                                        :canBuy => user_able_to_buy?(current_user, current_item)   }
     end
+
   end
 
+  # Decide if user is able to buy the item
+  def user_able_to_buy?(current_user, current_item)
+    if current_user
+      current_user.credits >= current_item.price
+    else
+      false
+    end
+  end
 
 end

@@ -46,29 +46,20 @@ module Marketplace
     end
 
     # @param [Item] item the user want to buy
-    def buy(item, quantity)
-
-
-      if self.enough_credits(item.price*quantity) && item.active
-        if quantity<item.quantity && quantity>0
-          item.split(quantity, self)
-
-        else
-
-          item.owner.sell(item)
-          item.owner = self
-          self.add_item(item)
-          item.deactivate
-        end
-        self.remove_credits(item.price*quantity)
-
+    def buy(item)
+      if self.enough_credits(item.price * item.quantity) && item.active
+        item.owner.sell(item)
+        item.owner = self
+        self.remove_credits(item.price * item.quantity)
+        self.add_item(item)
+        item.deactivate
       end
     end
 
     # @param [Item] item the user want to sell
     def sell(item)
       self.remove_item(item)
-      self.add_credits(item.price)
+      self.add_credits(item.price * item.quantity)
     end
 
     # @param [Float] amount which the user gets additionally

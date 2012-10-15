@@ -34,6 +34,7 @@ class ItemEdit < Sinatra::Application
     new_price = params[:price]
     new_quantity = params[:quantity]
     current_item = Marketplace::Item.by_id(id)
+    current_user = Marketplace::User.by_name(session[:name])
 
 
     if (new_name == nil or new_name == "" or new_name.strip! == "")
@@ -41,10 +42,8 @@ class ItemEdit < Sinatra::Application
       redirect "/item/#{id}/edit"
     end
 
-
     begin
       !(Integer(new_price))
-
     rescue ArgumentError
       session[:message] = "price was not a number!"
       redirect "/item/#{id}/edit"
@@ -52,7 +51,6 @@ class ItemEdit < Sinatra::Application
 
     begin
       !(Integer(new_quantity))
-
     rescue ArgumentError
       session[:message] = "quantity was not a number!"
       redirect "/item/#{id}/edit"
@@ -63,23 +61,22 @@ class ItemEdit < Sinatra::Application
       redirect "/item/#{id}/edit"
     end
 
-    #this check if an Item with the same name already exists
-    current_user = Marketplace::User.by_name(session[:name])
-    same_name_item=false
 
     current_item.name = new_name
     current_item.price = new_price.to_i
     current_item.quantity = new_quantity.to_i
-    current_user.items.each { |item| same_name_item = true if item.name.to_s == new_name &&item.id!= current_item.id}
+
+    # Check if the creator already owns a similar item, do we need to merge these items?
+    need_merge = false
+    current_user.items.each{ |item| need_merge = true if !item.equal?(current_item) and item.mergeable?(current_item)}
 
 
-    if same_name_item
-      haml :merge_items, :locals => {:new_item => current_item}
+    if need_merge
+      haml :item_merge, :locals => {:new_item => current_item}
     else
-
-
       redirect "/item/#{id}"
     end
+
   end
 
 end

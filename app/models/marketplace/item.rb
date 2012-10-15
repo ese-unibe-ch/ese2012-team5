@@ -47,19 +47,43 @@ module Marketplace
       @@items << self
     end
 
-    # splits the item into two seperate items
+    # removes this item from the static item list
+    # and from the current owner
+    def remove
+      self.owner.remove_item(self)
+      @@items.delete(self)
+    end
+
+    # splits the item into two separate items
     # this items quantity will be 'at' and the
     # new created items quantity will be the rest
     # @param [Integer] index where to split the item
     # @return [Item] new item with quantity 'rest'
-    def split(at, newOwner)
+    def split(at)
       if self.quantity < at
-        throw RangeError
+        throw NotImplementedError
       else
         rest = self.quantity - at
         self.quantity = rest
-        Item.create(self.name, self.price, at, newOwner)
+        item = Item.create(self.name, self.price, at, self.owner)
+        item.activate
+        item
       end
+    end
+
+    # merges two similar items together
+    def merge(item)
+      if mergeable?(item)
+        self.quantity = self.quantity + item.quantity
+        item.remove
+      else
+        throw TypeError
+      end
+    end
+
+    # checks if two items are similar
+    def mergeable?(item)
+      self.name == item.name and self.price == item.price
     end
 
     def activate

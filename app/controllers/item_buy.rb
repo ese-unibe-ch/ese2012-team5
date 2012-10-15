@@ -8,37 +8,62 @@ class ItemBuy < Sinatra::Application
 
     current_item = Marketplace::Item.by_id(params[:id].to_i)
     current_user = Marketplace::User.by_name(session[:name])
+    quantity = params[:quantity].to_i
 
 
+    # Check for guests playing around
     if !current_user
       session[:message] = "Log in to buy items"
       redirect '/login'
     end
 
-    if user_can_buy_item?(current_user, current_item)
-
-      #this check if an Item with the same name already exists
-      same_name_item=false
-      current_user.items.each { |item| same_name_item = true if item.name == current_item.name }
-      #buy after checkin is important for no false positive
-      current_user.buy(current_item, params[:quantity].to_i)
-
-      if same_name_item
-        current_item=current_user.items.detect{|item| item.name == current_item.name}
-        haml:merge_items, :locals => {:new_item => current_item}
-      else
-        session[:message] = "You bought #{current_item.name}"
-        redirect "/user/#{current_user.name}"
-      end
-    else
-      session[:message] = "You can't buy this item"
+    # Checks if quantity is wrong
+    if quantity <= 0 or quantity > current_item.quantity
+      session[:message] = "Quantity #{quantity} not valid!"
       redirect "/item/#{current_item.id}"
+    end
+
+    # Check if user isn't able to buy item
+    if !user_can_buy_item?(current_user, current_item, quantity)
+      session[:message] = "You can't buy this item! Not active or not enough credits"
+      redirect "/item/#{current_item.id}"
+    end
+
+
+    #
+    # Start with buy-algorithm
+    #
+
+    # If necessary split up the item otherwise take the whole item
+    if quantity < current_item.quantity
+      item_to_sell = current_item.split(quantity)
+    else
+      item_to_sell = current_item
+    end
+
+
+    # Check if the buyer already owns a similar item, do we need to merge these items?
+    need_merge = false
+    current_user.items.each{ |item| need_merge = true if item.mergeable?(item_to_sell)}
+
+
+    # Let the buyer buy the item
+    current_user.buy(item_to_sell)
+
+
+    if need_merge
+      haml :item_merge, :locals => { :new_item => item_to_sell}
+    else
+      session[:message] = "You bought #{item_to_sell.name}(Amount:#{item_to_sell.quantity})"
+      redirect "/user/#{current_user.name}"
     end
 
   end
 
-  def user_can_buy_item?(current_user, current_item)
-    current_user.name != current_item.owner and current_item.price*params[:quantity].to_i <= current_user.credits and current_item.active
+  def user_can_buy_item?(current_user, current_item, quantity)
+    current_user.name != current_item.owner and
+        current_item.price * quantity <= current_user.credits and
+        current_item.active
   end
 
 end
