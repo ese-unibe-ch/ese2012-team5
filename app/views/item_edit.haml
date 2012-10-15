@@ -12,6 +12,9 @@
   %label Price
   %input(type="text" name="price" value="#{item.price}")
   %p
+  %label Quantity
+  %input(type="text" name="quantity" value="#{item.quantity}")
+  %p
   %input(type="submit" value="Save")
 
 %form( action="/item/#{item.id}" method="GET" )

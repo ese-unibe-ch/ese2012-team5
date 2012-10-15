@@ -11,6 +11,8 @@ Price: #{item.price}
 %br
 State: #{item.active}
 %br
+Quantity: #{item.quantity}
+%br
 Owner:
 %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
 
@@ -18,6 +20,11 @@ Owner:
 
 -if canBuy
   %form( action="/item/#{item.id}/buy" method="POST" )
+
+    Amount (#{item.quantity} available):
+
+    %input(type="text" name="quantity" value=1 size =1)
+    %p
     %input(type="submit" value="Buy")
 -else
   %form( action="/item/#{item.id}/buy" method="POST" )
