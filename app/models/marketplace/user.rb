@@ -109,16 +109,10 @@ module Marketplace
       "Name: #{name} Credits:#{self.credits} Items:#{self.items}"
     end
 
-    # deletes a user account. also deletes all the items the user owns.
+    # deletes a user account by first deleting all his items and then the user himself.
     def delete_account
-      self.items.each.delete
-      self.name = nil
-      self.credits = nil
-      self.items = nil
-      self.picture = nil
-      self.password = nil
-      self.email = nil
-      self.details = nil
+      self.items.each { |item| item.delete}
+      @@users.delete(self)
     end
 
   end

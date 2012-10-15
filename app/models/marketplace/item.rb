@@ -55,12 +55,7 @@ module Marketplace
     end
 
     def delete
-      self.id = nil
-      self.name = nil
-      self.price = nil
-      self.owner = nil
-      self.active = nil
-      self.quantity = nil
+      @@items.delete(self)
     end
 
     def to_s
