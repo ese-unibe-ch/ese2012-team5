@@ -1,25 +1,28 @@
 class DeleteAccount < Sinatra::Application
 
-post '/delete_account' do
-  if params[:confirm]!= "true"
-    session[:message] = "You must confirm that you want to delete your account."
-    redirect '/settings'
-  end
+  post '/delete_account' do
 
-  username = params[:username]
-  password = params[:password]
-  user = Marketplace::User.by_name(username)
+    if params[:confirm] != "true"
+      session[:message] = "You must confirm that you want to delete your account."
+      redirect '/settings'
+    end
 
-  proper_password = BCrypt::Password.new(user.password)
-  if proper_password == password
-    user.delete_account
-    session[:message] = "Account deleted. See you around, snitch"
-    session[:name] = nil
-    redirect '/'
-  else
-    session[:message] = "The password isn't correct"
-    redirect '/settings'
+    username = params[:username]
+    password = params[:password]
+    user = Marketplace::User.by_name(username)
+
+    proper_password = BCrypt::Password.new(user.password)
+
+    if proper_password == password
+      user.delete_account
+      session[:message] = "Account deleted. See you around, snitch"
+      session[:name] = nil
+      redirect '/'
+    else
+      session[:message] = "The password isn't correct"
+      redirect '/settings'
+    end
+
   end
-end
 
 end
