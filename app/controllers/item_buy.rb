@@ -16,9 +16,18 @@ class ItemBuy < Sinatra::Application
     end
 
     if user_can_buy_item?(current_user, current_item)
+
+      same_name_item=false
+      current_user.items.each { |item| same_name_item = true if item.name == current_item.name }
+
       current_user.buy(current_item, params[:quantity].to_i)
-      session[:message] = "You bought #{current_item.name}"
-      redirect "/user/#{current_user.name}"
+
+      if same_name_item
+        haml:merge_items, :locals => {:new_item => current_item}
+      else
+        session[:message] = "You bought #{current_item.name}"
+        redirect "/user/#{current_user.name}"
+      end
     else
       session[:message] = "You can't buy this item"
       redirect "/item/#{current_item.id}"

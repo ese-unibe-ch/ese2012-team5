@@ -1,0 +1,16 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+You already have An Item called "#{new_item.name}"
+%p
+Are these Items the same?
+
+
+%p
+  %form( action="/item/#{new_item.id}/buy" method="POST" )
+    %input(type="hidden" value= "#{new_item.id}")
+    %input(type="submit" value="No, keep them separate")
+
+%p
+  %form( action="/item/#{new_item.id}/buy" method="POST" )
+    %input(type="hidden" value= "#{new_item.name}")
+    %input(type="submit" value="Yes, please merge them")
