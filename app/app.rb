@@ -16,6 +16,7 @@ require 'controllers/item_edit.rb'
 require 'controllers/item_activate.rb'
 require 'controllers/item_buy.rb'
 require 'controllers/item_create.rb'
+require 'controllers/item_merge.rb'
 
 
 class App < Sinatra::Base
@@ -30,6 +31,7 @@ class App < Sinatra::Base
   use ItemBuy
   use ItemCreate
   use Settings
+  use ItemMerge
 
   enable :sessions
 

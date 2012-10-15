@@ -22,7 +22,10 @@ class ItemBuy < Sinatra::Application
 
       current_user.buy(current_item, params[:quantity].to_i)
 
+
+
       if same_name_item
+        current_item=current_user.items.detect{|item| item.name == current_item.name}
         haml:merge_items, :locals => {:new_item => current_item}
       else
         session[:message] = "You bought #{current_item.name}"

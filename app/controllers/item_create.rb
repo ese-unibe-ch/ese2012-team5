@@ -1,6 +1,10 @@
 class ItemCreate < Sinatra::Application
 
   # Displays the view to create new items
+
+
+
+
   get "/add_item" do
 
     current_user = Marketplace::User.by_name(session[:name])

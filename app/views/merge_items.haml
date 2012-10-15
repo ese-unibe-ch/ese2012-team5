@@ -6,11 +6,16 @@ Are these Items the same?
 
 
 %p
-  %form( action="/item/#{new_item.id}/buy" method="POST" )
-    %input(type="hidden" value= "#{new_item.id}")
-    %input(type="submit" value="No, keep them separate")
+  %form( action="/item/#{new_item.id}/edit" method="POST" )
+    %input(name="item_id" type="hidden" value= "#{new_item.id}")
+    %input(type="submit" value="No, keep them separate and change name")
 
 %p
-  %form( action="/item/#{new_item.id}/buy" method="POST" )
-    %input(type="hidden" value= "#{new_item.name}")
+  %form( action="/item/#{new_item.id}/merge" method="POST" )
+    %input(name="item_name" type="hidden" value= "#{new_item.name}")
     %input(type="submit" value="Yes, please merge them")
+
+
+
+
+
