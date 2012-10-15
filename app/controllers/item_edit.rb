@@ -20,8 +20,8 @@ class ItemEdit < Sinatra::Application
 
     message = session[:message]
     session[:message] = nil
-    haml :item_edit, :locals => { :item => current_item,
-                                  :info => message}
+    haml :item_edit, :locals => {:item => current_item,
+                                 :info => message}
   end
 
   # Will edit item with given id according to given params
@@ -36,7 +36,7 @@ class ItemEdit < Sinatra::Application
     current_item = Marketplace::Item.by_id(id)
 
 
-    if(new_name == nil or new_name == "" or new_name.strip! == "")
+    if (new_name == nil or new_name == "" or new_name.strip! == "")
       session[:message] = "empty name!"
       redirect "/item/#{id}/edit"
     end
@@ -45,9 +45,9 @@ class ItemEdit < Sinatra::Application
     begin
       !(Integer(new_price))
 
-      rescue ArgumentError
-        session[:message] = "price was not a number!"
-        redirect "/item/#{id}/edit"
+    rescue ArgumentError
+      session[:message] = "price was not a number!"
+      redirect "/item/#{id}/edit"
     end
 
     begin
@@ -63,11 +63,23 @@ class ItemEdit < Sinatra::Application
       redirect "/item/#{id}/edit"
     end
 
+    #this check if an Item with the same name already exists
+    current_user = Marketplace::User.by_name(session[:name])
+    same_name_item=false
+
     current_item.name = new_name
     current_item.price = new_price.to_i
     current_item.quantity = new_quantity.to_i
+    current_user.items.each { |item| same_name_item = true if item.name.to_s == new_name &&item.id!= current_item.id}
 
-    redirect "/item/#{id}"
+
+    if same_name_item
+      haml :merge_items, :locals => {:new_item => current_item}
+    else
+
+
+      redirect "/item/#{id}"
+    end
   end
 
 end

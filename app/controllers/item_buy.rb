@@ -17,12 +17,11 @@ class ItemBuy < Sinatra::Application
 
     if user_can_buy_item?(current_user, current_item)
 
+      #this check if an Item with the same name already exists
       same_name_item=false
       current_user.items.each { |item| same_name_item = true if item.name == current_item.name }
-
+      #buy after checkin is important for no false positive
       current_user.buy(current_item, params[:quantity].to_i)
-
-
 
       if same_name_item
         current_item=current_user.items.detect{|item| item.name == current_item.name}

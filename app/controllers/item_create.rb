@@ -1,10 +1,6 @@
 class ItemCreate < Sinatra::Application
 
   # Displays the view to create new items
-
-
-
-
   get "/add_item" do
 
     current_user = Marketplace::User.by_name(session[:name])
@@ -59,9 +55,19 @@ class ItemCreate < Sinatra::Application
       redirect '/add_item'
     end
 
+    #this check if an Item with the same name already exists
+    same_name_item=false
+    current_user.items.each { |item| same_name_item = true if item.name.to_s == name }
+    #to create this ite after checkin is important because of false positive
     current_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
 
-    redirect "/item/#{current_item.id}"
+    if same_name_item
+
+      haml :merge_items, :locals => {:new_item => current_item}
+    else
+
+      redirect "/item/#{current_item.id}"
+    end
   end
 
 end
