@@ -94,6 +94,10 @@ module Marketplace
       self.active = false
     end
 
+    def delete
+      @@items.delete(self)
+    end
+
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end

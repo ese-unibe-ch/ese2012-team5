@@ -17,11 +17,13 @@ require 'controllers/item_activate.rb'
 require 'controllers/item_buy.rb'
 require 'controllers/item_create.rb'
 require 'controllers/item_merge.rb'
+require 'controllers/delete_account.rb'
 
 
 class App < Sinatra::Base
 
   use Login
+  use DeleteAccount
   use Register
   use Main
   use User
@@ -32,6 +34,7 @@ class App < Sinatra::Base
   use ItemCreate
   use Settings
   use ItemMerge
+
 
   enable :sessions
 
