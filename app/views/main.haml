@@ -16,7 +16,7 @@ Own Items
     - for item in current_user.items
       %tr
         %td
-          Pic
+          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
         %td
           %a{:href => "/item/#{item.id}"} #{item.name}
         %td
@@ -47,7 +47,7 @@ List of Items by other users
         - for item in user.items
           %tr
             %td
-              Pic
+              %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
             %td
               %a{:href => "/item/#{item.id}"}#{item.name}
             %td
