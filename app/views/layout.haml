@@ -51,18 +51,14 @@
               %li.chromestyle
                 %a.chromestyle{:href => url("/user/#{session[:name]}")} Your profile
               %li.chromestyle
-                %a.chromestyle{:href => url("/user/")} Edit profile
-              %li.chromestyle
-                %a.chromestyle{:href => url("/add_item")} Add Item
-              %li.chromestyle
-                %a.chromestyle(href="/settings" rel="dropmenu1") Test1
-              %li.chromestyle
-                %a.chromestyle(href="/settings" rel="dropmenu2") Test2
+                %a.chromestyle{:href => url("/createItem")} Add Item
               %li.chromestyle
                 %a.chromestyle{:href => url("/settings")} Settings
               %li.chromestyle
                 %a.chromestyle{:href => url("/logout")} Logout
             - else
+              %li.chromestyle
+                %a.chromestyle{:href => url("/")} Home
               %li.chromestyle
                 %a.chromestyle{:href => url("/login")} Login
               %li.chromestyle

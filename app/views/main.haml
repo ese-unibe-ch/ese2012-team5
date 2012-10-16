@@ -9,7 +9,8 @@ Own Items
 %table#table_new
   %thead
     %th Picture
-    %th Item
+    %th Name
+    %th Quantity
     %th Value
     %th Active
   %tbody
@@ -19,6 +20,8 @@ Own Items
           Pic
         %td
           %a{:href => "/item/#{item.id}"} #{item.name}
+        %td
+          #{item.quantity}
         %td
           #{item.price}
         %td
@@ -35,7 +38,7 @@ List of Items by other users
   %thead
     %tr
       %th Picture
-      %th Item
+      %th Name
       %th Quantity
       %th Value
       %th Active
@@ -62,7 +65,7 @@ List of Items by other users
             %td
               %a{:href => "/user/#{user.name}"} #{user.name}
             %td
-              -if item.price <= current_user.credits
+              -if item.price <= current_user.credits and item.active
                 Amount (#{item.quantity} available):
 
 
