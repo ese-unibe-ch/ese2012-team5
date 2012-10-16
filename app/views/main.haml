@@ -1,0 +1,77 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Welcome #{current_user.name}
+
+%br
+
+-#List of users Items
+Own Items
+%table#table_new
+  %thead
+    %th Picture
+    %th Name
+    %th Quantity
+    %th Value
+    %th Active
+  %tbody
+    - for item in current_user.items
+      %tr
+        %td
+          Pic
+        %td
+          %a{:href => "/item/#{item.id}"} #{item.name}
+        %td
+          #{item.quantity}
+        %td
+          #{item.price}
+        %td
+          - if item.active
+            %p yes
+          - else
+            %p no
+%br
+
+
+-#List of all Items, for each user a new Table
+List of Items by other users
+%table#table_new
+  %thead
+    %tr
+      %th Picture
+      %th Name
+      %th Quantity
+      %th Value
+      %th Active
+      %th Owner
+      %th Buy
+  %tbody
+    -for user in users
+      -if user != current_user
+        - for item in user.items
+          %tr
+            %td
+              Pic
+            %td
+              %a{:href => "/item/#{item.id}"}#{item.name}
+            %td
+              #{item.quantity}
+            %td
+              #{item.price}
+            %td
+              - if item.active
+                %p yes
+              - else
+                %p no
+            %td
+              %a{:href => "/user/#{user.name}"} #{user.name}
+            %td
+              -if item.price <= current_user.credits and item.active
+                Amount (#{item.quantity} available):
+
+
+                %form( action="/item/#{item.id}/buy" method="POST" )
+                  %input(type="text" name="quantity" value=1 size=1)
+                  %input(type="submit" value="Buy")
+              -else
+                %form( action="/item/#{item.id}/buy" method="POST" )
+                  %input(type="submit" disabled="disabled" value="Buy")

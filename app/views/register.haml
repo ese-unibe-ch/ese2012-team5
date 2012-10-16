@@ -1,0 +1,21 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Register
+%br
+
+-if info != nil
+  %h2 #{info}
+
+%p Password must have at least 4 characters and there must be at least one uppercase letter, one lowercase letter and one number.
+
+%form( action="/register" method="POST" )
+  %label Username
+  %input(type="text" name="username")
+  %p
+  %label Password
+  %input(type="password" name="password")
+  %p
+  %label confirm Password
+  %input(type="password" name="password_conf")
+  %p
+  %input(type="submit" value="Register")

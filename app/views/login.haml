@@ -1,0 +1,17 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+%h1 Login
+%br
+
+- if info != nil
+   %h2 #{info}
+
+%form( action="/login" method="POST" )
+   %label Username
+   %input(type="text" name="username" value="Username" onfocus="this.value=''")
+   %p
+   %label Password
+   %input(type="password" name="password"value="Password" onfocus="this.value=''")
+   %p
+   %input(type="submit" value="Login")
+   or
+   %a{:href => "/register"} Register

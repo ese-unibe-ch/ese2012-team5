@@ -1,0 +1,73 @@
+!!!5
+
+%head
+  %title
+    itemMarket
+  %link{:rel =>"stylesheet", :type =>"text/css", :href => url("style.css")}
+  %link{:rel => "icon", :type=>"image/png", :href => url("images/fav.png")}
+
+
+%body
+  #pageContainer
+    #header
+      - if !session[:name]
+        #topLoginInfo
+          %form( action="/login" method="POST")
+            %label
+              Username:
+              %input(type="text" name="username" value="Username" onfocus="this.value=''")
+              %br
+            %label
+              Password:
+              %input(type="password" name="password" style="border='de8231'" value="Password" onfocus="this.value=''")
+              %br
+            %input(type="submit" value="Login" style="padding-top='3'")
+            %label
+              or
+            %a{:href => "/register"} Register
+      -elsif session[:name]
+        #topUserInfo
+          %table#table_top
+            %tr
+              %td
+                %img{:height => "40", :width => "40", :align => "center", :src => "../images/#{Marketplace::User.by_name(session[:name]).picture}"}
+              %td
+                %label{style="float = 'auto'"}
+                Logged in as:&nbsp
+                %br
+                #{session[:name]}
+            %tr
+              %td{:colspan=>2}
+                Current credit:&nbsp
+                %br
+                #{Marketplace::User.by_name(session[:name]).credits}
+    #main_page
+      #menu
+        #chromemenu.chromestyle
+          %ul.chromestyle
+            - if session[:name]
+              %li.chromestyle
+                %a.chromestyle{:href => url("/")} Home
+              %li.chromestyle
+                %a.chromestyle{:href => url("/user/#{session[:name]}")} Your profile
+              %li.chromestyle
+                %a.chromestyle{:href => url("/createItem")} Add Item
+              %li.chromestyle
+                %a.chromestyle{:href => url("/settings")} Settings
+              %li.chromestyle
+                %a.chromestyle{:href => url("/logout")} Logout
+            - else
+              %li.chromestyle
+                %a.chromestyle{:href => url("/")} Home
+              %li.chromestyle
+                %a.chromestyle{:href => url("/login")} Login
+              %li.chromestyle
+                %a.chromestyle{:href => url("/register")} Register
+
+        :javascript
+          cssdropdown.startchrome("chromemenu")
+
+      #content
+        = yield
+    #footer
+      %a{:href => "https://github.com/ese-unibe-ch/ese2012-team5"} Visit Team 5 on Github

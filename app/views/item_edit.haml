@@ -1,0 +1,18 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Item: #{item.name}
+
+- if info != nil
+  %h2 #{info}
+
+%form( action="/item/#{item.id}/edit" method="POST" )
+  %label Name
+  %input(type="text" name="name" value="#{item.name}")
+  %p
+  %label Price
+  %input(type="text" name="price" value="#{item.price}")
+  %p
+  %input(type="submit" value="Save")
+
+%form( action="/item/#{item.id}" method="GET" )
+  %input(type="submit" value="Discard")

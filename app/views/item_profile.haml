@@ -1,0 +1,31 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Item: #{item.name}
+
+-if info != nil
+  %h2 #{info}
+
+%br
+%br
+Price: #{item.price}
+%br
+State: #{item.active}
+%br
+Quantity: #{item.quantity}
+%br
+Owner:
+%a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
+
+%br
+
+-if canBuy
+  %form( action="/item/#{item.id}/buy" method="POST" )
+
+    Amount (#{item.quantity} available):
+
+    %input(type="text" name="quantity" value=1 size =1)
+    %p
+    %input(type="submit" value="Buy")
+-else
+  %form( action="/item/#{item.id}/buy" method="POST" )
+    %input(type="submit" disabled="disabled" value="Buy")

@@ -1,0 +1,42 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+-#Header
+%h1 Welcome Guest
+
+- if info != nil
+  %h2 #{info}
+
+%a
+  These are some items you will be able to buy on this page.
+  If you haven't already got a Login feel free to register
+  and join the wonderful world of trading.
+%br
+
+-#List of all Items, for each user a new Table
+%table#table_new
+  %thead
+    %th Picture
+    %th Name
+    %th Quantity
+    %th Value
+    %th Active
+    %th Owner
+  %tbody
+    - for user in users
+      - for item in user.items
+        %tr
+          %td
+            Pic
+          %td
+            %a{:href => "/item/#{item.id}"} #{item.name}
+          %td
+            #{item.quantity}
+          %td
+            #{item.price}
+          %td
+            - if item.active
+              %p yes
+            - else
+              %p no
+          %td
+            %a{:href => "/user/#{user.name}"} #{user.name}

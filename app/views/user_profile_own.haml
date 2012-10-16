@@ -1,0 +1,43 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 #{user.name}
+%br
+
+-if info != nil
+  %h2 #{info}
+
+
+%table#table_new
+  %td{:height => "205", :width => "205"}
+    %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
+  %td
+    Your Interests:
+    %br
+    #{user.details}
+%p
+%p
+
+-#List of users Items
+%table#table_new
+  %thead
+    %th Picture
+    %th Item
+    %th Quantity
+    %th Value
+    %th Active
+  %tbody
+    - for item in user.items
+      %tr
+        %td
+          Pic
+        %td
+          %a{:href => "/item/#{item.id}"} #{item.name}
+        %td
+          #{item.quantity}
+        %td
+          #{item.price}
+        %td
+          - if item.active
+            %p yes
+          - else
+            %p no

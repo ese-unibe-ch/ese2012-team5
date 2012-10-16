@@ -1,60 +1,118 @@
 module Marketplace
   class User
 
-    # every user has a different name
-    #
+    # static class variable: list with all existing users in the whole system
+    @@users = []
 
-    @@users = Array.new
+    attr_accessor :name, :credits, :items, :picture, :password, :email, :details
 
-    attr_accessor :name, :credits, :items, :picture, :password
-    # please note: the :password will store a hash of the correct password
-
-    def create(name)
+    # constructor with password
+    # @param [String] name of the new user
+    # @param [String] password of the new user
+    # @return [Item] created item
+    def self.create(name, password)
+      user = self.new
+      user.name = name
+      user.password = BCrypt::Password.create(password)
+      user
     end
 
+    # initial properties of a user
     def initialize
+      self.credits = 100
+      self.picture = "default_profile.jpg"
+      self.details = "nothing"
+      self.items = Array.new
     end
 
+    # @param [String] name the desired user
+    # @return [User] desired user
     def self.by_name(name)
+      @@users.detect { |user_temp| user_temp.name == name }
     end
 
+    # @return [Array] all users of the whole system
     def self.all
       @@users
     end
 
+    # save this user to the static user list
     def save
-      @@users.push(self)
+      @@users << self
     end
 
     def enough_credits(amount)
+      self.credits >= amount
     end
 
+    # @param [Item] item the user want to buy
     def buy(item)
+      if self.enough_credits(item.price * item.quantity) && item.active
+        item.owner.sell(item)
+        item.owner = self
+        self.remove_credits(item.price * item.quantity)
+        self.add_item(item)
+        item.deactivate
+      end
     end
 
+    # @param [Item] item the user want to sell
+    def sell(item)
+      self.remove_item(item)
+      self.add_credits(item.price * item.quantity)
+    end
+
+    # @param [Float] amount which the user gets additionally
     def add_credits(amount)
+      self.credits += amount
     end
 
+    # @param [Float] amount which the user loses
     def remove_credits(amount)
+      self.credits -= amount
     end
 
+    # @param [Item] this item is added to the users item-list
     def add_item(item)
+      self.items.push(item)
     end
 
+    # @param [Item] this item is removed from the users item-list
     def remove_item(item)
+      self.items.delete(item)
     end
 
+
+    # @param [Item] checks if the user owns this item
+    # @return [Boolean] True if the item is part of the users item-list
     def has_item(item)
+      !(self.items.detect do |item_temp|
+        item_temp.id == item.id
+      end.nil?)
     end
 
-    def items_to_sell()
+    # @return [Array] all active items
+    def items_to_sell
+      items_to_sell = Array.new
+      self.items.each { |item| items_to_sell.push(item) if item.active }
+      items_to_sell
     end
 
-    def items_not_to_sell()
+    # @return [Array] all inactive items
+    def items_not_to_sell
+      items_not_to_sell = Array.new
+      self.items.each { |item| items_not_to_sell.push(item) unless item.active }
+      items_not_to_sell
     end
 
     def to_s
-      "Name: #{name} Credits:#{self.credits} Items:#{self.list_items}"
+      "Name: #{name} Credits:#{self.credits} Items:#{self.items}"
+    end
+
+    # deletes a user account by first deleting all his items and then the user himself.
+    def delete_account
+      self.items.each { |item| item.delete}
+      @@users.delete(self)
     end
 
   end
