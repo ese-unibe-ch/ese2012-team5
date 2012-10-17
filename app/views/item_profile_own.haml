@@ -28,3 +28,8 @@ Owner:
     %input(type="submit" value="Activate")
   %form( action="/item/#{item.id}/edit" method="POST" )
     %input(type="submit" value="Edit")
+
+-if item.pictures.size != 0
+  %h2 Pictures
+  - for image_id in item.pictures
+    %img{:height => "200", :width => "200", :src => "/item_image_upload/#{image_id}"}
