@@ -62,12 +62,12 @@ class App < Sinatra::Base
     item4.active = true
     item5.active = true
     item6.active = true
-    daniel.save
-    joel.save
-    lukas.save
-    oliver.save
-    rene.save
-    urs.save
+    Marketplace::Database.add_user(daniel)
+    Marketplace::Database.add_user(joel)
+    Marketplace::Database.add_user(lukas)
+    Marketplace::Database.add_user(oliver)
+    Marketplace::Database.add_user(rene)
+    Marketplace::Database.add_user(urs)
   end
 
 end
