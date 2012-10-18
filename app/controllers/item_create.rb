@@ -1,10 +1,11 @@
 class ItemCreate < Sinatra::Application
-
+  before do
+    @database = Marketplace::Database.instance
+  end
   # Displays the view to create new items
   get "/createItem" do
 
-    current_user = Marketplace::User.by_name(session[:name])
-
+    current_user = @database.user_by_name(session[:name])
 
     if current_user
       message = session[:message]
@@ -25,7 +26,7 @@ class ItemCreate < Sinatra::Application
     name = params[:name]
     price = params[:price]
     quantity = params[:quantity]
-    current_user = Marketplace::User.by_name(session[:name])
+    current_user = @database.user_by_name(session[:name])
 
 
     if (name == nil or name == "" or name.strip! == "")
@@ -54,10 +55,12 @@ class ItemCreate < Sinatra::Application
 
     # Create new item
     new_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
+    @database.add_item(new_item)
 
     # Check if the creator already owns a similar item, do we need to merge these items?
     need_merge = false
-    current_user.items.each{ |item| need_merge = true if !item.equal?(new_item) and item.mergeable?(new_item)}
+    @database.items_by_user(current_user).each{ |item| need_merge = true if !item.equal?(new_item) and item.mergeable?(new_item)}
+
 
     if need_merge
       haml :item_merge, :locals => {:new_item => new_item}

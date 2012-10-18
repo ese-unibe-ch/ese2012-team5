@@ -1,5 +1,7 @@
 class Login < Sinatra::Application
-
+  before do
+    @database=Marketplace::Database.instance
+  end
   get '/login' do
     redirect '/' unless session[:name] == nil
     message = session[:message]
@@ -10,7 +12,7 @@ class Login < Sinatra::Application
   post '/login' do
     username = params[:username]
     password = params[:password]
-    user = Marketplace::User.by_name(username)
+    user = @database.user_by_name(username)
 
     # check for any empty input or non-existent user
     if username == "" or password == ""

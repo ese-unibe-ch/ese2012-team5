@@ -1,17 +1,21 @@
 class Main < Sinatra::Application
-
+  before do
+    @database = Marketplace::Database.instance
+  end
   get "/" do
     message = session[:message]
     session[:message] = nil
     if session[:name]
       #if logged in redirect to main
       haml :main, :locals => {:time => Time.now,
-                              :users => Marketplace::User.all,
-                              :current_user => Marketplace::User.by_name(session[:name])}
+                              :user_items => @database.items_by_user(session[:name]),
+                              :items => @database.all_items,
+                              :current_user => @database.user_by_name(session[:name])}
     else
       #if not redirect to mainguest
       haml :mainguest, :locals => { :time => Time.now,
-                                    :users => Marketplace::User.all,
+                                    :users => @database.all_users,
+                                    :items => @database.all_items,
                                     :info => message }
     end
   end

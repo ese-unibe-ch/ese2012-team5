@@ -5,6 +5,7 @@ require 'tilt/haml'
 
 require 'models/marketplace/user.rb'
 require 'models/marketplace/item.rb'
+require 'models/marketplace/database.rb'
 
 require 'controllers/main.rb'
 require 'controllers/login.rb'
@@ -44,6 +45,7 @@ class App < Sinatra::Base
   set :public_folder, Proc.new { File.join(root, "public")}
 
   configure :development do
+    database = Marketplace::Database.instance
     daniel = Marketplace::User.create('Daniel','hallo')
     joel = Marketplace::User.create('Joel','test')
     lukas = Marketplace::User.create('Lukas','lol')
@@ -62,12 +64,18 @@ class App < Sinatra::Base
     item4.active = true
     item5.active = true
     item6.active = true
-    Marketplace::Database.add_user(daniel)
-    Marketplace::Database.add_user(joel)
-    Marketplace::Database.add_user(lukas)
-    Marketplace::Database.add_user(oliver)
-    Marketplace::Database.add_user(rene)
-    Marketplace::Database.add_user(urs)
+    database.add_item(item1)
+    database.add_item(item2)
+    database.add_item(item3)
+    database.add_item(item4)
+    database.add_item(item5)
+    database.add_item(item6)
+    database.add_user(daniel)
+    database.add_user(joel)
+    database.add_user(lukas)
+    database.add_user(oliver)
+    database.add_user(rene)
+    database.add_user(urs)
   end
 
 end

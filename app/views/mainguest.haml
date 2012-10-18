@@ -22,21 +22,20 @@
     %th Active
     %th Owner
   %tbody
-    - for user in users
-      - for item in user.items
-        %tr
-          %td
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-          %td
-            %a{:href => "/item/#{item.id}"} #{item.name}
-          %td
-            #{item.quantity}
-          %td
-            #{item.price}
-          %td
-            - if item.active
-              %p yes
-            - else
-              %p no
-          %td
-            %a{:href => "/user/#{user.name}"} #{user.name}
+    - for item in items
+      %tr
+        %td
+          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+        %td
+          %a{:href => "/item/#{item.id}"} #{item.name}
+        %td
+          #{item.quantity}
+        %td
+          #{item.price}
+        %td
+          - if item.active
+            %p yes
+          - else
+            %p no
+        %td
+          %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}

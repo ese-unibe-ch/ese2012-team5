@@ -28,7 +28,7 @@
     %th Active
     %th Buy
   %tbody
-    - for item in user.items
+    - for item in items_user
       %tr
         %td
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}

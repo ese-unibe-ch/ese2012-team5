@@ -1,13 +1,15 @@
 class ItemEdit < Sinatra::Application
-
+  before do
+    @database = Marketplace::Database.instance
+  end
   @@id = 1
 
   # Displays the view to edit items with given id
   get "/item/:id/edit" do
 
     id = params[:id].to_i
-    current_item = Marketplace::Item.by_id(id)
-    current_user = Marketplace::User.by_name(session[:name])
+    current_item = @database.item_by_id(id)
+    current_user = @database.user_by_name(session[:name])
 
 
     if current_user != current_item.owner
@@ -34,8 +36,8 @@ class ItemEdit < Sinatra::Application
     id = params[:id].to_i
     new_name = params[:name]
     new_price = params[:price]
-    current_item = Marketplace::Item.by_id(id)
-    current_user = Marketplace::User.by_name(session[:name])
+    current_item = @database.item_by_id(id)
+    current_user = @database.user_by_name(session[:name])
 
 
     if (new_name == nil or new_name == "" or new_name.strip! == "")
@@ -55,7 +57,7 @@ class ItemEdit < Sinatra::Application
 
     # Check if the creator already owns a similar item, do we need to merge these items?
     need_merge = false
-    current_user.items.each{ |item| need_merge = true if !item.equal?(current_item) and item.mergeable?(current_item)}
+    @database.items_by_user.items.each{ |item| need_merge = true if !item.equal?(current_item) and item.mergeable?(current_item)}
 
 
     if need_merge
@@ -70,7 +72,7 @@ class ItemEdit < Sinatra::Application
   post '/item_image_upload' do
     file = params[:file_upload]
     item_id =  params[:item_id].to_i
-    current_item = Marketplace::Item.by_id(item_id)
+    current_item = @database.item_by_id(item_id)
 
     return 413 if file[:tempfile].size > 400*1024
 
@@ -92,7 +94,7 @@ class ItemEdit < Sinatra::Application
   post '/item_image_delete' do
     im_pos =  params[:image_pos].to_i
     it_id =  params[:item_id].to_i
-    current_item = Marketplace::Item.by_id(it_id)
+    current_item = @database.item_by_id(it_id)
     current_item.del_image_by_nr(im_pos)
     redirect 'item/' + it_id.to_s + '/edit'
   end
@@ -101,7 +103,7 @@ class ItemEdit < Sinatra::Application
   post '/item_image_to_profile' do
     im_pos =  params[:image_pos].to_i
     it_id =  params[:item_id].to_i
-    current_item = Marketplace::Item.by_id(it_id)
+    current_item = @database.item_by_id(it_id)
     current_item.move_image_to_front(im_pos)
     redirect 'item/' + it_id.to_s + '/edit'
   end

@@ -24,12 +24,12 @@ module Marketplace
 
   # @param [Integer] ID of the desired item
   # @return [Item] desired item
-    def self.item_by_id(id)
+    def item_by_id(id)
       @items.detect{|item_temp| item_temp.id == id}
     end
 
     # @return [Array] all items of the whole system
-    def self.all_items
+    def all_items
       @items
     end
 
@@ -38,9 +38,9 @@ module Marketplace
       @items.delete(item)
     end
 
-    def items_by_user(user)
+    def items_by_user(username)
       items_by_user = Array.new
-      @items.each { |item_temp| items_by_user.push(item_temp) if item_temp.owner == user }
+      @items.each { |item_temp| items_by_user.push(item_temp) if item_temp.owner.name == username }
       items_by_user
     end
 
@@ -53,12 +53,12 @@ module Marketplace
 
   # @param [String] name the desired user
   # @return [User] desired user
-    def self.user_by_name(name)
+    def user_by_name(name)
       @users.detect { |user_temp| user_temp.name == name }
     end
 
     # @return [Array] all users of the whole system
-    def self.all_users
+    def all_users
       @users
     end
 

@@ -1,5 +1,7 @@
 class Settings < Sinatra::Application
-
+  before do
+    @database = Marketplace::Database.instance
+  end
   @@id = 1
 
   get '/settings' do
@@ -7,14 +9,14 @@ class Settings < Sinatra::Application
     message = session[:message]
     session[:message] = nil
     redirect '/login' unless user != nil
-    haml :settings , :locals => { :user => Marketplace::User.by_name(user),
+    haml :settings , :locals => { :user => @database.user_by_name(user),
                                   :info => message  }
   end
 
   # saves picture with name '@@id' in public/images
   post '/upload' do
     file = params[:file_upload]
-    user = Marketplace::User.by_name(session[:name])
+    user = @database.user_by_name(session[:name])
 
     return 413 if file[:tempfile].size > 400*1024
 
@@ -36,7 +38,7 @@ class Settings < Sinatra::Application
     user_name = params[:user]
     details = params[:details]
 
-    user = Marketplace::User.by_name(user_name)
+    user = @database.user_by_name(user_name)
 
     user.details = details
 

@@ -1,13 +1,15 @@
 class ItemBuy < Sinatra::Application
-
+  before do
+    @database = Marketplace::Database.instance
+  end
   # The user with current session buys the item with given id
   # If no session exists, you will be redirected to '/login'
   # If user doesn't own enough credits or item is not active
   # or user is already owner, the transaction will fail
   post "/item/:id/buy" do
 
-    current_item = Marketplace::Item.by_id(params[:id].to_i)
-    current_user = Marketplace::User.by_name(session[:name])
+    current_item = @database.item_by_id(params[:id].to_i)
+    current_user = @database.user_by_name(session[:name])
     quantity = params[:quantity].to_i
 
 

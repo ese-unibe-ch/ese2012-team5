@@ -21,7 +21,6 @@ module Marketplace
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
-      Marketplace::Database.add_item(item)
       item
     end
 

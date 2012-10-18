@@ -1,10 +1,12 @@
 class Item < Sinatra::Application
-
+  before do
+    @database = Marketplace::Database.instance
+  end
   # Displays the profile of the item with given id
   get "/item/:id" do
 
-    current_item = Marketplace::Item.by_id(params[:id].to_i)
-    current_user = Marketplace::User.by_name(session[:name])
+    current_item = @database.item_by_id(params[:id].to_i)
+    current_user = @database.user_by_name(session[:name])
 
 
     message = session[:message]
