@@ -58,18 +58,27 @@ class App < Sinatra::Base
     item4 = Marketplace::Item.create('Book', 20, 1, oliver)
     item5 = Marketplace::Item.create('Shoes', 80, 7, rene)
     item6 = Marketplace::Item.create('Trousers', 60, 99, urs)
+    item7 = Marketplace::Item.create('Bed', 60, 4, joel)
+    item8 = Marketplace::Item.create('Bed', 30, 5, oliver)
+    item9 = Marketplace::Item.create('Shoes', 20, 4, oliver)
     item1.active = true
     item2.active = true
     item3.active = true
     item4.active = true
     item5.active = true
     item6.active = true
+    item7.active = true
+    item8.active = true
+    item9.active = true
     database.add_item(item1)
     database.add_item(item2)
     database.add_item(item3)
     database.add_item(item4)
     database.add_item(item5)
     database.add_item(item6)
+    database.add_item(item7)
+    database.add_item(item8)
+    database.add_item(item9)
     database.add_user(daniel)
     database.add_user(joel)
     database.add_user(lukas)

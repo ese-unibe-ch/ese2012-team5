@@ -41,31 +41,33 @@ List of Items by other users
       %th Name
       %th Quantity
       %th Value
-      %th Active
       %th Owner
       %th Buy
   %tbody
     -for item in items
-      -if item.owner != current_user
+      -if item[0].owner != current_user
         %tr
           %td
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item[0].pictures[0]}"}
           %td
-            %a{:href => "/item/#{item.id}"}#{item.name}
+            %a{:href => "/item/#{item[0].id}"}#{item[0].name}
           %td
-            #{item.quantity}
+            -i = 0
+            -for x in item
+              -i = i + x.quantity
+            #{i}
           %td
-            #{item.price}
+            ab
+            #{item[0].price}
           %td
-            - if item.active
-              %p yes
-            - else
-              %p no
+            %a{:href => "/user/#{item[0].owner.name}"}
+              -if item.size >1
+                #{item.size} owners
+              -else
+                #{item[0].owner.name}
           %td
-            %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
-          %td
-            -if item.price <= current_user.credits and item.active
-              Amount (#{item.quantity} available):
+            -if item[0].price <= current_user.credits and item[0].active
+              Amount (#{item[0].quantity} available):
 
 
               %form( action="/item/#{item.id}/buy" method="POST" )

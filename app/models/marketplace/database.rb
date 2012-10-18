@@ -44,9 +44,67 @@ module Marketplace
       items_by_user
     end
 
+    def items_other_users(user)
+      items_other_users = Array.new
+      @items.each { |item_temp| items_other_users.push(item_temp) if item_temp.owner.name != username }
+      items_other_users
+    end
+
+
     # lists all items in categories, except the items from the user (parameter)
     # @param [List of lists] user
-    def categorized_items (user)
+    def categorized_items (username)
+      temp_items = @items
+      categorized_items = Array.new
+      temp_items.each{|item_temp|
+        if item_temp.owner.name != username
+          inserted = false
+          if categorized_items != nil
+            categorized_items.each{|sub_item_array|
+              if sub_item_array[0].name == item_temp.name
+                sub_item_array.push(item_temp)
+                inserted = true
+              end
+            }
+            if inserted == false
+              sub_items = Array.new
+              sub_items.push(item_temp)
+              categorized_items.push(sub_items)
+            end
+          else
+            sub_items = Array.new
+            sub_items.push(item_temp)
+            categorized_items.push(sub_items)
+          end
+        end
+      }
+      return categorized_items
+    end
+
+    def sort_categorized_list(username)
+      items_categorized = categorized_items(username)
+      final_items_cat = Array.new
+      items_categorized.each{|sub_items|
+         if sub_items.size > 1
+           cheapest_item = sub_items[0]
+           sub_items.each{|compare_item|
+            if compare_item.price < cheapest_item.price
+               cheapest_item = compare_item
+            end
+           }
+           sorted_items = Array.new
+           sorted_items.push(cheapest_item)
+           sub_items.each{|x_item|
+           if x_item.id != cheapest_item.id
+             sorted_items.push(x_item)
+           end
+           }
+           final_items_cat.push(sorted_items)
+         else
+           final_items_cat.push(sub_items)
+         end
+     }
+    return final_items_cat
     end
 
   #User

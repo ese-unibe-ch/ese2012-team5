@@ -9,7 +9,7 @@ class Main < Sinatra::Application
       #if logged in redirect to main
       haml :main, :locals => {:time => Time.now,
                               :user_items => @database.items_by_user(session[:name]),
-                              :items => @database.all_items,
+                              :items => @database.sort_categorized_list(session[:name]),
                               :current_user => @database.user_by_name(session[:name])}
     else
       #if not redirect to mainguest
