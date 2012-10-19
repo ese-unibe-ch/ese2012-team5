@@ -60,31 +60,20 @@ module Marketplace
       temp_items = @items
       categorized_items = Array.new
       temp_items.each{ |item_temp|
-
-          sub_array_exits = false
-
-          # categorized_items != nil
-
-            categorized_items.each{ |sub_item_array|
-              if sub_item_array[0].name == item_temp.name
-                sub_item_array.push(item_temp)
-                sub_array_exits = true
-              end
-            }
-
-            if sub_array_exits == false
-              sub_items = Array.new
-              sub_items.push(item_temp)
-              categorized_items.push(sub_items)
-            end
-          #else
-           # sub_items = Array.new
-          #  sub_items.push(item_temp)
-           # categorized_items.push(sub_items)
-         # end
-
+        sub_array_exits = false
+        categorized_items.each{ |sub_item_array|
+          if sub_item_array[0].name == item_temp.name
+            sub_item_array.push(item_temp)
+            sub_array_exits = true
+          end
+        }
+        if sub_array_exits == false
+          sub_items = Array.new
+          sub_items.push(item_temp)
+          categorized_items.push(sub_items)
+        end
       }
-      return categorized_items
+      categorized_items
     end
 
 
@@ -98,7 +87,7 @@ module Marketplace
            final_items_cat.push(sub_items)
          end
      }
-    return final_items_cat
+    final_items_cat
     end
 
   #User
