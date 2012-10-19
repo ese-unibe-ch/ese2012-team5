@@ -5,10 +5,11 @@
 
 -if info != nil
   %h2 #{info}
+  %br
 
 %p Username can be 3 to 12 characters.
 %p Password must have at least 4 characters and there must be at least one uppercase letter, one lowercase letter and one number.
-
+%br
 %form( action="/register" method="POST" )
   %label Username
   %input(type="text" name="username")
