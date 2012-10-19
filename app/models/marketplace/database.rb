@@ -78,6 +78,11 @@ module Marketplace
       categorized_items
     end
 
+    def category_with_name(name)
+      categorized_items = categories_items
+      categorized_items.detect{ |sub_item_array| sub_item_array[0].name == name }
+    end
+
     # sorts a categorized_item list by the price
     # @return [Array of Arrays] sorted array with arrays for every different item.name
     def sort_by_price(categorized_items)

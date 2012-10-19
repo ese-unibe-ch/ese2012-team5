@@ -1,7 +1,9 @@
 class DeleteAccount < Sinatra::Application
+
   before do
     @database = Marketplace::Database.instance
   end
+
   post '/delete_account' do
 
     if params[:confirm] != "true"

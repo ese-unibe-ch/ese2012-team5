@@ -1,0 +1,17 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+
+%h1 Buy(we need some sexy title here)
+%br
+
+-if info != nil
+  %h2 #{info}
+
+-for item in items
+  %img{:height => "200", :width => "200", :src => "/item_image_upload/#{item.pictures[0].to_i}"}
+  #{item.name}
+  %br
+  #{item.owner}
+  %br
+
+%br

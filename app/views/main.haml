@@ -70,9 +70,10 @@ Items of other users
               %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}
           %td
             -if category[0].price <= current_user.credits
-              %form( action="/items/buy" method="POST" )
+              %form( action="/buy" method="GET" )
                 %input(type="text" name="quantity" value=1 size=1)
+                %input(type='hidden' name="category" value="#{category[0].name}")
                 %input(type="submit" value="Buy")
             -else
-              %form( action="/items/buy" method="POST" )
+              %form( action="/buy" method="GET" )
                 %input(type="submit" disabled="disabled" value="Buy")
