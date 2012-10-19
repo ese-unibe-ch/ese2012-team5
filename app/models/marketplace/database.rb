@@ -1,12 +1,15 @@
 module Marketplace
+
   class Database
+
+    @@instance = nil
+
     def initialize
       # list with all existing users in the whole system
       @users = []
       # list with all existing items in the whole system
       @items = []
     end
-    @@instance = nil
 
     def self.instance
       if(@@instance == nil)
@@ -53,37 +56,40 @@ module Marketplace
 
     # lists all items in categories, except the items from the user (parameter)
     # @param [List of lists] user
-    def categorized_items (username)
+    def categorized_items
       temp_items = @items
       categorized_items = Array.new
-      temp_items.each{|item_temp|
-        if item_temp.owner.name != username
-          inserted = false
-          if categorized_items != nil
-            categorized_items.each{|sub_item_array|
+      temp_items.each{ |item_temp|
+
+          sub_array_exits = false
+
+          # categorized_items != nil
+
+            categorized_items.each{ |sub_item_array|
               if sub_item_array[0].name == item_temp.name
                 sub_item_array.push(item_temp)
-                inserted = true
+                sub_array_exits = true
               end
             }
-            if inserted == false
+
+            if sub_array_exits == false
               sub_items = Array.new
               sub_items.push(item_temp)
               categorized_items.push(sub_items)
             end
-          else
-            sub_items = Array.new
-            sub_items.push(item_temp)
-            categorized_items.push(sub_items)
-          end
-        end
+          #else
+           # sub_items = Array.new
+          #  sub_items.push(item_temp)
+           # categorized_items.push(sub_items)
+         # end
+
       }
       return categorized_items
     end
 
 
-    def sort_categorized_list(username)
-      items_categorized = categorized_items(username)
+    def sort_categorized_list_by_price
+      items_categorized = categorized_items
       final_items_cat = Array.new
       items_categorized.each{|sub_items|
          if sub_items.size > 1
