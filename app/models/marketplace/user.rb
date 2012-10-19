@@ -89,12 +89,16 @@ module Marketplace
       !(self.items.detect do |item_temp|
         item_temp.id == item.id
       end.nil?)
+      # AK try:
+#      items.any? { |i| i.id == item.id }
     end
 
     # @return [Array] all active items
     def items_to_sell
       items_to_sell = Array.new
       self.items.each { |item| items_to_sell.push(item) if item.active }
+      # AK try:
+#      items.collect {|i| i.active }
       items_to_sell
     end
 

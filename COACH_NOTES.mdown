@@ -1,0 +1,29 @@
+# Review Preview
+## Code Quality
+* Interestingly you split up the controller by feature into classes. That is not
+  strictly necessary, you can put together methods that belong to a similar
+  concept like an item controller.
+  - I don't quite understand, why `Item::user_able_to_buy?` is there and not in
+    the model.
+* The methods in the controllers are sometimes quite long, but readable and
+  documented. You could factor some things in separate methods
+  (`!(Integer(...))`).
+* Try to move as much logic into the model, e.g. password checking (e.g. an
+  `User#authenticate? password` method) &rArr; decoupling.
+* Some weird moments in the views:
+  - variable assignment should not be necessary. If you need an index, go with
+    `each_with_index`.
+  - Many, many `br`s and some inline styles. Try to use CSS.
+  - You might want to put the `input` *into* the `label`.
+
+## Testing
+* Tests seem to broken. Did you add arguments to the constructor of User? This
+  is really bad: it means that you don't run your tests before you push stuff.
+  Your tests are of no use, if you don't run them.
+* Tests are not bad, they cover many scenarios in the model. Consider adding
+  tests for the controller ([Sinatra Testing](http://www.sinatrarb.com/testing.html)). 
+  If you have to catch up with testing, you could also use [RSpec](http://rspec.info/),
+  which doubles as documentation.
+* With working tests, you can use `rcov` to check how much code coverage you
+  got. More important than that are of course the number of features (functional
+  tests) or the ways to use the classes of the model (unit tests).

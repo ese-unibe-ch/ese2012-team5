@@ -80,7 +80,8 @@ class ItemEdit < Sinatra::Application
 
     FileUtils::cp(file[:tempfile].path, File.join("public","item_images", filename))
 
-    redirect 'item/' + item_id.to_s + '/edit'
+    redirect 'item/' + item_id.to_s + '/edit' # AK How about string interpolation:
+#    redirect "item/#{item_id.to_s}/edit"
   end
 
   #retrieve picture in item_images
