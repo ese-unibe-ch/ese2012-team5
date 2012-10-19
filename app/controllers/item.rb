@@ -1,7 +1,9 @@
 class Item < Sinatra::Application
+
   before do
     @database = Marketplace::Database.instance
   end
+
   # Displays the profile of the item with given id
   get "/item/:id" do
 

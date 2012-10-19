@@ -1,6 +1,6 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
--#Header
+
 %h1 Welcome Guest
 
 - if info != nil
@@ -12,30 +12,34 @@
   and join the wonderful world of trading.
 %br
 
--#List of all Items, for each user a new Table
+
+Items of users
 %table#table_new
   %thead
-    %th Picture
-    %th Name
-    %th Quantity
-    %th Value
-    %th Active
-    %th Owner
+    %tr
+      %th Picture
+      %th Name
+      %th Quantity
+      %th Value
+      %th Owner
   %tbody
-    - for item in items
+    -for category in categories
+
       %tr
         %td{:width => "74"}
-          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
         %td
-          %a{:href => "/item/#{item.id}"} #{item.name}
+          %a{:href => "/item/#{category[0].id}"}#{category[0].name}
         %td
-          #{item.quantity}
+          -i = 0
+          -for item in category
+            -i = i + item.quantity
+          #{i}
         %td
-          #{item.price}
+          ab
+          #{category[0].price}
         %td
-          - if item.active
-            %p yes
-          - else
-            %p no
-        %td
-          %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
+          -if category.size >1
+            #{category.size} owners
+          -else
+            %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}

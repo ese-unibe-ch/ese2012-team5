@@ -25,7 +25,7 @@ module Marketplace
       @items << item
     end
 
-  # @param [Integer] ID of the desired item
+  # @param [Integer] id of the desired item
   # @return [Item] desired item
     def item_by_id(id)
       @items.detect{|item_temp| item_temp.id == id}
@@ -34,6 +34,11 @@ module Marketplace
     # @return [Array] all items of the whole system
     def all_items
       @items
+    end
+
+    # @return [Array] all active items of the whole system
+    def all_active_items
+      @items.select{ |item| item.active }
     end
 
     # removes this item from the item list
@@ -54,40 +59,37 @@ module Marketplace
     end
 
 
-    # lists all items in categories, except the items from the user (parameter)
-    # @param [List of lists] user
-    def categorized_items
-      temp_items = @items
+    # categories all ACTIVE items by their name
+    # @return [Array of Arrays] array with arrays for every different item.name
+    def categories_items
+      all_items = self.all_active_items
       categorized_items = Array.new
-      temp_items.each{ |item_temp|
-        sub_array_exits = false
-        categorized_items.each{ |sub_item_array|
-          if sub_item_array[0].name == item_temp.name
-            sub_item_array.push(item_temp)
-            sub_array_exits = true
-          end
-        }
-        if sub_array_exits == false
-          sub_items = Array.new
-          sub_items.push(item_temp)
-          categorized_items.push(sub_items)
+
+      all_items.each{ |item|
+        sub_array = categorized_items.detect{ |sub_item_array| sub_item_array[0].name == item.name }
+        if sub_array != nil
+          sub_array.push(item)
+        else
+          new_sub_array = Array.new
+          new_sub_array.push(item)
+          categorized_items.push(new_sub_array)
         end
       }
       categorized_items
     end
 
-
-    def sort_categorized_list_by_price
-      items_categorized = categorized_items
-      final_items_cat = Array.new
-      items_categorized.each{|sub_items|
-         if sub_items.size > 1
-           final_items_cat.push(sub_items.sort! {|a,b| a.price <=> b.price})
-         else
-           final_items_cat.push(sub_items)
-         end
+    # sorts a categorized_item list by the price
+    # @return [Array of Arrays] sorted array with arrays for every different item.name
+    def sort_by_price(categorized_items)
+      sorted_categories = Array.new
+      categorized_items.each{ |sub_array|
+        if sub_array.size > 1
+          sorted_categories.push(sub_array.sort! {|a,b| a.price <=> b.price})
+        else
+          sorted_categories.push(sub_array)
+        end
      }
-    final_items_cat
+      sorted_categories
     end
 
   #User
@@ -129,9 +131,10 @@ module Marketplace
       items_not_to_sell
     end
 
-    # @param [Item] checks if the user owns this item
+    # @param [User] user
+    # @param [Item] item
     # @return [Boolean] True if the item is part of the users item-list
-    def user_has_item(user,item)
+    def user_has_item(user, item)
       user_items = items_by_user(user)
       !(user_items.detect do |item_temp|
         item_temp.id == item.id

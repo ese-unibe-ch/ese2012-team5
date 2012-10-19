@@ -67,7 +67,7 @@ class App < Sinatra::Base
     item4.active = true
     item5.active = true
     item6.active = true
-    item7.active = true
+    item7.active = false
     item8.active = true
     item9.active = true
     database.add_item(item1)
