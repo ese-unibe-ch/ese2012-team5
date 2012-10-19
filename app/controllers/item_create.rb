@@ -58,6 +58,7 @@ class ItemCreate < Sinatra::Application
     # Check if the creator already owns a similar item, do we need to merge these items?
     need_merge = false
     current_user.items.each{ |item| need_merge = true if !item.equal?(new_item) and item.mergeable?(new_item)}
+    # AK: current_user.items.any? {|item| not item == new_item and item.mergable? new_item }
 
     if need_merge
       haml :item_merge, :locals => {:new_item => new_item}
