@@ -81,25 +81,13 @@ module Marketplace
       return categorized_items
     end
 
+
     def sort_categorized_list(username)
       items_categorized = categorized_items(username)
       final_items_cat = Array.new
       items_categorized.each{|sub_items|
          if sub_items.size > 1
-           cheapest_item = sub_items[0]
-           sub_items.each{|compare_item|
-            if compare_item.price < cheapest_item.price
-               cheapest_item = compare_item
-            end
-           }
-           sorted_items = Array.new
-           sorted_items.push(cheapest_item)
-           sub_items.each{|x_item|
-           if x_item.id != cheapest_item.id
-             sorted_items.push(x_item)
-           end
-           }
-           final_items_cat.push(sorted_items)
+           final_items_cat.push(sub_items.sort! {|a,b| a.price <=> b.price})
          else
            final_items_cat.push(sub_items)
          end
