@@ -22,6 +22,7 @@ module Marketplace
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
+      item.add_image("default_item.jpg")
       owner.add_item(item)
       item
     end

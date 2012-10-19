@@ -81,7 +81,7 @@ module Marketplace
 
     # sorts a categorized_item list by the price
     # @return [Array of Arrays] sorted array with arrays for every different item.name
-    def sort_by_price(categorized_items)
+    def sort_categories_by_price(categorized_items)
       sorted_categories = Array.new
       categorized_items.each{ |sub_array|
         if sub_array.size > 1
@@ -91,6 +91,10 @@ module Marketplace
         end
      }
       sorted_categories
+    end
+
+    def sort_category_by_price(items)
+      items.sort! {|a,b| a.price <=> b.price}
     end
 
 

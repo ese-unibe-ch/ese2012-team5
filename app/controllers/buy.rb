@@ -11,6 +11,7 @@ class Buy < Sinatra::Application
     quantity = params[:quantity].to_i
     category = params[:category]
     items = @database.category_with_name(category)
+    sorted_items = @database.sort_category_by_price(items)
 
     if items == nil
       session[:message] = "Item name not found - could not create category"
@@ -21,7 +22,7 @@ class Buy < Sinatra::Application
     session[:message] = nil
     haml :buy, :locals => { :info => message,
                             :quantity => quantity,
-                            :items => items }
+                            :items => sorted_items }
   end
 
 end

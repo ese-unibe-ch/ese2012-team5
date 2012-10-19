@@ -7,11 +7,55 @@
 -if info != nil
   %h2 #{info}
 
--for item in items
-  %img{:height => "200", :width => "200", :src => "/item_image_upload/#{item.pictures[0].to_i}"}
-  #{item.name}
-  %br
-  #{item.owner}
-  %br
+-# we need to store how many (the quantity) times the user want to buy a specific item
+-# my first idea is, that we use a map therefore
+-# we map every item to its wanted quantity
+-# we wil use this map for calculating the whole transaction
+-map = Hash.new
 
-%br
+-total = 0
+
+%table#table_new
+  -for item in items
+    -if quantity >= item.quantity
+      -quantity_for_this_item = item.quantity
+      -quantity = quantity - item.quantity
+    -else
+      -quantity_for_this_item = quantity
+      -quantity = 0
+
+    -map[item] = quantity_for_this_item
+    -total = total + (item.price * quantity_for_this_item)
+
+    %tr
+      %td{:height => "200", :width => "200"}
+        %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
+      %td
+        #{item.name}
+        %br
+        #{item.owner.name}
+    %tr
+      %td
+        %input(type="text" name="quantity" value=quantity_for_this_item size=1)
+        of
+        #{item.quantity}
+      %td
+        à #{item.price}
+    %tr
+      %td{:colspan => 2, :align => "right"}
+        Total: #{item.price * quantity_for_this_item}
+    -break if quantity == 0
+  %tr
+    %td
+      -if quantity != 0
+        That's all... I'm sorry
+    %td{:colspan => 2, :align => "right"}
+      Total: #{total}
+  %tr
+    %td
+      %form(action = "/" method = "GET")
+        %input(type='submit' value='Abort')
+      %td{:align => "right"}
+        %form(action = "/buy/confirm" method = "POST")
+          %input(type='hidden' name="map" value=map)
+          %input(type='submit' value='Continue')

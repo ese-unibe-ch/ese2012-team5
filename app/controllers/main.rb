@@ -9,7 +9,7 @@ class Main < Sinatra::Application
     current_user = @database.user_by_name(session[:name])
     current_items = current_user.items
     categorized_items = @database.categories_items
-    sorted_categorized_items = @database.sort_by_price(categorized_items)
+    sorted_categorized_items = @database.sort_categories_by_price(categorized_items)
 
     message = session[:message]
     session[:message] = nil
