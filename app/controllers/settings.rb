@@ -1,14 +1,18 @@
 class Settings < Sinatra::Application
+
   before do
     @database = Marketplace::Database.instance
   end
+
   @@id = 1
 
   get '/settings' do
     user = session[:name]
+
+    redirect '/login' unless user != nil
+
     message = session[:message]
     session[:message] = nil
-    redirect '/login' unless user != nil
     haml :settings , :locals => { :user => @database.user_by_name(user),
                                   :info => message  }
   end
@@ -36,11 +40,11 @@ class Settings < Sinatra::Application
 
   post '/details' do
     user_name = params[:user]
-    details = params[:details]
+    new_details = params[:details]
 
     user = @database.user_by_name(user_name)
 
-    user.details = details
+    user.details = new_details
 
     redirect '/settings'
   end

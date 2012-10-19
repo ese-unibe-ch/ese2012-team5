@@ -7,7 +7,7 @@ class Main < Sinatra::Application
   get "/" do
 
     current_user = @database.user_by_name(session[:name])
-    current_items = @database.items_by_user(session[:name])
+    current_items = current_user.items
     categorized_items = @database.categories_items
     sorted_categorized_items = @database.sort_by_price(categorized_items)
 

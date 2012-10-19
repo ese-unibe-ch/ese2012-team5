@@ -1,54 +1,64 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
+
 %h1 Item: #{item.name}
 %br
-- if info != nil
+
+-if info != nil
   %h2 #{info}
   %br
 
+
 %form( action="/item/#{item.id}/edit" method="POST" )
-  %label Name
-  %input(type="text" name="name" value="#{item.name}")
-  %p
-  %label Price
-  %input(type="text" name="price" value="#{item.price}")
-  %p
-  %input(type="submit" value="Save")
+  %table#table_new
+    %tr
+      %td
+        %label Name
+      %td
+        %input(type="text" name="name" value="#{item.name}")
+    %tr
+      %td
+        %label Price
+      %td
+        %input(type="text" name="price" value="#{item.price}")
+    %tr
+      %td
+        %input(type="submit" value="Save")
+      %td
+        %form( action="/item/#{item.id}" method="GET" )
+          %input(type="submit" value="Discard")
 
-%form( action="/item/#{item.id}" method="GET" )
-  %input(type="submit" value="Discard")
 
-- if item.pictures.size < 3
-  %h2 picture upload (.gif dont work)
+-if item.pictures.size < 3
   %form(action = "/item_image_upload" method = "POST" enctype="multipart/form-data")
-    %input(type='hidden' name="item_id" value="#{item.id}")
-    %input(type='file' name="file_upload" accept="image/*")
-    %input(type='submit' value='upload')
+    %table#table_new
+      %tr
+        %td
+          %h2 Upload picture
+          %input(type='hidden' name="item_id" value="#{item.id}")
+          %input(type='file' name="file_upload" accept="image/*")
+        %td
+          %input(type='submit' value='Upload')
 
 
-- if item.pictures.size != 0
-  %h2 Upload preview pictures of your Item
-  The first picture is the profile picture(max 3)(max 400*1024)
-  - x = 0
-  - for image_id in item.pictures
-    -if x == 0
-      %h2 #{x}
-      %img{:height => "200", :width => "200", :src => "/item_image_upload/#{image_id}"}
-      %form(action = "/item_image_delete" method = "POST")
-        %input(type='hidden' name="item_id" value="#{item.id}")
-        %input(type='hidden' name="image_pos" value="#{x}")
-        %input(type='submit' value='Delete')
-      %p
-    -else
-      %h2 #{x}
-      %img{:height => "200", :width => "200", :src => "/item_image_upload/#{image_id}"}
-      %form(action = "/item_image_delete" method = "POST")
-        %input(type='hidden' name="item_id" value="#{item.id}")
-        %input(type='hidden' name="image_pos" value="#{x}")
-        %input(type='submit' value='Delete')
-      %form(action = "/item_image_to_profile" method = "POST")
-        %input(type='hidden' name="item_id" value="#{item.id}")
-        %input(type='hidden' name="image_pos" value="#{x}")
-        %input(type='submit' value='Profile')
-      %p
-    - x = x + 1
+-if item.pictures.size != 0
+  %table#table_new
+    %tr
+      %td{:colspan => 2}
+        %h2 Pictures
+        The first picture is the profile picture(max 3)(max 400*1024)
+    -for index in 0..(item.pictures.length - 1)
+      %tr
+        %td
+          %img{:height => "200", :width => "200", :src => "/item_image_upload/#{item.pictures[index]}"}
+      %tr
+        %td
+          %form(action = "/item_image_delete" method = "POST")
+            %input(type='hidden' name="item_id" value="#{item.id}")
+            %input(type='hidden' name="image_pos" value="#{index}")
+            %input(type='submit' value='Delete')
+        %td
+          %form(action = "/item_image_to_profile" method = "POST")
+            %input(type='hidden' name="item_id" value="#{item.id}")
+            %input(type='hidden' name="image_pos" value="#{index}")
+            %input(type='submit' value='Select as profile picture')

@@ -1,4 +1,5 @@
 module Marketplace
+
   class Item
 
     # static variables: id for a unique identification
@@ -21,6 +22,7 @@ module Marketplace
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
+      owner.add_item(item)
       item
     end
 
@@ -41,6 +43,7 @@ module Marketplace
         rest = self.quantity - at
         self.quantity = rest
         item = Item.create(self.name, self.price, at, self.owner)
+        Marketplace::Database.instance.add_item(item)
         item.activate
         item
       end
@@ -50,7 +53,7 @@ module Marketplace
     def merge(item)
       if mergeable?(item)
         self.quantity = self.quantity + item.quantity
-        item.remove
+        Marketplace::Database.instance.delete_item(item)
       else
         throw TypeError
       end
@@ -88,8 +91,14 @@ module Marketplace
       self.pictures[nr] = temp
     end
 
+    def delete
+      self.owner.remove_item(self)
+    end
+
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end
+
   end
+
 end

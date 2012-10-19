@@ -1,7 +1,9 @@
 class ItemEdit < Sinatra::Application
+
   before do
     @database = Marketplace::Database.instance
   end
+
   @@id = 1
 
   # Displays the view to edit items with given id
@@ -57,8 +59,7 @@ class ItemEdit < Sinatra::Application
 
     # Check if the creator already owns a similar item, do we need to merge these items?
     need_merge = false
-    @database.items_by_user.items.each{ |item| need_merge = true if !item.equal?(current_item) and item.mergeable?(current_item)}
-
+    current_user.items.each{ |item| need_merge = true if !item.equal?(current_item) and item.mergeable?(current_item)}
 
     if need_merge
       haml :item_merge, :locals => {:new_item => current_item}
@@ -82,7 +83,7 @@ class ItemEdit < Sinatra::Application
 
     FileUtils::cp(file[:tempfile].path, File.join("public","item_images", filename))
 
-    redirect 'item/' + item_id.to_s + '/edit'
+    redirect "item/#{item_id.to_s}/edit"
   end
 
   #retrieve picture in item_images
@@ -93,19 +94,19 @@ class ItemEdit < Sinatra::Application
   #delete image (only link not physical)
   post '/item_image_delete' do
     im_pos =  params[:image_pos].to_i
-    it_id =  params[:item_id].to_i
-    current_item = @database.item_by_id(it_id)
+    id =  params[:item_id].to_i
+    current_item = @database.item_by_id(id)
     current_item.del_image_by_nr(im_pos)
-    redirect 'item/' + it_id.to_s + '/edit'
+    redirect "item/#{id.to_s}/edit"
   end
 
   #move this image to the first position in the array
   post '/item_image_to_profile' do
     im_pos =  params[:image_pos].to_i
-    it_id =  params[:item_id].to_i
-    current_item = @database.item_by_id(it_id)
+    id =  params[:item_id].to_i
+    current_item = @database.item_by_id(id)
     current_item.move_image_to_front(im_pos)
-    redirect 'item/' + it_id.to_s + '/edit'
+    redirect "item/#{id.to_s}/edit"
   end
 
 end

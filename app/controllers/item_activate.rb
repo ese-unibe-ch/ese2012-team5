@@ -1,4 +1,5 @@
 class ItemActivate < Sinatra::Application
+
   before do
     @database = Marketplace::Database.instance
   end

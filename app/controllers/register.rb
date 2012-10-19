@@ -1,7 +1,9 @@
 class Register < Sinatra::Application
+
   before do
     @database = Marketplace::Database.instance
   end
+
   get '/register' do
     message = session[:message]
     session[:message] = nil
@@ -9,12 +11,12 @@ class Register < Sinatra::Application
   end
 
   post '/register' do
+
     username = params[:username]
     password = params[:password]
     password_conf = params[:password_conf]
 
     validate_username(username, 3, 12)
-
     validate_password(password, password_conf, 4)
 
     new_user = Marketplace::User.create(username, password)

@@ -1,23 +1,28 @@
 class User < Sinatra::Application
+
   before do
     @database = Marketplace::Database.instance
   end
+
   get "/user/:name" do
 
-    username = params[:name]
+    current_user = @database.user_by_name(session[:name])
+    current_items = current_user.items
+    user = @database.user_by_name(params[:name])
+    user_items = user.items
+
+
     message = session[:message]
     session[:message] = nil
-    user = @database.user_by_name(username)
-
-    if username == session[:name]
-      haml :user_profile_own, :locals => {  :user => user,
-                                            :info => message,
-                                            :items_user => @database.items_by_user(session[:name])}
+    if user == current_user
+      haml :user_profile_own, :locals => {  :info => message,
+                                            :user => current_user,
+                                            :items_user => current_items }
     else
-      haml :user_profile, :locals => {  :user => user,
-                                        :current_user => @database.user_by_name(session[:name]),
-                                        :items_user => @database.items_by_user(username),
-                                        :info => message}
+      haml :user_profile, :locals => {  :info => message,
+                                        :current_user => current_user,
+                                        :user => user,
+                                        :items_user => user_items }
     end
 
   end

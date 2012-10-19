@@ -4,19 +4,28 @@
 %h1 Create Item
 %br
 
-- if info != nil
+-if info != nil
   %h2 #{info}
+  %br
 
-%br
 
 %form( method="POST" )
-  %label Name
-  %input(type="text" name="name" )
-  %p
-  %label Price
-  %input(type="text" name="price")
-  %p
-  %label Quantity
-  %input(type="text" name="quantity")
-  %p
-  %input(type="submit" value="Create")
+  %table#table_new
+    %tr
+      %td
+        %label Name
+      %td
+        %input(type="text" name="name" )
+    %tr
+      %td
+        %label Price
+      %td
+        %input(type="text" name="price")
+    %tr
+      %td
+        %label Quantity
+      %td
+        %input(type="text" name="quantity")
+    %tr
+      %td{:colspan => 2}
+        %input(type="submit" value="Create")
