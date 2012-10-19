@@ -16,7 +16,7 @@ Own Items
   %tbody
     - for item in user_items
       %tr
-        %td
+        %td{:width => "74"}
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
         %td
           %a{:href => "/item/#{item.id}"} #{item.name}
@@ -47,7 +47,7 @@ List of Items by other users
     -for item in items
       -if item[0].owner != current_user
         %tr
-          %td
+          %td{:width => "74"}
             %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item[0].pictures[0]}"}
           %td
             %a{:href => "/item/#{item[0].id}"}#{item[0].name}

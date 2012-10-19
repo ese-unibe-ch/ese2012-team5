@@ -5,7 +5,7 @@
 
 -if info != nil
   %h2 #{info}
-
+%br
 %h2 picture upload (.gif dont work)
 %form(action = "/upload" method = "POST" enctype="multipart/form-data")
   %input(type='file' name="file_upload" accept="image/*")
