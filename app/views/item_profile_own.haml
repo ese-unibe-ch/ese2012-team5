@@ -1,35 +1,43 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
+
 %h1 Item: #{item.name}
 %br
+
 -if info != nil
   %h2 #{info}
   %br
 
-%br
-Price: #{item.price}
-%br
-State: #{item.active}
-%br
-Quantity: #{item.quantity}
-%br
-Owner:
-%a{:href => "/user/#{item.owner.name}"} You ;)
-
-%br
-
--if item.active
-  %form( action="/item/#{item.id}/activate" method="POST" )
-    %input(type="submit" value="Deactivate")
-  %form( action="/item/#{item.id}/edit" method="POST" )
-    %input(type="submit" disabled="disabled" value="Edit")
--else
-  %form( action="/item/#{item.id}/activate" method="POST" )
-    %input(type="submit" value="Activate")
-  %form( action="/item/#{item.id}/edit" method="POST" )
-    %input(type="submit" value="Edit")
-
--if item.pictures.size != 0
-  %h2 Pictures
-  - for image_id in item.pictures
-    %img{:height => "200", :width => "200", :src => "/item_image_upload/#{image_id}"}
+%table#table_new
+  %tr
+    %td{:height => 300, :width => 200}
+      -if item.pictures.size != 0
+        -profile = true
+        - for image_id in item.pictures
+          -if profile
+            %img{:height => "200", :width => "200", :src => "/item_image_upload/#{image_id}"}
+            %br
+            -profile = false
+          -else
+            %img{:height => "98", :width => "98", :src => "/item_image_upload/#{image_id}"}
+    %td
+      Price: #{item.price}
+      %br
+      State: #{item.active}
+      %br
+      Quantity: #{item.quantity}
+      %br
+      Owner:
+      %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
+  %tr
+    %td{:colspan => 2, :align => "center"}
+      -if item.active
+        %form( action="/item/#{item.id}/activate" method="POST" )
+          %input(type="submit" value="Deactivate")
+        %form( action="/item/#{item.id}/edit" method="POST" )
+          %input(type="submit" disabled="disabled" value="Edit")
+      -else
+        %form( action="/item/#{item.id}/activate" method="POST" )
+          %input(type="submit" value="Activate")
+        %form( action="/item/#{item.id}/edit" method="POST" )
+          %input(type="submit" value="Edit")
