@@ -1,0 +1,15 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+
+%h1 Confirm(we need some sexy title here)
+%br
+
+-if info != nil
+  %h2 #{info}
+
+
+-@database = Marketplace::Database.instance
+-map.each do |id,quantity|
+  -item = @database.item_by_id(id.to_i)
+  you want the item #{item.name} sold by #{item.owner.name} with quantity #{quantity}, right
+  %br

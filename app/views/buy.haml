@@ -57,5 +57,9 @@
         %input(type='submit' value='Abort')
       %td{:align => "right"}
         %form(action = "/buy/confirm" method = "POST")
-          %input(type='hidden' name="map" value=map)
+          -x = 0
+          -map.each do |item,quantity|
+            %input(type='hidden' name="id#{x}" value="#{item.id}")
+            %input(type='hidden' name="quantity#{x}" value="#{quantity}")
+            -x = x + 1
           %input(type='submit' value='Continue')

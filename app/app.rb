@@ -20,6 +20,7 @@ require 'controllers/item_create.rb'
 require 'controllers/item_merge.rb'
 require 'controllers/delete_account.rb'
 require 'controllers/buy'
+require 'controllers/buy_confirm'
 
 
 class App < Sinatra::Base
@@ -37,6 +38,7 @@ class App < Sinatra::Base
   use Settings
   use ItemMerge
   use Buy
+  use BuyConfirm
 
 
   enable :sessions
