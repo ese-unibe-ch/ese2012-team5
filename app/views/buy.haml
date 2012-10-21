@@ -1,5 +1,38 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
+:javascript
+  $(document).ready(function(){
+    $("input[id^=slider]").bind('change', recalc);
+    // run the calculation function now
+    recalc();
+   };
+   );
+   function recalc(){
+    //should get every object with id starting with total_item
+    $("[id^=sub_total]").calc(
+        // the equation to use for the calculation
+        "qty * price",
+        // define the variables used in the equation, these can be a jQuery object
+        {
+            qty: $("[id^=quantity_item_]"),
+            price: $("[id^=price_item_]")
+        },
+        function (s){
+        				// return the number as a dollar amount
+        				return s.toFixed(0);
+        			},
+        // define the finish callback, this runs after the calculation has been complete
+        function ($this){
+            // sum the total of the $("[id^=sub_total]") selector
+            var sum = $this.sum();
+
+            $("#grand_total").text(
+                'Total: ' + sum.toFixed(0)
+        		);
+        			}
+        		);
+        	}
+
 
 %h1 Buy(we need some sexy title here)
 %br
@@ -30,27 +63,31 @@
     %tr
       %td{:height => "200", :width => "200"}
         %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
-      %td
+      %td{:colspan => 2}
         #{item.name}
         %br
         #{item.owner.name}
     %tr
+      %td(width ="220")
+        %form
+          %input(class="carpe-slider"  id="slider#{item.id}" size="180" type="range" decimals="0" data-carpe-stops="#{item.quantity+1}" data-carpe-target="quantity_#{item.id}" position="#{180 / item.quantity * quantity_for_this_item}" data-carpe-from="0" data-carpe-to="#{item.quantity}")
+            :javascript
       %td
-        %input(type="text" name="quantity" value=quantity_for_this_item size=1)
-        of
-        #{item.quantity}
-      %td
-        à #{item.price}
+        %p
+          %div(id="quantity_#{item.id}" type="text")
+          of #{item.quantity}
+      %td(id="price_item_#{item.id}")
+        #{item.price}
     %tr
-      %td{:colspan => 2, :align => "right"}
-        Total: #{item.price * quantity_for_this_item}
+      %td{:colspan => 3, :align => "right"}
+        %div{:id => "sub_total_#{item.id}"}
     -break if quantity == 0
   %tr
     %td
       -if quantity != 0
         That's all... I'm sorry
     %td{:colspan => 2, :align => "right"}
-      Total: #{total}
+      %div{:id=>"grand_total"}
   %tr
     %td
       %form(action = "/" method = "GET")

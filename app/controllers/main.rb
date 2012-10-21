@@ -6,8 +6,6 @@ class Main < Sinatra::Application
 
   get "/" do
 
-    current_user = @database.user_by_name(session[:name])
-    current_items = current_user.items
     categorized_items = @database.categories_items
     sorted_categorized_items = @database.sort_categories_by_price(categorized_items)
 
@@ -16,11 +14,18 @@ class Main < Sinatra::Application
 
 
     if session[:name]
+
+      current_user = @database.user_by_name(session[:name])
+      current_items = current_user.items
+
+
       haml :main, :locals => {  :info => message,
                                 :current_items => current_items,
                                 :current_user => current_user,
                                 :categories => sorted_categorized_items }
     else
+
+
       haml :mainguest, :locals => { :info => message,
                                     :categories => sorted_categorized_items }
     end
