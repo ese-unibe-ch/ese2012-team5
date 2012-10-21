@@ -41,8 +41,8 @@
           });
 
         function update() {
-        var global_total = 0;
-          $("[id^=total]").each(function(){
+          var global_total = 0;
+          $("[id^=total]").each(function() {
             global_total += parseInt($(this).val());
           })
           $( "#global_total" ).val( global_total );

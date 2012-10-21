@@ -7,8 +7,6 @@ class BuyConfirm < Sinatra::Application
   post '/buy/confirm' do
 
     params.each do |key, param|
-      puts key
-      puts param
       params[key] = param
     end
 

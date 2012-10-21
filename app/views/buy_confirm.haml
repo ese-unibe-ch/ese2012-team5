@@ -6,6 +6,7 @@
 
 -if info != nil
   %h2 #{info}
+  %br
 
 
 -@database = Marketplace::Database.instance
@@ -13,3 +14,13 @@
   -item = @database.item_by_id(id.to_i)
   you want the item #{item.name} sold by #{item.owner.name} with quantity #{quantity}, right
   %br
+
+%form(action = "/" method = "GET")
+  %input(type='submit' value='Abort')
+%form(action = "/buy" method = "POST")
+  -x = 0
+  -map.each do |id,quantity|
+    %input(type='hidden' name="id#{x}" value="#{id}")
+    %input(type='hidden' name="quantity#{x}" value="#{quantity}")
+    -x = x + 1
+  %input(type='submit' value='Buy')

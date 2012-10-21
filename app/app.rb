@@ -56,6 +56,7 @@ class App < Sinatra::Base
     oliver = Marketplace::User.create('Oliver','aha')
     rene = Marketplace::User.create('Rene','wtt')
     urs = Marketplace::User.create('Urs','123')
+    urs.add_credits(1000)
     item1 = Marketplace::Item.create('Table', 100, 20, daniel)
     item2 = Marketplace::Item.create('Dvd', 10, 30, joel)
     item3 = Marketplace::Item.create('Bed', 50, 2, lukas)
