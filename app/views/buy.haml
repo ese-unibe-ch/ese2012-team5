@@ -53,11 +53,11 @@
           });
           $( "#amount#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
           $( "#total#{item.id}" ).val( ($( "#slider#{count}"  ).slider( "value" )) * #{item.price} );
-        });
+          update();
+          });
 
         function update() {
-
-          var global_total = 0;
+        var global_total = 0;
           $("[id^=total]").each(function(){
           global_total += parseInt($(this).val());
           })
@@ -91,7 +91,7 @@
       -if quantity != 0
         That's all... I'm sorry
     %td{:colspan => 2, :align => "right"}
-      Total: #{total}
+      Total:
       %input(type='text' readonly="readonly" id='global_total')
 
 
@@ -105,6 +105,6 @@
           -map.each do |item,quantity|
             %input(type='hidden' name="id#{x}" value="#{item.id}")
             %input(type='hidden'  id="amount#{item.id}")
-            -#no idea how to make that yet, i dont get how the $("something") variables are saved and can be acssesed
+            -#no idea how to make that yet, i dont get how the $("something") variables are saved and can be accessed
             -x = x + 1
           %input(type='submit' value='Continue')
