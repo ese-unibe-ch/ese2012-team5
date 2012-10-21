@@ -15,6 +15,13 @@
 -map = Hash.new
 
 -total = 0
+-slider_count = items.length
+-count = 0
+
+
+:javascript
+  var global_total = 0;
+  var indexToId = {}
 
 %table#table_new
   -for item in items
@@ -28,6 +35,37 @@
     -map[item] = quantity_for_this_item
     -total = total + (item.price * quantity_for_this_item)
 
+    :javascript
+      indexToId['#{count}'] = #{item.id};
+        $(function() {
+
+          $( "#slider#{count}" ).slider( {
+            value:#{quantity_for_this_item},
+            min: 0,
+            max: #{item.quantity},
+            step: 1,
+            slide: function( event, ui ) {
+              $( "#amount#{item.id}" ).val( ui.value );
+              $( "#total#{item.id}" ).val( ui.value * #{item.price} );
+              global_total = 0;
+              update();
+            }
+          });
+          $( "#amount#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
+          $( "#total#{item.id}" ).val( ($( "#slider#{count}"  ).slider( "value" )) * #{item.price} );
+        });
+
+        function update() {
+
+          for(var i = 0 ; i < #{slider_count} ; i++) {
+            /*
+            here...is the problem, how do i address $( "#total#{item.id}" )
+            */
+            //global_total = global_total + amount_total_i;
+          }
+          $( "#global_total" ).val( global_total );
+        }
+
     %tr
       %td{:height => "200", :width => "200"}
         %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
@@ -37,21 +75,28 @@
         #{item.owner.name}
     %tr
       %td
-        %input(type="text" name="quantity" value=quantity_for_this_item size=1)
+        %div(id="slider#{count}")
+        %input( type="text" readonly="readonly" id="amount#{item.id}")
         of
         #{item.quantity}
       %td
         à #{item.price}
     %tr
       %td{:colspan => 2, :align => "right"}
-        Total: #{item.price * quantity_for_this_item}
+        Total:
+        %input( type="text" readonly="readonly" id="total#{item.id}")
+    -count = count + 1
     -break if quantity == 0
+
   %tr
     %td
       -if quantity != 0
         That's all... I'm sorry
     %td{:colspan => 2, :align => "right"}
       Total: #{total}
+      %input(type='text' readonly="readonly" id='global_total')
+
+
   %tr
     %td
       %form(action = "/" method = "GET")
@@ -61,6 +106,7 @@
           -x = 0
           -map.each do |item,quantity|
             %input(type='hidden' name="id#{x}" value="#{item.id}")
-            %input(type='hidden' name="quantity#{x}" value="#{quantity}")
+            %input(type='hidden'  id="amount#{item.id}")
+            -#no idea how to make that yet, i dont get how the $("something") variables are saved and can be acssesed
             -x = x + 1
           %input(type='submit' value='Continue')
