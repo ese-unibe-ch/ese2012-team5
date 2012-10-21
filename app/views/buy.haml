@@ -13,15 +13,7 @@
 -# we map every item to its wanted quantity
 -# we wil use this map for calculating the whole transaction
 -map = Hash.new
-
--total = 0
--slider_count = items.length
 -count = 0
-
-
-:javascript
-  var global_total = 0;
-  var indexToId = {}
 
 %table#table_new
   -for item in items
@@ -33,12 +25,9 @@
       -quantity = 0
 
     -map[item] = quantity_for_this_item
-    -total = total + (item.price * quantity_for_this_item)
 
     :javascript
-      indexToId['#{count}'] = #{item.id};
         $(function() {
-
           $( "#slider#{count}" ).slider( {
             value:#{quantity_for_this_item},
             min: 0,
@@ -47,7 +36,6 @@
             slide: function( event, ui ) {
               $( "#amount#{item.id}" ).val( ui.value );
               $( "#total#{item.id}" ).val( ui.value * #{item.price} );
-              global_total = 0;
               update();
             }
           });
@@ -59,7 +47,7 @@
         function update() {
         var global_total = 0;
           $("[id^=total]").each(function(){
-          global_total += parseInt($(this).val());
+            global_total += parseInt($(this).val());
           })
           $( "#global_total" ).val( global_total );
         }
@@ -104,7 +92,6 @@
           -x = 0
           -map.each do |item,quantity|
             %input(type='hidden' name="id#{x}" value="#{item.id}")
-            %input(type='hidden'  id="amount#{item.id}")
-            -#no idea how to make that yet, i dont get how the $("something") variables are saved and can be accessed
+            %input(type='hidden' name="quantity#{x}" value="#{quantity}")
             -x = x + 1
           %input(type='submit' value='Continue')
