@@ -57,12 +57,10 @@
 
         function update() {
 
-          for(var i = 0 ; i < #{slider_count} ; i++) {
-            /*
-            here...is the problem, how do i address $( "#total#{item.id}" )
-            */
-            //global_total = global_total + amount_total_i;
-          }
+          var global_total = 0;
+          $("[id^=total]").each(function(){
+          global_total += parseInt($(this).val());
+          })
           $( "#global_total" ).val( global_total );
         }
 
