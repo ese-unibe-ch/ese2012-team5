@@ -8,11 +8,7 @@
   %h2 #{info}
   %br
 
--# we need to store how many (the quantity) times the user want to buy a specific item
--# my first idea is, that we use a map therefore
--# we map every item to its wanted quantity
--# we wil use this map for calculating the whole transaction
--map = Hash.new
+
 -count = 0
 
 %table#table_new
@@ -24,8 +20,6 @@
       -quantity_for_this_item = quantity
       -quantity = 0
 
-    -map[item] = quantity_for_this_item
-
     :javascript
         $(function() {
           $( "#slider#{count}" ).slider( {
@@ -35,11 +29,13 @@
             step: 1,
             slide: function( event, ui ) {
               $( "#amount#{item.id}" ).val( ui.value );
+              $( "#amount_#{item.id}" ).val( ui.value );
               $( "#total#{item.id}" ).val( ui.value * #{item.price} );
               update();
             }
           });
           $( "#amount#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
+          $( "#amount_#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
           $( "#total#{item.id}" ).val( ($( "#slider#{count}"  ).slider( "value" )) * #{item.price} );
           update();
           });
@@ -51,6 +47,7 @@
           })
           $( "#global_total" ).val( global_total );
         }
+
 
     %tr
       %td{:height => "200", :width => "200"}
@@ -75,7 +72,7 @@
     -break if quantity == 0
 
   %tr
-    %td
+    %td{:align => "left"}
       -if quantity != 0
         That's all... I'm sorry
     %td{:colspan => 2, :align => "right"}
@@ -84,14 +81,14 @@
 
 
   %tr
-    %td
+    %td{:align => "left"}
       %form(action = "/" method = "GET")
         %input(type='submit' value='Abort')
       %td{:align => "right"}
         %form(action = "/buy/confirm" method = "POST")
           -x = 0
-          -map.each do |item,quantity|
+          -for item in items
             %input(type='hidden' name="id#{x}" value="#{item.id}")
-            %input(type='hidden' name="quantity#{x}" value="#{quantity}")
+            %input(type='hidden' name="quantity#{x}" id="amount_#{item.id}")
             -x = x + 1
           %input(type='submit' value='Continue')
