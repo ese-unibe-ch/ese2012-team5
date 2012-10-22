@@ -1,11 +1,15 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
-%h1 Welcome #{current_user.name}
 
+%h1 Welcome #{current_user.name}
 %br
 
--#List of users Items
-Own Items
+-if info != nil
+  %h2 #{info}
+  %br
+
+
+Your Items
 %table#table_new
   %thead
     %th Picture
@@ -14,9 +18,9 @@ Own Items
     %th Value
     %th Active
   %tbody
-    - for item in current_user.items
+    - for item in current_items
       %tr
-        %td
+        %td{:width => "74"}
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
         %td
           %a{:href => "/item/#{item.id}"} #{item.name}
@@ -32,8 +36,7 @@ Own Items
 %br
 
 
--#List of all Items, for each user a new Table
-List of Items by other users
+Items of other users
 %table#table_new
   %thead
     %tr
@@ -41,37 +44,35 @@ List of Items by other users
       %th Name
       %th Quantity
       %th Value
-      %th Active
       %th Owner
       %th Buy
   %tbody
-    -for user in users
-      -if user != current_user
-        - for item in user.items
-          %tr
-            %td
-              %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-            %td
-              %a{:href => "/item/#{item.id}"}#{item.name}
-            %td
-              #{item.quantity}
-            %td
-              #{item.price}
-            %td
-              - if item.active
-                %p yes
-              - else
-                %p no
-            %td
-              %a{:href => "/user/#{user.name}"} #{user.name}
-            %td
-              -if item.price <= current_user.credits and item.active
-                Amount (#{item.quantity} available):
-
-
-                %form( action="/item/#{item.id}/buy" method="POST" )
-                  %input(type="text" name="quantity" value=1 size=1)
-                  %input(type="submit" value="Buy")
-              -else
-                %form( action="/item/#{item.id}/buy" method="POST" )
-                  %input(type="submit" disabled="disabled" value="Buy")
+    -for category in categories
+      -if category[0].owner != current_user
+        %tr
+          %td{:width => "74"}
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
+          %td
+            %a{:href => "/item/#{category[0].id}"}#{category[0].name}
+          %td
+            -i = 0
+            -for item in category
+              -i = i + item.quantity
+            #{i}
+          %td
+            ab
+            #{category[0].price}
+          %td
+            -if category.size >1
+              #{category.size} owners
+            -else
+              %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}
+          %td
+            -if category[0].price <= current_user.credits
+              %form( action="/buy" method="GET" )
+                %input(type="text" name="quantity" value=1 size=1)
+                %input(type='hidden' name="category" value="#{category[0].name}")
+                %input(type="submit" value="Buy")
+            -else
+              %form( action="/buy" method="GET" )
+                %input(type="submit" disabled="disabled" value="Buy")

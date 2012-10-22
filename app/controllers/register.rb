@@ -1,5 +1,9 @@
 class Register < Sinatra::Application
 
+  before do
+    @database = Marketplace::Database.instance
+  end
+
   get '/register' do
     message = session[:message]
     session[:message] = nil
@@ -7,16 +11,16 @@ class Register < Sinatra::Application
   end
 
   post '/register' do
+
     username = params[:username]
     password = params[:password]
     password_conf = params[:password_conf]
 
     validate_username(username, 3, 12)
-
     validate_password(password, password_conf, 4)
 
     new_user = Marketplace::User.create(username, password)
-    new_user.save()
+    @database.add_user(new_user)
 
     session[:message] = "#{new_user.name} created, now log in"
     redirect '/login'
@@ -27,7 +31,7 @@ class Register < Sinatra::Application
   # @param [Integer] min minimal length username must have
   # @param [Integer] max maximal length username can have
   def validate_username(username, min, max)
-    if Marketplace::User.by_name(username)
+    if @database.user_by_name(username)
       session[:message] = "username already taken"
       redirect '/register'
     end

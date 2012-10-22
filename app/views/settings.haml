@@ -1,32 +1,43 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
+
 %h1 Settings
 %br
 
 -if info != nil
   %h2 #{info}
+  %br
 
-%h2 picture upload (.gif dont work)
-%form(action = "/upload" method = "POST" enctype="multipart/form-data")
-  %input(type='file' name="file_upload" accept="image/*")
-  %input(type='submit' value='upload')
 
-Your current picture:
-%img{:height => "200", :width => "200", :src => "images/#{user.picture}"}
-%br
+%table#table_new
+  %td
+    %h3 Current picture:
+    %br
+    %img{:height => "200", :width => "200", :src => "images/#{user.picture}"}
+    %br
+    %td
+      %h3 Upload new picture
+      %form(action = "/upload" method = "POST" enctype="multipart/form-data")
+        %input(type='file' name="file_upload" accept="image/*")
+        %input(type='submit' value='Upload')
 
-%h2 list of interests
-%form( action="/details" method="POST" )
-  %textarea(cols="50" rows="4" name="details") #{user.details}
-  %input(type="hidden" name="user" value="#{user.name}")
-  %input(type="submit" value="submit")
-
-%h2 Delete account
-%p Note: this cannot be undone!
-%form( action="/delete_account" method="POST" )
-  %input(type="checkbox" name="confirm" value="true") Yes, I want to delete my account. I am aware that this cannot be undone.
-  %p
-  %label Please enter password to ensure verification:
-  %input(type="password" name="password")
-  %input(type="hidden" name="username" value="#{user.name}")
-  %input(type="submit" value="Delete my account")
+  %tr
+    %td{:colspan => "2"}
+      %h3 List of interests
+      %br
+      %form( action="/details" method="POST" )
+        %textarea(cols="50" rows="4" name="details") #{user.details}
+        %input(type="hidden" name="user" value="#{user.name}")
+        %input(type="submit" value="submit")
+  %tr
+    %td{:colspan => "2"}
+      %h3 Delete account
+      %br
+      %h2 Note: this cannot be undone!
+      %form( action="/delete_account" method="POST" )
+        %input(type="checkbox" name="confirm" value="true") Yes, I want to delete my account. I am aware that this cannot be undone.
+        %br
+        %label Please enter password to ensure verification:
+        %input(type="password" name="password")
+        %input(type="hidden" name="username" value="#{user.name}")
+        %input(type="submit" value="Delete my account")

@@ -1,0 +1,94 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+
+%h1 Buy(we need some sexy title here)
+%br
+
+-if info != nil
+  %h2 #{info}
+  %br
+
+
+-count = 0
+
+%table#table_new
+  -for item in items
+    -if quantity >= item.quantity
+      -quantity_for_this_item = item.quantity
+      -quantity = quantity - item.quantity
+    -else
+      -quantity_for_this_item = quantity
+      -quantity = 0
+
+    :javascript
+        $(function() {
+          $( "#slider#{count}" ).slider( {
+            value:#{quantity_for_this_item},
+            min: 0,
+            max: #{item.quantity},
+            step: 1,
+            slide: function( event, ui ) {
+              $( "#amount#{item.id}" ).val( ui.value );
+              $( "#amount_#{item.id}" ).val( ui.value );
+              $( "#total#{item.id}" ).val( ui.value * #{item.price} );
+              update();
+            }
+          });
+          $( "#amount#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
+          $( "#amount_#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
+          $( "#total#{item.id}" ).val( ($( "#slider#{count}"  ).slider( "value" )) * #{item.price} );
+          update();
+          });
+
+        function update() {
+          var global_total = 0;
+          $("[id^=total]").each(function() {
+            global_total += parseInt($(this).val());
+          })
+          $( "#global_total" ).val( global_total );
+        }
+
+
+    %tr
+      %td{:height => "200", :width => "200"}
+        %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
+      %td
+        #{item.name}
+        %br
+        #{item.owner.name}
+    %tr
+      %td
+        %div(id="slider#{count}")
+        %input( type="text" readonly="readonly" id="amount#{item.id}")
+        of
+        #{item.quantity}
+      %td
+        à #{item.price}
+    %tr
+      %td{:colspan => 2, :align => "right"}
+        Total:
+        %input( type="text" readonly="readonly" id="total#{item.id}")
+    -count = count + 1
+    -break if quantity == 0
+
+  %tr
+    %td{:align => "left"}
+      -if quantity != 0
+        That's all... I'm sorry
+    %td{:colspan => 2, :align => "right"}
+      Total:
+      %input(type='text' readonly="readonly" id='global_total')
+
+
+  %tr
+    %td{:align => "left"}
+      %form(action = "/" method = "GET")
+        %input(type='submit' value='Abort')
+      %td{:align => "right"}
+        %form(action = "/buy/confirm" method = "POST")
+          -x = 0
+          -for item in items
+            %input(type='hidden' name="id#{x}" value="#{item.id}")
+            %input(type='hidden' name="quantity#{x}" id="amount_#{item.id}")
+            -x = x + 1
+          %input(type='submit' value='Continue')

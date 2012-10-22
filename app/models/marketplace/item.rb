@@ -1,8 +1,8 @@
 module Marketplace
+
   class Item
 
-    # static variables: list with all existing items in the whole system and an id for a unique identification
-    @@items = []
+    # static variables: id for a unique identification
     @@id = 1
 
     attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures
@@ -22,37 +22,14 @@ module Marketplace
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
+      item.add_image("default_item.jpg")
       owner.add_item(item)
-      item.save
       item
     end
 
     # initial property of an item
     def initialize
       self.active = false
-    end
-
-    # @param [Integer] ID of the desired item
-    # @return [Item] desired item
-    def self.by_id(id)
-      @@items.detect{|item| item.id == id}
-    end
-
-    # @return [Array] all items of the whole system
-    def self.all
-      @@items
-    end
-
-    # save this item to the static item list
-    def save
-      @@items << self
-    end
-
-    # removes this item from the static item list
-    # and from the current owner
-    def remove
-      self.owner.remove_item(self)
-      @@items.delete(self)
     end
 
     # splits the item into two separate items
@@ -67,6 +44,7 @@ module Marketplace
         rest = self.quantity - at
         self.quantity = rest
         item = Item.create(self.name, self.price, at, self.owner)
+        Marketplace::Database.instance.add_item(item)
         item.activate
         item
       end
@@ -76,7 +54,7 @@ module Marketplace
     def merge(item)
       if mergeable?(item)
         self.quantity = self.quantity + item.quantity
-        item.remove
+        Marketplace::Database.instance.delete_item(item)
       else
         throw TypeError
       end
@@ -93,10 +71,6 @@ module Marketplace
 
     def deactivate
       self.active = false
-    end
-
-    def delete
-      @@items.delete(self)
     end
 
     # append image at the end
@@ -118,9 +92,14 @@ module Marketplace
       self.pictures[nr] = temp
     end
 
+    def delete
+      self.owner.remove_item(self)
+    end
+
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end
 
   end
+
 end

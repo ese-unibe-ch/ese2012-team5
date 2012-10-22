@@ -323,9 +323,18 @@ h1
 
 h2
 {
+    color: #a90401;
+    margin: 0px;
+    font-size: 14px;
+}
+
+h3
+{
     color: #616161;
     margin: 0px;
+    font-size: 14px;
 }
+
 
 a{
     color: #616161;
