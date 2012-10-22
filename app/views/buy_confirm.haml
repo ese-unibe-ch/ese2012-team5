@@ -10,11 +10,42 @@
 
 
 -@database = Marketplace::Database.instance
--map.each do |id,quantity|
-  -if((quantity).to_i!=0)
-    -item = @database.item_by_id(id.to_i)
-    you want the item #{item.name} sold by #{item.owner.name} with quantity #{quantity}, right
-  %br
+
+%h3
+  These are the items you are about to buy
+%br
+
+
+
+%table#table_new
+  %thead
+    %th
+    %th
+      Name
+    %th
+      Quantity
+    %th
+      Price
+
+  %tbody
+    -total_price = 0
+    -map.each do |id,quantity|
+      -if((quantity).to_i!=0)
+        -item = @database.item_by_id(id.to_i)
+        -total_price += item.price*(quantity).to_i
+        %tr
+          %td{:width => "74"}
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+          %td
+            %a{:href => "/item/#{item.id}"} #{item.name}
+          %td
+            #{quantity}
+          %td
+            #{item.price}
+    %tr
+      %td(colspan='4' align="right")
+        Total-Price: #{total_price}
+%br
 
 %form(action = "/" method = "GET")
   %input(type='submit' value='Abort')

@@ -53,9 +53,9 @@
       %td{:height => "200", :width => "200"}
         %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
       %td
-        #{item.name}
+        Name:  #{item.name}
         %br
-        #{item.owner.name}
+        Owner: #{item.owner.name}
     %tr
       %td
         %div(id="slider#{count}")
@@ -66,7 +66,7 @@
         à #{item.price}
     %tr
       %td{:colspan => 2, :align => "right"}
-        Total:
+        Sub-Total:
         %input( type="text" readonly="readonly" id="total#{item.id}")
     -count = count + 1
     -break if quantity == 0

@@ -184,8 +184,8 @@ body
     line-height: 20px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
-    border-bottom: 1px solid #fff;
-    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e1e1e1;
+    border-top: 1px solid #e1e1e1;
 }
 
 #table_new td:hover
@@ -223,6 +223,7 @@ body
 /********************************/
 /**************Menu_bar**********/
 /********************************/
+
 #head_entry {
     position: relative;
     padding: 1px;

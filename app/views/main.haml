@@ -20,13 +20,13 @@ Your Items
   %tbody
     - for item in current_items
       %tr
-        %td{:width => "74"}
+        %td(width = "74" onclick="Navigate_to('/item/#{item.id}');")
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td
-          %a{:href => "/item/#{item.id}"} #{item.name}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
+          %a #{item.name}
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           #{item.quantity}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           #{item.price}
         %td
           - if item.active
@@ -60,8 +60,11 @@ Items of other users
               -i = i + item.quantity
             #{i}
           %td
-            ab
-            #{category[0].price}
+            -if category.length > 1
+              %h3 starting at
+              #{category[0].price}
+            -else
+              #{category[0].price}
           %td
             -if category.size >1
               #{category.size} owners
