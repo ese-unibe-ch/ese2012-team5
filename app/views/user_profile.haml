@@ -11,7 +11,7 @@
   %td{:height => "205", :width => "205"}
     %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
   %td
-    Your Interests:
+    %h3 Your Interests:
     %br
     - details = user.details.gsub(/\n/, '<br />')
     #{details}
@@ -31,12 +31,14 @@
       %tr
         %td{:width => "74"}
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td(onclick="Navigate_to('/item/#{item.id}');")
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           %a{:href => "/item/#{item.id}"} #{item.name}
-        %td(onclick="Navigate_to('/item/#{item.id}');")
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.quantity}
-        %td(onclick="Navigate_to('/item/#{item.id}');")
+          %img{:src => "../icons/package.png"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.price}
+          %img{:src => "../icons/coins.png"}
         %td
           -if current_user != nil and item.price <= current_user.credits
             %form( action="/item/#{item.id}/buy" method="POST" )

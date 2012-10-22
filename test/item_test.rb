@@ -33,7 +33,7 @@ class ItemTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     owner = Marketplace::User.create('John','pW123')
     item = Marketplace::Item.create('Table', 100, 1, owner)
-    assert(owner.has_item(item), "The owner should have the item in his list")
+    assert(owner.has_item?(item), "The owner should have the item in his list")
   end
 
   def test_initialization_inactive

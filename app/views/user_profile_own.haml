@@ -8,10 +8,10 @@
 
 
 %table#table_new
-  %td(height ="205" width ="205" onclick="Navigate_to('/settings');")
+  %td{:height => 205, :width => 205, :onclick => "Navigate_to('/settings');"}
     %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
   %td(onclick="Navigate_to('/settings');")
-    Your Interests:
+    %h3 Your Interests:
     %br
     - details = user.details.gsub(/\n/, '<br />')
     #{details}
@@ -29,16 +29,18 @@
   %tbody
     - for item in items_user
       %tr
-        %td(width ="74" onclick="Navigate_to('/item/#{item.id}');")
+        %td{:width => 74}
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td(onclick="Navigate_to('/item/#{item.id}');")
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           %a{:href => "/item/#{item.id}"} #{item.name}
-        %td(onclick="Navigate_to('/item/#{item.id}');")
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.quantity}
-        %td(onclick="Navigate_to('/item/#{item.id}');")
+          %img{:src => "../icons/package.png"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.price}
+          %img{:src => "../icons/coins.png"}
         %td
           - if item.active
-            %p yes
+            %img{:src => "../icons/accept.png"}
           - else
-            %p no
+            %img{:src => "../icons/cross.png"}
