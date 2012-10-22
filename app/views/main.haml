@@ -60,9 +60,11 @@ Items of other users
               -i = i + item.quantity
             #{i}
           %td
-            #{category[0].price}
-            -if category.size()>1
-              #{" - "} #{category[category.size()-1].price}
+            -if category.length > 1
+              %h3 starting at
+              #{category[0].price}
+            -else
+              #{category[0].price}
           %td
             -if category.size >1
               #{category.size} owners
