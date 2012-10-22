@@ -25,24 +25,18 @@
     %th Item
     %th Quantity
     %th Value
-    %th Active
     %th Buy
   %tbody
     - for item in items_user
       %tr
         %td{:width => "74"}
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           %a{:href => "/item/#{item.id}"} #{item.name}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           #{item.quantity}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           #{item.price}
-        %td
-          - if item.active
-            %p yes
-          - else
-            %p no
         %td
           -if current_user != nil and item.price <= current_user.credits
             %form( action="/item/#{item.id}/buy" method="POST" )

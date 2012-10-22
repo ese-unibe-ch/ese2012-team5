@@ -33,6 +33,7 @@ class ItemEdit < Sinatra::Application
   # Will edit item with given id according to given params
   # If name or price is not valid, edit will fail
   # If edit succeeds, it will redirect to profile of edited item
+
   post "/item/:id/edit" do
 
     id = params[:id].to_i

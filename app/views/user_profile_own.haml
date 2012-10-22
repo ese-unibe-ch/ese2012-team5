@@ -8,9 +8,9 @@
 
 
 %table#table_new
-  %td{:height => "205", :width => "205"}
+  %td(height ="205" width ="205" onclick="Navigate_to('/settings');")
     %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
-  %td
+  %td(onclick="Navigate_to('/settings');")
     Your Interests:
     %br
     - details = user.details.gsub(/\n/, '<br />')
@@ -29,13 +29,13 @@
   %tbody
     - for item in items_user
       %tr
-        %td{:width => "74"}
+        %td(width ="74" onclick="Navigate_to('/item/#{item.id}');")
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           %a{:href => "/item/#{item.id}"} #{item.name}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           #{item.quantity}
-        %td
+        %td(onclick="Navigate_to('/item/#{item.id}');")
           #{item.price}
         %td
           - if item.active

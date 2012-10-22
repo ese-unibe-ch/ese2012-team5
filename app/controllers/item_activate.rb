@@ -13,7 +13,11 @@ class ItemActivate < Sinatra::Application
 
     if current_user == current_item.owner
       switchActive(current_item)
-      session[:message] = "Item is now #{current_item.active}"
+      if(current_item.active)
+        session[:message] = "Item is now active."
+      else
+        session[:message] = "Item is now inactive."
+      end
       redirect "/item/#{current_item.id}"
     else
       session[:message] = "You are not the owner of this ite!"

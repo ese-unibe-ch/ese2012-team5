@@ -34,7 +34,7 @@
     %table#table_new
       %tr
         %td
-          %h2 Upload picture
+          %h3 Upload picture
           %input(type='hidden' name="item_id" value="#{item.id}")
           %input(type='file' name="file_upload" accept="image/*")
         %td
@@ -45,8 +45,8 @@
   %table#table_new
     %tr
       %td{:colspan => 2}
-        %h2 Pictures
-        The first picture is the profile picture(max 3)(max 400*1024)
+        %h3 Pictures
+        The picture on top is the displayed item picture(max 3)(max 400*1024)
     -for index in 0..(item.pictures.length - 1)
       %tr
         %td
