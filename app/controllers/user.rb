@@ -7,7 +7,7 @@ class User < Sinatra::Application
   get "/user/:name" do
 
     current_user = @database.user_by_name(session[:name])
-    current_items = current_user.items
+    current_items = current_user.items unless !session[:name]
     user = @database.user_by_name(params[:name])
     user_items = user.items
 
