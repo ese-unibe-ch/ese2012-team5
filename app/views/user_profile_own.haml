@@ -39,7 +39,7 @@
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.price}
           %img{:src => "../icons/coins.png"}
-        %td
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           - if item.active
             %img{:src => "../icons/accept.png"}
           - else
