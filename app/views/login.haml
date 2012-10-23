@@ -10,13 +10,12 @@
       %h2 #{info}
   %br
 
-%table#table_new
+%table#table_new(style="width:auto;")
   %tr
     %td
       %form( action="/login" method="POST" )
       %label Username:
       %input(type="text" name="username" value="Username" onfocus="this.value=''")
-
   %tr
     %td
       %label Password:&nbsp

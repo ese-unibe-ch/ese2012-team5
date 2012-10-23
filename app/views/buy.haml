@@ -41,8 +41,12 @@
           $( "#global_total" ).val( global_total );
           if(parseInt($("#global_total").val()) > #{Marketplace::Database.instance.user_by_name(session[:name]).credits}){
             $("#global_total").css("background-color","red");
+            $("#message").text("Not enough credits. Get a job.");
+            $("#continue_button").attr("disabled","disabled");
           }else{
             $("#global_total").css("background-color","white");
+            $("#message").text("You can pay that.");
+            $("#continue_button").removeAttr("disabled");
           };
         }
 
@@ -72,7 +76,6 @@
         %img{:src => "icons/coins.png"}
     -count = count + 1
     -break if quantity == 0
-
   %tr
     %td{:colspan => 2, :align => "right"}
       -if quantity != 0
@@ -88,6 +91,7 @@
       Total:
       %input(type='text' readonly="readonly" id='global_total')
       %img{:src => "icons/coins.png"}
+      %div{:align => "right", :id=>"message"}
   %tr
     %td{:align => "left"}
       %form(action = "/" method = "GET")
@@ -99,4 +103,4 @@
             %input(type='hidden' name="id#{x}" value="#{item.id}")
             %input(type='hidden' name="quantity#{x}" id="amount_#{item.id}")
             -x = x + 1
-          %input(type='submit' value='Continue')
+          %input(type='submit' value='Continue' id='continue_button')
