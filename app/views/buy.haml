@@ -4,7 +4,6 @@
 %h1 Buy
 %br
 
-
 -count = 0
 %table#table_new
   -for item in items
@@ -27,20 +26,24 @@
               $( "#amount_#{item.id}" ).val( ui.value );
               $( "#total#{item.id}" ).val( ui.value * #{item.price} );
               update();
-            }
+              }
           });
           $( "#amount#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
           $( "#amount_#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
           $( "#total#{item.id}" ).val( ($( "#slider#{count}"  ).slider( "value" )) * #{item.price} );
           update();
           });
-
         function update() {
           var global_total = 0;
           $("[id^=total]").each(function() {
             global_total += parseInt($(this).val());
           })
           $( "#global_total" ).val( global_total );
+          if(parseInt($("#global_total").val()) > #{Marketplace::Database.instance.user_by_name(session[:name]).credits}){
+            $("#global_total").css("background-color","red");
+          }else{
+            $("#global_total").css("background-color","white");
+          };
         }
 
 
