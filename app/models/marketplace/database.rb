@@ -78,12 +78,14 @@ module Marketplace
     # @return [Array of Arrays] array with arrays for every different item.name
     def categories_items_without(user)
       categorized_items = categories_items
+      categorized_items.each{ |sub_array| clear_category_from_user_items(sub_array,user) }
       categorized_items.each{ |sub_array|
-        clear_category_from_user_items(sub_array,user)
-        if sub_array.length == 0
+        if sub_array.length == 0 or sub_array == nil
           categorized_items.delete(sub_array)
         end
-      }
+      } # note by Urs: don't do both in one .each! -> bug
+      puts categorized_items
+      categorized_items
     end
 
     def clear_category_from_user_items(category, user)

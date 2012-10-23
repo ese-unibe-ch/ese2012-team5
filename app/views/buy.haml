@@ -4,6 +4,7 @@
 %h1 Buy
 %br
 
+-current_user = Marketplace::Database.instance.user_by_name(session[:name])
 -count = 0
 %table#table_new
   -for item in items
@@ -39,13 +40,15 @@
             global_total += parseInt($(this).val());
           })
           $( "#global_total" ).val( global_total );
-          if(parseInt($("#global_total").val()) > #{Marketplace::Database.instance.user_by_name(session[:name]).credits}){
+
+
+          if(parseInt($("#global_total").val()) > #{current_user.credits}) {
             $("#global_total").css("background-color","red");
             $("#message").text("Not enough credits. Get a job.");
             $("#continue_button").attr("disabled","disabled");
           }else{
             $("#global_total").css("background-color","white");
-            $("#message").text("You can pay that.");
+            $("#message").text("");
             $("#continue_button").removeAttr("disabled");
           };
         }
@@ -77,7 +80,7 @@
     -count = count + 1
     -break if quantity == 0
   %tr
-    %td{:colspan => 2, :align => "right"}
+    %td{ :align => "left"}
       -if quantity != 0
         That's all... I'm sorry. You wanted #{quantity} more..
       -elsif count < items.length
@@ -88,6 +91,7 @@
           %input(type='hidden' name="category" value="#{items[0].name}")
           %input(type='hidden' name="quantity" value="#{sum}")
           %input(type='submit' value='Show more')
+    %td{ :align => "right"}
       Total:
       %input(type='text' readonly="readonly" id='global_total')
       %img{:src => "icons/coins.png"}

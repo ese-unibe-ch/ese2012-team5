@@ -32,22 +32,23 @@
     %th Buy
   %tbody
     - for item in items_user
-      %tr
-        %td{:width => "74"}
-          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
-          %a{:href => "/item/#{item.id}"} #{item.name}
-        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
-          #{item.quantity}
-          %img{:src => "../icons/package.png"}
-        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
-          #{item.price}
-          %img{:src => "../icons/coins.png"}
-        %td
-          -if current_user != nil and item.price <= current_user.credits
-            %form( action="/item/#{item.id}/buy" method="POST" )
-              %input(type="text" name="quantity" value=1 size =1)
-              %input(type="submit" value="Buy")
-          -else
-            %form( action="/item/#{item.id}/buy" method="POST" )
-              %input(type="submit" disabled="disabled" value="Buy")
+      -if item.active
+        %tr
+          %td{:width => "74"}
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+          %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+            %a{:href => "/item/#{item.id}"} #{item.name}
+          %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+            #{item.quantity}
+            %img{:src => "../icons/package.png"}
+          %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+            #{item.price}
+            %img{:src => "../icons/coins.png"}
+          %td
+            -if current_user != nil and item.price <= current_user.credits and item.active
+              %form( action="/item/#{item.id}/buy" method="POST" )
+                %input(type="text" name="quantity" value=1 size =1)
+                %input(type="submit" value="Buy")
+            -else
+              %form( action="/item/#{item.id}/buy" method="POST" )
+                %input(type="submit" disabled="disabled" value="Buy")

@@ -58,7 +58,10 @@
         %td{:width => "74"}
           %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
         %td{:align => "center"}
-          %a{:href => "/item/#{category[0].id}"}#{category[0].name}
+          -if category.length > 1
+            #{category[0].name}
+          -else
+            %a{:href => "/item/#{category[0].id}"}#{category[0].name}
         %td{:align => "center"}
           -i = 0
           -for item in category
@@ -83,7 +86,7 @@
             %form( action="/buy" method="GET" )
               %input(type="text" name="quantity" value=1 size=1)
               %input(type='hidden' name="category" value="#{category[0].name}")
-              %input(type="submit" value="Buy")
+              %input(type="submit" value="Continue")
           -else
             %form( action="/buy" method="GET" )
-              %input(type="submit" disabled="disabled" value="Buy")
+              %input(type="submit" disabled="disabled" value="Continue")
