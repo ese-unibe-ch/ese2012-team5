@@ -4,7 +4,11 @@
 %br
 
 -if info != nil
-  %h2 #{info}
+  %table#table_new
+    %td
+      %img{:src => "../icons/error.png"}
+    %td
+      %h2 #{info}
   %br
 
 %table#table_new

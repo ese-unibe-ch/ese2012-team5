@@ -1,16 +1,11 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 
-%h1 Buy(we need some sexy title here)
+%h1 Buy
 %br
-
--if info != nil
-  %h2 #{info}
-  %br
 
 
 -count = 0
-
 %table#table_new
   -for item in items
     -if quantity >= item.quantity

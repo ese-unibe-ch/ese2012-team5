@@ -17,11 +17,7 @@ class BuyConfirm < Sinatra::Application
       x = x + 1
     end
 
-
-    message = session[:message]
-    session[:message] = nil
-    haml :buy_confirm, :locals => { :info => message,
-                                    :map => map }
+    haml :buy_confirm, :locals => { :map => map }
   end
 
 end
