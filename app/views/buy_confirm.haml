@@ -24,7 +24,10 @@
         -total_price += item.price*(quantity).to_i
         %tr
           %td{:width => "74"}
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+            -if item.pictures.length > 0
+              %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
+            -else
+              %img{:height => "200", :width => "200", :src => "../item_image_upload/default_image.jpg"}
           %td{:align => "center"}
             %a{:href => "/item/#{item.id}"} #{item.name}
           %td{:align => "center"}

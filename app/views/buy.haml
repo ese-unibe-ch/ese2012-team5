@@ -56,7 +56,10 @@
 
     %tr
       %td{:height => "200", :width => "200"}
-        %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
+        -if item.pictures.length > 0
+          %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
+        -else
+          %img{:height => "200", :width => "200", :src => "../item_image_upload/default_image.jpg"}
       %td
         Name:  #{item.name}
         %br
