@@ -66,3 +66,8 @@
             %input(type='hidden' name="item_id" value="#{item.id}")
             %input(type='hidden' name="image_pos" value="#{index}")
             %input(type='submit' value='Select as profile picture')
+-else
+  %table#table_new
+    %tr
+      %td
+        %img{:height => "200", :width => "200", :src => "/item_image_upload/default_image.jpg"}

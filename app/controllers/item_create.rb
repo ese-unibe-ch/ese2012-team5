@@ -32,7 +32,8 @@ class ItemCreate < Sinatra::Application
     current_user = @database.user_by_name(session[:name])
 
 
-    if (name == nil or name == "" or name.strip! == "")
+
+    if name == nil or name == "" or name.strip! == ""
       session[:message] = "empty name!"
       redirect '/createItem'
     end
