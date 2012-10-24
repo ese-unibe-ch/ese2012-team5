@@ -19,7 +19,7 @@ class DeleteAccount < Sinatra::Application
 
     if proper_password == password
       for item in  user.items
-        if item.pictures.size > 1
+        if item.pictures.size > 0
           item.pictures.each_with_index{|pic,index|
             FileUtils.remove(File.join("public","item_images", "#{item.pictures[index]}"))
           }
