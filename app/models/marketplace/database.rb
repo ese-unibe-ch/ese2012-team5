@@ -74,6 +74,24 @@ module Marketplace
       categorized_items
     end
 
+    # categories all ACTIVE items without items of user by their name
+    # @return [Array of Arrays] array with arrays for every different item.name
+    def categories_items_without(user)
+      categorized_items = categories_items
+      categorized_items.each{ |sub_array| clear_category_from_user_items(sub_array,user) }
+      categorized_items.each{ |sub_array|
+        if sub_array.length == 0 or sub_array == nil
+          categorized_items.delete(sub_array)
+        end
+      } # note by Urs: don't do both in one .each! -> bug
+      puts categorized_items
+      categorized_items
+    end
+
+    def clear_category_from_user_items(category, user)
+      category.delete_if{ |item| item.owner == user }
+    end
+
     def category_with_name(name)
       categorized_items = categories_items
       categorized_items.detect{ |sub_item_array| sub_item_array[0].name == name }
@@ -85,7 +103,7 @@ module Marketplace
       sorted_categories = Array.new
       categorized_items.each{ |sub_array|
         if sub_array.size > 1
-          sorted_categories.push(sub_array.sort! {|a,b| a.price <=> b.price})
+          sorted_categories.push(sort_category_by_price(sub_array))
         else
           sorted_categories.push(sub_array)
         end
@@ -93,8 +111,8 @@ module Marketplace
       sorted_categories
     end
 
-    def sort_category_by_price(items)
-      items.sort! {|a,b| a.price <=> b.price}
+    def sort_category_by_price(category)
+      category.sort! {|a,b| a.price <=> b.price}
     end
 
 

@@ -68,10 +68,19 @@ module Marketplace
 
     # @param [Item] item checks if the user owns this item
     # @return [Boolean] True if the item is part of the users item-list
-    def has_item(item)
+    def has_item?(item)
       !(self.items.detect do |item_temp|
         item_temp.id == item.id
       end.nil?)
+    end
+
+    # @param [Item] item item to buy
+    # @param [Integer] quantity how much of the item
+    # @return [Boolean] True if user has enough credits, is not owner and item is active
+    def can_buy_item?(item, quantity)
+      self.name != item.owner and
+          enough_credits(item.price * quantity) and
+          item.active
     end
 
     def delete

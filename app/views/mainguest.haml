@@ -3,8 +3,13 @@
 
 %h1 Welcome Guest
 
-- if info != nil
-  %h2 #{info}
+-if info != nil
+  %table#table_new
+    %td
+      %img{:src => "icons/error.png"}
+    %td
+      %h2 #{info}
+  %br
 
 %a
   These are some items you will be able to buy on this page.
@@ -27,19 +32,25 @@ Items of users
 
       %tr
         %td{:width => "74"}
-          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
-        %td
+          - if category[0].pictures.size > 0
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
+          - else
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+        %td{:align => "center"}
           %a{:href => "/item/#{category[0].id}"}#{category[0].name}
-        %td
+        %td{:align => "center"}
           -i = 0
           -for item in category
             -i = i + item.quantity
           #{i}
-        %td
-          ab
+          %img{:src => "icons/package.png"}
+        %td{:align => "center"}
+          %h3 starting at
           #{category[0].price}
-        %td
+          %img{:src => "icons/coins.png"}
+        %td{:align => "center"}
           -if category.size >1
-            #{category.size} owners
+            #{category.size}
+            %img{:src => "icons/user_silhouette.png"}
           -else
             %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}

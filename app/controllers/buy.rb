@@ -4,24 +4,25 @@ class Buy < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   get '/buy' do
 
     redirect '/login' unless session[:name]
 
     quantity = params[:quantity].to_i
     category = params[:category]
+    current_user = @database.user_by_name(session[:name])
     items = @database.category_with_name(category)
-    sorted_items = @database.sort_category_by_price(items)
 
     if items == nil
-      session[:message] = "Item name not found - could not create category"
+      session[:message] = "Item name not found!</br>Could not create category!"
       redirect '/'
     end
 
-    message = session[:message]
-    session[:message] = nil
-    haml :buy, :locals => { :info => message,
-                            :quantity => quantity,
+    items_cleaned = @database.clear_category_from_user_items(items,current_user)
+    sorted_items = @database.sort_category_by_price(items_cleaned)
+
+    haml :buy, :locals => { :quantity => quantity,
                             :items => sorted_items }
   end
 
@@ -29,10 +30,10 @@ class Buy < Sinatra::Application
   post '/buy' do
 
     current_user = @database.user_by_name(session[:name])
-    params.each do |key, param|
-      params[key] = param
-    end
 
+    # Create a hash-table
+    # key = item.id
+    # value = quantity to buy of item.id
     x = 0
     map = Hash.new
     while params.key?("id#{x}")
@@ -44,9 +45,8 @@ class Buy < Sinatra::Application
 
     if map.empty?
       session[:message] = "You bought nothing...congrats..."
-      redirect "/"
+      redirect '/'
     end
-
 
     session[:message] = ""
     map.each_pair do |id,quantity|
@@ -56,7 +56,7 @@ class Buy < Sinatra::Application
 
       # Check for guests playing around
       if !current_user
-        session[:message] = "Log in to buy items"
+        session[:message] = "Log in to buy items..how did you end up there anyway?!"
         redirect '/login'
       end
 
@@ -67,8 +67,10 @@ class Buy < Sinatra::Application
       end
 
       # Check if user isn't able to buy item
-      if !user_can_buy_item?(current_user, current_item, quantity)
-        session[:message] = "You can't buy this item! Not active or not enough credits"
+      if !current_user.can_buy_item?(current_item, quantity)
+        session[:message] = "You can't buy this item!</br>"
+        session[:message] << "Not for sell!" if !current_item.active
+        session[:message] << "Not enough credits!" if !current_user.enough_credits(current_item.price * quantity)
         redirect "/item/#{current_item.id}"
       end
 
@@ -84,31 +86,16 @@ class Buy < Sinatra::Application
         item_to_sell = current_item
       end
 
+      # Store seller
       seller = item_to_sell.owner
 
       # Let the buyer buy the item
       current_user.buy(item_to_sell)
-
       session[:message] << "You bought #{quantity}x #{current_item.name} from #{seller.name}</br>"
     end
 
-    current_user = @database.user_by_name(session[:name])
-    current_items = current_user.items
-    categorized_items = @database.categories_items
-    sorted_categorized_items = @database.sort_categories_by_price(categorized_items)
+    redirect '/'
 
-    message = session[:message]
-    session[:message] = nil
-    haml :main, :locals => {  :info => message,
-                              :current_items => current_items,
-                              :current_user => current_user,
-                              :categories => sorted_categorized_items }
-  end
-
-  def user_can_buy_item?(current_user, current_item, quantity)
-    current_user.name != current_item.owner and
-        current_item.price * quantity <= current_user.credits and
-        current_item.active
   end
 
 end
