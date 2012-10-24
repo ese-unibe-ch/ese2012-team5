@@ -1,10 +1,15 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
--#Header
+
 %h1 Welcome Guest
 
-- if info != nil
-  %h2 #{info}
+-if info != nil
+  %table#table_new
+    %td
+      %img{:src => "icons/error.png"}
+    %td
+      %h2 #{info}
+  %br
 
 %a
   These are some items you will be able to buy on this page.
@@ -12,31 +17,40 @@
   and join the wonderful world of trading.
 %br
 
--#List of all Items, for each user a new Table
+
+Items of users
 %table#table_new
   %thead
-    %th Picture
-    %th Name
-    %th Quantity
-    %th Value
-    %th Active
-    %th Owner
+    %tr
+      %th Picture
+      %th Name
+      %th Quantity
+      %th Value
+      %th Owner
   %tbody
-    - for user in users
-      - for item in user.items
-        %tr
-          %td
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-          %td
-            %a{:href => "/item/#{item.id}"} #{item.name}
-          %td
-            #{item.quantity}
-          %td
-            #{item.price}
-          %td
-            - if item.active
-              %p yes
-            - else
-              %p no
-          %td
-            %a{:href => "/user/#{user.name}"} #{user.name}
+    -for category in categories
+
+      %tr
+        %td{:width => "74"}
+          - if category[0].pictures.size > 0
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
+          - else
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+        %td{:align => "center"}
+          %a{:href => "/item/#{category[0].id}"}#{category[0].name}
+        %td{:align => "center"}
+          -i = 0
+          -for item in category
+            -i = i + item.quantity
+          #{i}
+          %img{:src => "icons/package.png"}
+        %td{:align => "center"}
+          %h3 starting at
+          #{category[0].price}
+          %img{:src => "icons/coins.png"}
+        %td{:align => "center"}
+          -if category.size >1
+            #{category.size}
+            %img{:src => "icons/user_silhouette.png"}
+          -else
+            %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}

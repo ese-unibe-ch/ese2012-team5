@@ -1,16 +1,19 @@
 require 'test/unit'
+require 'rubygems'
+require 'bcrypt'
 require '../app/models/marketplace/item.rb'
 require '../app/models/marketplace/user.rb'
+require '../app/models/marketplace/database.rb'
 
-# syntax for inheritance
 class StoreSimulationTest < Test::Unit::TestCase
 
   def test_simu
-    john = Marketplace::User.create('John')
-    jack = Marketplace::User.create('Jack')
-    item1 = Marketplace::Item.create('Gartentisch XL', 50, john)
+    database = Marketplace::Database.instance
+    john = Marketplace::User.create('John','pW123')
+    jack = Marketplace::User.create('Jack','pW123')
+    item1 = Marketplace::Item.create('Gartentisch XL', 50,1, john)
     item1.active=true
-    item2 = Marketplace::Item.create('DVD', 10, jack)
+    item2 = Marketplace::Item.create('DVD', 10,1, jack)
     puts("Gartentisch Item: #{item1}")
     puts("DVD Item: #{item2}")
     puts("Jack's List:\n #{jack.items}")
@@ -20,7 +23,7 @@ class StoreSimulationTest < Test::Unit::TestCase
     puts("Jack's List:\n #{jack.items}")
     puts("John's List:\n #{john.items}")
     puts("John tries to buy Jack's DVD!")
-    john.buy(item2)
+    assert_raise(NameError){user.buy(item)}
     puts("Jack's List:\n #{jack.items}")
     puts("John's List:\n #{john.items}")
     puts("DVD Activation!")

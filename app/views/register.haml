@@ -4,18 +4,30 @@
 %br
 
 -if info != nil
-  %h2 #{info}
+  %table#table_new
+    %td
+      %img{:src => "icons/error.png"}
+    %td
+      %h2 #{info}
+  %br
 
-%p Password must have at least 4 characters and there must be at least one uppercase letter, one lowercase letter and one number.
-
+%h3 Username can be 3 to 12 characters.
+%h3 Password must have at least 4 characters and there must be at least one uppercase letter, one lowercase letter and one number.
+%br
 %form( action="/register" method="POST" )
-  %label Username
-  %input(type="text" name="username")
-  %p
-  %label Password
-  %input(type="password" name="password")
-  %p
-  %label confirm Password
-  %input(type="password" name="password_conf")
-  %p
-  %input(type="submit" value="Register")
+  %table#table_new(style="width:auto;")
+    %tr
+      %td
+        %label Enter Username:
+        %input(type="text" name="username")
+    %tr
+      %td
+        %label Enter Password:&nbsp
+        %input(type="password" name="password")
+    %tr
+      %td
+        %label Confirm Password:
+        %input(type="password" name="password_conf")
+    %tr
+      %td
+        %input(type="submit" value="Register")

@@ -1,11 +1,19 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
-%h1 Welcome #{current_user.name}
 
+%h1 Welcome #{current_user.name}
 %br
 
--#List of users Items
-Own Items
+-if info != nil
+  %table#table_new
+    %td
+      %img{:src => "icons/error.png"}
+    %td
+      %h2 #{info}
+  %br
+
+
+%h3 Your Items
 %table#table_new
   %thead
     %th Picture
@@ -14,26 +22,30 @@ Own Items
     %th Value
     %th Active
   %tbody
-    - for item in current_user.items
+    - for item in current_items
       %tr
-        %td
-          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td
-          %a{:href => "/item/#{item.id}"} #{item.name}
-        %td
-          #{item.quantity}
-        %td
-          #{item.price}
-        %td
-          - if item.active
-            %p yes
+        %td(width = "74" onclick="Navigate_to('/item/#{item.id}');")
+          - if item.pictures.size > 0
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
           - else
-            %p no
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          %a #{item.name}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          #{item.quantity}
+          %img{:src => "icons/package.png"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          #{item.price}
+          %img{:src => "icons/coins.png"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          - if item.active
+            %img{:src => "icons/accept.png"}
+          - else
+            %img{:src => "icons/cross.png"}
 %br
 
 
--#List of all Items, for each user a new Table
-List of Items by other users
+%h3 Items of other users
 %table#table_new
   %thead
     %tr
@@ -41,37 +53,46 @@ List of Items by other users
       %th Name
       %th Quantity
       %th Value
-      %th Active
       %th Owner
       %th Buy
   %tbody
-    -for user in users
-      -if user != current_user
-        - for item in user.items
-          %tr
-            %td
-              %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-            %td
-              %a{:href => "/item/#{item.id}"}#{item.name}
-            %td
-              #{item.quantity}
-            %td
-              #{item.price}
-            %td
-              - if item.active
-                %p yes
-              - else
-                %p no
-            %td
-              %a{:href => "/user/#{user.name}"} #{user.name}
-            %td
-              -if item.price <= current_user.credits and item.active
-                Amount (#{item.quantity} available):
-
-
-                %form( action="/item/#{item.id}/buy" method="POST" )
-                  %input(type="text" name="quantity" value=1 size=1)
-                  %input(type="submit" value="Buy")
-              -else
-                %form( action="/item/#{item.id}/buy" method="POST" )
-                  %input(type="submit" disabled="disabled" value="Buy")
+    -for category in categories
+      %tr
+        %td{:width => "74"}
+          - if category[0].pictures.size > 0
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
+          - else
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+        %td{:align => "center"}
+          -if category.length > 1
+            #{category[0].name}
+          -else
+            %a{:href => "/item/#{category[0].id}"}#{category[0].name}
+        %td{:align => "center"}
+          -i = 0
+          -for item in category
+            -i = i + item.quantity
+          #{i}
+          %img{:src => "icons/package.png"}
+        %td{:align => "center"}
+          -if category.length > 1
+            %h3 starting at
+            #{category[0].price}
+          -else
+            #{category[0].price}
+          %img{:src => "icons/coins.png"}
+        %td{:align => "center"}
+          -if category.size >1
+            #{category.size}
+            %img{:src => "icons/user_silhouette.png"}
+          -else
+            %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}
+        %td
+          -if category[0].price <= current_user.credits
+            %form( action="/buy" method="GET" )
+              %input(type="text" name="quantity" value=1 size=1)
+              %input(type='hidden' name="category" value="#{category[0].name}")
+              %input(type="submit" value="Continue")
+          -else
+            %form( action="/buy" method="GET" )
+              %input(type="submit" disabled="disabled" value="Continue")

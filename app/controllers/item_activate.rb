@@ -1,15 +1,23 @@
 class ItemActivate < Sinatra::Application
 
+  before do
+    @database = Marketplace::Database.instance
+  end
+
   # Switches the active attribute of item with given id
   post "/item/:id/activate" do
 
-    current_item = Marketplace::Item.by_id(params[:id].to_i)
-    current_user = Marketplace::User.by_name(session[:name])
+    current_item = @database.item_by_id(params[:id].to_i)
+    current_user = @database.user_by_name(session[:name])
 
 
     if current_user == current_item.owner
       switchActive(current_item)
-      session[:message] = "Item is now #{current_item.active}"
+      if(current_item.active)
+        session[:message] = "Item is now active."
+      else
+        session[:message] = "Item is now inactive."
+      end
       redirect "/item/#{current_item.id}"
     else
       session[:message] = "You are not the owner of this ite!"

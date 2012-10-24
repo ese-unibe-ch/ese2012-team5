@@ -4,14 +4,19 @@
 %br
 
 -if info != nil
-  %h2 #{info}
+  %table#table_new
+    %td
+      %img{:src => "../icons/error.png"}
+    %td
+      %h2 #{info}
+  %br
 
 
 %table#table_new
-  %td{:height => "205", :width => "205"}
+  %td{:height => 205, :width => 205, :onclick => "Navigate_to('/settings');"}
     %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
-  %td
-    Your Interests:
+  %td(onclick="Navigate_to('/settings');")
+    %h3 Your Interests:
     %br
     - details = user.details.gsub(/\n/, '<br />')
     #{details}
@@ -27,18 +32,23 @@
     %th Value
     %th Active
   %tbody
-    - for item in user.items
+    - for item in items_user
       %tr
-        %td
-          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
-        %td
-          %a{:href => "/item/#{item.id}"} #{item.name}
-        %td
-          #{item.quantity}
-        %td
-          #{item.price}
-        %td
-          - if item.active
-            %p yes
+        %td{:width => 74}
+          - if item.pictures.size > 0
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
           - else
-            %p no
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          %a{:href => "/item/#{item.id}"} #{item.name}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          #{item.quantity}
+          %img{:src => "../icons/package.png"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          #{item.price}
+          %img{:src => "../icons/coins.png"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+          - if item.active
+            %img{:src => "../icons/accept.png"}
+          - else
+            %img{:src => "../icons/cross.png"}

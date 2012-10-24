@@ -2,9 +2,18 @@
 
 %head
   %title
-    itemMarket
+    item|market
   %link{:rel =>"stylesheet", :type =>"text/css", :href => url("style.css")}
   %link{:rel => "icon", :type=>"image/png", :href => url("images/fav.png")}
+
+  %link{:rel =>"stylesheet", :type=>"text/css", :href=> url("jquery-ui.css")}
+  %script(type= "text/javascript" src= "/jquery-1.8.2.js")
+  %script(type= "text/javascript" src= "/jquery-ui.js")
+  :javascript
+    function Navigate_to(theUrl)
+      {
+      document.location.href = theUrl;
+      }
 
 
 %body
@@ -29,18 +38,19 @@
         #topUserInfo
           %table#table_top
             %tr
-              %td
-                %img{:height => "40", :width => "40", :align => "center", :src => "../images/#{Marketplace::User.by_name(session[:name]).picture}"}
-              %td
+              %td(onclick="Navigate_to('/settings');")
+                %img{:height => "40", :width => "40", :align => "center", :src => "../images/#{Marketplace::Database.instance.user_by_name(session[:name]).picture}"}
+              %td(onclick="Navigate_to('/user/#{session[:name]}');")
                 %label{style="float = 'auto'"}
                 Logged in as:&nbsp
                 %br
                 #{session[:name]}
             %tr
-              %td{:colspan=>2}
+              %td(onclick="Navigate_to('/user/#{session[:name]}');" colspan="2")
                 Current credit:&nbsp
                 %br
-                #{Marketplace::User.by_name(session[:name]).credits}
+                #{Marketplace::Database.instance.user_by_name(session[:name]).credits}
+                %img{:src => "../icons/coins.png"}
     #main_page
       #menu
         #chromemenu.chromestyle
