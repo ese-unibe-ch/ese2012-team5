@@ -18,8 +18,16 @@ class DeleteAccount < Sinatra::Application
     proper_password = BCrypt::Password.new(user.password)
 
     if proper_password == password
+      for item in  user.items
+        if item.pictures.size > 1
+          item.pictures.each_with_index{|pic,index|
+            FileUtils.remove(File.join("public","item_images", "#{item.pictures[index]}"))
+          }
+        end
+      end
+
       @database.delete_user(user)
-      session[:message] = "Account deleted. See you around, snitch"
+      session[:message] = "Account deleted. See you around!"
       session[:name] = nil
       redirect '/'
     else

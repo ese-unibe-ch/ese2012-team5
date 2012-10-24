@@ -25,7 +25,10 @@
     - for item in current_items
       %tr
         %td(width = "74" onclick="Navigate_to('/item/#{item.id}');")
-          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+          - if item.pictures.size > 0
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+          - else
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           %a #{item.name}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
@@ -56,7 +59,10 @@
     -for category in categories
       %tr
         %td{:width => "74"}
-          %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
+          - if category[0].pictures.size > 0
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
+          - else
+            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
         %td{:align => "center"}
           %a{:href => "/item/#{category[0].id}"}#{category[0].name}
         %td{:align => "center"}

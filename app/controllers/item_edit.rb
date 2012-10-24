@@ -76,13 +76,15 @@ class ItemEdit < Sinatra::Application
     item_id =  params[:item_id].to_i
     current_item = @database.item_by_id(item_id)
 
-    return 413 if file[:tempfile].size > 400*1024
+    if file != nil
+      filename = "#{@@id}"
+      current_item.add_image(filename)
+      @@id = @@id + 1
 
-    filename = "#{@@id}"
-    current_item.add_image(filename)
-    @@id = @@id + 1
-
-    FileUtils::cp(file[:tempfile].path, File.join("public","item_images", filename))
+      FileUtils::cp(file[:tempfile].path, File.join("public","item_images", filename))
+    else
+      session[:message] = "Please choose a file to upload"
+    end
 
     redirect "item/#{item_id.to_s}/edit"
   end
@@ -92,12 +94,16 @@ class ItemEdit < Sinatra::Application
     send_file(File.join("public","item_images", params[:filename]))
   end
 
+
   #delete image (only link not physical)
   post '/item_image_delete' do
     im_pos =  params[:image_pos].to_i
     id =  params[:item_id].to_i
     current_item = @database.item_by_id(id)
+    item_image_pos = current_item.pictures[im_pos]
     current_item.del_image_by_nr(im_pos)
+    FileUtils.remove(File.join("public","item_images", "#{item_image_pos}"))
+
     redirect "item/#{id.to_s}/edit"
   end
 
