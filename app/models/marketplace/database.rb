@@ -143,6 +143,11 @@ module Marketplace
       @users.delete(user)
     end
 
+    def all_emails
+      emails = Array.new
+      @users.each{ |user| emails.push(user.email)}
+      emails
+    end
   end
 
 end
