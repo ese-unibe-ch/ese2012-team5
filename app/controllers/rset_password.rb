@@ -8,28 +8,26 @@ class RsetPassword < Sinatra::Application
     message = session[:message]
     session[:message] = nil
     #check if hash exists
+    if !(@database.hash_exists_in_map(params[:hash]))
+      session[:message] = "unknown link"
+      redirect '/'
+    end
 
-
-    haml :rset_password, :locals => { :info => message,
-                                      :hash => hash
-
-                                    }
+    haml :user_rset_password, :locals => { :info => message,
+                                           :hash => params[:hash]}
   end
 
-  post '/rset_password' do
-
+  post '/rset_password/:hash' do
 
     password = params[:password]
     password_conf = params[:password_conf]
     hash = params[:hash]
-
-    validate_password(password, password_conf, 4)
+    validate_reset_password(password, password_conf, 4, hash)
 
     #check for which user has that hash
-    @database.get_user_by_hash(hash)
-     user.change_password(password)
-
-
+    user = @database.get_user_by_hash(hash)
+    user.change_password(password)
+    @database.clear_hashentry(hash)
     session[:message] = "password changed, now log in"
     redirect '/login'
   end
@@ -52,8 +50,8 @@ class RsetPassword < Sinatra::Application
     #hash generieren/in map speichern
 
     hash = SecureRandom.hex(24)
-    user = @Database.user_by_email(email)
-    @Database.add_to_hashmap(hash,user)
+    user = @database.user_by_email(email)
+    @database.add_to_hashmap(hash,user)
 
     #mail senden
     Helper::Mailer.send_pw_reset_mail_to(email, "Hi, \nfollow this link to reset your password.
@@ -65,26 +63,28 @@ class RsetPassword < Sinatra::Application
 
 
 
-  def validate_reset_password(password, password_conf, length)
+  def validate_reset_password(password, password_conf, length, hash)
     if password != password_conf
       session[:message] = "password and confirmation don't match"
-      redirect '/rset_password'
+      puts(hash)
+      puts("dini mueter")
+      redirect "/rset_password/#{hash}"
     end
     if password.length<length
       session[:message] = "password too short"
-      redirect '/rset_password'
+      redirect "/rset_password/#{hash}"
     end
     if !(password =~ /[0-9]/)
       session[:message] = "no number in password"
-      redirect '/rset_password'
+      redirect "/rset_password/#{hash}"
     end
     if !(password =~ /[A-Z]/)
       session[:message] = "no uppercase letter in password"
-      redirect '/rset_password'
+      redirect "/rset_password/#{hash}"
     end
     if !(password =~ /[a-z]/)
       session[:message] = "no lowercase letter in password"
-      redirect '/rset_password'
+      redirect "/rset_password/#{hash}"
     end
   end
 

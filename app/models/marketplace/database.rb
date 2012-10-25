@@ -162,5 +162,13 @@ module Marketplace
     def get_user_by_hash(hash)
       @hashmap[hash]
     end
+
+    def hash_exists_in_map(hash)
+      @hashmap.has_key?(hash)
+    end
+
+    def clear_hashentry(hash)
+      @hashmap.delete(hash)
+    end
   end
 end
