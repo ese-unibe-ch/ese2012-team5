@@ -15,9 +15,11 @@ class Register < Sinatra::Application
     username = params[:username]
     password = params[:password]
     password_conf = params[:password_conf]
+    email = params[:email]
 
     validate_username(username, 3, 12)
     validate_password(password, password_conf, 4)
+    send_verification_email(email, username)
 
     new_user = Marketplace::User.create(username, password)
     @database.add_user(new_user)
@@ -44,6 +46,14 @@ class Register < Sinatra::Application
       redirect '/register'
     end
   end
+
+  #sends verification email
+  # @param [String] email address
+  # @param [String] username
+  def send_verification_email(email, username)
+    #todo
+  end
+
 
   #validates password input by user.
   # @param [String] password user chooses

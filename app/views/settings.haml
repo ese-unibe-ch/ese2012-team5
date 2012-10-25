@@ -35,6 +35,22 @@
         %input(type="submit" value="submit")
   %tr
     %td{:colspan => "2"}
+      %h3 Change password
+      %p Password must have at least 4 characters and there must be at least one uppercase letter, one lowercase letter and one number.
+      %form( action="/change_password" method="POST" )
+        %label Old password:
+        %input(type="password" name="old_password")
+        %br
+        %label New password:
+        %input(type="password" name="new_password")
+        %br
+        %label Confirm new password:
+        %input(type="password" name="conf_password")
+        %br
+        %input(type="hidden" name="user" value="#{user.name}")
+        %input(type="submit" value="Change")
+  %tr
+    %td{:colspan => "2"}
       %h3 Delete account
       %br
       %h2 Note: this cannot be undone!

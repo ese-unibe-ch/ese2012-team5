@@ -83,6 +83,10 @@ module Marketplace
           item.active
     end
 
+    def change_password(password)
+      self.password = BCrypt::Password.create(password)
+    end
+
     def delete
       self.items.each { |item| item.delete}
     end
