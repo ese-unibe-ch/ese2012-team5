@@ -9,8 +9,10 @@ module Marketplace
       @users = []
       # list with all existing items in the whole system
       @items = []
-      # Temporary random links of the users
+      # Temporary random links for password reset the users
       @hashmap = Hash.new
+      #list with all pending verification hashes
+      @verification_hashes = []
     end
 
     def self.instance
@@ -169,6 +171,18 @@ module Marketplace
 
     def clear_hashentry(hash)
       @hashmap.delete(hash)
+    end
+
+    def add_verification_hash(hash)
+      @verification_hashes.push(hash)
+    end
+
+    def delete_verification_hash(hash)
+      @verification_hashes.delete(hash)
+    end
+
+    def verification_hash_exists(hash)
+      @verification_hashes.include?(hash)
     end
   end
 end
