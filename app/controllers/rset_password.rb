@@ -1,21 +1,32 @@
+
 class RsetPassword < Sinatra::Application
 
   before do
     @database = Marketplace::Database.instance
   end
 
-  get '/rset_password' do
+  get '/rset_password/:hash' do
     message = session[:message]
     session[:message] = nil
-    haml :register, :locals => { :info => message}
+    #check if hash exists
+
+
+    haml :rset_password, :locals => { :info => message,
+                                      :hash => hash
+
+                                    }
   end
 
   post '/rset_password' do
 
+
     password = params[:password]
     password_conf = params[:password_conf]
+    hash = params[:hash]
 
     validate_password(password, password_conf, 4)
+
+    #check for which user has that hash
 
     @database.user_by_name(user)
     user.change_password(password)
@@ -35,17 +46,18 @@ class RsetPassword < Sinatra::Application
 
     email = params[:email]
 
-
     if (!email_exists?(email))
       session[:message] = "email not registered"
       redirect '/forgot_password'
     end
 
-    @database.user_by_name(user)
-    user.change_password(password)
+    #hash generieren/in map speichern
+    hash = "12tu3y1gki4p23ui"
+    #mail senden
+    Helper::Mailer.send_pw_reset_mail_to(email, "Hi, \nfollow this link to reset your password.
+        http://localhost:4567/rset_password/#{hash}")
 
-
-    session[:message] = "password changed, now log in"
+    session[:message] = "check your mails for reset-link "
     redirect '/login'
   end
 

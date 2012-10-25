@@ -1,4 +1,4 @@
-module Models
+module Helper
   class Mailer
     def self.send_pw_reset_mail_to(to,contents)
       require 'rubygems'
@@ -13,8 +13,7 @@ To: #{to}
 subject: "Item|Market PW Reset"
 Date: #{Time.now.rfc2822}
 
-Please follow the link to reset your pw.
-      #{contents}
+#{contents}
 
 Regards,
 Your item|market - Team

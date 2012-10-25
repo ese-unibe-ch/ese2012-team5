@@ -6,7 +6,7 @@ require 'tilt/haml'
 require 'models/marketplace/user.rb'
 require 'models/marketplace/item.rb'
 require 'models/marketplace/database.rb'
-require 'models/helper/mailer'
+require 'models/helper/mailer.rb'
 
 require 'controllers/main.rb'
 require 'controllers/login.rb'
@@ -21,8 +21,8 @@ require 'controllers/item_buy.rb'
 require 'controllers/item_create.rb'
 require 'controllers/item_merge.rb'
 require 'controllers/delete_account.rb'
-require 'controllers/buy'
-require 'controllers/buy_confirm'
+require 'controllers/buy.rb'
+require 'controllers/buy_confirm.rb'
 
 
 class App < Sinatra::Base
@@ -57,7 +57,7 @@ class App < Sinatra::Base
     # Create some users
     daniel = Marketplace::User.create('Daniel','hallo','test@testmail.com')
     joel = Marketplace::User.create('Joel','test','test@testmail.com')
-    lukas = Marketplace::User.create('Lukas','lol','test@testmail.com')
+    lukas = Marketplace::User.create('Lukas','lol','lukas.v.rotz@gmail.com')
     oliver = Marketplace::User.create('Oliver','aha','test@testmail.com')
     rene = Marketplace::User.create('Rene','wtt','test@testmail.com')
     urs = Marketplace::User.create('Urs','123','test@testmail.com')
