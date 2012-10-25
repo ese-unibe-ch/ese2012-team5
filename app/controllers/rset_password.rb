@@ -12,7 +12,6 @@ class RsetPassword < Sinatra::Application
 
     haml :rset_password, :locals => { :info => message,
                                       :hash => hash
-
                                     }
   end
 
@@ -52,8 +51,8 @@ class RsetPassword < Sinatra::Application
     #hash generieren/in map speichern
 
     hash = SecureRandom.hex(24)
-    user = @Database.user_by_email(email)
-    @Database.add_to_hashmap(hash,user)
+    user = @database.user_by_email(email)
+    @database.add_to_hashmap(hash,user)
 
     #mail senden
     Helper::Mailer.send_pw_reset_mail_to(email, "Hi, \nfollow this link to reset your password.
