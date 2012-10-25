@@ -25,6 +25,32 @@ class Rset_password < Sinatra::Application
     redirect '/login'
   end
 
+  get '/forgot_password' do
+    message = session[:message]
+    session[:message] = nil
+    haml :forgot_password, :locals => { :info => message}
+  end
+
+  post '/forgot_password' do
+
+    email = params[:email]
+
+
+    if (!email_exists?(email))
+      session[:message] = "email not registered"
+      redirect '/forgot_password'
+    end
+
+    @database.user_by_name(user)
+    user.change_password(password)
+
+
+    session[:message] = "password changed, now log in"
+    redirect '/login'
+  end
+
+
+
   def validate_reset_password(password, password_conf, length)
     if password != password_conf
       session[:message] = "password and confirmation don't match"
@@ -48,5 +74,8 @@ class Rset_password < Sinatra::Application
     end
   end
 
-
+  def email_exists?(mail)
+   emails = @database.all_emails()
+   emails.include?(mail)
+  end
 end
