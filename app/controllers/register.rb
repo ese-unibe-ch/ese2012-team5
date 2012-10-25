@@ -19,7 +19,7 @@ class Register < Sinatra::Application
     validate_username(username, 3, 12)
     validate_password(password, password_conf, 4)
 
-    new_user = Marketplace::User.create(username, password)
+    new_user = Marketplace::User.create(username, password,email)
     @database.add_user(new_user)
 
     session[:message] = "#{new_user.name} created, now log in"
@@ -68,6 +68,45 @@ class Register < Sinatra::Application
     end
     if !(password =~ /[a-z]/)
       session[:message] = "no lowercase letter in password"
+      redirect '/register'
+    end
+  end
+
+  def validate_reset_password(password, password_conf, length)
+    if password != password_conf
+      session[:message] = "password and confirmation don't match"
+      redirect '/rset_password'
+    end
+    if password.length<length
+      session[:message] = "password too short"
+      redirect '/rset_password'
+    end
+    if !(password =~ /[0-9]/)
+      session[:message] = "no number in password"
+      redirect '/rset_password'
+    end
+    if !(password =~ /[A-Z]/)
+      session[:message] = "no uppercase letter in password"
+      redirect '/rset_password'
+    end
+    if !(password =~ /[a-z]/)
+      session[:message] = "no lowercase letter in password"
+      redirect '/rset_password'
+    end
+  end
+
+  #validates email input by user.
+  def validate_email(email, email_conf)
+    if email != email_conf
+      session[:message] = "email and confirmation don't match"
+      redirect '/register'
+    end
+    if !(email =~ /[@]/)
+      session[:message] = "email not valid"
+      redirect '/register'
+    end
+    if !(email =~ /[.]/)
+      session[:message] = "email not valid"
       redirect '/register'
     end
   end

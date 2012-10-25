@@ -52,12 +52,12 @@ class App < Sinatra::Base
     database = Marketplace::Database.instance
 
     # Create some users
-    daniel = Marketplace::User.create('Daniel','hallo')
-    joel = Marketplace::User.create('Joel','test')
-    lukas = Marketplace::User.create('Lukas','lol')
-    oliver = Marketplace::User.create('Oliver','aha')
-    rene = Marketplace::User.create('Rene','wtt')
-    urs = Marketplace::User.create('Urs','123')
+    daniel = Marketplace::User.create('Daniel','hallo','test@testmail.com')
+    joel = Marketplace::User.create('Joel','test','test@testmail.com')
+    lukas = Marketplace::User.create('Lukas','lol','test@testmail.com')
+    oliver = Marketplace::User.create('Oliver','aha','test@testmail.com')
+    rene = Marketplace::User.create('Rene','wtt','test@testmail.com')
+    urs = Marketplace::User.create('Urs','123','test@testmail.com')
 
     # Give them some money
     daniel.add_credits(2000)
