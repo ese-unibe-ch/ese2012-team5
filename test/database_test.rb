@@ -10,7 +10,7 @@ class DatabaseTest < Test::Unit::TestCase
 
   def test_user_functions
     database = Marketplace::Database.instance
-    user = Marketplace::User.create('John','pW123')
+    user = Marketplace::User.create('John','pW123','test@testmail1.com')
     database.add_user(user)
     assert(database.all_users.include?(user),"User not included")
     assert(database.user_by_name('John')==user,"Username Wrong")

@@ -149,5 +149,4 @@ module Marketplace
       emails
     end
   end
-
 end

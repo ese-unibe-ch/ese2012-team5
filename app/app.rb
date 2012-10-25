@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'bcrypt'
 require 'tilt/haml'
+require 'webget_ruby_secure_random'
 
 require 'models/marketplace/user.rb'
 require 'models/marketplace/item.rb'
@@ -55,12 +56,12 @@ class App < Sinatra::Base
     database = Marketplace::Database.instance
 
     # Create some users
-    daniel = Marketplace::User.create('Daniel','hallo','test@testmail.com')
-    joel = Marketplace::User.create('Joel','test','test@testmail.com')
+    daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
+    joel = Marketplace::User.create('Joel','test','joel.guggisberg@students.unibe.ch')
     lukas = Marketplace::User.create('Lukas','lol','lukas.v.rotz@gmail.com')
-    oliver = Marketplace::User.create('Oliver','aha','test@testmail.com')
-    rene = Marketplace::User.create('Rene','wtt','test@testmail.com')
-    urs = Marketplace::User.create('Urs','123','test@testmail.com')
+    oliver = Marketplace::User.create('Oliver','aha','test@testmail3.com')
+    rene = Marketplace::User.create('Rene','wtt','sudojudo@eml.cc')
+    urs = Marketplace::User.create('Urs','123','test@testmail4.com')
 
     # Give them some money
     daniel.add_credits(2000)

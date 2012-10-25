@@ -1,4 +1,3 @@
-
 class RsetPassword < Sinatra::Application
 
   before do
@@ -27,9 +26,8 @@ class RsetPassword < Sinatra::Application
     validate_password(password, password_conf, 4)
 
     #check for which user has that hash
-
-    @database.user_by_name(user)
-    user.change_password(password)
+    @database.get_user_by_hash(hash)
+     user.change_password(password)
 
 
     session[:message] = "password changed, now log in"
@@ -52,7 +50,11 @@ class RsetPassword < Sinatra::Application
     end
 
     #hash generieren/in map speichern
-    hash = "12tu3y1gki4p23ui"
+
+    hash = SecureRandom.hex(24)
+    user = @Database.user_by_email(email)
+    @Database.add_to_hashmap(hash,user)
+
     #mail senden
     Helper::Mailer.send_pw_reset_mail_to(email, "Hi, \nfollow this link to reset your password.
         http://localhost:4567/rset_password/#{hash}")
