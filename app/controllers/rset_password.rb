@@ -1,4 +1,4 @@
-class Rset_password < Sinatra::Application
+class RsetPassword < Sinatra::Application
 
   before do
     @database = Marketplace::Database.instance

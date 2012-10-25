@@ -6,9 +6,11 @@ require 'tilt/haml'
 require 'models/marketplace/user.rb'
 require 'models/marketplace/item.rb'
 require 'models/marketplace/database.rb'
+require 'models/helper/mailer'
 
 require 'controllers/main.rb'
 require 'controllers/login.rb'
+require 'controllers/rset_password'
 require 'controllers/register.rb'
 require 'controllers/settings.rb'
 require 'controllers/user.rb'
@@ -39,6 +41,7 @@ class App < Sinatra::Base
   use ItemMerge
   use Buy
   use BuyConfirm
+  use RsetPassword
 
 
   enable :sessions
