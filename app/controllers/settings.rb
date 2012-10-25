@@ -66,7 +66,7 @@ class Settings < Sinatra::Application
       session[:message] = "old password was not correct!"
       redirect '/settings'
     end
-
+    session[:message] = "password changed!"
     redirect '/settings'
   end
 

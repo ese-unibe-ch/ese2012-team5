@@ -157,6 +157,10 @@ module Marketplace
       emails
     end
 
+    #--------
+    # Methods for Pw-Reset and Verification Mail
+    #--------
+
     def add_to_hashmap(hash,user)
       @hashmap[hash] = user
     end
