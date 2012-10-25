@@ -9,6 +9,8 @@ module Marketplace
       @users = []
       # list with all existing items in the whole system
       @items = []
+      # Temporary random links of the users
+      @hashmap = Hash.new
     end
 
     def self.instance
@@ -131,6 +133,10 @@ module Marketplace
       @users.detect { |user_temp| user_temp.name == name }
     end
 
+    def user_by_email(email)
+      @users.detect { |user_temp| user_temp.email == email }
+    end
+
     # @return [Array] all users of the whole system
     def all_users
       @users
@@ -147,6 +153,14 @@ module Marketplace
       emails = Array.new
       @users.each{ |user| emails.push(user.email)}
       emails
+    end
+
+    def add_to_hashmap(hash,user)
+      @hashmap[hash] = user
+    end
+
+    def get_user_by_hash(hash)
+      @hashmap[hash]
     end
   end
 end
