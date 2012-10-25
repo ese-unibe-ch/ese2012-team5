@@ -29,7 +29,7 @@ module Marketplace
     end
 
     def change_password(password)
-      self.password = password
+      self.password = BCrypt::Password.create(password)
     end
 
     # @param [Item] item the user want to buy
