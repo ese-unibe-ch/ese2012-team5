@@ -18,6 +18,7 @@ class Register < Sinatra::Application
 
     validate_username(username, 3, 12)
     validate_password(password, password_conf, 4)
+    validate_email(email)
     send_verification_email(email, username)
 
     new_user = Marketplace::User.create(username, password,email)
@@ -107,11 +108,7 @@ class Register < Sinatra::Application
   end
 
   #validates email input by user.
-  def validate_email(email, email_conf)
-    if email != email_conf
-      session[:message] = "email and confirmation don't match"
-      redirect '/register'
-    end
+  def validate_email(email)
     if !(email =~ /[@]/)
       session[:message] = "email not valid"
       redirect '/register'
@@ -120,6 +117,9 @@ class Register < Sinatra::Application
       session[:message] = "email not valid"
       redirect '/register'
     end
+    if @database.email_exists(email)
+      session[:message] = "email already taken"
+      redirect '/register'
+    end
   end
-
 end

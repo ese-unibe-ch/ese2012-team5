@@ -157,6 +157,16 @@ module Marketplace
       emails
     end
 
+    def email_exists(email)
+      exists = false
+      @users.each do |user|
+        if user.email == email
+          exists = true
+        end
+      end
+      exists
+    end
+
     #--------
     # Methods for Pw-Reset and Verification Mail
     #--------
