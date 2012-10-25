@@ -8,10 +8,11 @@ module Marketplace
     # @param [String] name of the new user
     # @param [String] password of the new user
     # @return [Item] created item
-    def self.create(name, password)
+    def self.create(name, password,email)
       user = self.new
       user.name = name
       user.password = BCrypt::Password.create(password)
+      user.email = email
       user
     end
 
