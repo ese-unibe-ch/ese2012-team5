@@ -28,6 +28,10 @@ module Marketplace
       self.credits >= amount
     end
 
+    def change_password(password)
+      self.password = password
+    end
+
     # @param [Item] item the user want to buy
     def buy(item)
       if self.enough_credits(item.price * item.quantity) && item.active
