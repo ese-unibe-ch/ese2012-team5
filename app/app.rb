@@ -6,6 +6,7 @@ require 'tilt/haml'
 require 'models/marketplace/user.rb'
 require 'models/marketplace/item.rb'
 require 'models/marketplace/database.rb'
+require 'models/marketplace/event.rb'
 
 require 'controllers/main.rb'
 require 'controllers/login.rb'
@@ -52,12 +53,12 @@ class App < Sinatra::Base
     database = Marketplace::Database.instance
 
     # Create some users
-    daniel = Marketplace::User.create('Daniel','hallo')
-    joel = Marketplace::User.create('Joel','test')
-    lukas = Marketplace::User.create('Lukas','lol')
-    oliver = Marketplace::User.create('Oliver','aha')
-    rene = Marketplace::User.create('Rene','wtt')
-    urs = Marketplace::User.create('Urs','123')
+    daniel = Marketplace::User.create('Daniel', 'email', 'hallo')
+    joel = Marketplace::User.create('Joel', 'email', 'test')
+    lukas = Marketplace::User.create('Lukas', 'email','lol')
+    oliver = Marketplace::User.create('Oliver', 'email','aha')
+    rene = Marketplace::User.create('Rene', 'email','wtt')
+    urs = Marketplace::User.create('Urs', 'email','123')
 
     # Give them some money
     daniel.add_credits(2000)

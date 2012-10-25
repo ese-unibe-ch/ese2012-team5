@@ -19,10 +19,11 @@ class Register < Sinatra::Application
 
     validate_username(username, 3, 12)
     validate_password(password, password_conf, 4)
-    send_verification_email(email, username)
 
-    new_user = Marketplace::User.create(username, password)
+    new_user = Marketplace::User.create(username, email, password)
     @database.add_user(new_user)
+
+    create_verification_event(new_user)
 
     session[:message] = "#{new_user.name} created, now log in"
     redirect '/login'
@@ -47,13 +48,13 @@ class Register < Sinatra::Application
     end
   end
 
-  #sends verification email
-  # @param [String] email address
-  # @param [String] username
-  def send_verification_email(email, username)
-    #todo
+  #creates event that looks after verification process
+  # @param [User] user that needs to be verified
+  def create_verification_event(user)
+    event = Marketplace::Event.create(user)
+    @database.add_event(event)
+    event.send_verification_mail
   end
-
 
   #validates password input by user.
   # @param [String] password user chooses

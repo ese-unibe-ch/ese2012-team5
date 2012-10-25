@@ -9,6 +9,8 @@ module Marketplace
       @users = []
       # list with all existing items in the whole system
       @items = []
+      # list with all existing events in the whole system
+      @events = []
     end
 
     def self.instance
@@ -141,6 +143,16 @@ module Marketplace
       user.items.each{ |item| delete_item(item)}
       user.delete
       @users.delete(user)
+    end
+
+
+  #--------
+  #Event
+  #--------
+
+  # save this event to the static user list
+    def add_event(event)
+      @events << event
     end
 
   end
