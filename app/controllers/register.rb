@@ -117,7 +117,7 @@ class Register < Sinatra::Application
       session[:message] = "email not valid"
       redirect '/register'
     end
-    if @database.email_exists(email)
+    if @database.all_emails.include?(email)
       session[:message] = "email already taken"
       redirect '/register'
     end
