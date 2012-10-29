@@ -19,30 +19,19 @@ class Register < Sinatra::Application
     validate_username(username, 3, 12)
     validate_password(password, password_conf, 4)
     validate_email(email)
-    send_verification_email(email, username)
 
-    new_user = Marketplace::User.create(username, password,email)
+    new_user = Marketplace::User.create(username, password, email)
     @database.add_user(new_user)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    send_verification_email(email, username)
+    send_verification_email(email)
 
-=======
-    send_verification_email(email, new_user)
->>>>>>> made some additions to acc verification.
-
-=======
->>>>>>> Revert "made some additions to acc verification."
     session[:message] = "#{new_user.name} created, now log in. Follow the link send to your email to verify your account."
     redirect '/login'
   end
 
-  get '/activate_acc/:hash' do
+  get '/verify_acc/:hash' do
     message = session[:message]
     session[:message] = nil
-<<<<<<< HEAD
-<<<<<<< HEAD
     hash = params[:hash]
 
     #check if hash exists
@@ -56,33 +45,7 @@ class Register < Sinatra::Application
       #delete user from verification hashmap
       @database.delete_entry_from_ver_hashmap(hash)
       session[:message] = "congratulations, your account is now activated"
-=======
-    #check if hash exists
-    if !(@database.verification_hash_exists(params[:hash]))
-      session[:message] = "unknown link"
       redirect '/'
-    else
-      user = @database.get_user_by_hash(params[:hash])
-      user.verify
-      @database.delete_verification_hash(params[:hash])
-      session[:message] = "account verified"
->>>>>>> made some additions to acc verification.
-      redirect '/'
-=======
-    if(session[:name])
-      #check if hash exists
-      if !(@database.verification_hash_exists(params[:hash]))
-        session[:message] = "unknown link"
-        redirect '/'
-      else
-        @database.delete_verification_hash(params[:hash])
-        session[:message] = "account activated"
-        redirect '/'
-      end
-    else
-      session[:message] = "Please,login and follow the link again"
-      redirect '/login'
->>>>>>> Revert "made some additions to acc verification."
     end
   end
 
@@ -108,11 +71,10 @@ class Register < Sinatra::Application
   #sends verification email
   # @param [String] email address
   # @param [String] username
-  def send_verification_email(email, username)
+  def send_verification_email(email)
     #hash generieren und in database speichern
 
     hash = SecureRandom.hex(24)
-<<<<<<< HEAD
     user = @database.user_by_email(email)
     timestamp = Time.new
     @database.add_to_ver_hashmap(hash,user,timestamp)
@@ -120,14 +82,7 @@ class Register < Sinatra::Application
     #verification mail senden
     Helper::Mailer.send_verification_mail_to(email, "Hi, #{user.name} \nfollow this link to verify your account.
         http://localhost:4567/verify_acc/#{hash}")
-=======
-    @database.add_verification_hash(hash)
 
-    #verification mail senden
-    Helper::Mailer.send_verification_mail_to(email, "Hi, #{username} \nfollow this link to activate your account.
-        http://localhost:4567/activate_acc/#{hash}")
-
->>>>>>> Revert "made some additions to acc verification."
   end
 
   #validates password input by user.

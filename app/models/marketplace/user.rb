@@ -98,7 +98,7 @@ module Marketplace
       "Name: #{name} Credits:#{self.credits} Items:#{self.items}"
     end
 
-    def self.verify
+    def verify
        self.verified = true
     end
 
