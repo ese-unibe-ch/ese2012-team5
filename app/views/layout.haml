@@ -45,8 +45,6 @@
                 Logged in as:&nbsp
                 %br
                 #{session[:name]}
-                -if Marketplace::Database.instance.user_by_name(session[:name]).verified == false
-                  (not yet verified)
             %tr
               %td(onclick="Navigate_to('/user/#{session[:name]}');" colspan="2")
                 Current credit:&nbsp
