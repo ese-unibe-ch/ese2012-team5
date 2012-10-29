@@ -61,11 +61,11 @@ class Register < Sinatra::Application
       session[:message] = "username already taken"
       redirect '/register'
     end
-    if username.length<3
+    if username.length<min
       session[:message] = "username too short"
       redirect '/register'
     end
-    if username.length>12
+    if username.length>max
       session[:message] = "username too long"
       redirect '/register'
     end
