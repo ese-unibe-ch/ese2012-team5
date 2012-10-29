@@ -21,30 +21,21 @@ class ResetPassword < Sinatra::Application
       redirect '/forgot_password'
     end
 
-    # generate hash(24 digits in hex) and timestamp
-    # store in hashmap reset_password
-    hash = SecureRandom.hex(24)
     user = @database.user_by_email(email)
-    timestamp = Time.new
-    @database.add_to_rp_hashmap(hash,user,timestamp)
-
-    # valid for 24 hours
-    valid_until = timestamp + 86400
-
     # send email
-    Helper::Mailer.send_pw_reset_mail(email,  )
+    Helper::Mailer.send_pw_reset_mail(user)
 
     session[:message] = "Please check your mails for reset-link"
     redirect '/login'
   end
 
 
-  get '/rset_password/:hash' do
+  get '/reset_password/:hash' do
     message = session[:message]
     session[:message] = nil
 
     #delete entries older than 24h from reset password hashmap
-    @database.delete_24h_old_entries_from_rp_hashmap
+    @database.delete_old_entries_from_rp_hashmap(24)
 
     #check if hash exists
     if !(@database.hash_exists_in_rp_hashmap?(params[:hash]))
@@ -52,49 +43,29 @@ class ResetPassword < Sinatra::Application
       redirect '/login'
     end
 
-    haml :user_rset_password, :locals => { :info => message,
+    haml :user_reset_password, :locals => { :info => message,
                                            :hash => params[:hash]}
   end
 
-  post '/rset_password/:hash' do
+
+  post '/reset_password/:hash' do
 
     password = params[:password]
     password_conf = params[:password_conf]
     hash = params[:hash]
 
-    validate_reset_password(password, password_conf, 4, hash)
+    session[:message] = Helper::Validator.validate_password(password, password_conf, 4)
+    if session[:message] != ""
+      redirect "/reset_password/#{hash}"
+    end
 
     #check for which user has that hash
     user = @database.get_user_from_rp_hashmap_by(hash)
     user.change_password(password)
-    @database.delete_entry_from_rp_hashmap(hash)
+    @database.delete_from_rp_hashmap(hash)
 
     session[:message] = "password changed, now log in"
     redirect '/login'
-  end
-
-
-  def validate_reset_password(password, password_conf, length, hash)
-    if password != password_conf
-      session[:message] = "password and confirmation don't match"
-      redirect "/rset_password/#{hash}"
-    end
-    if password.length<length
-      session[:message] = "password too short"
-      redirect "/rset_password/#{hash}"
-    end
-    if !(password =~ /[0-9]/)
-      session[:message] = "no number in password"
-      redirect "/rset_password/#{hash}"
-    end
-    if !(password =~ /[A-Z]/)
-      session[:message] = "no uppercase letter in password"
-      redirect "/rset_password/#{hash}"
-    end
-    if !(password =~ /[a-z]/)
-      session[:message] = "no lowercase letter in password"
-      redirect "/rset_password/#{hash}"
-    end
   end
 
 

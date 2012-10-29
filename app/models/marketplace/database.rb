@@ -182,17 +182,19 @@ module Marketplace
       @reset_pw_hashmap.has_key?(hash)
     end
 
-    def delete_entry_from_rp_hashmap(hash)
+    def delete_from_rp_hashmap(hash)
       @reset_pw_hashmap.delete(hash)
     end
 
-    def delete_24h_old_entries_from_rp_hashmap
+    #deletes entries that are older than
+    # @param [int] hours
+    def delete_old_entries_from_rp_hashmap(hours)
       @reset_pw_hashmap.each_key {|hash|
         time_now = Time.new
         # adds 1 day in seconds = 86400 seconds
-        valid_until = get_timestamp_from_rp_hashmap_by(hash) + 86400
+        valid_until = get_timestamp_from_rp_hashmap_by(hash) + 24*3600
         if time_now > valid_until
-          delete_entry_from_rp_hashmap(hash)
+          delete_from_rp_hashmap(hash)
         end
       }
     end

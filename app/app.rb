@@ -8,10 +8,12 @@ require 'models/marketplace/user.rb'
 require 'models/marketplace/item.rb'
 require 'models/marketplace/database.rb'
 require 'models/helper/mailer.rb'
+require 'models/helper/validator.rb'
+require 'models/helper/checker.rb'
 
 require 'controllers/main.rb'
 require 'controllers/login.rb'
-require 'controllers/rset_password'
+require 'controllers/reset_password'
 require 'controllers/register.rb'
 require 'controllers/settings.rb'
 require 'controllers/user.rb'
@@ -24,6 +26,7 @@ require 'controllers/item_merge.rb'
 require 'controllers/delete_account.rb'
 require 'controllers/buy.rb'
 require 'controllers/buy_confirm.rb'
+require 'controllers/verify'
 
 
 class App < Sinatra::Base
@@ -42,7 +45,8 @@ class App < Sinatra::Base
   use ItemMerge
   use Buy
   use BuyConfirm
-  use RsetPassword
+  use ResetPassword
+  use Verify
 
 
   enable :sessions

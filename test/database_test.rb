@@ -51,7 +51,7 @@ class DatabaseTest < Test::Unit::TestCase
     assert(database.hash_exists_in_rp_hashmap?("asjhakfad12lj3lkehkf2342h3hk4j"), "Hash should exist")
 
     database.delete_entry_from_ver_hashmap(hash)
-    database.delete_entry_from_rp_hashmap(hash)
+    database.delete_from_rp_hashmap(hash)
 
     assert(!(database.hash_exists_in_ver_hashmap?("asjhakfad12lj3lkehkf2342h3hk4j")), "Hash shouldnt exist anymore")
     assert(!(database.hash_exists_in_rp_hashmap?("asjhakfad12lj3lkehkf2342h3hk4j")), "Hash shouldnt exist anymore")
