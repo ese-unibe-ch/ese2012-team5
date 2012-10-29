@@ -9,10 +9,13 @@ module Marketplace
       @users = []
       # list with all existing items in the whole system
       @items = []
-      # Temporary random links for password reset the users
-      @hashmap = Hash.new
-      #list with all pending verification hashes
+      # This now is a hashmap with the generated hash as a key
+      # mapped to an array which holds the user [0] and the timestamp [1]
+      # this is used for password resets
+      @hashmap = Hash.new{ |hash,key| hash[key] = []}
+      # list of pending verification-hashes
       @verification_hashes = []
+
     end
 
     def self.instance
@@ -161,20 +164,36 @@ module Marketplace
     # Methods for Pw-Reset and Verification Mail
     #--------
 
-    def add_to_hashmap(hash,user)
-      @hashmap[hash] = user
+    def add_to_hashmap(hash,user,timestamp)
+      @hashmap[hash][0] = user
+      @hashmap[hash][1] = timestamp
     end
 
     def get_user_by_hash(hash)
-      @hashmap[hash]
+      @hashmap[hash][0]
     end
 
-    def hash_exists_in_map(hash)
+    def get_timestamp_by(hash)
+      @hashmap[hash][1]
+    end
+
+    def hash_exists_in_map?(hash)
       @hashmap.has_key?(hash)
     end
 
-    def clear_hashentry(hash)
+    def delete_hashentry(hash)
       @hashmap.delete(hash)
+    end
+
+    def delete_24h_old_entries
+      @hashmap.each_key {|hash|
+        time_now = Time.new
+        # adds 1 day in seconds = 86400 seconds
+        valid_until = get_timestamp_by(hash) + 86400
+        if time_now > valid_until
+          delete_hashentry(hash)
+        end
+      }
     end
 
     def add_verification_hash(hash)
@@ -188,5 +207,6 @@ module Marketplace
     def verification_hash_exists(hash)
       @verification_hashes.include?(hash)
     end
+
   end
 end

@@ -76,7 +76,7 @@ class Register < Sinatra::Application
 
     #verification mail senden
     Helper::Mailer.send_verification_mail_to(email, "Hi, #{username} \nfollow this link to activate your account.
-        http://localhost:4567/activate_acc/#{hash}")
+      http://localhost:4567/activate_acc/#{hash}")
 
   end
 

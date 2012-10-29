@@ -68,7 +68,7 @@ class App < Sinatra::Base
     joel.add_credits(400)
     lukas.add_credits(400)
     oliver.add_credits(400)
-    rene.add_credits(400)
+    rene.add_credits(4000)
     urs.add_credits(1000)
 
     # Create some items
