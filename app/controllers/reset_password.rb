@@ -1,4 +1,4 @@
-class RsetPassword < Sinatra::Application
+class ResetPassword < Sinatra::Application
 
   before do
     @database = Marketplace::Database.instance
@@ -32,8 +32,7 @@ class RsetPassword < Sinatra::Application
     valid_until = timestamp + 86400
 
     # send email
-    Helper::Mailer.send_pw_reset_mail_to(email, "Hi, \nfollow this link to reset your password.
-      http://localhost:4567/rset_password/#{hash}\nThis link is valid until #{valid_until}" )
+    Helper::Mailer.send_pw_reset_mail(email,  )
 
     session[:message] = "Please check your mails for reset-link"
     redirect '/login'
