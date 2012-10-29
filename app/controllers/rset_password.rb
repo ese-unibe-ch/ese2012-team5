@@ -4,38 +4,41 @@ class RsetPassword < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   get '/forgot_password' do
     message = session[:message]
     session[:message] = nil
-    haml :forgot_password, :locals => { :info => message}
+    haml :forgot_password, :locals => { :info => message }
   end
+
 
   post '/forgot_password' do
 
     email = params[:email]
 
     if (!email_exists?(email))
-      session[:message] = "email not registered"
+      session[:message] = "Email not registered"
       redirect '/forgot_password'
     end
 
-    #hash(24 stellig, hex) und timestamp generieren/in map speichern
-
+    # generate hash(24 digits in hex) and timestamp
+    # store in hashmap reset_password
     hash = SecureRandom.hex(24)
     user = @database.user_by_email(email)
     timestamp = Time.new
     @database.add_to_rp_hashmap(hash,user,timestamp)
 
-    # 24 stunden addieren => 86400 sekunden
+    # valid for 24 hours
     valid_until = timestamp + 86400
 
-    #mail senden
+    # send email
     Helper::Mailer.send_pw_reset_mail_to(email, "Hi, \nfollow this link to reset your password.
       http://localhost:4567/rset_password/#{hash}\nThis link is valid until #{valid_until}" )
 
-    session[:message] = "please check your mails for reset-link "
+    session[:message] = "Please check your mails for reset-link"
     redirect '/login'
   end
+
 
   get '/rset_password/:hash' do
     message = session[:message]
@@ -72,7 +75,6 @@ class RsetPassword < Sinatra::Application
   end
 
 
-
   def validate_reset_password(password, password_conf, length, hash)
     if password != password_conf
       session[:message] = "password and confirmation don't match"
@@ -96,8 +98,10 @@ class RsetPassword < Sinatra::Application
     end
   end
 
+
   def email_exists?(mail)
    emails = @database.all_emails()
    emails.include?(mail)
   end
+
 end

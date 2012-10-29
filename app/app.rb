@@ -48,7 +48,7 @@ class App < Sinatra::Base
   enable :sessions
 
   set :public_folder, 'app/public'
-  ##################set :show_exceptions, false
+  set :show_exceptions, false
   set :root, File.dirname(__FILE__)
   set :public_folder, Proc.new { File.join(root, "public")}
 
@@ -61,7 +61,7 @@ class App < Sinatra::Base
     lukas = Marketplace::User.create('Lukas','lol','lukas.v.rotz@gmail.com')
     oliver = Marketplace::User.create('Oliver','aha','test@testmail3.com')
     rene = Marketplace::User.create('Rene','wtt','sudojudo@eml.cc')
-    urs = Marketplace::User.create('Urs','123','test@testmail4.com')
+    urs = Marketplace::User.create('Urs','123','UrsZysset@gmail.com')
 
     # Give them some money
     daniel.add_credits(2000)

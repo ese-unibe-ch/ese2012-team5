@@ -4,12 +4,12 @@ class BuyConfirm < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   post '/buy/confirm' do
 
-    params.each do |key, param|
-      params[key] = param
-    end
-
+    # Create a hash-table
+    # key = item.id
+    # value = quantity to buy of item.id(corresponding key)
     x = 0
     map = Hash.new
     while params.key?("id#{x}")

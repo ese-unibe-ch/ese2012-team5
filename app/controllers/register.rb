@@ -4,11 +4,13 @@ class Register < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   get '/register' do
     message = session[:message]
     session[:message] = nil
     haml :register, :locals => { :info => message}
   end
+
 
   post '/register' do
     username = params[:username]
@@ -28,6 +30,7 @@ class Register < Sinatra::Application
     session[:message] = "#{new_user.name} created, now log in. Follow the link send to your email to verify your account."
     redirect '/login'
   end
+
 
   get '/verify_acc/:hash' do
     message = session[:message]

@@ -2,22 +2,24 @@ require 'rubygems'
 require 'tlsmail'
 
 module Helper
+
   class Mailer
+
     def self.send_pw_reset_mail_to(to,contents)
 
       from = 'itemmarket.mail@gmail.com'
       pw = 'itemmarket123'
 
       content = <<EOF
-From: #{from}
-To: #{to}
-subject: "Item|Market PW Reset"
-Date: #{Time.now.rfc2822}
+                From: #{from}
+                To: #{to}
+                subject: "Item|Market PW Reset"
+                Date: #{Time.now.rfc2822}
 
-#{contents}
+                #{contents}
 
-Regards,
-Your item|market - Team
+                Regards,
+                  Your item|market - Team
 EOF
 
       Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)

@@ -160,7 +160,7 @@ module Marketplace
     end
 
     #--------
-    # Methods for Pw-Reset and Verification Mail
+    #Methods for Pw-Reset and Verification Mail
     #--------
 
     #Methods for the @reset_pw_hashmap

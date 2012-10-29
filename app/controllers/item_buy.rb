@@ -28,7 +28,7 @@ class ItemBuy < Sinatra::Application
     end
 
     # Check if user isn't able to buy item
-    if !user_can_buy_item?(current_user, current_item, quantity)
+    if !current_user.can_buy_item?(current_item, quantity)
       session[:message] = "You can't buy this item! Not active or not enough credits"
       redirect "/item/#{current_item.id}"
     end
@@ -62,12 +62,6 @@ class ItemBuy < Sinatra::Application
       redirect "/user/#{current_user.name}"
     end
 
-  end
-
-  def user_can_buy_item?(current_user, current_item, quantity)
-    current_user.name != current_item.owner and
-        current_item.price * quantity <= current_user.credits and
-        current_item.active
   end
 
 end

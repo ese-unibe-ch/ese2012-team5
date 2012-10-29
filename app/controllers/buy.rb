@@ -31,9 +31,15 @@ class Buy < Sinatra::Application
 
     current_user = @database.user_by_name(session[:name])
 
+    # Check for guests playing around
+    if !current_user
+      session[:message] = "Log in to buy items..how did you end up there anyway?!"
+      redirect '/login'
+    end
+
     # Create a hash-table
     # key = item.id
-    # value = quantity to buy of item.id
+    # value = quantity to buy of item.id(corresponding key)
     x = 0
     map = Hash.new
     while params.key?("id#{x}")
@@ -53,12 +59,6 @@ class Buy < Sinatra::Application
 
       quantity = quantity.to_i
       current_item = @database.item_by_id(id.to_i)
-
-      # Check for guests playing around
-      if !current_user
-        session[:message] = "Log in to buy items..how did you end up there anyway?!"
-        redirect '/login'
-      end
 
       # Checks if quantity is wrong
       if quantity <= 0 or quantity > current_item.quantity

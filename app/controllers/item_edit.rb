@@ -4,15 +4,15 @@ class ItemEdit < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+  # TODO rewrite uploadcode!
   @@id = 1
 
   # Displays the view to edit items with given id
-  get "/item/:id/edit" do
+  get '/item/:id/edit' do
 
     id = params[:id].to_i
     current_item = @database.item_by_id(id)
     current_user = @database.user_by_name(session[:name])
-
 
     if current_user != current_item.owner
       session[:message] = "You can't edit a item of an other user"
@@ -27,14 +27,13 @@ class ItemEdit < Sinatra::Application
     message = session[:message]
     session[:message] = nil
     haml :item_edit, :locals => {:item => current_item,
-                                 :info => message}
+                                 :info => message }
   end
 
   # Will edit item with given id according to given params
   # If name or price is not valid, edit will fail
   # If edit succeeds, it will redirect to profile of edited item
-
-  post "/item/:id/edit" do
+  post '/item/:id/edit' do
 
     id = params[:id].to_i
     new_name = params[:name]
@@ -42,16 +41,15 @@ class ItemEdit < Sinatra::Application
     current_item = @database.item_by_id(id)
     current_user = @database.user_by_name(session[:name])
 
-
     if (new_name == nil or new_name == "" or new_name.strip! == "")
-      session[:message] = "empty name!"
+      session[:message] = "Empty name!"
       redirect "/item/#{id}/edit"
     end
 
     begin
       !(Integer(new_price))
     rescue ArgumentError
-      session[:message] = "price was not a number!"
+      session[:message] = "Price was not a number!"
       redirect "/item/#{id}/edit"
     end
 
@@ -94,7 +92,6 @@ class ItemEdit < Sinatra::Application
     send_file(File.join("public","item_images", params[:filename]))
   end
 
-
   #delete image (only link not physical)
   post '/item_image_delete' do
     im_pos =  params[:image_pos].to_i
@@ -103,7 +100,6 @@ class ItemEdit < Sinatra::Application
     item_image_pos = current_item.pictures[im_pos]
     current_item.del_image_by_nr(im_pos)
     FileUtils.remove(File.join("public","item_images", "#{item_image_pos}"))
-
     redirect "item/#{id.to_s}/edit"
   end
 
