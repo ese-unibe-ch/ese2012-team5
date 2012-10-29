@@ -23,16 +23,21 @@ class Register < Sinatra::Application
     new_user = Marketplace::User.create(username, password,email)
     @database.add_user(new_user)
 
+<<<<<<< HEAD
     send_verification_email(email, username)
 
+=======
+    send_verification_email(email, new_user)
+>>>>>>> made some additions to acc verification.
 
     session[:message] = "#{new_user.name} created, now log in. Follow the link send to your email to verify your account."
     redirect '/login'
   end
 
-  get '/activate_acc/:hash' do
+  get '/verify_acc/:hash' do
     message = session[:message]
     session[:message] = nil
+<<<<<<< HEAD
     hash = params[:hash]
 
     #check if hash exists
@@ -46,6 +51,17 @@ class Register < Sinatra::Application
       #delete user from verification hashmap
       @database.delete_entry_from_ver_hashmap(hash)
       session[:message] = "congratulations, your account is now activated"
+=======
+    #check if hash exists
+    if !(@database.verification_hash_exists(params[:hash]))
+      session[:message] = "unknown link"
+      redirect '/'
+    else
+      user = @database.get_user_by_hash(params[:hash])
+      user.verify
+      @database.delete_verification_hash(params[:hash])
+      session[:message] = "account verified"
+>>>>>>> made some additions to acc verification.
       redirect '/'
     end
   end
@@ -69,10 +85,10 @@ class Register < Sinatra::Application
     end
   end
 
-  #sends verification email
+  #creates and stores hash in database, sends verification email
   # @param [String] email address
-  # @param [String] username
-  def send_verification_email(email, username)
+  # @param [User] user
+  def send_verification_email(email, user)
     #hash generieren und in database speichern
 
     hash = SecureRandom.hex(24)
@@ -81,9 +97,8 @@ class Register < Sinatra::Application
     @database.add_to_ver_hashmap(hash,user,timestamp)
 
     #verification mail senden
-    Helper::Mailer.send_verification_mail_to(email, "Hi, #{username} \nfollow this link to activate your account.
-      http://localhost:4567/activate_acc/#{hash}")
-
+    Helper::Mailer.send_verification_mail_to(email, "Hi, #{user.name} \nfollow this link to verify your account.
+        http://localhost:4567/verify_acc/#{hash}")
   end
 
   #validates password input by user.
