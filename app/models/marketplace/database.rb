@@ -9,12 +9,11 @@ module Marketplace
       @users = []
       # list with all existing items in the whole system
       @items = []
-      # This now is a hashmap with the generated hash as a key
-      # mapped to an array which holds the user [0] and the timestamp [1]
-      # this is used for password resets
-      @hashmap = Hash.new{ |hash,key| hash[key] = []}
-      # list of pending verification-hashes
-      @verification_hashes = []
+
+      # These are two hashmaps with the generated hash (link) as a key
+      # mapped to an array of values which holds the user [0] and the timestamp [1]
+      @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
+      @verification_hashmap = Hash.new{ |values,key| values[key] = []}
 
     end
 
@@ -164,48 +163,61 @@ module Marketplace
     # Methods for Pw-Reset and Verification Mail
     #--------
 
-    def add_to_hashmap(hash,user,timestamp)
-      @hashmap[hash][0] = user
-      @hashmap[hash][1] = timestamp
+    #Methods for the @reset_pw_hashmap
+
+    def add_to_rp_hashmap(hash,user,timestamp)
+      @reset_pw_hashmap[hash][0] = user
+      @reset_pw_hashmap[hash][1] = timestamp
     end
 
-    def get_user_by_hash(hash)
-      @hashmap[hash][0]
+    def get_user_from_rp_hashmap_by(hash)
+      @reset_pw_hashmap[hash][0]
     end
 
-    def get_timestamp_by(hash)
-      @hashmap[hash][1]
+    def get_timestamp_from_rp_hashmap_by(hash)
+      @reset_pw_hashmap[hash][1]
     end
 
-    def hash_exists_in_map?(hash)
-      @hashmap.has_key?(hash)
+    def hash_exists_in_rp_hashmap?(hash)
+      @reset_pw_hashmap.has_key?(hash)
     end
 
-    def delete_hashentry(hash)
-      @hashmap.delete(hash)
+    def delete_entry_from_rp_hashmap(hash)
+      @reset_pw_hashmap.delete(hash)
     end
 
-    def delete_24h_old_entries
-      @hashmap.each_key {|hash|
+    def delete_24h_old_entries_from_rp_hashmap
+      @reset_pw_hashmap.each_key {|hash|
         time_now = Time.new
         # adds 1 day in seconds = 86400 seconds
-        valid_until = get_timestamp_by(hash) + 86400
+        valid_until = get_timestamp_from_rp_hashmap_by(hash) + 86400
         if time_now > valid_until
-          delete_hashentry(hash)
+          delete_entry_from_rp_hashmap(hash)
         end
       }
     end
 
-    def add_verification_hash(hash)
-      @verification_hashes.push(hash)
+    #Methods for the @verification_hashmap
+
+    def add_to_ver_hashmap(hash,user,timestamp)
+      @verification_hashmap[hash][0] = user
+      @verification_hashmap[hash][1] = timestamp
     end
 
-    def delete_verification_hash(hash)
-      @verification_hashes.delete(hash)
+    def get_user_from_ver_hashmap_by(hash)
+      @verification_hashmap[hash][0]
     end
 
-    def verification_hash_exists(hash)
-      @verification_hashes.include?(hash)
+    def get_timestamp_from_ver_hashmap_by(hash)
+      @verification_hashmap[hash][1]
+    end
+
+    def hash_exists_in_ver_hashmap?(hash)
+      @verification_hashmap.has_key?(hash)
+    end
+
+    def delete_entry_from_ver_hashmap(hash)
+      @verification_hashmap.delete(hash)
     end
 
   end

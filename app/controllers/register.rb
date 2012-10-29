@@ -19,10 +19,12 @@ class Register < Sinatra::Application
     validate_username(username, 3, 12)
     validate_password(password, password_conf, 4)
     validate_email(email)
-    send_verification_email(email, username)
 
     new_user = Marketplace::User.create(username, password,email)
     @database.add_user(new_user)
+
+    send_verification_email(email, username)
+
 
     session[:message] = "#{new_user.name} created, now log in. Follow the link send to your email to verify your account."
     redirect '/login'
@@ -31,19 +33,20 @@ class Register < Sinatra::Application
   get '/activate_acc/:hash' do
     message = session[:message]
     session[:message] = nil
-    if(session[:name])
-      #check if hash exists
-      if !(@database.verification_hash_exists(params[:hash]))
-        session[:message] = "unknown link"
-        redirect '/'
-      else
-        @database.delete_verification_hash(params[:hash])
-        session[:message] = "account activated"
-        redirect '/'
-      end
+    hash = params[:hash]
+
+    #check if hash exists
+    if !(@database.hash_exists_in_ver_hashmap?(hash))
+      session[:message] = "unknown link"
+      redirect '/'
     else
-      session[:message] = "Please,login and follow the link again"
-      redirect '/login'
+      #activate user
+      @database.get_user_from_ver_hashmap_by(hash).verify
+
+      #delete user from verification hashmap
+      @database.delete_entry_from_ver_hashmap(hash)
+      session[:message] = "congratulations, your account is now activated"
+      redirect '/'
     end
   end
 
@@ -71,8 +74,11 @@ class Register < Sinatra::Application
   # @param [String] username
   def send_verification_email(email, username)
     #hash generieren und in database speichern
+
     hash = SecureRandom.hex(24)
-    @database.add_verification_hash(hash)
+    user = @database.user_by_email(email)
+    timestamp = Time.new
+    @database.add_to_ver_hashmap(hash,user,timestamp)
 
     #verification mail senden
     Helper::Mailer.send_verification_mail_to(email, "Hi, #{username} \nfollow this link to activate your account.

@@ -24,7 +24,7 @@ class RsetPassword < Sinatra::Application
     hash = SecureRandom.hex(24)
     user = @database.user_by_email(email)
     timestamp = Time.new
-    @database.add_to_hashmap(hash,user,timestamp)
+    @database.add_to_rp_hashmap(hash,user,timestamp)
 
     # 24 stunden addieren => 86400 sekunden
     valid_until = timestamp + 86400
@@ -41,11 +41,11 @@ class RsetPassword < Sinatra::Application
     message = session[:message]
     session[:message] = nil
 
-    #delete entries older than 24h
-    @database.delete_24h_old_entries
+    #delete entries older than 24h from reset password hashmap
+    @database.delete_24h_old_entries_from_rp_hashmap
 
     #check if hash exists
-    if !(@database.hash_exists_in_map?(params[:hash]))
+    if !(@database.hash_exists_in_rp_hashmap?(params[:hash]))
       session[:message] = "unknown/timed out link please request a new one"
       redirect '/login'
     end
@@ -63,9 +63,9 @@ class RsetPassword < Sinatra::Application
     validate_reset_password(password, password_conf, 4, hash)
 
     #check for which user has that hash
-    user = @database.get_user_by_hash(hash)
+    user = @database.get_user_from_rp_hashmap_by(hash)
     user.change_password(password)
-    @database.delete_hashentry(hash)
+    @database.delete_entry_from_rp_hashmap(hash)
 
     session[:message] = "password changed, now log in"
     redirect '/login'
