@@ -28,6 +28,10 @@ class Login < Sinatra::Application
     elsif user.nil?
       session[:message] = "user doesn't exist - login failed!"
       redirect '/login'
+    elsif user.verified==false
+      session[:message] = "Your account isn't verified. You must first click on the link in the email received right after registration before you can log in."
+      redirect '/login'
+
     end
 
     # Check password. Compares user input with hashed password via == method. Doesn't compare in plain text!

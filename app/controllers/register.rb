@@ -27,8 +27,8 @@ class Register < Sinatra::Application
 
     send_verification_email(email)
 
-    session[:message] = "#{new_user.name} created, now log in. Follow the link send to your email to verify your account."
-    redirect '/login'
+    session[:message] = "#{new_user.name} created. Before you are able to log in, you must first verify your account by following the link sent to your email."
+    redirect '/'
   end
 
 

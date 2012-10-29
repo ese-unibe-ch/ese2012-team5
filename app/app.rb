@@ -70,6 +70,11 @@ class App < Sinatra::Base
     oliver.add_credits(400)
     rene.add_credits(4000)
     urs.add_credits(1000)
+    urs.verify
+    daniel.verify
+    joel.verify
+    lukas.verify
+    rene.verify
 
     # Create some items
     item1 = Marketplace::Item.create('Table', 100, 20, daniel)
