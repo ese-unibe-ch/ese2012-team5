@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'tlsmail'
-require 'time'
 
 module Helper
   class Mailer

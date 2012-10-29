@@ -19,27 +19,36 @@ class RsetPassword < Sinatra::Application
       redirect '/forgot_password'
     end
 
-    #hash (24 stellig, hex) generieren/in map speichern
+    #hash(24 stellig, hex) und timestamp generieren/in map speichern
 
     hash = SecureRandom.hex(24)
     user = @database.user_by_email(email)
-    @database.add_to_hashmap(hash,user)
+    timestamp = Time.new
+
+    # 24 stunden addieren => 86400 sekunden
+    valid_until = timestamp + 86400
+
+    @database.add_to_hashmap(hash,user,timestamp)
 
     #mail senden
     Helper::Mailer.send_pw_reset_mail_to(email, "Hi, \nfollow this link to reset your password.
-        http://localhost:4567/rset_password/#{hash}")
+      http://localhost:4567/rset_password/#{hash}\nThis link is valid until #{valid_until}" )
 
-    session[:message] = "check your mails for reset-link "
+    session[:message] = "please check your mails for reset-link "
     redirect '/login'
   end
 
   get '/rset_password/:hash' do
     message = session[:message]
     session[:message] = nil
+
+    #delete entries older than 24h
+    @database.delete_24h_old_entries
+
     #check if hash exists
-    if !(@database.hash_exists_in_map(params[:hash]))
-      session[:message] = "unknown link"
-      redirect '/'
+    if !(@database.hash_exists_in_map?(params[:hash]))
+      session[:message] = "unknown/timed out link please request a new one"
+      redirect '/login'
     end
 
     haml :user_rset_password, :locals => { :info => message,
@@ -51,12 +60,14 @@ class RsetPassword < Sinatra::Application
     password = params[:password]
     password_conf = params[:password_conf]
     hash = params[:hash]
+
     validate_reset_password(password, password_conf, 4, hash)
 
     #check for which user has that hash
     user = @database.get_user_by_hash(hash)
     user.change_password(password)
-    @database.clear_hashentry(hash)
+    @database.delete_hashentry(hash)
+
     session[:message] = "password changed, now log in"
     redirect '/login'
   end
