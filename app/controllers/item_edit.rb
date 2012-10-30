@@ -15,12 +15,12 @@ class ItemEdit < Sinatra::Application
     current_user = @database.user_by_name(session[:name])
 
     if current_user != current_item.owner
-      session[:message] = "You can't edit a item of an other user"
+      session[:message] = "error ~ You can't edit a item of an other user"
       redirect "/item/#{id}"
     end
 
     if current_item.active
-      session[:message] = "You can't edit a active item"
+      session[:message] = "error ~ You can't edit a active item"
       redirect "/item/#{id}"
     end
 
@@ -42,14 +42,14 @@ class ItemEdit < Sinatra::Application
     current_user = @database.user_by_name(session[:name])
 
     if (new_name == nil or new_name == "" or new_name.strip! == "")
-      session[:message] = "Empty name!"
+      session[:message] = "error ~ Empty name!"
       redirect "/item/#{id}/edit"
     end
 
     begin
       !(Integer(new_price))
     rescue ArgumentError
-      session[:message] = "Price was not a number!"
+      session[:message] = "error ~ Price was not a number!"
       redirect "/item/#{id}/edit"
     end
 
@@ -81,7 +81,7 @@ class ItemEdit < Sinatra::Application
 
       FileUtils::cp(file[:tempfile].path, File.join("public","item_images", filename))
     else
-      session[:message] = "Please choose a file to upload"
+      session[:message] = "error ~ Please choose a file to upload"
     end
 
     redirect "item/#{item_id.to_s}/edit"

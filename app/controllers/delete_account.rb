@@ -8,7 +8,7 @@ class DeleteAccount < Sinatra::Application
   post '/delete_account' do
 
     if params[:confirm] != "true"
-      session[:message] = "You must confirm that you want to delete your account."
+      session[:message] = "error ~ You must confirm that you want to delete your account."
       redirect '/settings'
     end
 
@@ -28,11 +28,11 @@ class DeleteAccount < Sinatra::Application
       end
 
       @database.delete_user(user)
-      session[:message] = "Account deleted. See you around!"
+      session[:message] = "message ~ Account deleted. See you around!"
       session[:name] = nil
       redirect '/'
     else
-      session[:message] = "The password isn't correct"
+      session[:message] = "error ~ The password isn't correct"
       redirect '/settings'
     end
 
