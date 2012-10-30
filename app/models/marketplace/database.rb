@@ -159,9 +159,14 @@ module Marketplace
       emails
     end
 
-    #--------
-    #Methods for Pw-Reset and Verification Mail
-    #--------
+    def email_exists?(email)
+      emails = all_emails()
+      emails.include?(email)
+    end
+
+  #--------
+  #Methods for Pw-Reset and Verification Mail hashs
+  #--------
 
     #Methods for the @reset_pw_hashmap
 

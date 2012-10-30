@@ -4,7 +4,6 @@ class Login < Sinatra::Application
     @database=Marketplace::Database.instance
   end
 
-
   get '/login' do
     redirect '/' unless session[:name] == nil
 

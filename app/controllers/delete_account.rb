@@ -4,7 +4,6 @@ class DeleteAccount < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
   post '/delete_account' do
 
     if params[:confirm] != "true"
@@ -16,9 +15,7 @@ class DeleteAccount < Sinatra::Application
     password = params[:password]
     user = @database.user_by_name(username)
 
-    proper_password = BCrypt::Password.new(user.password)
-
-    if proper_password == password
+    if Helper::Checker.check_password?(user, password)
       for item in  user.items
         if item.pictures.size > 0
           item.pictures.each_with_index{|pic,index|

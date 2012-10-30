@@ -4,20 +4,18 @@ class ResetPassword < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
   get '/forgot_password' do
     message = session[:message]
     session[:message] = nil
     haml :forgot_password, :locals => { :info => message }
   end
 
-
   post '/forgot_password' do
 
     email = params[:email]
 
-    if (!email_exists?(email))
-      session[:message] = "Email not registered"
+    if (!@database.email_exists?(email))
+      session[:message] = "Email '#{email}' not registered"
       redirect '/forgot_password'
     end
 
@@ -28,7 +26,6 @@ class ResetPassword < Sinatra::Application
     session[:message] = "Please check your mails for reset-link"
     redirect '/login'
   end
-
 
   get '/reset_password/:hash' do
     message = session[:message]
@@ -46,7 +43,6 @@ class ResetPassword < Sinatra::Application
     haml :user_reset_password, :locals => { :info => message,
                                            :hash => params[:hash]}
   end
-
 
   post '/reset_password/:hash' do
 
@@ -68,10 +64,5 @@ class ResetPassword < Sinatra::Application
     redirect '/login'
   end
 
-
-  def email_exists?(mail)
-   emails = @database.all_emails()
-   emails.include?(mail)
-  end
 
 end

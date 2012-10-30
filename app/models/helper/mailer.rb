@@ -3,6 +3,7 @@ require 'tlsmail'
 
 module Helper
 
+  #takes care of sending mails to users
   class Mailer
 
     @database = Marketplace::Database.instance

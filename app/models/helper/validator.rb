@@ -1,6 +1,6 @@
 module Helper
 
-  #class that helps validate user choices for password, username, email etc.
+  #helps validate user choices for password, username, email etc.
   class Validator
 
     @database = Marketplace::Database.instance
