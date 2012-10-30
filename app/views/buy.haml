@@ -44,7 +44,7 @@
 
           if(parseInt($("#global_total").val()) > #{current_user.credits}) {
             $("#global_total").css("background-color","red");
-            $("#message").text("Not enough credits. Get a job.");
+            $("#message").text("Not enough credits.");
             $("#continue_button").attr("disabled","disabled");
           }else{
             $("#global_total").css("background-color","white");
