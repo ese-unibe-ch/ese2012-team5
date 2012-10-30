@@ -192,7 +192,7 @@ module Marketplace
       @reset_pw_hashmap.each_key {|hash|
         time_now = Time.new
         # adds 1 day in seconds = 86400 seconds
-        valid_until = get_timestamp_from_rp_hashmap_by(hash) + 24*3600
+        valid_until = get_timestamp_from_rp_hashmap_by(hash) + hours*3600
         if time_now > valid_until
           delete_from_rp_hashmap(hash)
         end

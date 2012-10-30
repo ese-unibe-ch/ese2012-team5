@@ -59,7 +59,7 @@ class DatabaseTest < Test::Unit::TestCase
     timestamp2 = Time.new-86401
     database.add_to_rp_hashmap(hash,user,timestamp2)
 
-    database.delete_24h_old_entries_from_rp_hashmap
+    database.delete_old_entries_from_rp_hashmap(24)
     assert(!(database.hash_exists_in_rp_hashmap?("asjhakfad12lj3lkehkf2342h3hk4j")), "Hash shouldnt exist anymore")
 
 
