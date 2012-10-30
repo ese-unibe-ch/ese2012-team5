@@ -11,13 +11,13 @@ module Helper
     # @param [Integer] max maximal length username can have
     def self.validate_username(username, min, max)
       if @database.user_by_name(username)
-        return "username already taken. "
+        return "error ~ username already taken. "
       end
       if username.length<min
-        return "username too short. "
+        return "error ~ username too short. "
       end
       if username.length>max
-        return "username too long. "
+        return "error ~ username too long. "
       end
       return ""
     end
@@ -28,19 +28,19 @@ module Helper
     # @param [Integer] length minimal length in characters password must have
     def self.validate_password(password, password_conf, length)
       if password != password_conf
-        return "password and confirmation don't match. "
+        return "error ~ password and confirmation don't match. "
       end
       if password.length<length
-        return "password too short. "
+        return "error ~ password too short. "
       end
       if !(password =~ /[0-9]/)
-        return "no number in password. "
+        return "error ~ no number in password. "
       end
       if !(password =~ /[A-Z]/)
-        return "no uppercase letter in password. "
+        return "error ~ no uppercase letter in password. "
       end
       if !(password =~ /[a-z]/)
-        return "no lowercase letter in password. "
+        return "error ~ no lowercase letter in password. "
       end
       return ""
     end
@@ -48,10 +48,10 @@ module Helper
     #validates email input by user.
     def self.validate_email(email)
       if !(email =~ /[@]/) or  !(email =~ /[.]/)
-        return "email not valid. "
+        return "error ~ email not valid. "
       end
       if @database.all_emails.include?(email)
-        return "email already taken. "
+        return "error ~ email already taken. "
       end
       return ""
     end

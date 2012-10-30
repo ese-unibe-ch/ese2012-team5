@@ -21,13 +21,13 @@ class Login < Sinatra::Application
 
     # check for any empty input or non-existent user
     if username == "" or password == ""
-      session[:message] = "empty username or password - login failed!"
+      session[:message] = "error ~ empty username or password - login failed!"
       redirect '/login'
     elsif user.nil?
-      session[:message] = "user doesn't exist - login failed!"
+      session[:message] = "error ~ user doesn't exist - login failed!"
       redirect '/login'
     elsif user.verified==false
-      session[:message] = "Your account isn't verified. You must first click on the link in the email received right after registration before you can log in."
+      session[:message] = "error ~ Your account isn't verified. You must first click on the link in the email received right after registration before you can log in."
       redirect '/login'
     end
 
@@ -36,14 +36,14 @@ class Login < Sinatra::Application
       session[:name] = username
       redirect "/"
     else
-      session[:message] = "wrong password - try again!!"
+      session[:message] = "error ~ wrong password - try again!!"
       redirect '/login'
     end
   end
 
   get '/logout' do
     session[:name] = nil
-    session[:message] = "logged out"
+    session[:message] = "message ~ logged out"
     redirect '/login'
   end
 

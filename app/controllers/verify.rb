@@ -11,7 +11,7 @@ class Verify < Sinatra::Application
 
     #check if hash exists
     if !(@database.hash_exists_in_ver_hashmap?(hash))
-      session[:message] = "unknown link"
+      session[:message] = "error ~ unknown link"
       redirect '/'
     else
       #activate user
@@ -19,7 +19,7 @@ class Verify < Sinatra::Application
 
       #delete user from verification hashmap
       @database.delete_entry_from_ver_hashmap(hash)
-      session[:message] = "congratulations, your account is now activated"
+      session[:message] = "message ~ congratulations, your account is now activated"
       redirect '/'
     end
   end

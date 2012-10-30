@@ -30,7 +30,7 @@ class Settings < Sinatra::Application
 
     FileUtils::cp(file[:tempfile].path, File.join("public", "images", filename))
 
-    session[:message] = " your picture is stored at '/upload/#{filename}'"
+    session[:message] = "message ~ your picture is stored at '/upload/#{filename}'"
     redirect '/settings'
   end
 
@@ -65,11 +65,11 @@ class Settings < Sinatra::Application
       end
       user.change_password(new_password)
     else
-      session[:message] = "old password was not correct!"
+      session[:message] = "error ~ old password was not correct!"
       redirect '/settings'
     end
 
-    session[:message] = "password changed!"
+    session[:message] = "message ~ password changed!"
     redirect '/settings'
   end
 

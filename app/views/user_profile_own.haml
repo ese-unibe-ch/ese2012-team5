@@ -3,14 +3,22 @@
 %h1 #{user.name}
 %br
 
+//SHOW MESSAGES AND ERRORS
 -if info != nil
   %table#table_new
-    %td
-      %img{:src => "../icons/error.png"}
-    %td
-      %h2 #{info}
+    -if (info.split(" ~ ").first()=="error")
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/error.png"}
+      %td
+        %h2 #{info}
+    -else
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/success.png"}
+      %td
+        %h4 #{info}
   %br
-
 
 %table#table_new
   %td{:height => 205, :width => 205, :onclick => "Navigate_to('/settings');"}
