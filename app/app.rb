@@ -74,6 +74,8 @@ class App < Sinatra::Base
     oliver.add_credits(400)
     rene.add_credits(4000)
     urs.add_credits(1000)
+
+    # Verify users
     urs.verify
     daniel.verify
     joel.verify
