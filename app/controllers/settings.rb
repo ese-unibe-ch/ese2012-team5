@@ -28,14 +28,14 @@ class Settings < Sinatra::Application
     user.picture = filename
     @@id = @@id + 1
 
-    FileUtils::cp(file[:tempfile].path, File.join("public", "images", filename))
+    FileUtils::cp(file[:tempfile].path, "app/public/images/#{filename}")
 
-    session[:message] = "message ~ your picture is stored at '/upload/#{filename}'"
+    session[:message] = "message ~ your picture is stored"
     redirect '/settings'
   end
 
   get '/upload/:filename' do
-    send_file(File.join("public","images", params[:filename]))
+    send_file(File.join("app/public/images/#{filename}"))
   end
 
   post '/details' do

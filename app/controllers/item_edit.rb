@@ -79,7 +79,7 @@ class ItemEdit < Sinatra::Application
       current_item.add_image(filename)
       @@id = @@id + 1
 
-      FileUtils::cp(file[:tempfile].path, File.join("public","item_images", filename))
+      FileUtils::cp(file[:tempfile].path, "app/public/item_images/#{filename}")
     else
       session[:message] = "error ~ Please choose a file to upload"
     end
@@ -89,7 +89,7 @@ class ItemEdit < Sinatra::Application
 
   #retrieve picture in item_images
   get '/item_images/:filename' do
-    send_file(File.join("public","item_images", params[:filename]))
+    send_file("app/public/item_images/#{filename}")
   end
 
   #delete image (only link not physical)
@@ -99,7 +99,7 @@ class ItemEdit < Sinatra::Application
     current_item = @database.item_by_id(id)
     item_image_pos = current_item.pictures[im_pos]
     current_item.del_image_by_nr(im_pos)
-    FileUtils.remove(File.join("public","item_images", "#{item_image_pos}"))
+    FileUtils.remove("app/public/item_images/#{filename}")
     redirect "item/#{id.to_s}/edit"
   end
 
