@@ -15,7 +15,7 @@ class ResetPassword < Sinatra::Application
     email = params[:email]
 
     if (!@database.email_exists?(email))
-      session[:message] = "Email '#{email}' not registered"
+      session[:message] = "error ~ Email '#{email}' not registered"
       redirect '/forgot_password'
     end
 
@@ -23,7 +23,7 @@ class ResetPassword < Sinatra::Application
     # send email
     Helper::Mailer.send_pw_reset_mail(user)
 
-    session[:message] = "Please check your mails for reset-link"
+    session[:message] = "message ~ Email sent. Please check your mails for reset-link"
     redirect '/login'
   end
 
@@ -36,7 +36,7 @@ class ResetPassword < Sinatra::Application
 
     #check if hash exists
     if !(@database.hash_exists_in_rp_hashmap?(params[:hash]))
-      session[:message] = "unknown/timed out link please request a new one"
+      session[:message] = "error ~ unknown/timed out link please request a new one"
       redirect '/login'
     end
 
@@ -60,7 +60,7 @@ class ResetPassword < Sinatra::Application
     user.change_password(password)
     @database.delete_from_rp_hashmap(hash)
 
-    session[:message] = "password changed, now log in"
+    session[:message] = "message ~ password changed, now log in"
     redirect '/login'
   end
 
