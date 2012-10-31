@@ -34,7 +34,7 @@ __Mac OSX, Linux__
 Test
 ----
 
-Go to <code>http://localhost:4567</code> and use the following data to login and test:
+Go to <code>http://localhost:4567</code> in browser and use the following data to login and test:
 * Username: <code>ese</code>
 * Password: <code>ese</code>
 
