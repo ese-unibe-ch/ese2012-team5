@@ -88,7 +88,7 @@ class ItemEdit < Sinatra::Application
   end
 
   #retrieve picture in item_images
-  get '/item_image_upload/:filename' do
+  get '/item_images/:filename' do
     send_file(File.join("public","item_images", params[:filename]))
   end
 

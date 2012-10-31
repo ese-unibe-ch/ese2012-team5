@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'tlsmail'
-
 module Helper
 
   #takes care of sending mails to users

@@ -44,9 +44,9 @@
       %tr
         %td{:width => 74}
           - if item.pictures.size > 0
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+            %img{:height => "70", :width => "70", :src => "/item_images/#{item.pictures[0]}"}
           - else
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+            %img{:height => "70", :width => "70", :src => "/item_images/default_image.jpg"}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           %a{:href => "/item/#{item.id}"} #{item.name}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}

@@ -25,9 +25,9 @@
         %tr
           %td{:width => "74"}
             -if item.pictures.length > 0
-              %img{:height => "200", :width => "200", :src => "../item_image_upload/#{item.pictures[0]}"}
+              %img{:height => "200", :width => "200", :src => "../item_images/#{item.pictures[0]}"}
             -else
-              %img{:height => "200", :width => "200", :src => "../item_image_upload/default_image.jpg"}
+              %img{:height => "200", :width => "200", :src => "../item_images/default_image.jpg"}
           %td{:align => "center"}
             %a{:href => "/item/#{item.id}"} #{item.name}
           %td{:align => "center"}

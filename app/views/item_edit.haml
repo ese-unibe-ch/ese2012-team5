@@ -63,7 +63,7 @@
     -for index in 0..(item.pictures.length - 1)
       %tr
         %td
-          %img{:height => "200", :width => "200", :src => "/item_image_upload/#{item.pictures[index]}"}
+          %img{:height => "200", :width => "200", :src => "/item_images/#{item.pictures[index]}"}
       %tr
         %td
           %form(action = "/item_image_delete" method = "POST")
@@ -79,4 +79,4 @@
   %table#table_new
     %tr
       %td
-        %img{:height => "200", :width => "200", :src => "/item_image_upload/default_image.jpg"}
+        %img{:height => "200", :width => "200", :src => "/item_images/default_image.jpg"}

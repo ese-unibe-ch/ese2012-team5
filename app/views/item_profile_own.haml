@@ -25,15 +25,15 @@
   %tr
     %td{:height => 300, :width => 200}
       -if item.pictures.size != 0
-        %img{:height => "200", :width => "200", :src => "/item_image_upload/#{item.pictures[0]}"}
+        %img{:height => "200", :width => "200", :src => "/item_images/#{item.pictures[0]}"}
         %br
-        %img{:height => "98", :width => "98", :src => "/item_image_upload/#{item.pictures[1]}"}
-        %img{:height => "98", :width => "98", :src => "/item_image_upload/#{item.pictures[2]}"}
+        %img{:height => "98", :width => "98", :src => "/item_images/#{item.pictures[1]}"}
+        %img{:height => "98", :width => "98", :src => "/item_images/#{item.pictures[2]}"}
       -else
-        %img{:height => "200", :width => "200", :src => "/item_image_upload/default_image.jpg"}
+        %img{:height => "200", :width => "200", :src => "/item_images/default_image.jpg"}
         %br
-        %img{:height => "98", :width => "98", :src => "/item_image_upload/default_image.jpg"}
-        %img{:height => "98", :width => "98", :src => "/item_image_upload/default_image.jpg"}
+        %img{:height => "98", :width => "98", :src => "/item_images/default_image.jpg"}
+        %img{:height => "98", :width => "98", :src => "/item_images/default_image.jpg"}
     %td
       Price: #{item.price}
       %img{:src => "../icons/coins.png"}
