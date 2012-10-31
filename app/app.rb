@@ -66,6 +66,7 @@ class App < Sinatra::Base
     oliver = Marketplace::User.create('Oliver','aha','test@testmail3.com')
     rene = Marketplace::User.create('Rene','wtt','sudojudo@eml.cc')
     urs = Marketplace::User.create('Urs','123','UrsZysset@gmail.com')
+    ese = Marketplace::User.create('ese','ese','ese@trash-mail.com')
 
     # Give them some money
     daniel.add_credits(2000)
@@ -74,6 +75,7 @@ class App < Sinatra::Base
     oliver.add_credits(400)
     rene.add_credits(4000)
     urs.add_credits(1000)
+    ese.add_credits(1000)
 
     # Verify users
     urs.verify
@@ -81,6 +83,7 @@ class App < Sinatra::Base
     joel.verify
     lukas.verify
     rene.verify
+    ese.verify
 
     # Create some items
     item1 = Marketplace::Item.create('Table', 100, 20, daniel)
@@ -96,6 +99,8 @@ class App < Sinatra::Base
     item11 = Marketplace::Item.create('Fridge', 300, 5, lukas)
     item12 = Marketplace::Item.create('Fridge', 279, 10, rene)
     item13 = Marketplace::Item.create('Red Fridge', 400, 10, joel)
+    item14 = Marketplace::Item.create('Spicy Chily', 35, 15, ese)
+    item15 = Marketplace::Item.create('Can of Beans', 3, 60, ese)
 
     # Set the items state
     item1.active = true
@@ -111,6 +116,8 @@ class App < Sinatra::Base
     item11.active = true
     item12.active = true
     item13.active = true
+    item14.active = true
+    item15.active = true
 
     # Add users and items to database
     database.add_item(item1)
@@ -126,6 +133,8 @@ class App < Sinatra::Base
     database.add_item(item11)
     database.add_item(item12)
     database.add_item(item13)
+    database.add_item(item14)
+    database.add_item(item15)
 
     database.add_user(daniel)
     database.add_user(joel)
@@ -133,6 +142,7 @@ class App < Sinatra::Base
     database.add_user(oliver)
     database.add_user(rene)
     database.add_user(urs)
+    database.add_user(ese)
 
   end
 
