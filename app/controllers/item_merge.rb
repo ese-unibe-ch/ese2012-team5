@@ -4,6 +4,7 @@ class ItemMerge < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   post "/item/:id/merge" do
 
     current_item = @database.item_by_id(params[:id].to_i)

@@ -72,6 +72,10 @@ module Marketplace
       self.active = false
     end
 
+    def switch_active
+      self.active = !self.active
+    end
+
     # append image at the end
     def add_image(url)
         self.pictures.push(url)

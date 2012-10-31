@@ -4,37 +4,36 @@ class ItemEdit < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+  # TODO rewrite uploadcode!
   @@id = 1
 
   # Displays the view to edit items with given id
-  get "/item/:id/edit" do
+  get '/item/:id/edit' do
 
     id = params[:id].to_i
     current_item = @database.item_by_id(id)
     current_user = @database.user_by_name(session[:name])
 
-
     if current_user != current_item.owner
-      session[:message] = "You can't edit a item of an other user"
+      session[:message] = "error ~ You can't edit a item of an other user"
       redirect "/item/#{id}"
     end
 
     if current_item.active
-      session[:message] = "You can't edit a active item"
+      session[:message] = "error ~ You can't edit a active item"
       redirect "/item/#{id}"
     end
 
     message = session[:message]
     session[:message] = nil
     haml :item_edit, :locals => {:item => current_item,
-                                 :info => message}
+                                 :info => message }
   end
 
   # Will edit item with given id according to given params
   # If name or price is not valid, edit will fail
   # If edit succeeds, it will redirect to profile of edited item
-
-  post "/item/:id/edit" do
+  post '/item/:id/edit' do
 
     id = params[:id].to_i
     new_name = params[:name]
@@ -42,16 +41,15 @@ class ItemEdit < Sinatra::Application
     current_item = @database.item_by_id(id)
     current_user = @database.user_by_name(session[:name])
 
-
     if (new_name == nil or new_name == "" or new_name.strip! == "")
-      session[:message] = "empty name!"
+      session[:message] = "error ~ Empty name!"
       redirect "/item/#{id}/edit"
     end
 
     begin
       !(Integer(new_price))
     rescue ArgumentError
-      session[:message] = "price was not a number!"
+      session[:message] = "error ~ Price was not a number!"
       redirect "/item/#{id}/edit"
     end
 
@@ -81,19 +79,18 @@ class ItemEdit < Sinatra::Application
       current_item.add_image(filename)
       @@id = @@id + 1
 
-      FileUtils::cp(file[:tempfile].path, File.join("public","item_images", filename))
+      FileUtils::cp(file[:tempfile].path, "app/public/item_images/#{filename}")
     else
-      session[:message] = "Please choose a file to upload"
+      session[:message] = "error ~ Please choose a file to upload"
     end
 
     redirect "item/#{item_id.to_s}/edit"
   end
 
   #retrieve picture in item_images
-  get '/item_image_upload/:filename' do
-    send_file(File.join("public","item_images", params[:filename]))
+  get '/item_images/:filename' do
+    send_file("app/public/item_images/#{filename}")
   end
-
 
   #delete image (only link not physical)
   post '/item_image_delete' do
@@ -102,8 +99,7 @@ class ItemEdit < Sinatra::Application
     current_item = @database.item_by_id(id)
     item_image_pos = current_item.pictures[im_pos]
     current_item.del_image_by_nr(im_pos)
-    FileUtils.remove(File.join("public","item_images", "#{item_image_pos}"))
-
+    FileUtils.remove("app/public/item_images/#{filename}")
     redirect "item/#{id.to_s}/edit"
   end
 

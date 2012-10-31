@@ -5,17 +5,16 @@ class ItemCreate < Sinatra::Application
   end
 
   # Displays the view to create new items
-  get "/createItem" do
+  get '/createItem' do
 
     current_user = @database.user_by_name(session[:name])
-
 
     if current_user
       message = session[:message]
       session[:message] = nil
-      haml :item_create, :locals => {:info => message}
+      haml :item_create, :locals => {:info => message }
     else
-      session[:message] = "Log in to create items"
+      session[:message] = "error ~ Log in to create items"
       redirect '/login'
     end
 
@@ -24,36 +23,34 @@ class ItemCreate < Sinatra::Application
   # Will create a new item according to given params
   # If name or price is not valid, creation will fail
   # If creation succeeds, it will redirect to profile of new item
-  post "/createItem" do
+  post '/createItem' do
 
     name = params[:name]
     price = params[:price]
     quantity = params[:quantity]
     current_user = @database.user_by_name(session[:name])
 
-
-
     if name == nil or name == "" or name.strip! == ""
-      session[:message] = "empty name!"
+      session[:message] = "error ~ empty name!"
       redirect '/createItem'
     end
 
     begin
       !(Integer(price))
     rescue ArgumentError
-      session[:message] = "price was not a number!"
+      session[:message] = "error ~ Price was not a number!"
       redirect '/createItem'
     end
 
     begin
       !(Integer(quantity))
     rescue ArgumentError
-      session[:message] = "quantity was not a number!"
+      session[:message] = "error ~ Quantity was not a number!"
       redirect '/createItem'
     end
 
     if quantity.to_i <= 0
-      session[:message] = "quantity must be bigger than 0"
+      session[:message] = "error ~ Quantity must be bigger than zero"
       redirect '/createItem'
     end
 
@@ -69,7 +66,7 @@ class ItemCreate < Sinatra::Application
     if need_merge
       haml :item_merge, :locals => {:new_item => new_item}
     else
-      session[:message] = "You have created #{new_item.name}"
+      session[:message] = "message ~ You have created #{new_item.name}"
       redirect "/item/#{new_item.id}"
     end
 

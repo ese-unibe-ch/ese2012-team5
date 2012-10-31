@@ -11,65 +11,26 @@ class Register < Sinatra::Application
   end
 
   post '/register' do
-
     username = params[:username]
     password = params[:password]
     password_conf = params[:password_conf]
+    email = params[:email]
 
-    validate_username(username, 3, 12)
-    validate_password(password, password_conf, 4)
+    session[:message] = Helper::Validator.validate_username(username, 3, 12)
+    session[:message] += Helper::Validator.validate_password(password, password_conf, 4)
+    session[:message] += Helper::Validator.validate_email(email)
+    if session[:message] != ""
+      redirect '/register'
+    end
 
-    new_user = Marketplace::User.create(username, password)
-    @database.add_user(new_user)
+    user = Marketplace::User.create(username, password, email)
+    @database.add_user(user)
 
-    session[:message] = "#{new_user.name} created, now log in"
-    redirect '/login'
-  end
+    Helper::Mailer.send_verification_mail(user)
 
-  #checks if username is already in use and if length of username is within the given limits
-  # @param [String] username name to check
-  # @param [Integer] min minimal length username must have
-  # @param [Integer] max maximal length username can have
-  def validate_username(username, min, max)
-    if @database.user_by_name(username)
-      session[:message] = "username already taken"
-      redirect '/register'
-    end
-    if username.length<3
-      session[:message] = "username too short"
-      redirect '/register'
-    end
-    if username.length>12
-      session[:message] = "username too long"
-      redirect '/register'
-    end
-  end
+    session[:message] = "#{user.name} created. Before you are able to log in, you must first verify your account by following the link sent to your email."
 
-  #validates password input by user.
-  # @param [String] password user chooses
-  # @param [String] password_conf password confirmation
-  # @param [Integer] length minimal length in characters password must have
-  def validate_password(password, password_conf, length)
-    if password != password_conf
-      session[:message] = "password and confirmation don't match"
-      redirect '/register'
-    end
-    if password.length<length
-      session[:message] = "password too short"
-      redirect '/register'
-    end
-    if !(password =~ /[0-9]/)
-      session[:message] = "no number in password"
-      redirect '/register'
-    end
-    if !(password =~ /[A-Z]/)
-      session[:message] = "no uppercase letter in password"
-      redirect '/register'
-    end
-    if !(password =~ /[a-z]/)
-      session[:message] = "no lowercase letter in password"
-      redirect '/register'
-    end
+    redirect '/'
   end
 
 end

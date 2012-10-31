@@ -2,12 +2,21 @@
 %h1 Login
 %br
 
+//SHOW MESSAGES AND ERRORS
 -if info != nil
   %table#table_new
-    %td
-      %img{:src => "icons/error.png"}
-    %td
-      %h2 #{info}
+    -if (info.split(" ~ ").first()=="error")
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/error.png"}
+      %td
+        %h2 #{info}
+    -else
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/success.png"}
+      %td
+        %h4 #{info}
   %br
 
 %form( action="/login" method="POST" )
@@ -25,3 +34,6 @@
         %input(type="submit" value="Login")
         or
         %a{:href => "/register"} Register
+    %tr
+      %td
+        %a{:href => "/forgot_password"} Forgot Password

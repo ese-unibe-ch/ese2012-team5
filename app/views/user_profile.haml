@@ -3,17 +3,26 @@
 %h1 #{user.name}
 %br
 
+//SHOW MESSAGES AND ERRORS
 -if info != nil
   %table#table_new
-    %td
-      %img{:src => "../icons/error.png"}
-    %td
-      %h2 #{info}
+    -if (info.split(" ~ ").first()=="error")
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/error.png"}
+      %td
+        %h2 #{info}
+    -else
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/success.png"}
+      %td
+        %h4 #{info}
   %br
 
 %table#table_new
   %td{:height => "205", :width => "205"}
-    %img{:height => "200", :width => "200", :src => "../images/#{user.picture}"}
+    %img{:height => "200", :width => "200", :src => "/images/#{user.picture}"}
   %td
     %h3 Your Interests:
     %br
@@ -36,9 +45,9 @@
         %tr
           %td{:width => "74"}
             -if item.pictures.size > 0
-              %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+              %img{:height => "70", :width => "70", :src => "/item_images/#{item.pictures[0]}"}
             -else
-              %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+              %img{:height => "70", :width => "70", :src => "/item_images/default_image.jpg"}
           %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
             %a{:href => "/item/#{item.id}"} #{item.name}
           %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}

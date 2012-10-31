@@ -2,15 +2,17 @@ module Marketplace
 
   class User
 
-    attr_accessor :name, :credits, :items, :picture, :password, :email, :details
+    attr_accessor :name, :credits, :items, :picture, :password, :email, :details, :verified
 
     # constructor with password
     # @param [String] name of the new user
+    # @param [String] email address
     # @param [String] password of the new user
     # @return [Item] created item
-    def self.create(name, password)
+    def self.create(name, password,email)
       user = self.new
       user.name = name
+      user.email = email
       user.password = BCrypt::Password.create(password)
       user
     end
@@ -21,10 +23,15 @@ module Marketplace
       self.picture = "default_profile.jpg"
       self.details = "nothing"
       self.items = Array.new
+      self.verified = false
     end
 
     def enough_credits(amount)
       self.credits >= amount
+    end
+
+    def change_password(password)
+      self.password = BCrypt::Password.create(password)
     end
 
     # @param [Item] item the user want to buy
@@ -89,6 +96,10 @@ module Marketplace
 
     def to_s
       "Name: #{name} Credits:#{self.credits} Items:#{self.items}"
+    end
+
+    def verify
+       self.verified = true
     end
 
   end

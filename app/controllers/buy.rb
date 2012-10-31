@@ -15,7 +15,7 @@ class Buy < Sinatra::Application
     items = @database.category_with_name(category)
 
     if items == nil
-      session[:message] = "Item name not found!</br>Could not create category!"
+      session[:message] = "error ~ Item name not found!</br>Could not create category!"
       redirect '/'
     end
 
@@ -31,9 +31,15 @@ class Buy < Sinatra::Application
 
     current_user = @database.user_by_name(session[:name])
 
+    # Check for guests playing around
+    if !current_user
+      session[:message] = "error ~ Log in to buy items..how did you end up there anyway?!"
+      redirect '/login'
+    end
+
     # Create a hash-table
     # key = item.id
-    # value = quantity to buy of item.id
+    # value = quantity to buy of item.id(corresponding key)
     x = 0
     map = Hash.new
     while params.key?("id#{x}")
@@ -44,31 +50,25 @@ class Buy < Sinatra::Application
     end
 
     if map.empty?
-      session[:message] = "You bought nothing...congrats..."
+      session[:message] = "message ~ You bought nothing...congrats..."
       redirect '/'
     end
 
-    session[:message] = ""
+    session[:message] = "message ~ "
     map.each_pair do |id,quantity|
 
       quantity = quantity.to_i
       current_item = @database.item_by_id(id.to_i)
 
-      # Check for guests playing around
-      if !current_user
-        session[:message] = "Log in to buy items..how did you end up there anyway?!"
-        redirect '/login'
-      end
-
       # Checks if quantity is wrong
       if quantity <= 0 or quantity > current_item.quantity
-        session[:message] = "Quantity #{quantity} not valid!"
+        session[:message] = "error ~ Quantity #{quantity} not valid!"
         redirect "/item/#{current_item.id}"
       end
 
       # Check if user isn't able to buy item
       if !current_user.can_buy_item?(current_item, quantity)
-        session[:message] = "You can't buy this item!</br>"
+        session[:message] = "error ~ You can't buy this item!</br>"
         session[:message] << "Not for sell!" if !current_item.active
         session[:message] << "Not enough credits!" if !current_user.enough_credits(current_item.price * quantity)
         redirect "/item/#{current_item.id}"

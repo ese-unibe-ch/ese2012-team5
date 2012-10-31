@@ -4,14 +4,22 @@
 %h1 Welcome #{current_user.name}
 %br
 
+//SHOW MESSAGES AND ERRORS
 -if info != nil
   %table#table_new
-    %td
-      %img{:src => "icons/error.png"}
-    %td
-      %h2 #{info}
+    -if (info.split(" ~ ").first()=="error")
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/error.png"}
+      %td
+        %h2 #{info}
+    -else
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/success.png"}
+      %td
+        %h4 #{info}
   %br
-
 
 %h3 Your Items
 %table#table_new
@@ -26,9 +34,9 @@
       %tr
         %td(width = "74" onclick="Navigate_to('/item/#{item.id}');")
           - if item.pictures.size > 0
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{item.pictures[0]}"}
+            %img{:height => "70", :width => "70", :src => "/item_images/#{item.pictures[0]}"}
           - else
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+            %img{:height => "70", :width => "70", :src => "/item_images/default_image.jpg"}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           %a #{item.name}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
@@ -60,9 +68,9 @@
       %tr
         %td{:width => "74"}
           - if category[0].pictures.size > 0
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/#{category[0].pictures[0]}"}
+            %img{:height => "70", :width => "70", :src => "/item_images/#{category[0].pictures[0]}"}
           - else
-            %img{:height => "70", :width => "70", :src => "/item_image_upload/default_image.jpg"}
+            %img{:height => "70", :width => "70", :src => "/item_images/default_image.jpg"}
         %td{:align => "center"}
           -if category.length > 1
             #{category[0].name}

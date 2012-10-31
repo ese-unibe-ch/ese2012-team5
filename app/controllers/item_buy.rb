@@ -17,19 +17,19 @@ class ItemBuy < Sinatra::Application
 
     # Check for guests playing around
     if !current_user
-      session[:message] = "Log in to buy items"
+      session[:message] = "error ~ Log in to buy items"
       redirect '/login'
     end
 
     # Checks if quantity is wrong
     if quantity <= 0 or quantity > current_item.quantity
-      session[:message] = "Quantity #{quantity} not valid!"
+      session[:message] = "error ~ Quantity #{quantity} not valid!"
       redirect "/item/#{current_item.id}"
     end
 
     # Check if user isn't able to buy item
-    if !user_can_buy_item?(current_user, current_item, quantity)
-      session[:message] = "You can't buy this item! Not active or not enough credits"
+    if !current_user.can_buy_item?(current_item, quantity)
+      session[:message] = "error ~ You can't buy this item! Not active or not enough credits"
       redirect "/item/#{current_item.id}"
     end
 
@@ -58,16 +58,10 @@ class ItemBuy < Sinatra::Application
     if need_merge
       haml :item_merge, :locals => { :new_item => item_to_sell}
     else
-      session[:message] = "You bought #{item_to_sell.name}(Amount:#{item_to_sell.quantity})"
+      session[:message] = "message ~ You bought #{item_to_sell.name}(Amount:#{item_to_sell.quantity})"
       redirect "/user/#{current_user.name}"
     end
 
-  end
-
-  def user_can_buy_item?(current_user, current_item, quantity)
-    current_user.name != current_item.owner and
-        current_item.price * quantity <= current_user.credits and
-        current_item.active
   end
 
 end

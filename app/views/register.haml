@@ -1,14 +1,24 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
+
 %h1 Register
 %br
 
+//SHOW MESSAGES AND ERRORS
 -if info != nil
   %table#table_new
-    %td
-      %img{:src => "icons/error.png"}
-    %td
-      %h2 #{info}
+    -if (info.split(" ~ ").first()=="error")
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/error.png"}
+      %td
+        %h2 #{info}
+    -else
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/success.png"}
+      %td
+        %h4 #{info}
   %br
 
 %h3 Username can be 3 to 12 characters.
@@ -20,6 +30,10 @@
       %td
         %label Enter Username:
         %input(type="text" name="username")
+    %tr
+      %td
+        %label Enter E-Mail:
+        %input(type="text" name="email")
     %tr
       %td
         %label Enter Password:&nbsp
