@@ -1,8 +1,8 @@
 item|market app by ese team 5
 =============
 
-Installation
-------------
+Install
+-------
 
 __Windows__
 * Install Ruby (Version 1.8.7 or later)
@@ -20,8 +20,8 @@ __Linux__
 * Navigare to project folder and enter <code>sudo bundle install</code> in terminal
 
 
-Running
--------
+Run
+---
 
 __Windows__
 * Navigate to project folder in console
@@ -30,4 +30,13 @@ __Windows__
 __Mac OSX, Linux__
 * Navigate to project folder in terminal
 * Enter <code>ruby app/app.rb</code> in terminal
+
+Test
+----
+
+Use the following data to login and test:
+* Username: ese
+* Password: ese
+
+To test some features like email verification, password validation, forgot password, etc, you must register a new account!
 
