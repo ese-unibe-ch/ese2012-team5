@@ -35,8 +35,8 @@ Test
 ----
 
 Use the following data to login and test:
-* Username: ese
-* Password: ese
+* Username: <code>ese</code>
+* Password: <code>ese</code>
 
 To test some features like email verification, password validation, forgot password, etc, you must register a new account!
 
