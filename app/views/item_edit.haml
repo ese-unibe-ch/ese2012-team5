@@ -1,6 +1,5 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
-
 %h1 Item: #{item.name}
 %br
 
@@ -48,7 +47,7 @@
       %td
         %label Auction end time (format: #{Time.now.strftime("%Y-%m-%d %H:%M:%S")})
       %td
-        %input(type="text" name="auction_end_time" value="#{item.auction_end_time ? item.auction_end_time.strftime("%Y-%m-%d %H:%M:%S") : (Time.now + 10*60).strftime("%Y-%m-%d %H:%M:%S")}")
+        %input(type="text" class="datetimepicker" name="auction_end_time" value="#{item.auction_end_time ? item.auction_end_time.strftime("%Y-%m-%d %H:%M:%S") : (Time.now + 10*60).strftime("%Y-%m-%d %H:%M:%S")}")
     %tr
       %td
         %label Auction bid minimal increment (ignored for non auction)

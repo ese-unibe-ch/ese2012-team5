@@ -9,11 +9,18 @@
   %link{:rel =>"stylesheet", :type=>"text/css", :href=> url("jquery-ui.css")}
   %script(type= "text/javascript" src= "/jquery-1.8.2.js")
   %script(type= "text/javascript" src= "/jquery-ui.js")
+  %script(type= "text/javascript" src= "/jquery-datetimepicker.js")
   :javascript
     function Navigate_to(theUrl)
       {
       document.location.href = theUrl;
       }
+    $(document).ready(function(){
+        $('.datetimepicker').datetimepicker({
+          dateFormat: "yy-mm-dd",
+          timeFormat: 'HH:mm:ss'
+        });
+    });
 
 
 %body
