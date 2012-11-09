@@ -46,32 +46,32 @@
           %img{:src => "/icons/accept.png"}
         -else
           %img{:src => "/icons/cross.png"}
-          -if item.auction_end_time
+          -if item.auction.end_time
             This item will be put up for auction
             %img{:src => "/icons/auction.png"}
-            The auction will end at #{item.auction_end_time.to_s}
+            The auction will end at #{item.auction.end_time.to_s}
         %br
         Quantity: #{item.quantity}
         %img{:src => "/icons/package.png"}
       -else
         %img{:src => "/icons/accept.png"} This item is up for auction
         %img{:src => "/icons/auction.png"}
-        The auction ends at #{item.auction_end_time.to_s}
+        The auction ends at #{item.auction.end_time.to_s}
         %br
         Current selling price:
-        #{item.get_auction_selling_price}
+        #{item.auction.current_winning_price}
         %img{:src => "/icons/coins.png"}
         (initial minimal price: #{item.price}
         %img{:src => "/icons/coins.png"}
         )
         %br
-        Increment: #{item.increment}
+        Increment: #{item.auction.increment}
         %br
         Current winner:
-        -if !item.get_auction_current_winner
+        -if !item.auction.current_winner
           No bids yet.
         -else
-          %a{:href => "/user/#{item.get_auction_current_winner.name}"} #{item.get_auction_current_winner.name}
+          %a{:href => "/user/#{item.auction.current_winner.name}"} #{item.auction.current_winner.name}
   %tr
     %td{:colspan => 2, :align => "center"}
       -if item.active

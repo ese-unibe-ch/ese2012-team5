@@ -135,10 +135,8 @@ class ItemEdit < Sinatra::Application
     current_item.price = new_price
     current_item.quantity = new_quantity
     if set_up_for_auction
-      current_item.increment = new_increment
-      current_item.auction_end_time = new_auction_end_time
-    else
-      current_item.auction_end_time = nil
+      auction = Marketplace::Auction.create(new_auction_end_time, new_increment, new_price)
+      item.set_auction Auction
     end
 
     # Check if the creator already owns a similar item, do we need to merge these items?
@@ -169,7 +167,7 @@ class ItemEdit < Sinatra::Application
       session[:message] = "error ~ Please choose a file to upload"
     end
 
-    redirect "item/#{item_id.to_s}/edit"
+    redirect "item/#{item _id.to_s}/edit"
   end
 
   #retrieve picture in item_images

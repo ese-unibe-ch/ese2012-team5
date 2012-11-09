@@ -30,7 +30,7 @@ module Marketplace
   #--------
 
     def item_auctions_update
-      @items.each { |i| i.update_auction_state }
+      @items.each { |i| i.update_auction }
     end
 
     # Names of items up for auction cannot be used again

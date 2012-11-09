@@ -51,22 +51,22 @@
       -else
         This item is up for auction
         %img{:src => "/icons/auction.png"}
-        The auction ends at #{item.auction_end_time.to_s}
+        The auction ends at #{item.auction.end_time.to_s}
         %br
         Current selling price:
-        #{item.get_auction_selling_price}
+        #{item.auction.current_winning_price}
         %img{:src => "/icons/coins.png"}
         (initial minimal price: #{item.price}
         %img{:src => "/icons/coins.png"}
         )
         %br
-        Increment: #{item.increment}
+        Increment: #{item.auction.increment}
         %br
         Current winner:
-        -if !item.get_auction_current_winner
+        -if !item.auction.has_bids?
           No bids yet, be the first!
         -else
-          %a{:href => "/user/#{item.get_auction_current_winner.name}"} #{item.get_auction_current_winner.name}
+          %a{:href => "/user/#{item.auction.current_winner}"} #{item.auction.current_winner.name}
       %br
       Owner:
       %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
@@ -84,5 +84,5 @@
       -else
         Place bid (maximum value):
         %form( action="/item/#{item.id}/place_bid" method="POST" )
-          %input(type="text" name="bid" value="#{item.bids.length > 0 ? item.get_auction_selling_price+item.increment : item.price}" size=1)
+          %input(type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.increment : item.price}" size=1)
           %input(type="submit" value="Bid!")

@@ -8,6 +8,8 @@ require 'require_relative'
 
 require_relative 'models/marketplace/user.rb'
 require_relative 'models/marketplace/item.rb'
+require_relative 'models/marketplace/auction.rb'
+require_relative 'models/marketplace/bid.rb'
 require_relative 'models/marketplace/database.rb'
 require_relative 'models/helper/mailer.rb'
 require_relative 'models/helper/validator.rb'
@@ -121,8 +123,12 @@ class App < Sinatra::Base
     item14.active = false
     item15.active = false
 
-    item14.auction_end_time = Time.now + 3*60
-    item15.auction_end_time = Time.now + 3*60
+    # add auctions
+    auction14 = Marketplace::Auction.create((Time.now + 3*60), 1, 10)
+    auction15 = Marketplace::Auction.create((Time.now + 3*60), 5, 10)
+
+    item14.auction = auction14
+    item15.auction = auction15
 
     # Add users and items to database
     database.add_item(item1)

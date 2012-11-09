@@ -50,7 +50,7 @@
             %img{:src => "/icons/accept.png"}
           - else
             %img{:src => "/icons/cross.png"}
-          -if item.auction_end_time
+          -if item.is_in_auction_mode?
             %img{:src => "/icons/auction.png"}
 %br
 
