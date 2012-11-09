@@ -41,7 +41,7 @@
               %td(onclick="Navigate_to('/settings');")
                 %img{:height => "40", :width => "40", :align => "center", :src => "/images/#{Marketplace::Database.instance.user_by_name(session[:name]).picture}"}
               %td(onclick="Navigate_to('/user/#{session[:name]}');")
-                %label{style="float = 'auto'"}
+                %label
                 Logged in as:&nbsp
                 %br
                 #{session[:name]}
