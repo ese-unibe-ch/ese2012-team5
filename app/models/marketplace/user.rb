@@ -2,7 +2,8 @@ module Marketplace
 
   class User
 
-    attr_accessor :name, :credits, :items, :picture, :password, :email, :details, :verified
+    attr_accessor :name, :credits, :items, :picture, :password,
+                  :email, :details, :verified
 
     # constructor with password
     # @param [String] name of the new user
@@ -36,6 +37,7 @@ module Marketplace
 
     # @param [Item] item the user want to buy
     def buy(item)
+      raise "cannot buy an item in auction mode" if item.is_in_auction_mode?
       if self.enough_credits(item.price * item.quantity) && item.active
         item.owner.sell(item)
         item.owner = self
@@ -48,6 +50,7 @@ module Marketplace
     end
 
     # @param [Item] item the user want to sell
+    # this is called internally for the seller when another user buys his item
     def sell(item)
       self.remove_item(item)
       self.add_credits(item.price * item.quantity)

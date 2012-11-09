@@ -101,8 +101,8 @@ class App < Sinatra::Base
     item11 = Marketplace::Item.create('Fridge', 300, 5, lukas)
     item12 = Marketplace::Item.create('Fridge', 279, 10, rene)
     item13 = Marketplace::Item.create('Red Fridge', 400, 10, joel)
-    item14 = Marketplace::Item.create('Spicy Chily', 35, 15, ese)
-    item15 = Marketplace::Item.create('Can of Beans', 3, 60, ese)
+    item14 = Marketplace::Item.create('Spicy Chily', 35, 1, ese)
+    item15 = Marketplace::Item.create('Can of Beans', 3, 1, ese)
 
     # Set the items state
     item1.active = true
@@ -118,8 +118,11 @@ class App < Sinatra::Base
     item11.active = true
     item12.active = true
     item13.active = true
-    item14.active = true
-    item15.active = true
+    item14.active = false
+    item15.active = false
+
+    item14.auction_end_time = Time.now + 3*60
+    item15.auction_end_time = Time.now + 3*60
 
     # Add users and items to database
     database.add_item(item1)

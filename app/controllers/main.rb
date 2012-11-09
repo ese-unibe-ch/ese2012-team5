@@ -2,8 +2,8 @@ class Main < Sinatra::Application
 
   before do
     @database = Marketplace::Database.instance
+    @database.item_auctions_update
   end
-
 
   get "/" do
 

@@ -9,13 +9,13 @@
     -if (info.split(" ~ ").first()=="error")
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/error.png"}
+        %img{:src => "/icons/error.png"}
       %td
         %h2 #{info}
     -else
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/success.png"}
+        %img{:src => "/icons/success.png"}
       %td
         %h4 #{info}
   %br
@@ -24,7 +24,7 @@
   %td{:height => "205", :width => "205"}
     %img{:height => "200", :width => "200", :src => "/images/#{user.picture}"}
   %td
-    %h3 Your Interests:
+    %h3 Interests:
     %br
     - details = user.details.gsub(/\n/, '<br />')
     #{details}
@@ -38,7 +38,6 @@
     %th Item
     %th Quantity
     %th Value
-    %th Buy
   %tbody
     - for item in items_user
       -if item.active
@@ -52,15 +51,7 @@
             %a{:href => "/item/#{item.id}"} #{item.name}
           %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
             #{item.quantity}
-            %img{:src => "../icons/package.png"}
+            %img{:src => "/icons/package.png"}
           %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
             #{item.price}
-            %img{:src => "../icons/coins.png"}
-          %td
-            -if current_user != nil and item.price <= current_user.credits and item.active
-              %form( action="/item/#{item.id}/buy" method="POST" )
-                %input(type="text" name="quantity" value=1 size =1)
-                %input(type="submit" value="Buy")
-            -else
-              %form( action="/item/#{item.id}/buy" method="POST" )
-                %input(type="submit" disabled="disabled" value="Buy")
+            %img{:src => "/icons/coins.png"}

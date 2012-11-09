@@ -4,6 +4,31 @@ class ItemBuy < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+  post "/item/:id/place_bid" do
+    current_item = @database.item_by_id(params[:id].to_i)
+    current_user = @database.user_by_name(session[:name])
+    bid = params[:bid].to_i
+
+    # Check for guests playing around
+    if !current_user
+      session[:message] = "error ~ Log in to bid for items"
+      redirect '/login'
+    end
+
+    if !current_item.auction_can_place_bid?(bid)
+      session[:message] = "error ~ Cannot place this bid, try to bid more."
+      redirect "/item/#{current_item.id}"
+    end
+
+    if !current_item.auction_place_bid(bid, current_user)
+      session[:message] = "error ~ Cannot place this bid. You can only increase your maximal price."
+      redirect "/item/#{current_item.id}"
+    end
+
+    session[:message] = "message ~ Successfully placed bid."
+    redirect "/item/#{current_item.id}"
+  end
+
   # The user with current session buys the item with given id
   # If no session exists, you will be redirected to '/login'
   # If user doesn't own enough credits or item is not active
@@ -58,7 +83,7 @@ class ItemBuy < Sinatra::Application
     if need_merge
       haml :item_merge, :locals => { :new_item => item_to_sell}
     else
-      session[:message] = "message ~ You bought #{item_to_sell.name}(Amount:#{item_to_sell.quantity})"
+      session[:message] = "message ~ You bought #{item_to_sell.name} (Amount: #{item_to_sell.quantity})"
       redirect "/user/#{current_user.name}"
     end
 

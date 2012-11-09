@@ -9,13 +9,13 @@
     -if (info.split(" ~ ").first()=="error")
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/error.png"}
+        %img{:src => "/icons/error.png"}
       %td
         %h2 #{info}
     -else
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/success.png"}
+        %img{:src => "/icons/success.png"}
       %td
         %h4 #{info}
   %br
@@ -52,14 +52,14 @@ Items of users
           -for item in category
             -i = i + item.quantity
           #{i}
-          %img{:src => "icons/package.png"}
+          %img{:src => "/icons/package.png"}
         %td{:align => "center"}
           %h3 starting at
           #{category[0].price}
-          %img{:src => "icons/coins.png"}
+          %img{:src => "/icons/coins.png"}
         %td{:align => "center"}
           -if category.size >1
             #{category.size}
-            %img{:src => "icons/user_silhouette.png"}
+            %img{:src => "/icons/user_silhouette.png"}
           -else
             %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}

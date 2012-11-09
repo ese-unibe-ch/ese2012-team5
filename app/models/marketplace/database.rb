@@ -29,15 +29,48 @@ module Marketplace
   #Item
   #--------
 
+    def item_auctions_update
+      @items.each { |i| i.update_auction_state }
+    end
+
+    # Names of items up for auction cannot be used again
+    def item_name_allowed?(name, ignoreitem)
+      on = ignoreitem.name
+      ignoreitem.name = ""
+      ibn = self.item_by_name(name)
+      ignoreitem.name = on
+      return false if ibn != nil && ibn.auction_end_time
+      return true
+    end
+
+    # item names for auction items must be unique
+    def item_name_allowed_for_auction?(name, ignoreitem)
+      on = ignoreitem.name
+      ignoreitem.name = ""
+      ibn = self.item_by_name(name)
+      ignoreitem.name = on
+      return ibn == nil
+    end
+
+    # Items to be put up for auction must have an item_name_allowed? name and quantity one which is checked here
+    def item_auction_possible?(name, quantity, ignoreitem)
+      return quantity == 1 && self.item_name_allowed_for_auction?(name, ignoreitem)
+    end
+
     # save this item to the static item list
     def add_item(item)
       @items << item
     end
 
     # @param [Integer] id of the desired item
-    # @return [Item] desired item
+    # @return [Item] desired item or nil if not found
     def item_by_id(id)
       @items.detect{ |item| item.id == id}
+    end
+
+    # @return [Item] desired item or nil if not found
+    def item_by_name(name)
+      @items.detect{ |item| item.name == name}
     end
 
     # @return [Array] all items of the whole system

@@ -39,7 +39,7 @@
           %table#table_top
             %tr
               %td(onclick="Navigate_to('/settings');")
-                %img{:height => "40", :width => "40", :align => "center", :src => "../images/#{Marketplace::Database.instance.user_by_name(session[:name]).picture}"}
+                %img{:height => "40", :width => "40", :align => "center", :src => "/images/#{Marketplace::Database.instance.user_by_name(session[:name]).picture}"}
               %td(onclick="Navigate_to('/user/#{session[:name]}');")
                 %label{style="float = 'auto'"}
                 Logged in as:&nbsp
@@ -50,7 +50,7 @@
                 Current credit:&nbsp
                 %br
                 #{Marketplace::Database.instance.user_by_name(session[:name]).credits}
-                %img{:src => "../icons/coins.png"}
+                %img{:src => "/icons/coins.png"}
     #main_page
       #menu
         #chromemenu.chromestyle
@@ -59,7 +59,7 @@
               %li.chromestyle
                 %a.chromestyle{:href => url("/")} Home
               %li.chromestyle
-                %a.chromestyle{:href => url("/user/#{session[:name]}")} Your profile
+                %a.chromestyle{:href => url("/user/#{session[:name]}")} My profile
               %li.chromestyle
                 %a.chromestyle{:href => url("/createItem")} Add Item
               %li.chromestyle

@@ -10,13 +10,13 @@
     -if (info.split(" ~ ").first()=="error")
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/error.png"}
+        %img{:src => "/icons/error.png"}
       %td
         %h2 #{info}
     -else
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/success.png"}
+        %img{:src => "/icons/success.png"}
       %td
         %h4 #{info}
   %br
@@ -31,9 +31,29 @@
         %input(type="text" name="name" value="#{item.name}")
     %tr
       %td
-        %label Price
+        %label Price (minimal for auction)
       %td
         %input(type="text" name="price" value="#{item.price}")
+    %tr
+      %td
+        %label Quantity
+      %td
+        %input(type="text" name="quantity" value="#{item.quantity}")
+    %tr
+      %td
+        %label Put up for auction?
+      %td
+        %label <input type="checkbox" name="useauction" #{item.auction_end_time ? "checked=1" : ""}/>
+    %tr
+      %td
+        %label Auction end time (format: #{Time.now.strftime("%Y-%m-%d %H:%M:%S")})
+      %td
+        %input(type="text" name="auction_end_time" value="#{item.auction_end_time ? item.auction_end_time.strftime("%Y-%m-%d %H:%M:%S") : (Time.now + 10*60).strftime("%Y-%m-%d %H:%M:%S")}")
+    %tr
+      %td
+        %label Auction bid minimal increment (ignored for non auction)
+      %td
+        %input(type="text" name="increment" value="#{item.increment}")
     %tr
       %td
         %input(type="submit" value="Save")

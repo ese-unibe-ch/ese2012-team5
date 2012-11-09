@@ -9,13 +9,13 @@
     -if (info.split(" ~ ").first()=="error")
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/error.png"}
+        %img{:src => "/icons/error.png"}
       %td
         %h2 #{info}
     -else
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/success.png"}
+        %img{:src => "/icons/success.png"}
       %td
         %h4 #{info}
   %br
@@ -24,7 +24,7 @@
   %td{:height => 205, :width => 205, :onclick => "Navigate_to('/settings');"}
     %img{:height => "200", :width => "200", :src => "/images/#{user.picture}"}
   %td(onclick="Navigate_to('/settings');")
-    %h3 Your Interests:
+    %h3 My Interests:
     %br
     - details = user.details.gsub(/\n/, '<br />')
     #{details}
@@ -51,12 +51,12 @@
           %a{:href => "/item/#{item.id}"} #{item.name}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.quantity}
-          %img{:src => "../icons/package.png"}
+          %img{:src => "/icons/package.png"}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.price}
-          %img{:src => "../icons/coins.png"}
+          %img{:src => "/icons/coins.png"}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           - if item.active
-            %img{:src => "../icons/accept.png"}
+            %img{:src => "/icons/accept.png"}
           - else
-            %img{:src => "../icons/cross.png"}
+            %img{:src => "/icons/cross.png"}

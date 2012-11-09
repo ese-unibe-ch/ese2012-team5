@@ -10,13 +10,13 @@
     -if (info.split(" ~ ").first()=="error")
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/error.png"}
+        %img{:src => "/icons/error.png"}
       %td
         %h2 #{info}
     -else
       -info = info.split(" ~ ").last()
       %td
-        %img{:src => "icons/success.png"}
+        %img{:src => "/icons/success.png"}
       %td
         %h4 #{info}
   %br
@@ -36,27 +36,53 @@
         %img{:height => "98", :width => "98", :src => "/item_images/default_image.jpg"}
 
     %td
-      Price: #{item.price}
-      %img{:src => "../icons/coins.png"}
-      %br
-      For sale:
-      -if item.active
-        %img{:src => "../icons/accept.png"}
+      -if !item.is_in_auction_mode?
+        Price: #{item.price}
+        %img{:src => "/icons/coins.png"}
+        %br
+        For sale:
+        -if item.active
+          %img{:src => "/icons/accept.png"}
+        -else
+          %img{:src => "/icons/cross.png"}
+        %br
+        Quantity: #{item.quantity}
+        %img{:src => "/icons/package.png"}
       -else
-        %img{:src => "../icons/cross.png"}
-      %br
-      Quantity: #{item.quantity}
-      %img{:src => "../icons/package.png"}
+        This item is up for auction
+        %img{:src => "/icons/auction.png"}
+        The auction ends at #{item.auction_end_time.to_s}
+        %br
+        Current selling price:
+        #{item.get_auction_selling_price}
+        %img{:src => "/icons/coins.png"}
+        (initial minimal price: #{item.price}
+        %img{:src => "/icons/coins.png"}
+        )
+        %br
+        Increment: #{item.increment}
+        %br
+        Current winner:
+        -if !item.get_auction_current_winner
+          No bids yet, be the first!
+        -else
+          %a{:href => "/user/#{item.get_auction_current_winner.name}"} #{item.get_auction_current_winner.name}
       %br
       Owner:
       %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
   %tr
     %td{:colspan => 2, :align => "center"}
-      -if canBuy
-        Amount (#{item.quantity} available):
-        %form( action="/item/#{item.id}/buy" method="POST" )
-          %input(type="text" name="quantity" value=1 size =1)
-          %input(type="submit" value="Buy")
+      -if !item.is_in_auction_mode?
+        -if canBuy
+          Amount (#{item.quantity} available):
+          %form( action="/item/#{item.id}/buy" method="POST" )
+            %input(type="text" name="quantity" value=1 size =1)
+            %input(type="submit" value="Buy")
+        -else
+          %form( action="/item/#{item.id}/buy" method="POST" )
+            %input(type="submit" disabled="disabled" value="Buy")
       -else
-        %form( action="/item/#{item.id}/buy" method="POST" )
-          %input(type="submit" disabled="disabled" value="Buy")
+        Place bid (maximum value):
+        %form( action="/item/#{item.id}/place_bid" method="POST" )
+          %input(type="text" name="bid" value="#{item.bids.length > 0 ? item.get_auction_selling_price+item.increment : item.price}" size=1)
+          %input(type="submit" value="Bid!")
