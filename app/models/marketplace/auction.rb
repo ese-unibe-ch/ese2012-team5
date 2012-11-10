@@ -1,11 +1,12 @@
 module Marketplace
   class Auction
-    attr_accessor :end_time, :bids, :increment, :minimal_price
+    attr_accessor :item, :end_time, :bids, :increment, :minimal_price
 
     attr_reader :current_winning_price
 
-    def self.create(end_time, incr, minimal_price)
+    def self.create(item, end_time, incr, minimal_price)
       a = self.new
+      a.item = item
       a.end_time = end_time
       a.increment = incr
       a.minimal_price = minimal_price
@@ -25,23 +26,21 @@ module Marketplace
       self.bids.length > 0
     end
 
-    # does nothing if not in auction mdoe
     def update
       return unless self.is_over?
 
-      if self.has_bids?
-        self.deactivate # If there was no bidder (n=0), the auction simply closes.
+      if !self.has_bids?
+        self.item.deactivate # If there was no bidder (n=0), the auction simply closes.
         return
       end
 
-      # sell if there'spriceprice a bidder
+      # sell if there's a bidder
       # At the time the auction terminates and there was at least one bidder (n>0), the transaction proceeds in accordance with the current winner and the current selling price at that time. The winner receives a confirmation email.
 
       @current_winning_price = self.current_winning_price
       wnr = self.current_winner
-      self.bids = []
-      self.end_time = nil
-      wnr.buy(self) # <<^^can only buy if no longer in auction mode
+      self.item.close_auction
+      wnr.buy(self.item)
 
       # TODO send confirmation email to winner
     end
@@ -54,7 +53,7 @@ module Marketplace
 
     def current_winning_bid
       return nil if self.bids.length == 0
-      return self.get_bids_ascending.last
+      return self.bids.last
     end
 
     # must be in auction mode
@@ -64,15 +63,10 @@ module Marketplace
         @current_winning_price = self.minimal_price
       else
         # the current selling price is defined as MP(n-1)+increment.
-        @current_winning_price = self.get_bids_ascending.last(2)[0].maximal_price + self.increment
+        @current_winning_price = self.bids.last(2)[0].maximal_price + self.increment
       end
 
       @current_winning_price
-    end
-
-    def get_bids_ascending
-      # http://ariejan.net/2007/01/28/ruby-sort-an-array-of-objects-by-an-attribute
-      return self.bids.sort { |a,b| a.maximal_price <=> b.maximal_price }
     end
 
     # The maximal price of the bid must be >= the minimal price defined in the auction.
@@ -80,7 +74,7 @@ module Marketplace
     # a bid cannot be between self.get_auction_current_winning_bid.maximal_price +- self.increment
     # because this would cause the current selling price to become a value that neither the current winner nor the new bidder is ready to pay
     def can_place_bid?(maximal_price)
-      return false if  maximal_price < self.minimal_price
+      return false if maximal_price < self.minimal_price
       return true if !self.has_bids?
 
       same_price_bid = self.bids.detect{ |b| b.maximal_price == maximal_price}
@@ -92,9 +86,7 @@ module Marketplace
       return true
     end
 
-
-
-    # returns false if the bid could not be placed beacuse it was not an increase
+    # returns false if the bid could not be placed because it was not an increase
     def place_bid(maximal_price, bidder)
       raise "cannot place that bid" unless self.can_place_bid?(maximal_price)
 
@@ -116,9 +108,17 @@ module Marketplace
         end
 
         self.bids << bid
+        self.bids = order_bids_ascending
 
       end
       return true
+    end
+
+    private
+
+    def order_bids_ascending
+      # http://ariejan.net/2007/01/28/ruby-sort-an-array-of-objects-by-an-attribute
+      return self.bids.sort { |a,b| a.maximal_price <=> b.maximal_price }
     end
 
   end

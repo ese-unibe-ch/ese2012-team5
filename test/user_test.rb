@@ -129,7 +129,7 @@ class UserTest < Test::Unit::TestCase
     user = Marketplace::User.create("Buyer",'pW123','test@testmail1.com')
     owner = Marketplace::User.create("Owner",'pW123','test@testmail1.com')
     item = Marketplace::Item.create("Whoot",10,1,owner)
-    assert_raise(TypeError){user.buy(item)}
+    assert_raise(RuntimeError){user.buy(item)}
   end
 
 end

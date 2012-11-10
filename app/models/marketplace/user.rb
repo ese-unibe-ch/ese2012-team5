@@ -45,7 +45,7 @@ module Marketplace
         self.add_item(item)
         item.deactivate
       else
-        throw NotImplementedError
+        raise "cannot by item"
       end
     end
 

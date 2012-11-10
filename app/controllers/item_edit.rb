@@ -135,8 +135,8 @@ class ItemEdit < Sinatra::Application
     current_item.price = new_price
     current_item.quantity = new_quantity
     if set_up_for_auction
-      auction = Marketplace::Auction.create(new_auction_end_time, new_increment, new_price)
-      item.set_auction Auction
+      auction = Marketplace::Auction.create(current_item, new_auction_end_time, new_increment, new_price)
+      current_item.auction = auction
     end
 
     # Check if the creator already owns a similar item, do we need to merge these items?

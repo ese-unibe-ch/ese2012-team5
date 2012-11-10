@@ -47,12 +47,12 @@
       %td
         %label Auction end time (format: #{Time.now.strftime("%Y-%m-%d %H:%M:%S")})
       %td
-        %input(type="text" class="datetimepicker" name="auction_end_time" value="#{item.auction.end_time ? item.auction.end_time.strftime("%Y-%m-%d %H:%M:%S") : (Time.now + 10*60).strftime("%Y-%m-%d %H:%M:%S")}")
+        %input(type="text" class="datetimepicker" name="auction_end_time" value="#{item.is_in_auction_mode? ? item.auction.end_time.strftime("%Y-%m-%d %H:%M:%S") : (Time.now + 10*60).strftime("%Y-%m-%d %H:%M:%S")}")
     %tr
       %td
         %label Auction bid minimal increment (ignored for non auction)
       %td
-        %input(type="text" name="increment" value="#{item.auction.increment}")
+        %input(type="text" name="increment" value="#{item.is_in_auction_mode? ? item.auction.increment : ''}")
     %tr
       %td
         %input(type="submit" value="Save")

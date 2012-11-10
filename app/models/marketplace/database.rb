@@ -39,7 +39,7 @@ module Marketplace
       ignoreitem.name = ""
       ibn = self.item_by_name(name)
       ignoreitem.name = on
-      return false if ibn != nil && ibn.auction_end_time
+      return false if ibn != nil && ibn.is_in_auction_mode?
       return true
     end
 

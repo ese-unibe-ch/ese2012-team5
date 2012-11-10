@@ -5,9 +5,13 @@ module Marketplace
     # static variables: id for a unique identification
     @@id = 1
 
-    attr_accessor :id, :name,
+    attr_accessor :id,
+                  :name,
                   :price,
-                  :owner, :active, :quantity, :pictures,
+                  :owner,
+                  :active,
+                  :quantity,
+                  :pictures,
                   :auction
 
     # constructor
@@ -25,7 +29,6 @@ module Marketplace
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
-      item.active = 0
       owner.add_item(item)
       item
     end
@@ -36,6 +39,10 @@ module Marketplace
 
     def update_auction
       self.auction.update if self.is_in_auction_mode?
+    end
+
+    def close_auction
+      self.auction = nil
     end
 
     # items can only be editied if they are not in auction mode or have no bids
@@ -55,7 +62,7 @@ module Marketplace
     # @return [Item] new item with quantity 'rest'
     def split(at)
       if self.quantity < at
-        throw NotImplementedError
+        raise ArgumentError
       else
         rest = self.quantity - at
         self.quantity = rest
