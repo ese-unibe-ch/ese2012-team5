@@ -76,5 +76,24 @@ EOF
       end
     end
 
+    def self.send(msg, rcpt)
+      content = <<EOF
+From: #{@from}
+To: #{rcpt}
+subject: "Item|Market Register Verification"
+Date: #{Time.now.rfc2822}
+
+#{msg}
+
+Regards,
+Your item|market - Team
+EOF
+
+      Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
+      Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', @from, @pw, :login) do |smtp|
+        smtp.send_message(content, @from, to)
+      end
+    end
+
   end
 end

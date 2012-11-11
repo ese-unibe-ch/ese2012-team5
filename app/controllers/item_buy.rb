@@ -15,12 +15,12 @@ class ItemBuy < Sinatra::Application
       redirect '/login'
     end
 
-    if !current_item.auction_can_place_bid?(bid)
+    if !current_item.auction.can_place_bid?(bid)
       session[:message] = "error ~ Cannot place this bid, try to bid more."
       redirect "/item/#{current_item.id}"
     end
 
-    if !current_item.auction_place_bid(bid, current_user)
+    if !current_item.auction.place_bid(bid, current_user)
       session[:message] = "error ~ Cannot place this bid. You can only increase your maximal price."
       redirect "/item/#{current_item.id}"
     end

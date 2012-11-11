@@ -1,15 +1,38 @@
 module Marketplace
   class Auction
-    attr_accessor :item, :end_time, :bids, :increment, :minimal_price
+    attr_accessor :item, :end_time, :bids, :increment, :minimal_price, :notifier
 
     attr_reader :current_winning_price
 
-    def self.create(item, end_time, incr, minimal_price)
+    @@auction_success_mail = <<EOF
+Hi %s
+
+you just successfully won item:
+%s
+for %d credits.
+
+Regards,
+Your item|market - Team
+EOF
+
+    @@outbid_mail = <<EOF
+Hi %s
+
+you have been outbid on item:
+%s
+Current price is: %d
+
+Regards,
+Your item|market - Team
+EOF
+
+    def self.create(item, end_time, incr, minimal_price, notifier)
       a = self.new
       a.item = item
       a.end_time = end_time
       a.increment = incr
       a.minimal_price = minimal_price
+      a.notifier = notifier
       @current_winning_price = minimal_price
       a
     end
@@ -42,7 +65,9 @@ module Marketplace
       self.item.close_auction
       wnr.buy(self.item)
 
-      # TODO send confirmation email to winner
+      # send confirmation email to winner
+      msg = sprintf(@@auction_success_mail, wnr.name, self.item.name, @current_winning_price)
+      self.notifier.send(msg, wnr.email)
     end
 
     # nil if there's none
@@ -103,8 +128,10 @@ module Marketplace
         bid.maximal_price = maximal_price
 
         if self.current_winner
-          # TODO send the notification mail to the old winner (self.get_auction_current_winner)
+          # send the notification mail to the old winner (self.get_auction_current_winner)
           # since we have a new (if it were the same, we would be in the "if", not the "else" branch)
+          msg = sprintf(@@outbid_mail, self.current_winner.name, self.item.name, (self.current_winning_price + self.increment))
+          self.notifier.send(msg, self.current_winner.email)
         end
 
         self.bids << bid

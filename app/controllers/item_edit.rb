@@ -135,7 +135,7 @@ class ItemEdit < Sinatra::Application
     current_item.price = new_price
     current_item.quantity = new_quantity
     if set_up_for_auction
-      auction = Marketplace::Auction.create(current_item, new_auction_end_time, new_increment, new_price)
+      auction = Marketplace::Auction.create(current_item, new_auction_end_time, new_increment, new_price, Helper::mailer)
       current_item.auction = auction
     end
 

@@ -9,7 +9,8 @@ require '../app/models/marketplace/database.rb'
 class UserTest < Test::Unit::TestCase
 
   def test_list
-    database = Marketplace::Database.instance
+    database = Marketplace::Database.instance                 ttr_accessor :bidder, # a User,
+                  :maximal_price # a real value
     owner = Marketplace::User.create('John','pW123','test@testmail1.com')
     item = Marketplace::Item.create('The Lord of The Rings, Books', 10, 12, owner)
     item.activate

@@ -6,6 +6,7 @@ require '../app/models/marketplace/user.rb'
 require '../app/models/marketplace/auction.rb'
 require '../app/models/marketplace/bid.rb'
 require '../app/models/marketplace/database.rb'
+require '../app/models/helper/null_mailer.rb'
 
 # syntax for inheritance
 class AuctionTest < Test::Unit::TestCase
@@ -23,40 +24,40 @@ class AuctionTest < Test::Unit::TestCase
   end
 
   def test_not_over
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert(!auction.is_over?)
   end
 
   def test_is_over
-    auction = Marketplace::Auction.create @item, Time.now-1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now-1, 1, 100, Helper::NullMailer
     assert(auction.is_over?)
   end
 
   def test_no_bids_init
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert(!auction.has_bids?)
   end
 
   def test_has_bids
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     auction.place_bid 200,@john
     assert(auction.has_bids?)
   end
 
   def test_no_bid_no_winning_bid
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert_nil(auction.current_winning_bid)
   end
 
   def test_one_bid_winning
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     auction.place_bid 200, @jim
     assert_equal(@jim, auction.current_winning_bid.bidder)
     assert_equal(200, auction.current_winning_bid.maximal_price)
   end
 
   def test_highest_bid_is_current_winning_bid
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     auction.place_bid 200, @jim
     auction.place_bid 201, @jim
     assert_equal(@jim, auction.current_winning_bid.bidder)
@@ -64,24 +65,24 @@ class AuctionTest < Test::Unit::TestCase
   end
 
   def test_current_price_minimal_when_no_bid
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert_equal(100, auction.current_winning_price)
   end
 
   def test_cannot_bid_below_minimal
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert(!(auction.can_place_bid? 99))
   end
 
   def test_cannot_bid_same_max
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert(auction.can_place_bid? 200)
     auction.place_bid 200, @john
     assert(!(auction.can_place_bid? 200))
   end
 
   def test_current_price_and_winner_inc1
-    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert_equal(100, auction.current_winning_price)
 
     auction.place_bid 101, @jim
@@ -106,7 +107,7 @@ class AuctionTest < Test::Unit::TestCase
   end
 
   def test_current_price_and_winner_inc10
-    auction = Marketplace::Auction.create @item, Time.now+1, 10, 100
+    auction = Marketplace::Auction.create @item, Time.now+1, 10, 100, Helper::NullMailer
     assert_equal(100, auction.current_winning_price)
 
     auction.place_bid 150, @jim

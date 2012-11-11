@@ -84,5 +84,5 @@
       -else
         Place bid (maximum value):
         %form( action="/item/#{item.id}/place_bid" method="POST" )
-          %input(type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.increment : item.price}" size=1)
+          %input(type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.auction.increment : item.price}" size=1)
           %input(type="submit" value="Bid!")

@@ -124,8 +124,8 @@ class App < Sinatra::Base
     item15.active = false
 
     # add auctions
-    auction14 = Marketplace::Auction.create(item14,(Time.now + 3*60), 1, 10)
-    auction15 = Marketplace::Auction.create(item15, (Time.now + 3*60), 5, 10)
+    auction14 = Marketplace::Auction.create(item14,(Time.now + 3*60), 1, 10, Helper::Mailer)
+    auction15 = Marketplace::Auction.create(item15, (Time.now + 3*60), 5, 10, Helper::Mailer)
 
     item14.auction = auction14
     item15.auction = auction15

@@ -6,6 +6,7 @@ require '../app/models/marketplace/user.rb'
 require '../app/models/marketplace/auction.rb'
 require '../app/models/marketplace/bid.rb'
 require '../app/models/marketplace/database.rb'
+require '../app/models/helper/null_mailer.rb'
 
 # syntax for inheritance
 class ItemTest < Test::Unit::TestCase
@@ -61,26 +62,26 @@ class ItemTest < Test::Unit::TestCase
 
   def test_in_auction_mode
     item = Marketplace::Item.create('Table', 100, 4, @john)
-    item.auction = Marketplace::Auction.create item, Time.now, 1, 1
+    item.auction = Marketplace::Auction.create item, Time.now, 1, 1, Helper::NullMailer
     assert(item.is_in_auction_mode?)
   end
 
   def test_not_in_auction_mode_anymore
     item = Marketplace::Item.create('Table', 100, 4, @john)
-    item.auction = Marketplace::Auction.create item, Time.now, 1, 1
+    item.auction = Marketplace::Auction.create item, Time.now, 1, 1, Helper::NullMailer
     item.close_auction
     assert(!item.is_in_auction_mode?)
   end
 
   def test_can_deactivate_in_auction_mode_no_bids
     item = Marketplace::Item.create('Table', 100, 4, @john)
-    item.auction = Marketplace::Auction.create item, Time.now, 1, 1
+    item.auction = Marketplace::Auction.create item, Time.now, 1, 1, Helper::NullMailer
     assert(item.can_be_deactivated?)
   end
 
   def test_cannot_deactivate_when_bids
     item = Marketplace::Item.create('Table', 100, 4, @john)
-    item.auction = Marketplace::Auction.create item, Time.now, 1, 1
+    item.auction = Marketplace::Auction.create item, Time.now, 1, 1, Helper::NullMailer
     item.auction.place_bid 10, @john
     assert(!item.can_be_deactivated?)
   end
