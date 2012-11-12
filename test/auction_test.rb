@@ -19,8 +19,11 @@ class AuctionTest < Test::Unit::TestCase
   def setup
     @database = Marketplace::Database.instance
     @john = Marketplace::User.create('John','pW123','test@testmail1.com')
+    @john.credits = 1000
     @jim = Marketplace::User.create('Jim','pW123','test@testmail1.com')
+    @jim.credits = 1000
     @item = Marketplace::Item.create('Table', 100,1, @john)
+    @item.activate
   end
 
   def test_not_over
@@ -129,6 +132,28 @@ class AuctionTest < Test::Unit::TestCase
     auction.place_bid 220, @jim
     assert_equal(210, auction.current_winning_price)
     assert_equal(@jim, auction.current_winner)
+  end
+
+  def test_item_goes_to_jim_one_bid
+    auction = Marketplace::Auction.create @item, Time.now+10, 10, 100, Helper::NullMailer
+    auction.place_bid 200, @jim
+    auction.end_time=Time.now-1
+    auction.update
+    assert_equal(100, @item.price)
+    assert_equal(@jim, @item.owner)
+    assert_equal(900, @jim.credits)
+  end
+
+  def test_item_goes_to_jim_more_bids
+    auction = Marketplace::Auction.create @item, Time.now+10, 10, 100, Helper::NullMailer
+    auction.place_bid 200, @jim
+    auction.place_bid 300, @john
+    auction.place_bid 400, @jim
+    auction.end_time=Time.now-1
+    auction.update
+    assert_equal(310, @item.price)
+    assert_equal(@jim, @item.owner)
+    assert_equal(1310, @john.credits)
   end
 
 

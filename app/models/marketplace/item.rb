@@ -42,6 +42,7 @@ module Marketplace
     end
 
     def close_auction
+      self.price = auction.current_winning_price
       self.auction = nil
     end
 

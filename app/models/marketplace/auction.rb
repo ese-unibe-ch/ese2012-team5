@@ -31,6 +31,7 @@ EOF
       a.increment = incr
       a.minimal_price = minimal_price
       a.notifier = notifier
+      a.item.auction = a
       a
     end
 
@@ -59,6 +60,7 @@ EOF
       # accordance with the current winner and the current selling price at that time.
       # The winner receives a confirmation email.
       wnr = self.current_winner
+      self.item.price = self.current_winning_price
       self.item.close_auction
       wnr.buy(self.item)
 
@@ -108,6 +110,7 @@ EOF
     # returns false if the bid could not be placed because it was not an increase
     def place_bid(maximal_price, bidder)
       raise "cannot place that bid" unless self.can_place_bid?(maximal_price)
+      raise "cannot bid #{maximal_price}, you only have #{bidder.credits}" unless bidder.enough_credits(maximal_price)
 
       if self.has_bids? && self.current_winning_bid.bidder == bidder
         # just increase old max value if bigger than it
