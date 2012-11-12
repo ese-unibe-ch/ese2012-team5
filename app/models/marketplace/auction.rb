@@ -2,8 +2,6 @@ module Marketplace
   class Auction
     attr_accessor :item, :end_time, :bids, :increment, :minimal_price, :notifier
 
-    attr_reader :current_winning_price
-
     @@auction_success_mail = <<EOF
 Hi %s
 
@@ -33,7 +31,6 @@ EOF
       a.increment = incr
       a.minimal_price = minimal_price
       a.notifier = notifier
-      @current_winning_price = minimal_price
       a
     end
 
@@ -58,15 +55,15 @@ EOF
       end
 
       # sell if there's a bidder
-      # At the time the auction terminates and there was at least one bidder (n>0), the transaction proceeds in accordance with the current winner and the current selling price at that time. The winner receives a confirmation email.
-
-      @current_winning_price = self.current_winning_price
+      # At the time the auction terminates and there was at least one bidder (n>0), the transaction proceeds in
+      # accordance with the current winner and the current selling price at that time.
+      # The winner receives a confirmation email.
       wnr = self.current_winner
       self.item.close_auction
       wnr.buy(self.item)
 
       # send confirmation email to winner
-      msg = sprintf(@@auction_success_mail, wnr.name, self.item.name, @current_winning_price)
+      msg = sprintf(@@auction_success_mail, wnr.name, self.item.name, self.current_winning_price)
       self.notifier.send(msg, wnr.email)
     end
 
@@ -83,15 +80,13 @@ EOF
 
     # must be in auction mode
     def current_winning_price
-      @current_winning_price
+      current_winning_price
       if self.bids.length <= 1 # sell for initial price if there's only one bidder
-        @current_winning_price = self.minimal_price
+        return self.minimal_price
       else
         # the current selling price is defined as MP(n-1)+increment.
-        @current_winning_price = self.bids.last(2)[0].maximal_price + self.increment
+        return self.bids.last(2)[0].maximal_price + self.increment
       end
-
-      @current_winning_price
     end
 
     # The maximal price of the bid must be >= the minimal price defined in the auction.
