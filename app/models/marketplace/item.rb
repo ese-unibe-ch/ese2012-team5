@@ -41,6 +41,11 @@ module Marketplace
       self.auction.update if self.is_in_auction_mode?
     end
 
+    def get_auction_selling_price
+      return self.auction.current_winning_bid()
+    end
+
+
     def close_auction
       self.price = auction.current_winning_price
       self.auction = nil
