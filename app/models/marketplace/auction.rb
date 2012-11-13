@@ -1,6 +1,7 @@
 module Marketplace
   class Auction
     attr_accessor :item, :end_time, :bids, :increment, :minimal_price, :notifier
+    @@auctions = []
 
     @@auction_success_mail = <<EOF
 Hi %s
@@ -32,6 +33,7 @@ EOF
       a.minimal_price = minimal_price
       a.notifier = notifier
       a.item.auction = a
+      @@auctions << a
       a
     end
 
@@ -137,6 +139,12 @@ EOF
       end
       return true
     end
+
+    #returns all auctions on which a specific user is currently holding the highest bid
+    def self.get_auctions_by_user(user)
+        return @@auctions.select{ |auction| auction.current_winner == user}
+    end
+
 
     private
 

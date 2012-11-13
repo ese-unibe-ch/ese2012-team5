@@ -81,6 +81,21 @@ class AuctionTest < Test::Unit::TestCase
     assert(!(auction.can_place_bid? 200))
   end
 
+  def test_get_auctions_by_user()
+    auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
+    auction2 = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
+    auction.place_bid 200, @jim
+    assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[0], auction)
+    assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[1], nil)
+    auction.place_bid 300, @john
+    assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[0], nil)
+    auction.place_bid 400, @jim
+    auction2.place_bid 100, @jim
+    assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[0], auction)
+    assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[1], auction2)
+    assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[2], nil)
+  end
+
   def test_current_price_and_winner_inc1
     auction = Marketplace::Auction.create @item, Time.now+1, 1, 100, Helper::NullMailer
     assert_equal(100, auction.current_winning_price)
