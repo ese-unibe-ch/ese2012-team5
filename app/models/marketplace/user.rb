@@ -88,9 +88,15 @@ module Marketplace
     # @param [Integer] quantity how much of the item
     # @return [Boolean] True if user has enough credits, is not owner and item is active
     def can_buy_item?(item, quantity)
-      self.name != item.owner and
-          enough_credits(item.price * quantity) and
-          item.active
+      if item.is_in_auction_mode?
+        self.name != item.owner and
+            enough_credits(item.get_auction_selling_price()) and
+            item.active
+      else
+        self.name != item.owner and
+            enough_credits(item.price * quantity) and
+            item.active
+      end
     end
 
     def delete
