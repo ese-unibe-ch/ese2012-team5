@@ -28,7 +28,15 @@ module Marketplace
     end
 
     def enough_credits(amount)
-      self.credits >= amount
+      self.credits - self.frozen_credits >= amount
+    end
+
+    def frozen_credits
+      #if the user is not highest bidder on any auctions, return 0
+      return 0 if Marketplace::Auction.get_auctions_by_user(self).size == 0
+      frozen_credits = 0
+      Marketplace::Auction.get_auctions_by_user(self).each { | auction | frozen_credits += auction.current_winning_bid.maximal_price }
+      return frozen_credits
     end
 
     def change_password(password)

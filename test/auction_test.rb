@@ -94,6 +94,7 @@ class AuctionTest < Test::Unit::TestCase
     assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[0], auction)
     assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[1], auction2)
     assert_equal(Marketplace::Auction.get_auctions_by_user(@jim)[2], nil)
+    assert_equal(@jim.frozen_credits, 500)
   end
 
   def test_current_price_and_winner_inc1
