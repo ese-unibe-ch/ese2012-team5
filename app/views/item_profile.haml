@@ -82,7 +82,14 @@
           %form( action="/item/#{item.id}/buy" method="POST" )
             %input(type="submit" disabled="disabled" value="Buy")
       -else
-        Place bid (maximum value):
-        %form( action="/item/#{item.id}/place_bid" method="POST" )
-          %input(type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.auction.increment : item.price}" size=1)
-          %input(type="submit" value="Bid!")
+        -if canBuy
+          Place bid (maximum value):
+          %form( action="/item/#{item.id}/place_bid" method="POST" )
+            %input(type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.auction.increment : item.price}" size=1)
+            %input(type="submit" value="Bid!")
+        -else
+          %form( action="/item/#{item.id}/place_bid" method="POST" )
+            %input(disabled="disabled" type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.auction.increment : item.price}" size=1)
+            %input(disabled="disabled" type="submit" value="Bid!")
+
+
