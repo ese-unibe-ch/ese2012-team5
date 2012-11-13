@@ -57,6 +57,7 @@
                 Current credit:&nbsp
                 %br
                 #{Marketplace::Database.instance.user_by_name(session[:name]).credits}
+                (#{Marketplace::Database.instance.user_by_name(session[:name]).credits - Marketplace::Database.instance.user_by_name(session[:name]).frozen_credits})
                 %img{:src => "/icons/coins.png"}
     #main_page
       #menu
