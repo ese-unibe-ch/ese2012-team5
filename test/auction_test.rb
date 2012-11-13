@@ -5,19 +5,16 @@ require '../app/models/marketplace/item.rb'
 require '../app/models/marketplace/user.rb'
 require '../app/models/marketplace/auction.rb'
 require '../app/models/marketplace/bid.rb'
-require '../app/models/marketplace/database.rb'
 require '../app/models/helper/null_mailer.rb'
 
 # syntax for inheritance
 class AuctionTest < Test::Unit::TestCase
 
-  @database
   @john
   @jim
   @item
 
   def setup
-    @database = Marketplace::Database.instance
     @john = Marketplace::User.create('John','pW123','test@testmail1.com')
     @john.credits = 1000
     @jim = Marketplace::User.create('Jim','pW123','test@testmail1.com')
