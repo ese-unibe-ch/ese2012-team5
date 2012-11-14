@@ -20,6 +20,11 @@ class ItemBuy < Sinatra::Application
       redirect "/item/#{current_item.id}"
     end
 
+    if !current_user.enough_credits(bid)
+      session[:message] = "error ~ You don't have enough credits."
+      redirect "/item/#{current_item.id}"
+    end
+
     if !current_item.auction.place_bid(bid, current_user)
       session[:message] = "error ~ Cannot place this bid. You can only increase your maximal price."
       redirect "/item/#{current_item.id}"
