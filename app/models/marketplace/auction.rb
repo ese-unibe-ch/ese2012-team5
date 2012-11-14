@@ -64,6 +64,7 @@ EOF
       wnr = self.current_winner
       self.item.price = self.current_winning_price
       self.item.close_auction
+      @@auctions.delete(self)
       wnr.buy(self.item)
 
       # send confirmation email to winner
