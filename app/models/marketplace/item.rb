@@ -43,9 +43,9 @@ module Marketplace
 
     def get_auction_selling_price
       if self.auction.has_bids?
-        return self.auction.current_winning_bid()
+        return self.auction.current_winning_price
       else
-         return self.auction.minimal_price()
+         return self.auction.minimal_price
       end
     end
 

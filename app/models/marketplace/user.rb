@@ -28,14 +28,20 @@ module Marketplace
     end
 
     def enough_credits(amount)
-      self.credits - self.frozen_credits >= amount
+      self.available_credits >= amount
     end
 
+    # credits a user can currently spend, not including credits that are frozen in auctions
+    def available_credits
+      self.credits - self.frozen_credits
+    end
+
+    # gets sum of credits that are currently frozen in highest bids on auctions
     def frozen_credits
       #if the user is not highest bidder on any auctions, return 0
       return 0 if Marketplace::Auction.get_auctions_by_user(self).size == 0
       frozen_credits = 0
-      Marketplace::Auction.get_auctions_by_user(self).each { | auction | frozen_credits += auction.current_winning_bid.maximal_price }
+      Marketplace::Auction.get_auctions_by_user(self).each { | auction | frozen_credits += auction.current_winning_price }
       return frozen_credits
     end
 
@@ -98,7 +104,7 @@ module Marketplace
     def can_buy_item?(item, quantity)
       if item.is_in_auction_mode?
         self.name != item.owner and
-            enough_credits(item.get_auction_selling_price()) and
+            enough_credits(item.get_auction_selling_price) and
             item.active
       else
         self.name != item.owner and
