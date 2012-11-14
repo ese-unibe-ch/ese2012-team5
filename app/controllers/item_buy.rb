@@ -25,7 +25,11 @@ class ItemBuy < Sinatra::Application
       redirect "/item/#{current_item.id}"
     end
 
-    session[:message] = "message ~ Successfully placed bid."
+    if current_item.auction.current_winner != current_user
+      session[:message] = "You have been overbidden by user #{current_item.auction.current_winner.name}. Place a higher bid."
+    else
+      session[:message] = "message ~ Successfully placed bid."
+    end
     redirect "/item/#{current_item.id}"
   end
 
