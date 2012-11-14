@@ -91,7 +91,7 @@ EOF
 
       Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
       Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', @from, @pw, :login) do |smtp|
-        smtp.send_message(content, @from, to)
+        smtp.send_message(content, @from, rcpt)
       end
     end
 
