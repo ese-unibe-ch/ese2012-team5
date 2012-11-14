@@ -103,8 +103,8 @@ EOF
       same_price_bid = self.bids.detect{ |b| b.maximal_price == maximal_price}
       return false if same_price_bid != nil
 
-      return false if maximal_price < self.current_winning_bid.maximal_price + self.increment &&
-          maximal_price > self.current_winning_bid.maximal_price - self.increment
+      return false if maximal_price < self.current_winning_price
+
 
       return true
     end
