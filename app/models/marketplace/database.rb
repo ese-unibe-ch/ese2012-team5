@@ -9,6 +9,8 @@ module Marketplace
       @users = []
       # list with all existing items in the whole system
       @items = []
+      # list with all existing items in the whole system
+      @buy_orders = []
 
       # These are two hashmaps with the generated hash (link) as a key
       # mapped to an array of values which holds the user [0] and the timestamp [1]
@@ -163,6 +165,27 @@ module Marketplace
       emails = all_emails()
       emails.include?(email)
     end
+  #--------
+  #Buy Order
+  #--------
+
+  # save this buy_order to the static buy_order list
+    def add_buy_order(buy_order)
+      @buy_orders << buy_order
+    end
+
+
+    # @return [Array] all items of the whole system
+    def all_buy_orders
+      @buy_orders
+    end
+
+    # removes this buy_order from the buy_order list
+    def delete_buy_order(buy_order)
+      buy_order.delete
+      @buy_orders.delete(buy_order)
+    end
+
 
   #--------
   #Methods for Pw-Reset and Verification Mail hashs
