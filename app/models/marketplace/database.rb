@@ -32,6 +32,14 @@ module Marketplace
     @buy_orders << buy_order
   end
 
+  def buy_orders
+    @buy_orders
+  end
+
+  def buy_orders_by_user(user)
+    @buy_orders.select{ |buy_order| buy_order.user == user}
+  end
+
   # Calls all buy_order.item_changed with changed item
   def fire_item_changed(item)
     @buy_orders.each{ |buy_order| buy_order.item_changed(item) }

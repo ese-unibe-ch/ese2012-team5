@@ -13,10 +13,12 @@ class User < Sinatra::Application
 
     if user == current_user
       current_items = current_user.items
+      current_buy_orders = @database.buy_orders_by_user(current_user)
 
       haml :user_profile_own, :locals => {  :info => message,
                                             :user => current_user,
-                                            :items_user => current_items }
+                                            :items_user => current_items,
+                                            :buy_orders => current_buy_orders }
     else
       user_items = user.items
 
