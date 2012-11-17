@@ -11,6 +11,7 @@ module Marketplace
       buy_order.user = user
       Marketplace::Database.instance.add_buy_order(buy_order)
       buy_order
+      #TODO is the buy_order is already possible to solve, we shouldn't even create one!
     end
 
     # Called every time a item changes
@@ -18,11 +19,11 @@ module Marketplace
     def item_changed(item)
       if item.name == item_name and item.price < max_price
         if item.active
-          # Buy item
+          #TODO Buy item
           puts "buy order #{self} was successful! with item: #{item}"
           item.deactivate
         else
-          # Seems as another buy_order was faster ;)
+          #TODO Seems as another buy_order was faster ;) DO NOTHING??
           puts "buy order #{self} was too late! with item: #{item}"
         end
       else

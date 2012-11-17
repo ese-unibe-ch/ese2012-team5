@@ -1,5 +1,7 @@
 module Marketplace
 
+#TODO switch to full database use and remove redundancy between user and item and always get relational information's with database!
+
   class Database
 
     @@instance = nil
@@ -26,6 +28,11 @@ module Marketplace
       end
       return @@instance
     end
+
+
+  #--------
+  #BuyOrder
+  #--------
 
   # Adds a new buyOrder to the database
   def add_buy_order(buy_order)
