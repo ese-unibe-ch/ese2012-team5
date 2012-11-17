@@ -64,9 +64,11 @@ module Marketplace
       self.name == item.name and self.price == item.price
     end
 
+    # Activates item and fires Item_Changed_Event(==Item)
     def activate
       self.active = true
       check_for_buy_orders
+      Marketplace::Database.instance.fire_item_changed(self)
     end
 
     def deactivate
@@ -74,9 +76,10 @@ module Marketplace
     end
 
     def switch_active
-      self.active = !self.active
       if self.active
-        check_for_buy_orders
+        self.deactivate
+      else
+        self.activate
       end
     end
 

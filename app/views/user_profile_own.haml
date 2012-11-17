@@ -60,3 +60,17 @@
             %img{:src => "../icons/accept.png"}
           - else
             %img{:src => "../icons/cross.png"}
+
+-if buy_orders.size > 0
+  BuyOrders
+  %table#table_new
+    %thead
+      %th ItemName
+      %th maxPrice
+    %tbody
+      - for buy_order in buy_orders
+        %tr
+          %td
+            #{buy_order.item_name}
+          %td
+            #{buy_order.max_price}

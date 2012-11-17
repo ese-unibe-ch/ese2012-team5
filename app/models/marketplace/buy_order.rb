@@ -4,24 +4,31 @@ module Marketplace
 
     attr_accessor :item_name, :max_price, :user
 
-    # constructor
-    # @param [String] item_name of the new buy_order
-    # @param [Float] max_price of the new buy_order
-    # @param [User] user of the new buy_order
-    # @return [BuyOrder] created buy_order
     def self.create(item_name, max_price, user)
       buy_order = self.new
       buy_order.item_name = item_name
       buy_order.max_price = max_price
       buy_order.user = user
-      owner.add_item(buy_order)
       Marketplace::Database.instance.add_buy_order(buy_order)
       buy_order
+      #TODO is the buy_order is already possible to solve, we shouldn't even create one!
     end
 
-
-    def delete
-      Marketplace::Database.instance.delete_buy_order(self)
+    # Called every time a item changes
+    # First buy_order that is able to buy the item will get it ;)
+    def item_changed(item)
+      if item.name == item_name and item.price < max_price
+        if item.active
+          #TODO Buy item
+          puts "buy order #{self} was successful! with item: #{item}"
+          item.deactivate
+        else
+          #TODO Seems as another buy_order was faster ;) DO NOTHING??
+          puts "buy order #{self} was too late! with item: #{item}"
+        end
+      else
+        puts "buy order #{self} was NOT successful! with item: #{item}"
+      end
     end
 
     def to_s

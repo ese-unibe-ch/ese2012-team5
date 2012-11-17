@@ -8,6 +8,7 @@ require 'require_relative'
 
 require_relative 'models/marketplace/user.rb'
 require_relative 'models/marketplace/item.rb'
+require_relative 'models/marketplace/buy_order.rb'
 require_relative 'models/marketplace/database.rb'
 require_relative 'models/helper/mailer.rb'
 require_relative 'models/helper/validator.rb'
@@ -29,6 +30,7 @@ require_relative 'controllers/delete_account.rb'
 require_relative 'controllers/buy.rb'
 require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
+require_relative 'controllers/buy_order_create.rb'
 
 
 class App < Sinatra::Base
@@ -49,6 +51,7 @@ class App < Sinatra::Base
   use BuyConfirm
   use ResetPassword
   use Verify
+  use BuyOrderCreate
 
 
   enable :sessions
