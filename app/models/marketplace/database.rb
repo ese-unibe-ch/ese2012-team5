@@ -15,6 +15,9 @@ module Marketplace
       @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
       @verification_hashmap = Hash.new{ |values,key| values[key] = []}
 
+      # List for all BuyOrder
+      @buy_orders = []
+
     end
 
     def self.instance
@@ -24,6 +27,15 @@ module Marketplace
       return @@instance
     end
 
+  # Adds a new buyOrder to the database
+  def add_buy_order(buy_order)
+    @buy_orders << buy_order
+  end
+
+  # Calls all buy_order.item_changed with changed item
+  def fire_item_changed(item)
+    @buy_orders.each{ |buy_order| buy_order.item_changed(item) }
+  end
 
   #--------
   #Item
