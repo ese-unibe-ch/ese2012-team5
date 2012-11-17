@@ -8,7 +8,7 @@ module Marketplace
     # @param [String] item_name of the new buy_order
     # @param [Float] max_price of the new buy_order
     # @param [User] user of the new buy_order
-    # @return [Item] created buy_order
+    # @return [BuyOrder] created buy_order
     def self.create(item_name, max_price, user)
       buy_order = self.new
       buy_order.item_name = item_name
