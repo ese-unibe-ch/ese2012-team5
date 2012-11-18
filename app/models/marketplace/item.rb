@@ -23,6 +23,7 @@ module Marketplace
       item.owner = owner
       item.pictures = Array.new
       owner.add_item(item)
+      Marketplace::Database.instance.add_item(item)
       item
     end
 
@@ -34,8 +35,8 @@ module Marketplace
     # splits the item into two separate items
     # this items quantity will be 'at' and the
     # new created items quantity will be the rest
-    # @param [Integer] index where to split the item
-    # @return [Item] new item with quantity 'rest'
+    # @param [Integer] at where to split the item
+    # @return [Item] new item with quantity 'at'
     def split(at)
       if self.quantity < at
         throw NotImplementedError
@@ -43,8 +44,7 @@ module Marketplace
         rest = self.quantity - at
         self.quantity = rest
         item = Item.create(self.name, self.price, at, self.owner)
-        Marketplace::Database.instance.add_item(item)
-        item.activate
+        item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
         item
       end
     end
@@ -64,10 +64,11 @@ module Marketplace
       self.name == item.name and self.price == item.price
     end
 
-    # Activates item and fires Item_Changed_Event(==Item)
+    # Activates item and fires Item to all buy_order listener
+    # If you don't want to fire the Event use "item.active = true" instead!
     def activate
       self.active = true
-      Marketplace::Database.instance.fire_item_changed(self)
+      Marketplace::Database.instance.call_buy_orders(self)
     end
 
     def deactivate

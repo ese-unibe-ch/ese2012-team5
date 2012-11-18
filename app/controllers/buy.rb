@@ -79,19 +79,12 @@ class Buy < Sinatra::Application
       # Start with buy-algorithm
       #
 
-      # If necessary split up the item otherwise take the whole item
-      if quantity < current_item.quantity
-        item_to_sell = current_item.split(quantity)
-      else
-        item_to_sell = current_item
-      end
-
       # Store seller
-      seller = item_to_sell.owner
+      seller = current_item.owner
 
       # Let the buyer buy the item
-      current_user.buy(item_to_sell)
-      session[:message] << "You bought #{quantity}x #{current_item.name} from #{seller.name}</br>"
+      bought_item = current_user.buy(current_item, quantity)
+      session[:message] << "You bought #{bought_item.quantity}x #{bought_item.name} from #{seller.name}</br>"
     end
 
     redirect '/'

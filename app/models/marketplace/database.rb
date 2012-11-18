@@ -48,6 +48,10 @@ module Marketplace
     @buy_orders.delete(buy_order)
   end
 
+  def buy_order_by_id(id)
+    @buy_orders.detect{ |buy_order| buy_order.id == id}
+  end
+
   def all_buy_orders
     @buy_orders
   end
@@ -57,8 +61,10 @@ module Marketplace
   end
 
   # Calls all buy_order.item_changed with changed item
-  def fire_item_changed(item)
+  def call_buy_orders(item)
+    puts "start with all buy_orders"
     @buy_orders.each{ |buy_order| buy_order.item_changed(item) }
+    puts "done with all buy_orders"
   end
 
 
@@ -79,6 +85,10 @@ module Marketplace
     # @return [Item]  item with desired id
     def item_by_id(id)
       @items.detect{ |item| item.id == id}
+    end
+
+    def item_by_name(name)
+      @items.select{ |item| item.name == name }
     end
 
     # @return [Array] all items

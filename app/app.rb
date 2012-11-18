@@ -31,6 +31,7 @@ require_relative 'controllers/buy.rb'
 require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
 require_relative 'controllers/buy_order_create.rb'
+require_relative 'controllers/buy_order_delete.rb'
 
 
 class App < Sinatra::Base
@@ -52,12 +53,14 @@ class App < Sinatra::Base
   use ResetPassword
   use Verify
   use BuyOrderCreate
+  use BuyOrderDelete
 
 
   enable :sessions
 
+  #TODO image paths errors because of this?
   set :public_folder, 'app/public'
-  set :show_exceptions, false
+  set :show_exceptions, true
   set :root, File.dirname(__FILE__)
   set :public_folder, Proc.new { File.join(root, "public")}
 
@@ -123,32 +126,6 @@ class App < Sinatra::Base
     item13.active = true
     item14.active = true
     item15.active = true
-
-    # Add users and items to database
-    database.add_item(item1)
-    database.add_item(item2)
-    database.add_item(item3)
-    database.add_item(item4)
-    database.add_item(item5)
-    database.add_item(item6)
-    database.add_item(item7)
-    database.add_item(item8)
-    database.add_item(item9)
-    database.add_item(item10)
-    database.add_item(item11)
-    database.add_item(item12)
-    database.add_item(item13)
-    database.add_item(item14)
-    database.add_item(item15)
-
-    database.add_user(daniel)
-    database.add_user(joel)
-    database.add_user(lukas)
-    database.add_user(oliver)
-    database.add_user(rene)
-    database.add_user(urs)
-    database.add_user(ese)
-
   end
 
 end

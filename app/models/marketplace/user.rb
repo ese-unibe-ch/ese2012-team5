@@ -14,6 +14,7 @@ module Marketplace
       user.name = name
       user.email = email
       user.password = BCrypt::Password.create(password)
+      Marketplace::Database.instance.add_user(user)
       user
     end
 
@@ -35,16 +36,23 @@ module Marketplace
     end
 
     # @param [Item] item the user want to buy
-    def buy(item)
-      if self.enough_credits(item.price * item.quantity) && item.active
-        item.owner.sell(item)
-        item.owner = self
-        self.remove_credits(item.price * item.quantity)
-        self.add_item(item)
-        item.deactivate
+    def buy(item, quantity)
+      if can_buy_item?(item, quantity)
+        if quantity < item.quantity
+          item_to_buy = item.split(quantity)
+        else
+          item_to_buy = item
+        end
+        seller = item_to_buy.owner
+        seller.sell(item_to_buy)
+        item_to_buy.owner = self
+        self.remove_credits(item_to_buy.price * quantity)
+        self.add_item(item_to_buy)
+        item_to_buy.deactivate
       else
         throw NotImplementedError
       end
+      item_to_buy
     end
 
     # @param [Item] item the user want to sell
@@ -85,9 +93,7 @@ module Marketplace
     # @param [Integer] quantity how much of the item
     # @return [Boolean] True if user has enough credits, is not owner and item is active
     def can_buy_item?(item, quantity)
-      self.name != item.owner and
-          enough_credits(item.price * quantity) and
-          item.active
+      self != item.owner and enough_credits(item.price * quantity) and item.quantity >= quantity and item.active
     end
 
     def delete

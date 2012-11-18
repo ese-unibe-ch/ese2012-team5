@@ -2,26 +2,45 @@ module Marketplace
 
   class BuyOrder
 
-    attr_accessor :item_name, :max_price, :user
+    # static variables: id for a unique identification
+    @@id = 1
 
+    attr_accessor :id, :item_name, :max_price, :quantity, :user
+
+    # constructor
+    # quantity is always 1
+    # @param [String] item_name of the wanted item
+    # @param [Float] max_price of the wanted item
+    # @param [User] user of the buy_order
+    # @return [BuyOrder] created buy_order
     def self.create(item_name, max_price, user)
       buy_order = self.new
+      buy_order.id = @@id
+      @@id += 1
       buy_order.item_name = item_name
       buy_order.max_price = max_price
+      buy_order.quantity = 1 #NOTE hardcoded quantity
       buy_order.user = user
       Marketplace::Database.instance.add_buy_order(buy_order)
       buy_order
-      #TODO is the buy_order is already possible to solve, we shouldn't even create one!
     end
 
     # Called every time a item changes
     # First buy_order that is able to buy the item will get it ;)
+    # To be able to buy the item, the user must have enough credits,
+    # the item must have the same name and its price must be lower
+    # than max_price
     def item_changed(item)
-      if item.name == item_name and item.price < max_price
+      if item.name == self.item_name and item.price < self.max_price
         if item.active
-          #TODO Buy item
-          puts "buy order #{self} was successful! with item: #{item}"
-          item.deactivate
+
+          if self.user.can_buy_item?(item, self.quantity)
+            bought_item = self.user.buy(item, self.quantity)
+            puts "buy order #{self} was successful! with item: #{item}"
+            puts "bought item #{bought_item}"
+            Marketplace::Database.instance.delete_buy_order(self)
+          end
+
         else
           #TODO Seems as another buy_order was faster ;) DO NOTHING??
           puts "buy order #{self} was too late! with item: #{item}"

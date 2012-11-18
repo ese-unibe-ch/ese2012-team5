@@ -24,7 +24,6 @@ class Register < Sinatra::Application
     end
 
     user = Marketplace::User.create(username, password, email)
-    @database.add_user(user)
 
     Helper::Mailer.send_verification_mail(user)
 
