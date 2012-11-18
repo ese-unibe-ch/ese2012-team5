@@ -39,26 +39,26 @@ class ItemBuy < Sinatra::Application
     #
 
     # If necessary split up the item otherwise take the whole item
-    if quantity < current_item.quantity
-      item_to_sell = current_item.split(quantity)
-    else
-      item_to_sell = current_item
-    end
+    #if quantity < current_item.quantity
+    #  item_to_sell = current_item.split(quantity)
+    #else
+    #  item_to_sell = current_item
+    #end
 
 
     # Check if the buyer already owns a similar item, do we need to merge these items?
     need_merge = false
-    current_user.items.each{ |item| need_merge = true if item.mergeable?(item_to_sell)}
+    current_user.items.each{ |item| need_merge = true if item.mergeable?(current_item)}
 
 
     # Let the buyer buy the item
-    current_user.buy(item_to_sell)
+    current_item = current_user.buy(current_item, quantity)
 
 
     if need_merge
-      haml :item_merge, :locals => { :new_item => item_to_sell}
+      haml :item_merge, :locals => { :new_item => current_item}
     else
-      session[:message] = "message ~ You bought #{item_to_sell.name}(Amount:#{item_to_sell.quantity})"
+      session[:message] = "message ~ You bought #{current_item.name}(Amount:#{quantity})"
       redirect "/user/#{current_user.name}"
     end
 

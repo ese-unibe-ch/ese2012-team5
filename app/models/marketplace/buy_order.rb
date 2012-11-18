@@ -16,19 +16,21 @@ module Marketplace
 
     # Called every time a item changes
     # First buy_order that is able to buy the item will get it ;)
-    def item_changed(item)
-      if item.name == item_name and item.price < max_price
+    def compare(item)
+      if matches?(item)
         if item.active
-          #TODO Buy item
-          puts "buy order #{self} was successful! with item: #{item}"
-          item.deactivate
+          puts "buy order #{self} was successful with item: #{item}"
+          user.buy(item, 1)
         else
-          #TODO Seems as another buy_order was faster ;) DO NOTHING??
-          puts "buy order #{self} was too late! with item: #{item}"
+          puts "bad luck. someone else was faster with buy order #{self} and item: #{item}"
         end
       else
         puts "buy order #{self} was NOT successful! with item: #{item}"
       end
+    end
+
+    def matches?(item)
+      item.name == item_name and item.price < max_price
     end
 
     def to_s

@@ -35,16 +35,20 @@ module Marketplace
     end
 
     # @param [Item] item the user want to buy
-    def buy(item)
-      if self.enough_credits(item.price * item.quantity) && item.active
+    def buy(item, quantity)
+      if self.enough_credits(item.price * quantity) && item.active && quantity <= item.quantity
+        if quantity < item.quantity
+          item = item.split(quantity)
+        end
         item.owner.sell(item)
         item.owner = self
-        self.remove_credits(item.price * item.quantity)
+        self.remove_credits(item.price * quantity)
         self.add_item(item)
         item.deactivate
       else
         throw NotImplementedError
       end
+      item
     end
 
     # @param [Item] item the user want to sell

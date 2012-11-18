@@ -226,6 +226,12 @@ module Marketplace
       @buy_orders.delete(buy_order)
     end
 
+    def check_buy_orders(item)
+      all_buy_orders.each{ |buy_order|
+      buy_order.compare(item)
+      }
+    end
+
 
   #TODO use nicer variable names
   #--------

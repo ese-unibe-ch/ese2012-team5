@@ -67,8 +67,7 @@ module Marketplace
     # Activates item and fires Item_Changed_Event(==Item)
     def activate
       self.active = true
-      check_for_buy_orders
-      Marketplace::Database.instance.fire_item_changed(self)
+      check_buy_orders
     end
 
     def deactivate
@@ -83,15 +82,8 @@ module Marketplace
       end
     end
 
-    def check_for_buy_orders
-      Marketplace.instance.all_buy_orders.each{ |buy_order|
-        if buy_order.item_name == self.name
-          if buy_order.max_price >= self.price
-            buy_order.user.buy(self)
-            buy_order.delete
-          end
-        end
-      }
+    def check_buy_orders
+      Marketplace::Database.instance.check_buy_orders(self)
     end
 
     # append image at the end
