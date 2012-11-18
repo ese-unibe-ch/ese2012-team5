@@ -37,9 +37,9 @@
     %tr
       %td
         %input(type="submit" value="Save")
-      %td
-        %form( action="/item/#{item.id}" method="GET" )
-          %input(type="submit" value="Discard")
+
+%form( action="/item/#{item.id}" method="GET" )
+  %input(type="submit" value="Discard")
 
 
 -if item.pictures.size < 3
