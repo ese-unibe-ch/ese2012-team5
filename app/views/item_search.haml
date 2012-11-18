@@ -75,3 +75,8 @@
           -else
             %form( action="/buy" method="GET" )
               %input(type="submit" disabled="disabled" value="Continue")
+        %td(style="display:none")
+          -i=0
+          -while(i<=category.size-1)
+            #{category[i].owner.name}
+            -i+=1
