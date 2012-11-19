@@ -21,7 +21,7 @@ module Marketplace
     # initial properties of a user
     def initialize
       self.credits = 100
-      self.picture = "default_profile.jpg"
+      self.picture = nil
       self.details = "nothing"
       self.items = Array.new
       self.verified = false
@@ -106,6 +106,14 @@ module Marketplace
 
     def verify
        self.verified = true
+    end
+
+    def image_path
+      if self.picture == nil
+        return File.join("", "images", "default_user.jpg")
+      else
+        return File.join("", "images", self.picture)
+      end
     end
 
   end

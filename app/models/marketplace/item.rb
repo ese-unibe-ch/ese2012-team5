@@ -111,6 +111,16 @@ module Marketplace
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end
 
+
+    def image_path(index)
+      if self.pictures[index] == nil
+        return File.join("", "images", "default_item.jpg")
+      else
+        return File.join("", "images", self.pictures[index])
+      end
+      puts "error?"
+    end
+
   end
 
 end

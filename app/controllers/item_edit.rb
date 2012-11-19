@@ -4,8 +4,6 @@ class ItemEdit < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-  # TODO rewrite uploadcode!
-  @@id = 1
 
   # Displays the view to edit items with given id
   get '/item/:id/edit' do
@@ -68,18 +66,15 @@ class ItemEdit < Sinatra::Application
 
   end
 
-  # saves picture with name '@@id' in public/item_images
+
   post '/item_image_upload' do
     file = params[:file_upload]
     item_id =  params[:item_id].to_i
     current_item = @database.item_by_id(item_id)
 
     if file != nil
-      filename = "#{@@id}"
+      filename = Helper::ImageUploader.upload_image(file, settings.root)
       current_item.add_image(filename)
-      @@id = @@id + 1
-
-      FileUtils::cp(file[:tempfile].path, "app/public/item_images/#{filename}")
     else
       session[:message] = "error ~ Please choose a file to upload"
     end
@@ -87,23 +82,19 @@ class ItemEdit < Sinatra::Application
     redirect "item/#{item_id.to_s}/edit"
   end
 
-  #retrieve picture in item_images
-  get '/item_images/:filename' do
-    send_file("app/public/item_images/#{filename}")
-  end
 
-  #delete image (only link not physical)
   post '/item_image_delete' do
-    im_pos =  params[:image_pos].to_i
-    id =  params[:item_id].to_i
-    current_item = @database.item_by_id(id)
-    item_image_pos = current_item.pictures[im_pos]
-    current_item.del_image_by_nr(im_pos)
-    FileUtils.remove("app/public/item_images/#{filename}")
+    pos =  params[:image_pos].to_i
+    current_item = @database.item_by_id(params[:item_id].to_i)
+    filename = current_item.pictures[pos]
+
+    current_item.del_image_by_nr(pos)
+
+    Helper::ImageUploader.remove_image(filename, settings.root)
     redirect "item/#{id.to_s}/edit"
   end
 
-  #move this image to the first position in the array
+
   post '/item_image_to_profile' do
     im_pos =  params[:image_pos].to_i
     id =  params[:item_id].to_i

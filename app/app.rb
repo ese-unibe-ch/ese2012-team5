@@ -13,6 +13,7 @@ require_relative 'models/marketplace/database.rb'
 require_relative 'models/helper/mailer.rb'
 require_relative 'models/helper/validator.rb'
 require_relative 'models/helper/checker.rb'
+require_relative 'models/helper/image_uploader.rb'
 
 require_relative 'controllers/main.rb'
 require_relative 'controllers/login.rb'
@@ -58,11 +59,11 @@ class App < Sinatra::Base
 
   enable :sessions
 
-  #TODO image paths errors because of this?
-  set :public_folder, 'app/public'
   set :show_exceptions, true
   set :root, File.dirname(__FILE__)
   set :public_folder, Proc.new { File.join(root, "public")}
+
+
 
   configure :development do
     database = Marketplace::Database.instance
@@ -116,7 +117,7 @@ class App < Sinatra::Base
     item3.active = true
     item4.active = true
     item5.active = true
-    item6.active = true
+    item6.active = false
     item7.active = true
     item8.active = true
     item9.active = true
