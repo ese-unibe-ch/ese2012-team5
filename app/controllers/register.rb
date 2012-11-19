@@ -23,12 +23,25 @@ class Register < Sinatra::Application
       redirect '/register'
     end
 
-    user = Marketplace::User.create(username, password, email)
+    # if there is a deactivated user with the new mail,
+    # adopt this information and delete it from the deactivated_user_array
+    user_deactivated = @database.get_deactivated_user_by_mail(email)
+    if user_deactivated.nil?
+      user = Marketplace::User.create(username, password, email)
+      session[:message] = "#{user.name} created. Before you are able to log in, you must first verify your account by following the link sent to your email."
+    else
+      user = Marketplace::User.create(username, password, email)
+      user.credits = user_deactivated.credits
+      user.items = user_deactivated.items
+      user.picture = user_deactivated.picture
+      user.details = user_deactivated.details
+      @database.delete_deactivated_user(user_deactivated)
+      session[:message] = "#{user.name} reactivated. Before you are able to log in, you must first verify your account by following the link sent to your email."
+    end
+
     @database.add_user(user)
 
     Helper::Mailer.send_verification_mail(user)
-
-    session[:message] = "#{user.name} created. Before you are able to log in, you must first verify your account by following the link sent to your email."
 
     redirect '/'
   end

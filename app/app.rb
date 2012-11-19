@@ -26,6 +26,7 @@ require_relative 'controllers/item_buy.rb'
 require_relative 'controllers/item_create.rb'
 require_relative 'controllers/item_merge.rb'
 require_relative 'controllers/delete_account.rb'
+require_relative 'controllers/deactivate_user.rb'
 require_relative 'controllers/buy.rb'
 require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
@@ -35,6 +36,7 @@ class App < Sinatra::Base
 
   use Login
   use DeleteAccount
+  use DeactivateUser
   use Register
   use Main
   use User
@@ -64,7 +66,7 @@ class App < Sinatra::Base
     # Create some users
     daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
     joel = Marketplace::User.create('Joel','test','joel.guggisberg@students.unibe.ch')
-    lukas = Marketplace::User.create('Lukas','lol','lukas.v.rotz@gmail.com')
+    lukas = Marketplace::User.create('Lukas','lol','luky_von_rotz@hotmail.com')
     oliver = Marketplace::User.create('Oliver','aha','test@testmail3.com')
     rene = Marketplace::User.create('Rene','wtt','sudojudo@eml.cc')
     urs = Marketplace::User.create('Urs','123','UrsZysset@gmail.com')

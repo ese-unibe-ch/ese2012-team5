@@ -9,11 +9,14 @@ module Marketplace
       @users = []
       # list with all existing items in the whole system
       @items = []
+      # list with all deactivated users
+      @users_deactivated = []
 
       # These are two hashmaps with the generated hash (link) as a key
       # mapped to an array of values which holds the user [0] and the timestamp [1]
       @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
       @verification_hashmap = Hash.new{ |values,key| values[key] = []}
+
 
     end
 
@@ -55,7 +58,6 @@ module Marketplace
       item.delete
       @items.delete(item)
     end
-
 
     #--------
     #Item Category
@@ -126,7 +128,7 @@ module Marketplace
   #User
   #--------
 
-    # save this user to the static user list
+    # save this user to the user list
     def add_user(user)
       @users << user
     end
@@ -151,6 +153,33 @@ module Marketplace
       user.items.each{ |item| delete_item(item)}
       user.delete
       @users.delete(user)
+    end
+
+    # save this user to the deactivated-user list
+    def store_deactivated_user(user)
+      @users_deactivated << user
+    end
+
+    # deactivates a user account by first deactivating all his items,
+    # storing all information and finally deleting the user.
+    def deactivate_user(user)
+      user.items.each{ |item|
+        item.deactivate
+      }
+      store_deactivated_user(user)
+      #user.delete
+      @users.delete(user)
+    end
+
+    # @param [String] mail address of the desired user
+    # @return [User] desired user
+    def get_deactivated_user_by_mail(mail)
+      @users_deactivated.detect{ |user| user.email == mail}
+    end
+
+    # removes user from the list with the deactivated users
+    def delete_deactivated_user(user)
+      @users_deactivated.delete(user)
     end
 
     def all_emails

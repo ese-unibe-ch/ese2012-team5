@@ -70,3 +70,15 @@
         %input(type="password" name="password")
         %input(type="hidden" name="username" value="#{user.name}")
         %input(type="submit" value="Delete my account")
+    %tr
+      %td{:colspan => "2"}
+        %h3 Deactivate account
+        %p All information is saved in case of you register again.
+        %h2 Note: this cannot be undone!
+        %form( action="/deactivate_user" method="POST" )
+          %input(type="checkbox" name="confirm" value="true") Yes, I want to deactivate my account. I am aware that this cannot be undone.
+          %br
+          %label Please enter password to ensure verification:
+          %input(type="password" name="password")
+          %input(type="hidden" name="username" value="#{user.name}")
+          %input(type="submit" value="Deactivate my account")
