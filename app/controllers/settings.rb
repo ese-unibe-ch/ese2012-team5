@@ -6,12 +6,14 @@ class Settings < Sinatra::Application
 
 
   get '/settings' do
+
     user = session[:name]
 
     redirect '/login' unless user != nil
 
     message = session[:message]
     session[:message] = nil
+
     haml :settings , :locals => { :user => @database.user_by_name(user),
                                   :info => message  }
   end

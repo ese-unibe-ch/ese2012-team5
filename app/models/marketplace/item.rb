@@ -104,13 +104,15 @@ module Marketplace
     end
 
     def delete
+      if self.pictures.size > 0
+        self.pictures.each{ |image_url| Helper::ImageUploader.remove_image(image_url, settings.root) }
+      end
       self.owner.remove_item(self)
     end
 
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end
-
 
     def image_path(index)
       if self.pictures[index] == nil

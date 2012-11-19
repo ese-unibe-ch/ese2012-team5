@@ -98,6 +98,9 @@ module Marketplace
 
     def delete
       self.items.each { |item| item.delete}
+      if user.picture != nil
+        Helper::ImageUploader.remove_image(user.picture, settings.root)
+      end
     end
 
     def to_s
