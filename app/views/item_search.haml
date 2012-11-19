@@ -9,6 +9,16 @@
   $(document).ready(function () {
     $("#search_query").val($("#query_field").val()).trigger('change');
   });
+  $(document).ready(function () {
+  			$('#search_in').jTPS( {perPages:[5,12,15,50,'ALL'],scrollStep:1,scrollDelay:30} );
+  			// bind mouseover for each tbody row and change cell (td) hover style
+  			$('#search_in tbody tr:not(.stubCell)').bind('mouseover mouseout',
+  				function (e) {
+  					// hilight the row
+  					e.type == 'mouseover' ? $(this).children('td').addClass('hilightRow') : $(this).children('td').removeClass('hilightRow');
+  				}
+  			);
+   });
 
 
 
@@ -25,10 +35,10 @@
   %thead
     %tr
       %th Picture
-      %th Name
-      %th Quantity
-      %th Value
-      %th Owner
+      %th(sort="name") Name
+      %th(sort="number") Quantity
+      %th(sort="price") Value
+      %th(sort="person") Owner
       %th Buy
   %tbody
     %tr(id="noresults")
@@ -80,3 +90,11 @@
           -while(i<=category.size-1)
             #{category[i].owner.name}
             -i+=1
+  %tfoot(class="nav")
+    %tr
+      %td(colspan="6")
+        %div(class="pagination")
+        %div(class="paginationTitle")
+          Page
+        %div(class="selectPerPage")
+        %div(class="status")
