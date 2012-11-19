@@ -18,9 +18,10 @@ class DeleteAccount < Sinatra::Application
     if Helper::Checker.check_password?(user, password)
       for item in  user.items
         if item.pictures.size > 0
-          item.pictures.each_with_index{|pic,index|
-            FileUtils.remove(File.join("public","item_images", "#{item.pictures[index]}"))
-          }
+          item.pictures.each{ |image_url| Helper::ImageUploader.remove_image(image_url, settings.root) }
+        end
+        if user.picture != nil
+          Helper::ImageUploader.remove_image(user.picture, settings.root)
         end
       end
 
