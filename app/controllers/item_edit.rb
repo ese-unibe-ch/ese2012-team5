@@ -79,19 +79,20 @@ class ItemEdit < Sinatra::Application
       session[:message] = "error ~ Please choose a file to upload"
     end
 
-    redirect "item/#{item_id.to_s}/edit"
+    redirect "item/#{item_id}/edit"
   end
 
 
   post '/item_image_delete' do
     pos =  params[:image_pos].to_i
-    current_item = @database.item_by_id(params[:item_id].to_i)
+    id = params[:item_id].to_i
+    current_item = @database.item_by_id(id)
     filename = current_item.pictures[pos]
 
     current_item.del_image_by_nr(pos)
 
     Helper::ImageUploader.remove_image(filename, settings.root)
-    redirect "item/#{id.to_s}/edit"
+    redirect "item/#{id}/edit"
   end
 
 
@@ -100,7 +101,7 @@ class ItemEdit < Sinatra::Application
     id =  params[:item_id].to_i
     current_item = @database.item_by_id(id)
     current_item.move_image_to_front(im_pos)
-    redirect "item/#{id.to_s}/edit"
+    redirect "item/#{id}/edit"
   end
 
 end
