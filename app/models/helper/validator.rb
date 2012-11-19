@@ -10,15 +10,9 @@ module Helper
     # @param [Integer] min minimal length username must have
     # @param [Integer] max maximal length username can have
     def self.validate_username(username, min, max)
-      if @database.user_by_name(username)
-        return "error ~ username already taken. "
-      end
-      if username.length<min
-        return "error ~ username too short. "
-      end
-      if username.length>max
-        return "error ~ username too long. "
-      end
+      return "error ~ username already taken. " if @database.user_by_name(username)
+      return "error ~ username too short. " if username.length<min
+      return "error ~ username too long. " if username.length>max
       return ""
     end
 
@@ -27,32 +21,18 @@ module Helper
     # @param [String] password_conf password confirmation
     # @param [Integer] length minimal length in characters password must have
     def self.validate_password(password, password_conf, length)
-      if password != password_conf
-        return "error ~ password and confirmation don't match. "
-      end
-      if password.length<length
-        return "error ~ password too short. "
-      end
-      if !(password =~ /[0-9]/)
-        return "error ~ no number in password. "
-      end
-      if !(password =~ /[A-Z]/)
-        return "error ~ no uppercase letter in password. "
-      end
-      if !(password =~ /[a-z]/)
-        return "error ~ no lowercase letter in password. "
-      end
+      return "error ~ password and confirmation don't match. " unless password == password_conf
+      return "error ~ password too short. " if password.length<length
+      return "error ~ no number in password. " unless (password =~ /[0-9]/)
+      return "error ~ no uppercase letter in password. " unless (password =~ /[A-Z]/)
+      return "error ~ no lowercase letter in password. " unless (password =~ /[a-z]/)
       return ""
     end
 
     #validates email input by user.
     def self.validate_email(email)
-      if !(email =~ /[@]/) or  !(email =~ /[.]/)
-        return "error ~ email not valid. "
-      end
-      if @database.all_emails.include?(email)
-        return "error ~ email already taken. "
-      end
+      return "error ~ email not valid. " unless (email =~ /[@]/) or  (email =~ /[.]/)
+      return "error ~ email already taken. " if @database.all_emails.include?(email)
       return ""
     end
 
