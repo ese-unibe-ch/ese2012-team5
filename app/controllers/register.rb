@@ -4,11 +4,13 @@ class Register < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   get '/register' do
     message = session[:message]
     session[:message] = nil
     haml :register, :locals => { :info => message}
   end
+
 
   post '/register' do
     username = params[:username]
@@ -24,7 +26,6 @@ class Register < Sinatra::Application
     end
 
     user = Marketplace::User.create(username, password, email)
-    @database.add_user(user)
 
     Helper::Mailer.send_verification_mail(user)
 

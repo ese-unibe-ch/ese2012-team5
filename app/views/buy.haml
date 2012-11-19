@@ -56,10 +56,7 @@
 
     %tr
       %td{:height => "200", :width => "200"}
-        -if item.pictures.length > 0
-          %img{:height => "200", :width => "200", :src => "../item_images/#{item.pictures[0]}"}
-        -else
-          %img{:height => "200", :width => "200", :src => "../item_images/default_image.jpg"}
+        %img{:height => "200", :width => "200", :src => item.image_path(0) }
       %td
         Name:  #{item.name}
         %br
@@ -98,7 +95,7 @@
       Total:
       %input(type='text' readonly="readonly" id='global_total')
       %img{:src => "icons/coins.png"}
-      %div{:align => "right", :id=>"message"}
+      %div{:align => "right", :id => "message"}
   %tr
     %td{:align => "left"}
       %form(action = "/" method = "GET")

@@ -23,6 +23,7 @@ module Marketplace
       item.owner = owner
       item.pictures = Array.new
       owner.add_item(item)
+      Marketplace::Database.instance.add_item(item)
       item
     end
 
@@ -34,8 +35,8 @@ module Marketplace
     # splits the item into two separate items
     # this items quantity will be 'at' and the
     # new created items quantity will be the rest
-    # @param [Integer] index where to split the item
-    # @return [Item] new item with quantity 'rest'
+    # @param [Integer] at where to split the item
+    # @return [Item] new item with quantity 'at'
     def split(at)
       if self.quantity < at
         throw NotImplementedError
@@ -43,8 +44,7 @@ module Marketplace
         rest = self.quantity - at
         self.quantity = rest
         item = Item.create(self.name, self.price, at, self.owner)
-        Marketplace::Database.instance.add_item(item)
-        item.activate
+        item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
         item
       end
     end
@@ -61,11 +61,14 @@ module Marketplace
 
     # checks if two items are similar
     def mergeable?(item)
-      self.name == item.name and self.price == item.price
+      self.name == item.name and self.price == item.price and item != self
     end
 
+    # Activates item and fires Item to all buy_order listener
+    # If you don't want to fire the Event use "item.active = true" instead!
     def activate
       self.active = true
+      Marketplace::Database.instance.call_buy_orders(self)
     end
 
     def deactivate
@@ -73,7 +76,11 @@ module Marketplace
     end
 
     def switch_active
-      self.active = !self.active
+      if self.active
+        self.deactivate
+      else
+          self.activate
+      end
     end
 
     # append image at the end
@@ -102,6 +109,15 @@ module Marketplace
 
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
+    end
+
+
+    def image_path(index)
+      if self.pictures[index] == nil
+        return File.join("", "images", "default_item.jpg")
+      else
+        return File.join("", "images", self.pictures[index])
+      end
     end
 
   end

@@ -39,7 +39,7 @@
           %table#table_top
             %tr
               %td(onclick="Navigate_to('/settings');")
-                %img{:height => "40", :width => "40", :align => "center", :src => "../images/#{Marketplace::Database.instance.user_by_name(session[:name]).picture}"}
+                %img{:height => "40", :width => "40", :align => "center", :src => Marketplace::Database.instance.user_by_name(session[:name]).image_path}
               %td(onclick="Navigate_to('/user/#{session[:name]}');")
                 %label{style="float = 'auto'"}
                 Logged in as:&nbsp
@@ -62,6 +62,8 @@
                 %a.chromestyle{:href => url("/user/#{session[:name]}")} Your profile
               %li.chromestyle
                 %a.chromestyle{:href => url("/createItem")} Add Item
+              %li.chromestyle
+                %a.chromestyle{:href => url("/createBuyOrder")} Add BuyOrder
               %li.chromestyle
                 %a.chromestyle{:href => url("/settings")} Settings
               %li.chromestyle

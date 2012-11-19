@@ -1,22 +1,33 @@
 module Marketplace
 
+#TODO switch to full database use and remove redundancy between user and item and always get relational information's with database!
+
+  # Simple Database-like Storage Class implemented as a Singleton
   class Database
 
     @@instance = nil
 
     def initialize
-      # list with all existing users in the whole system
+      # List for all Users
       @users = []
-      # list with all existing items in the whole system
+      # List for all Items
       @items = []
+      # List for all BuyOrder
+      @buy_orders = []
 
+       #TODO fix imageUpload, at editItem, userSettings, and add to createItem
+      # Counter for uploaded images
+      @imageCount = 0
+
+
+      #TODO rename that stuff into more intuitive names
       # These are two hashmaps with the generated hash (link) as a key
       # mapped to an array of values which holds the user [0] and the timestamp [1]
       @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
       @verification_hashmap = Hash.new{ |values,key| values[key] = []}
-
     end
 
+    # Gets the only instance (SINGLETON)
     def self.instance
       if(@@instance == nil)
         @@instance = Database.new
@@ -26,34 +37,68 @@ module Marketplace
 
 
   #--------
+  #BuyOrder
+  #--------
+
+  def add_buy_order(buy_order)
+    @buy_orders << buy_order
+  end
+
+  def delete_buy_order(buy_order)
+    @buy_orders.delete(buy_order)
+  end
+
+  def buy_order_by_id(id)
+    @buy_orders.detect{ |buy_order| buy_order.id == id}
+  end
+
+  def all_buy_orders
+    @buy_orders
+  end
+
+  def buy_orders_by_user(user)
+    @buy_orders.select{ |buy_order| buy_order.user == user}
+  end
+
+  # Calls all buy_order.item_changed with changed item
+  def call_buy_orders(item)
+    puts "start with all buy_orders"
+    @buy_orders.each{ |buy_order| buy_order.item_changed(item) }
+    puts "done with all buy_orders"
+  end
+
+
+  #--------
   #Item
   #--------
 
-    # save this item to the static item list
     def add_item(item)
       @items << item
     end
 
+    def delete_item(item)
+      item.delete
+      @items.delete(item)
+    end
+
     # @param [Integer] id of the desired item
-    # @return [Item] desired item
+    # @return [Item]  item with desired id
     def item_by_id(id)
       @items.detect{ |item| item.id == id}
     end
 
-    # @return [Array] all items of the whole system
+    def item_by_name(name)
+      @items.select{ |item| item.name == name }
+    end
+
+    # @return [Array] all items
     def all_items
       @items
     end
 
-    # @return [Array] all active items of the whole system
+    # @return [Array] all active items
     def all_active_items
       @items.select{ |item| item.active }
-    end
-
-    # removes this item from the item list
-    def delete_item(item)
-      item.delete
-      @items.delete(item)
     end
 
 
@@ -61,7 +106,7 @@ module Marketplace
     #Item Category
     #--------
 
-    # categories all ACTIVE items by their name
+    # Categories all ACTIVE items by their name
     # @return [Array of Arrays] array with arrays for every different item.name
     def categories_items
       all_items = self.all_active_items
@@ -80,30 +125,32 @@ module Marketplace
       categorized_items
     end
 
-    # categories all ACTIVE items without items of user by their name
+    # Categories all ACTIVE items without items of user by their name
     # @return [Array of Arrays] array with arrays for every different item.name
     def categories_items_without(user)
       categorized_items = categories_items
+
       categorized_items.each{ |sub_array| clear_category_from_user_items(sub_array,user) }
       categorized_items.each{ |sub_array|
         if sub_array.length == 0 or sub_array == nil
           categorized_items.delete(sub_array)
         end
-      } # note by Urs: don't do both in one .each! -> bug
-      puts categorized_items
+      } # NOTE by Urs: don't do both in one .each! -> bug
       categorized_items
     end
 
+    # Removes all items of desired user from category
     def clear_category_from_user_items(category, user)
       category.delete_if{ |item| item.owner == user }
     end
 
+    # Selects the category with desired name
     def category_with_name(name)
       categorized_items = categories_items
       categorized_items.detect{ |sub_item_array| sub_item_array[0].name == name }
     end
 
-    # sorts a categorized_item list by the price
+    # Sorts a categorized_item list by the price
     # @return [Array of Arrays] sorted array with arrays for every different item.name
     def sort_categories_by_price(categorized_items)
       sorted_categories = Array.new
@@ -117,6 +164,7 @@ module Marketplace
       sorted_categories
     end
 
+    # Sorts a category by the price
     def sort_category_by_price(category)
       category.sort! {|a,b| a.price <=> b.price}
     end
@@ -126,9 +174,15 @@ module Marketplace
   #User
   #--------
 
-    # save this user to the static user list
     def add_user(user)
       @users << user
+    end
+
+    # Deletes the user and all his items
+    def delete_user(user)
+      user.items.each{ |item| delete_item(item)}
+      user.delete
+      @users.delete(user)
     end
 
     # @param [String] name the desired user
@@ -137,21 +191,20 @@ module Marketplace
       @users.detect { |user_temp| user_temp.name == name }
     end
 
+    # @param [String] email the desired user
+    # @return [User] desired user
     def user_by_email(email)
       @users.detect { |user_temp| user_temp.email == email }
     end
 
-    # @return [Array] all users of the whole system
+    # @return [Array] all users
     def all_users
       @users
     end
 
-    # deletes a user account by first deleting all his items and then the user himself.
-    def delete_user(user)
-      user.items.each{ |item| delete_item(item)}
-      user.delete
-      @users.delete(user)
-    end
+  #--------
+  #EMails
+  #--------
 
     def all_emails
       emails = Array.new
@@ -164,6 +217,7 @@ module Marketplace
       emails.include?(email)
     end
 
+  #TODO use nicer variable names
   #--------
   #Methods for Pw-Reset and Verification Mail hashs
   #--------
@@ -228,4 +282,5 @@ module Marketplace
     end
 
   end
+
 end

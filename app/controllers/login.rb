@@ -4,6 +4,7 @@ class Login < Sinatra::Application
     @database=Marketplace::Database.instance
   end
 
+
   get '/login' do
     redirect '/' unless session[:name] == nil
 
@@ -12,8 +13,8 @@ class Login < Sinatra::Application
     haml :login, :locals => { :info => message}
   end
 
-  post '/login' do
 
+  post '/login' do
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
@@ -39,6 +40,7 @@ class Login < Sinatra::Application
       redirect '/login'
     end
   end
+
 
   get '/logout' do
     session[:name] = nil

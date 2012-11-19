@@ -1,7 +1,7 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 
-%h1 Create Item
+%h1 Create Buy Order
 %br
 
 //SHOW MESSAGES AND ERRORS
@@ -22,23 +22,18 @@
   %br
 
 
-%form( action="/createItem" method="POST" )
+%form( action="/createBuyOrder" method="POST" )
   %table#table_new
     %tr
       %td
-        %label Name
+        %label Itemname
       %td
-        %input(type="text" name="name" )
+        %input(type="text" name="item_name" )
     %tr
       %td
-        %label Price
+        %label Max. Price
       %td
-        %input(type="text" name="price")
-    %tr
-      %td
-        %label Quantity
-      %td
-        %input(type="text" name="quantity")
+        %input(type="text" name="max_price")
     %tr
       %td{:colspan => 2}
         %input(type="submit" value="Create")

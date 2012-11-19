@@ -8,10 +8,12 @@ require 'require_relative'
 
 require_relative 'models/marketplace/user.rb'
 require_relative 'models/marketplace/item.rb'
+require_relative 'models/marketplace/buy_order.rb'
 require_relative 'models/marketplace/database.rb'
 require_relative 'models/helper/mailer.rb'
 require_relative 'models/helper/validator.rb'
 require_relative 'models/helper/checker.rb'
+require_relative 'models/helper/image_uploader.rb'
 
 require_relative 'controllers/main.rb'
 require_relative 'controllers/login.rb'
@@ -29,6 +31,9 @@ require_relative 'controllers/delete_account.rb'
 require_relative 'controllers/buy.rb'
 require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
+require_relative 'controllers/buy_order_create.rb'
+require_relative 'controllers/buy_order_delete.rb'
+require_relative 'controllers/images.rb'
 
 
 class App < Sinatra::Base
@@ -49,14 +54,18 @@ class App < Sinatra::Base
   use BuyConfirm
   use ResetPassword
   use Verify
+  use BuyOrderCreate
+  use BuyOrderDelete
+  use Images
 
 
   enable :sessions
 
-  set :public_folder, 'app/public'
-  set :show_exceptions, false
+  set :show_exceptions, true
   set :root, File.dirname(__FILE__)
   set :public_folder, Proc.new { File.join(root, "public")}
+
+
 
   configure :development do
     database = Marketplace::Database.instance
@@ -76,7 +85,7 @@ class App < Sinatra::Base
     lukas.add_credits(400)
     oliver.add_credits(400)
     rene.add_credits(4000)
-    urs.add_credits(1000)
+    urs.add_credits(100000)
     ese.add_credits(1000)
 
     # Verify users
@@ -103,6 +112,10 @@ class App < Sinatra::Base
     item13 = Marketplace::Item.create('Red Fridge', 400, 10, joel)
     item14 = Marketplace::Item.create('Spicy Chily', 35, 15, ese)
     item15 = Marketplace::Item.create('Can of Beans', 3, 60, ese)
+    item16 = Marketplace::Item.create('PC', 3, 10, urs)
+    item17 = Marketplace::Item.create('PC', 3, 50, urs)
+    item18 = Marketplace::Item.create('PC', 3, 200, urs)
+    item19 = Marketplace::Item.create('PC', 3, 1000, urs)
 
     # Set the items state
     item1.active = true
@@ -110,7 +123,7 @@ class App < Sinatra::Base
     item3.active = true
     item4.active = true
     item5.active = true
-    item6.active = true
+    item6.active = false
     item7.active = true
     item8.active = true
     item9.active = true
@@ -120,31 +133,10 @@ class App < Sinatra::Base
     item13.active = true
     item14.active = true
     item15.active = true
-
-    # Add users and items to database
-    database.add_item(item1)
-    database.add_item(item2)
-    database.add_item(item3)
-    database.add_item(item4)
-    database.add_item(item5)
-    database.add_item(item6)
-    database.add_item(item7)
-    database.add_item(item8)
-    database.add_item(item9)
-    database.add_item(item10)
-    database.add_item(item11)
-    database.add_item(item12)
-    database.add_item(item13)
-    database.add_item(item14)
-    database.add_item(item15)
-
-    database.add_user(daniel)
-    database.add_user(joel)
-    database.add_user(lukas)
-    database.add_user(oliver)
-    database.add_user(rene)
-    database.add_user(urs)
-    database.add_user(ese)
+    item16.active = true
+    item17.active = true
+    item18.active = true
+    item19.active = true
 
   end
 
