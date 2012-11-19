@@ -34,7 +34,7 @@ class ItemMerge < Sinatra::Application
 
     #Remove stored images of 'other_item'
     if other_item.pictures.size > 0
-      other_item.pictures.each{ |image_url| Helper::ImageUploader.remove_image(image_url, settings.root) }
+      other_item.pictures.each{ |image_url| Helper::ImageUploader.delete_image(image_url, settings.root) }
     end
 
     session[:message] = "message ~ Merge was successful!"

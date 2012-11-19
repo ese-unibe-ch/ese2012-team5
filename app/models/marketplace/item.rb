@@ -104,7 +104,15 @@ module Marketplace
     end
 
     def delete
+      #delets all its pictures
+      self.pictures.each { |image_url| Helper::ImageUploader.delete_image(image_url, settings.root) }
+      if self.pictures.size > 0
+        puts "not all pictures have been deleted!"
+      end
+      #removes self from users items
       self.owner.remove_item(self)
+      #deletes self from database
+      Marketplace::Database.instance.all_items.delete(self)
     end
 
     def to_s

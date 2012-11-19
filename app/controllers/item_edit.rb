@@ -83,7 +83,7 @@ class ItemEdit < Sinatra::Application
 
     current_item.del_image_by_nr(pos)
 
-    Helper::ImageUploader.remove_image(filename, settings.root)
+    Helper::ImageUploader.delete_image(filename, settings.root)
     redirect "item/#{id}/edit"
   end
 

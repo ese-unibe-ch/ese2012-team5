@@ -78,7 +78,6 @@ module Marketplace
 
     def delete_item(item)
       item.delete
-      @items.delete(item)
     end
 
     # @param [Integer] id of the desired item
@@ -180,9 +179,7 @@ module Marketplace
 
     # Deletes the user and all his items
     def delete_user(user)
-      user.items.each{ |item| delete_item(item)}
       user.delete
-      @users.delete(user)
     end
 
     # @param [String] name the desired user

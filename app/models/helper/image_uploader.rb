@@ -13,7 +13,7 @@ module Helper
       send_file(File.join(root.to_s, "public", "images", filename.to_s))
     end
 
-    def self.remove_image(filename, root)
+    def self.delete_image(filename, root)
       FileUtils.remove(File.join(root.to_s, "public", "images", filename.to_s))
     end
 

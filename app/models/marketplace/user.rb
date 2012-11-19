@@ -76,9 +76,16 @@ module Marketplace
       self.items.push(item)
     end
 
-    # @param [Item] item item is removed from the users item-list
+    # @param [Item] item item is removed from users item-list
+    # attention: this is not the same as deleting the item!
     def remove_item(item)
       self.items.delete(item)
+    end
+
+    # @param [Item] item item is deleted completely from the system.
+    # attention: this is not the same as removing the item from the users item-list!
+    def delete_item(item)
+      item.delete
     end
 
     # @param [Item] item checks if the user owns this item
@@ -97,7 +104,16 @@ module Marketplace
     end
 
     def delete
-      self.items.each { |item| item.delete}
+      #delete all its items. doesn't work without while ;)
+      while !self.items.empty?
+        self.items.each { |item| item.delete }
+      end
+      # deletes its user-pic
+      if self.picture != nil
+        Helper::ImageUploader.delete_image(self.picture, settings.root)
+      end
+      #delete self from database
+      Marketplace::Database.instance.all_users.delete(self)
     end
 
     def to_s
