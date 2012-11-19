@@ -67,6 +67,12 @@ body
     min-height: 103px;
 }
 
+.topInput
+{
+     max-width: 150px;
+}
+
+
 #topUserInfo
 {
     font: Arial;
