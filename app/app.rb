@@ -88,11 +88,12 @@ class App < Sinatra::Base
     rene.verify
     ese.verify
 
+
     # Create some items
     item1 = Marketplace::Item.create('Table', 100, 20, daniel)
-    item2 = Marketplace::Item.create('Dvd', 10, 30, joel)
+    item2 = Marketplace::Item.create('Inception, Dvd', 10, 30, joel)
     item3 = Marketplace::Item.create('Bed', 50, 2, lukas)
-    item4 = Marketplace::Item.create('Book', 20, 1, oliver)
+    item4 = Marketplace::Item.create('Tolkien, Lord of the Rings 1, Book', 20, 1, oliver)
     item5 = Marketplace::Item.create('Shoes', 80, 7, rene)
     item6 = Marketplace::Item.create('Trousers', 60, 99, urs)
     item7 = Marketplace::Item.create('Bed', 60, 4, joel)
@@ -103,41 +104,24 @@ class App < Sinatra::Base
     item12 = Marketplace::Item.create('Fridge', 279, 10, rene)
     item13 = Marketplace::Item.create('Red Fridge', 400, 10, joel)
     item14 = Marketplace::Item.create('Spicy Chily', 35, 15, ese)
-    item15 = Marketplace::Item.create('Can of Beans', 3, 60, ese)
+    item15 = Marketplace::Item.create('Apple', 3, 15, ese)
+    item16 = Marketplace::Item.create('Apple', 3, 10, ese)
+    item17 = Marketplace::Item.create('Can of Beans', 3, 8, ese)
+    item18 = Marketplace::Item.create('SuperMan Costume', 3, 60, oliver)
+    item19 = Marketplace::Item.create('Bravo  Hits 5, CD', 1, 2, ese)
+    item20 = Marketplace::Item.create('The Matrix, DVD', 3, 20, joel)
+    item21 = Marketplace::Item.create('Golden Rolex', 1, 1000, urs)
+    item22 = Marketplace::Item.create('Vestax VCI 400 Dj Controller', 1, 400, lukas)
+    item23 = Marketplace::Item.create('THE one and only Magic Ring', 1, 3000, rene)
+    item24 = Marketplace::Item.create('Cool Runnings, DVD', 3, 40, ese)
+    item25 = Marketplace::Item.create('Bag of Dubplates', 1, 70, rene)
+    item26 = Marketplace::Item.create('AK 47', 3, 1000, ese)
+    item27 = Marketplace::Item.create('Dreamcatcher', 4, 10, daniel)
 
-    # Set the items state
-    item1.active = true
-    item2.active = true
-    item3.active = true
-    item4.active = true
-    item5.active = true
-    item6.active = true
-    item7.active = true
-    item8.active = true
-    item9.active = true
-    item10.active = true
-    item11.active = true
-    item12.active = true
-    item13.active = true
-    item14.active = true
-    item15.active = true
-
-    # Add users and items to database
-    database.add_item(item1)
-    database.add_item(item2)
-    database.add_item(item3)
-    database.add_item(item4)
-    database.add_item(item5)
-    database.add_item(item6)
-    database.add_item(item7)
-    database.add_item(item8)
-    database.add_item(item9)
-    database.add_item(item10)
-    database.add_item(item11)
-    database.add_item(item12)
-    database.add_item(item13)
-    database.add_item(item14)
-    database.add_item(item15)
+    # Set the items state to active and add them to database
+    database.set_all_active_and_add(item1,item2,item3,item4,item5,item6,item7,item8,item9,item10)
+    database.set_all_active_and_add(item11,item12,item13,item14,item15,item16,item17,item18,item19,item20)
+    database.set_all_active_and_add(item21,item22,item23,item24,item25,item26,item27)
 
     database.add_user(daniel)
     database.add_user(joel)

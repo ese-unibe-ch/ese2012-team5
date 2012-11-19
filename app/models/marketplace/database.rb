@@ -121,6 +121,12 @@ module Marketplace
       category.sort! {|a,b| a.price <=> b.price}
     end
 
+    def set_all_active_and_add(*items)
+      items.each do |item|
+        item.active = true
+        self.add_item(item)
+      end
+    end
 
   #--------
   #User
