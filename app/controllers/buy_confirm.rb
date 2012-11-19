@@ -6,7 +6,6 @@ class BuyConfirm < Sinatra::Application
 
 
   post '/buy/confirm' do
-
     # Create a hash-table
     # key = item.id
     # value = quantity to buy of item.id(corresponding key)

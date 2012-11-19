@@ -6,7 +6,6 @@ class Buy < Sinatra::Application
 
 
   get '/buy' do
-
     redirect '/login' unless session[:name]
 
     quantity = params[:quantity].to_i
@@ -28,7 +27,6 @@ class Buy < Sinatra::Application
 
 
   post '/buy' do
-
     current_user = @database.user_by_name(session[:name])
 
     # Check for guests playing around

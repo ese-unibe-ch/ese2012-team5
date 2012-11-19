@@ -4,6 +4,7 @@ class Verify < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   get '/verify_acc/:hash' do
     message = session[:message]
     session[:message] = nil
@@ -23,4 +24,5 @@ class Verify < Sinatra::Application
       redirect '/'
     end
   end
+
 end

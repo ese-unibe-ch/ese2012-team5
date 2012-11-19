@@ -33,6 +33,7 @@ require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
 require_relative 'controllers/buy_order_create.rb'
 require_relative 'controllers/buy_order_delete.rb'
+require_relative 'controllers/images.rb'
 
 
 class App < Sinatra::Base
@@ -55,6 +56,7 @@ class App < Sinatra::Base
   use Verify
   use BuyOrderCreate
   use BuyOrderDelete
+  use Images
 
 
   enable :sessions
@@ -83,7 +85,7 @@ class App < Sinatra::Base
     lukas.add_credits(400)
     oliver.add_credits(400)
     rene.add_credits(4000)
-    urs.add_credits(1000)
+    urs.add_credits(100000)
     ese.add_credits(1000)
 
     # Verify users

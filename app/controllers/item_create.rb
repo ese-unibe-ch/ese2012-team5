@@ -4,6 +4,7 @@ class ItemCreate < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   # Displays the view to create new items
   get '/createItem' do
 

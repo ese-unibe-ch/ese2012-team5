@@ -54,15 +54,7 @@ class ItemEdit < Sinatra::Application
     current_item.name = new_name
     current_item.price = new_price.to_i
 
-    # Check if the creator already owns a similar item, do we need to merge these items?
-    need_merge = false
-    current_user.items.each{ |item| need_merge = true if !item.equal?(current_item) and item.mergeable?(current_item)}
-
-    if need_merge
-      haml :item_merge, :locals => {:new_item => current_item}
-    else
-      redirect "/item/#{id}"
-    end
+    redirect "/item/#{id}"
 
   end
 
@@ -97,10 +89,10 @@ class ItemEdit < Sinatra::Application
 
 
   post '/item_image_to_profile' do
-    im_pos =  params[:image_pos].to_i
+    pos =  params[:image_pos].to_i
     id =  params[:item_id].to_i
     current_item = @database.item_by_id(id)
-    current_item.move_image_to_front(im_pos)
+    current_item.move_image_to_front(pos)
     redirect "item/#{id}/edit"
   end
 

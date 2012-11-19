@@ -6,7 +6,6 @@ class Main < Sinatra::Application
 
 
   get "/" do
-
     current_user = @database.user_by_name(session[:name])
     message = session[:message]
     session[:message] = nil
