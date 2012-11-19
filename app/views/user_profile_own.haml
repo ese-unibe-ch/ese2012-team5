@@ -39,6 +39,7 @@
     %th Quantity
     %th Value
     %th Active
+    %th Merge
   %tbody
     - for item in items_user
       %tr
@@ -57,6 +58,15 @@
             %img{:src => "../icons/accept.png"}
           - else
             %img{:src => "../icons/cross.png"}
+        %td
+          -for similar_item in items_user
+            -if item.mergeable?(similar_item)
+              %form( action="/item/#{item.id}/merge" method="GET" )
+                %input(type="hidden" value="#{similar_item.id}" name="other_item_id")
+                %input(type="submit" value="Merge with ID#{similar_item.id}")
+
+
+%br
 
 -if buy_orders.size > 0
   BuyOrders

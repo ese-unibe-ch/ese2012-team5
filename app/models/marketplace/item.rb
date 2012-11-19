@@ -61,7 +61,7 @@ module Marketplace
 
     # checks if two items are similar
     def mergeable?(item)
-      self.name == item.name and self.price == item.price
+      self.name == item.name and self.price == item.price and item != self
     end
 
     # Activates item and fires Item to all buy_order listener
@@ -118,7 +118,6 @@ module Marketplace
       else
         return File.join("", "images", self.pictures[index])
       end
-      puts "error?"
     end
 
   end

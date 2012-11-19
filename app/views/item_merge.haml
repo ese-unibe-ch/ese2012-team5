@@ -4,16 +4,70 @@
 %h1 Merging
 %br
 
-%h3 You already have a similar item called "#{new_item.name}"
+//SHOW MESSAGES AND ERRORS
+-if info != nil
+  %table#table_new
+    -if (info.split(" ~ ").first()=="error")
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/error.png"}
+      %td
+        %h2 #{info}
+    -else
+      -info = info.split(" ~ ").last()
+      %td
+        %img{:src => "icons/success.png"}
+      %td
+        %h4 #{info}
+  %br
+
+
+%h3 Do you want to merge these two separate Items into one? </br> NOTE: The new item will only contain the images of the first item in the list below. </br>All other images will be removed.
 %br
 
-%h3 Do you want to merge these items into one?
-%br
+%table#table_new
+  %th Image
+  %th Name
+  %th Price
+  %th Quantity
+  %tr
+    %td{:height => 300, :width => 200}
+      %img{:height => "200", :width => "200", :src => item1.image_path(0) }
+      %br
+      %img{:height => "98", :width => "98", :src => item1.image_path(1) }
+      %img{:height => "98", :width => "98", :src => item1.image_path(2) }
+    %td
+      #{item1.name}
+    %td
+      #{item1.price}
+      %img{:src => "../icons/coins.png"}
+      %br
+    %td
+      #{item1.quantity}
+      %img{:src => "../icons/package.png"}
+  %tr
+    %td{:height => 300, :width => 200}
+      %img{:height => "200", :width => "200", :src => item2.image_path(0) }
+      %br
+      %img{:height => "98", :width => "98", :src => item2.image_path(1) }
+      %img{:height => "98", :width => "98", :src => item2.image_path(2) }
+    %td
+      #{item2.name}
+    %td
+      #{item2.price}
+      %img{:src => "../icons/coins.png"}
+      %br
+    %td
+      #{item2.quantity}
+      %img{:src => "../icons/package.png"}
 
-%form( action="/item/#{new_item.id}" method="GET" )
-  %input(type="submit" value="No, keep them separate")
 
-%p
-
-%form( action="/item/#{new_item.id}/merge" method="POST" )
-  %input(type="submit" value="Yes, please merge them")
+%table#table_new
+  %td
+    %tr
+      %form( action="/user/#{user.name}" method="GET" )
+        %input(type="submit" value="No, keep them separate")
+    %tr
+      %form( action="/item/#{item1.id}/merge" method="POST" )
+        %input(type="hidden" value="#{item2.id}" name="other_item_id")
+        %input(type="submit" value="Yes, please merge them")

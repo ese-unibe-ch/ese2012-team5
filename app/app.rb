@@ -112,6 +112,10 @@ class App < Sinatra::Base
     item13 = Marketplace::Item.create('Red Fridge', 400, 10, joel)
     item14 = Marketplace::Item.create('Spicy Chily', 35, 15, ese)
     item15 = Marketplace::Item.create('Can of Beans', 3, 60, ese)
+    item16 = Marketplace::Item.create('PC', 3, 10, urs)
+    item17 = Marketplace::Item.create('PC', 3, 50, urs)
+    item18 = Marketplace::Item.create('PC', 3, 200, urs)
+    item19 = Marketplace::Item.create('PC', 3, 1000, urs)
 
     # Set the items state
     item1.active = true
@@ -129,6 +133,11 @@ class App < Sinatra::Base
     item13.active = true
     item14.active = true
     item15.active = true
+    item16.active = true
+    item17.active = true
+    item18.active = true
+    item19.active = true
+
   end
 
 end
