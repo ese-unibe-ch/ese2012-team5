@@ -21,9 +21,10 @@ class DeleteAccount < Sinatra::Application
         if item.pictures.size > 0
           item.pictures.each{ |image_url| Helper::ImageUploader.remove_image(image_url, settings.root) }
         end
-        if user.picture != nil
-          Helper::ImageUploader.remove_image(user.picture, settings.root)
-        end
+      end
+
+      if user.picture != nil
+        Helper::ImageUploader.remove_image(user.picture, settings.root)
       end
 
       @database.delete_user(user)
