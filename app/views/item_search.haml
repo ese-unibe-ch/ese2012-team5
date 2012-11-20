@@ -9,8 +9,8 @@
   $(document).ready(function () {
     $("#search_query").val($("#query_field").val()).trigger('change');
   });
-  $(document).ready(function () {
-  			$('#search_in').jTPS( {perPages:[5,12,15,50,'ALL'],scrollStep:1,scrollDelay:30} );
+  $('#search_in').ready(function () {
+  			$('#search_in').jTPS( {perPages:[15,50,'ALL'],scrollStep:1,scrollDelay:30} );
   			// bind mouseover for each tbody row and change cell (td) hover style
   			$('#search_in tbody tr:not(.stubCell)').bind('mouseover mouseout',
   				function (e) {
