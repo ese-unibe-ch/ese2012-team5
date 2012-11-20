@@ -28,7 +28,7 @@ require_relative 'controllers/item_buy.rb'
 require_relative 'controllers/item_create.rb'
 require_relative 'controllers/item_merge.rb'
 require_relative 'controllers/delete_account.rb'
-require_relative 'controllers/deactivate_user.rb'
+require_relative 'controllers/deactivate_account.rb'
 require_relative 'controllers/buy.rb'
 require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
@@ -41,7 +41,7 @@ class App < Sinatra::Base
 
   use Login
   use DeleteAccount
-  use DeactivateUser
+  use DeactivateAccount
   use Register
   use Main
   use User

@@ -41,7 +41,7 @@ class Login < Sinatra::Application
     # Check password. Compares user input with hashed password via == method. Doesn't compare in plain text!
     if Helper::Checker.check_password?(user, password)
       if !(user_deactivated.nil?)
-        session[:message] = "message ~ user reactivated! Your old data was recovered."
+        session[:message] = "message ~ User reactivated! Your old data was recovered."
       end
       session[:name] = username
       redirect "/"
