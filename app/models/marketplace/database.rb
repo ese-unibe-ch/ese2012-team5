@@ -15,16 +15,16 @@ module Marketplace
       # List for all BuyOrder
       @buy_orders = []
 
-       #TODO fix imageUpload, at editItem, userSettings, and add to createItem
-      # Counter for uploaded images
-      @imageCount = 0
-
-
+      # List for all deactivated users
+      @users_deactivated = []
+      
       #TODO rename that stuff into more intuitive names
       # These are two hashmaps with the generated hash (link) as a key
       # mapped to an array of values which holds the user [0] and the timestamp [1]
       @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
       @verification_hashmap = Hash.new{ |values,key| values[key] = []}
+
+
     end
 
     # Gets the only instance (SINGLETON)
@@ -205,6 +205,32 @@ module Marketplace
   #--------
   #EMails
   #--------
+
+    # save this user to the deactivated-user list
+    def store_deactivated_user(user)
+      @users_deactivated << user
+    end
+
+    # deactivates a user account by first deactivating all his items,
+    # storing all information and finally deleting the user.
+    def deactivate_user(user)
+      user.items.each{ |item|
+        item.deactivate
+      }
+      store_deactivated_user(user)
+      @users.delete(user)
+    end
+
+    # @param [String] mail address of the desired user
+    # @return [User] desired user
+    def get_deactivated_user_by_name(username)
+      @users_deactivated.detect{ |user| user.name == username}
+    end
+
+    # removes user from the list with the deactivated users
+    def delete_deactivated_user(user)
+      @users_deactivated.delete(user)
+    end
 
     def all_emails
       emails = Array.new
