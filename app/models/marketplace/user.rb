@@ -112,8 +112,8 @@ module Marketplace
       if self.picture != nil
         Helper::ImageUploader.delete_image(self.picture, settings.root)
       end
-      #delete self from database
-      Marketplace::Database.instance.all_users.delete(self)
+      #removes self from database
+      Marketplace::Database.instance.remove_user(self)
     end
 
     def to_s

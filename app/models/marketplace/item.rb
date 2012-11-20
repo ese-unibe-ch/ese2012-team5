@@ -111,8 +111,8 @@ module Marketplace
       end
       #removes self from users items
       self.owner.remove_item(self)
-      #deletes self from database
-      Marketplace::Database.instance.all_items.delete(self)
+      #removes self from database
+      Marketplace::Database.instance.remove_item(self)
     end
 
     def to_s

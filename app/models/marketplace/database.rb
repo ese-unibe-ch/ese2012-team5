@@ -76,8 +76,8 @@ module Marketplace
       @items << item
     end
 
-    def delete_item(item)
-      item.delete
+    def remove_item(item)
+      @items.delete(item)
     end
 
     # @param [Integer] id of the desired item
@@ -177,9 +177,8 @@ module Marketplace
       @users << user
     end
 
-    # Deletes the user and all his items
-    def delete_user(user)
-      user.delete
+    def remove_user(user)
+      @users.delete(user)
     end
 
     # @param [String] name the desired user

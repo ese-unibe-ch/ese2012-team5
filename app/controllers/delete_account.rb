@@ -17,7 +17,7 @@ class DeleteAccount < Sinatra::Application
     user = @database.user_by_name(username)
 
     if Helper::Checker.check_password?(user, password)
-      @database.delete_user(user)
+      user.delete
       session[:message] = "message ~ Account deleted. See you around!"
       session[:name] = nil
       redirect '/'
