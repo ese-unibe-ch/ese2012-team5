@@ -17,6 +17,13 @@ class Login < Sinatra::Application
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
+    user_deactivated = @database.get_deactivated_user_by_name(username)
+
+    if !(user_deactivated.nil?)
+      user = user_deactivated
+      @database.add_user(user)
+      @database.delete_deactivated_user(user)
+    end
 
     # check for any empty input or non-existent user
     if username == "" or password == ""
@@ -32,6 +39,9 @@ class Login < Sinatra::Application
 
     # Check password. Compares user input with hashed password via == method. Doesn't compare in plain text!
     if Helper::Checker.check_password?(user, password)
+      if !(user_deactivated.nil?)
+        session[:message] = "message ~ user reactivated! Your old data was recovered."
+      end
       session[:name] = username
       redirect "/"
     else

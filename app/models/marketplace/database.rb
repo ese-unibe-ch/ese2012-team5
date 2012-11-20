@@ -167,14 +167,13 @@ module Marketplace
         item.deactivate
       }
       store_deactivated_user(user)
-      #user.delete
       @users.delete(user)
     end
 
     # @param [String] mail address of the desired user
     # @return [User] desired user
-    def get_deactivated_user_by_mail(mail)
-      @users_deactivated.detect{ |user| user.email == mail}
+    def get_deactivated_user_by_name(username)
+      @users_deactivated.detect{ |user| user.name == username}
     end
 
     # removes user from the list with the deactivated users

@@ -10,7 +10,7 @@ module Helper
     # @param [Integer] min minimal length username must have
     # @param [Integer] max maximal length username can have
     def self.validate_username(username, min, max)
-      if @database.user_by_name(username)
+      if @database.user_by_name(username) || @database.get_deactivated_user_by_name(username)
         return "error ~ username already taken. "
       end
       if username.length<min
