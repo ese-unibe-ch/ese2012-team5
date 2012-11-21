@@ -17,14 +17,14 @@ class DeleteAccount < Sinatra::Application
     user = @database.user_by_name(username)
 
     if Helper::Checker.check_password?(user, password)
-      for item in  user.items
+      for item in user.items
         if item.pictures.size > 0
-          item.pictures.each{ |image_url| Helper::ImageUploader.remove_image(image_url, settings.root) }
+          item.pictures.each{ |image_url| Helper::ImageUploader.delete_image(image_url, settings.root) }
         end
       end
 
       if user.picture != nil
-        Helper::ImageUploader.remove_image(user.picture, settings.root)
+        Helper::ImageUploader.delete_image(user.picture, settings.root)
       end
 
       @database.delete_user(user)

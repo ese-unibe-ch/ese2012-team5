@@ -79,11 +79,9 @@ class ItemEdit < Sinatra::Application
     pos =  params[:image_pos].to_i
     id = params[:item_id].to_i
     current_item = @database.item_by_id(id)
-    filename = current_item.pictures[pos]
 
-    current_item.del_image_by_nr(pos)
+    current_item.delete_image_at(pos)
 
-    Helper::ImageUploader.remove_image(filename, settings.root)
     redirect "item/#{id}/edit"
   end
 
@@ -92,7 +90,7 @@ class ItemEdit < Sinatra::Application
     pos =  params[:image_pos].to_i
     id =  params[:item_id].to_i
     current_item = @database.item_by_id(id)
-    current_item.move_image_to_front(pos)
+    current_item.select_frontimage(pos)
     redirect "item/#{id}/edit"
   end
 

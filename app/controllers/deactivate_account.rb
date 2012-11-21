@@ -17,7 +17,7 @@ class DeactivateAccount < Sinatra::Application
 
     if Helper::Checker.check_password?(user, password)
 
-      @database.deactivate_user(user)
+      user.deactivate
       session[:message] = "message ~ Account deactivated. See you around!"
       session[:name] = nil
       redirect '/'

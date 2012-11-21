@@ -13,7 +13,7 @@ class BuyOrderDelete < Sinatra::Application
     buy_order = @database.buy_order_by_id(id.to_i)
 
     if current_user == buy_order.user
-      @database.delete_buy_order(buy_order)
+      buy_order.delete
       session[:message] = "message ~ You have deleted a buy order"
     end
 

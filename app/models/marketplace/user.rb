@@ -2,9 +2,9 @@ module Marketplace
 
   class User
 
-    attr_accessor :name, :credits, :items, :picture, :password, :email, :details, :verified
+    attr_accessor :name, :credits, :picture, :password, :email, :details, :verified
 
-    # constructor with password
+    # Constructor that will automatic add new user to database
     # @param [String] name of the new user
     # @param [String] email address
     # @param [String] password of the new user
@@ -18,12 +18,11 @@ module Marketplace
       user
     end
 
-    # initial properties of a user
+    # Initial properties of a user
     def initialize
       self.credits = 100
       self.picture = nil
-      self.details = "nothing"
-      self.items = Array.new
+      self.details = "No description"
       self.verified = false
     end
 
@@ -31,11 +30,16 @@ module Marketplace
       self.credits >= amount
     end
 
+    # @param [String] password that will be set
     def change_password(password)
       self.password = BCrypt::Password.create(password)
     end
 
+    # Buy method that covers the whole buy process
     # @param [Item] item the user want to buy
+    # @param [Integer] quantity of the item to buy
+    # @return [Item] item that has been bought with 'quantity'
+    # [NotImplementedError] when user can't do this purchase
     def buy(item, quantity)
       if can_buy_item?(item, quantity)
         if quantity < item.quantity
@@ -47,7 +51,6 @@ module Marketplace
         seller.sell(item_to_buy)
         item_to_buy.owner = self
         self.remove_credits(item_to_buy.price * quantity)
-        self.add_item(item_to_buy)
         item_to_buy.deactivate
       else
         throw NotImplementedError
@@ -55,38 +58,30 @@ module Marketplace
       item_to_buy
     end
 
+    # Will be called through Method buy(item,quantity)
     # @param [Item] item the user want to sell
     def sell(item)
-      self.remove_item(item)
       self.add_credits(item.price * item.quantity)
     end
 
-    # @param [Float] amount which the user gets additionally
     def add_credits(amount)
       self.credits += amount
     end
 
-    # @param [Float] amount which the user loses
     def remove_credits(amount)
       self.credits -= amount
     end
 
-    # @param [Item] item item is added to the users item-list
-    def add_item(item)
-      self.items.push(item)
-    end
-
-    # @param [Item] item item is removed from the users item-list
-    def remove_item(item)
-      self.items.delete(item)
-    end
-
-    # @param [Item] item checks if the user owns this item
-    # @return [Boolean] True if the item is part of the users item-list
+    # @param [Item] item to check if the user owns it
+    # @return [Boolean] true if user owns it
     def has_item?(item)
-      !(self.items.detect do |item_temp|
-        item_temp.id == item.id
-      end.nil?)
+      items = Marketplace::Database.instance.items_by_user(self)
+      items.include?(item)
+    end
+
+    # @return [List of Item] all items of user
+    def items
+      Marketplace::Database.instance.items_by_user(self)
     end
 
     # @param [Item] item item to buy
@@ -96,8 +91,31 @@ module Marketplace
       self != item.owner and enough_credits(item.price * quantity) and item.quantity >= quantity and item.active
     end
 
+    # Deletes the user, its profile picture and all its items
     def delete
-      self.items.each { |item| item.delete}
+      Marketplace::Database.instance.delete_user(self)
+      Helper::ImageUploader.delete_image(self.picture, settings.root) if self.picture != nil
+      items = Marketplace::Database.instance.items_by_user(self)
+      items.each{ |item| item.delete }
+    end
+
+    # Deactivates the user
+    # Therefore it deactivates all items, deletes all buy_orders and
+    # swaps user to deactivated_users list
+    def deactivate
+      items = Marketplace::Database.instance.items_by_user(self)
+      items.each{ |item| item.deactivate }
+
+      buy_orders = Marketplace::Database.instance.buy_orders_by_user(self)
+      buy_orders.each{ |buy_order| buy_order.delete }
+
+      Marketplace::Database.instance.add_deactivated_user(self)
+      Marketplace::Database.instance.delete_user(self)
+    end
+
+    def activate
+      Marketplace::Database.instance.delete_deactivated_user(self)
+      Marketplace::Database.instance.add_user(self)
     end
 
     def to_s
@@ -108,6 +126,7 @@ module Marketplace
        self.verified = true
     end
 
+    # @return [String] path of user profile picture
     def image_path
       if self.picture == nil
         return File.join("", "images", "default_user.jpg")

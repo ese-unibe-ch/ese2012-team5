@@ -21,7 +21,7 @@ class Login < Sinatra::Application
     deactivated_user = @database.deactivated_user_by_name(username)
 
     if user.nil? and !deactivated_user.nil?
-      @database.activate_user(deactivated_user)
+      deactivated_user.activate
       user = deactivated_user
     end
 
