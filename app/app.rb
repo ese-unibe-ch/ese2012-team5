@@ -27,6 +27,7 @@ require_relative 'controllers/item_activate.rb'
 require_relative 'controllers/item_buy.rb'
 require_relative 'controllers/item_create.rb'
 require_relative 'controllers/item_merge.rb'
+require_relative 'controllers/item_search.rb'
 require_relative 'controllers/delete_account.rb'
 require_relative 'controllers/deactivate_account.rb'
 require_relative 'controllers/buy.rb'
@@ -75,7 +76,7 @@ class App < Sinatra::Base
     # Create some users
     daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
     joel = Marketplace::User.create('Joel','test','joel.guggisberg@students.unibe.ch')
-    lukas = Marketplace::User.create('Lukas','lol','luky_von_rotz@hotmail.com')
+    lukas = Marketplace::User.create('Lukas','lol','lukas.v.rotz@gmail.com')
     oliver = Marketplace::User.create('Oliver','aha','test@testmail3.com')
     rene = Marketplace::User.create('Rene','wtt','sudojudo@eml.cc')
     urs = Marketplace::User.create('Urs','123','UrsZysset@gmail.com')
@@ -98,11 +99,12 @@ class App < Sinatra::Base
     rene.verify
     ese.verify
 
+
     # Create some items
     item1 = Marketplace::Item.create('Table', 100, 20, daniel)
-    item2 = Marketplace::Item.create('Dvd', 10, 30, joel)
+    item2 = Marketplace::Item.create('Inception, Dvd', 10, 30, joel)
     item3 = Marketplace::Item.create('Bed', 50, 2, lukas)
-    item4 = Marketplace::Item.create('Book', 20, 1, oliver)
+    item4 = Marketplace::Item.create('Tolkien, Lord of the Rings 1, Book', 20, 1, oliver)
     item5 = Marketplace::Item.create('Shoes', 80, 7, rene)
     item6 = Marketplace::Item.create('Trousers', 60, 99, urs)
     item7 = Marketplace::Item.create('Bed', 60, 4, joel)
@@ -113,11 +115,19 @@ class App < Sinatra::Base
     item12 = Marketplace::Item.create('Fridge', 279, 10, rene)
     item13 = Marketplace::Item.create('Red Fridge', 400, 10, joel)
     item14 = Marketplace::Item.create('Spicy Chily', 35, 15, ese)
-    item15 = Marketplace::Item.create('Can of Beans', 3, 60, ese)
-    item16 = Marketplace::Item.create('PC', 3, 10, urs)
-    item17 = Marketplace::Item.create('PC', 3, 50, urs)
-    item18 = Marketplace::Item.create('PC', 3, 200, urs)
-    item19 = Marketplace::Item.create('PC', 3, 1000, urs)
+    item15 = Marketplace::Item.create('Apple', 3, 15, ese)
+    item16 = Marketplace::Item.create('Apple', 3, 10, ese)
+    item17 = Marketplace::Item.create('Can of Beans', 3, 8, ese)
+    item18 = Marketplace::Item.create('SuperMan Costume', 3, 60, oliver)
+    item19 = Marketplace::Item.create('Bravo  Hits 5, CD', 2, 1, ese)
+    item20 = Marketplace::Item.create('The Matrix, DVD', 20, 3, joel)
+    item21 = Marketplace::Item.create('Golden Rolex', 1000, 1, urs)
+    item22 = Marketplace::Item.create('Vestax VCI 400 Dj Controller', 400, 1, lukas)
+    item23 = Marketplace::Item.create('THE one and only Magic Ring', 30000, 1, rene)
+    item24 = Marketplace::Item.create('Cool Runnings, DVD', 40, 4, ese)
+    item25 = Marketplace::Item.create('Bag of Dubplates', 10, 7, rene)
+    item26 = Marketplace::Item.create('AK 47', 1000, 3, ese)
+    item27 = Marketplace::Item.create('Dreamcatcher', 10, 40, daniel)
 
     # Set the items state
     item1.active = true
