@@ -5,7 +5,6 @@ class ItemEdit < Sinatra::Application
   end
 
 
-  # Displays the view to edit items with given id
   get '/item/:id/edit' do
 
     id = params[:id].to_i
@@ -28,22 +27,21 @@ class ItemEdit < Sinatra::Application
                                  :info => message }
   end
 
-  # Will edit item with given id according to given params
-  # If name or price is not valid, edit will fail
-  # If edit succeeds, it will redirect to profile of edited item
+
   post '/item/:id/edit' do
 
     id = params[:id].to_i
     new_name = params[:name]
     new_price = params[:price]
     current_item = @database.item_by_id(id)
-    current_user = @database.user_by_name(session[:name])
 
+    #TODO add helper here
     if (new_name == nil or new_name == "" or new_name.strip! == "")
       session[:message] = "error ~ Empty name!"
       redirect "/item/#{id}/edit"
     end
 
+    #TODO add helper here
     begin
       !(Integer(new_price))
     rescue ArgumentError

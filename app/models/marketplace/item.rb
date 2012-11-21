@@ -53,7 +53,7 @@ module Marketplace
     def merge(item)
       if mergeable?(item)
         self.quantity = self.quantity + item.quantity
-        Marketplace::Database.instance.delete_item(item)
+        item.delete
       else
         throw NotImplementedError
       end

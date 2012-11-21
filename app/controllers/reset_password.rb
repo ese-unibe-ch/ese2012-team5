@@ -4,6 +4,7 @@ class ResetPassword < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+  #TODO rename stuff
 
   get '/forgot_password' do
     message = session[:message]
@@ -21,7 +22,7 @@ class ResetPassword < Sinatra::Application
     end
 
     user = @database.user_by_email(email)
-    # send email
+    # Send email
     Helper::Mailer.send_pw_reset_mail(user)
 
     session[:message] = "message ~ Email sent. Please check your mails for reset-link"
@@ -33,7 +34,7 @@ class ResetPassword < Sinatra::Application
     message = session[:message]
     session[:message] = nil
 
-    #delete entries older than 24h from reset password hashmap
+    # Delete entries older than 24h from reset password hashmap
     @database.delete_old_entries_from_rp_hashmap(24)
 
     #check if hash exists

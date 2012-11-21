@@ -5,7 +5,6 @@ class ItemCreate < Sinatra::Application
   end
 
 
-  # Displays the view to create new items
   get '/createItem' do
 
     current_user = @database.user_by_name(session[:name])
@@ -21,9 +20,7 @@ class ItemCreate < Sinatra::Application
 
   end
 
-  # Will create a new item according to given params
-  # If name or price is not valid, creation will fail
-  # If creation succeeds, it will redirect to profile of new item
+
   post '/createItem' do
 
     name = params[:name]
@@ -31,11 +28,13 @@ class ItemCreate < Sinatra::Application
     quantity = params[:quantity]
     current_user = @database.user_by_name(session[:name])
 
+    #TODO add helper here
     if name == nil or name == "" or name.strip! == ""
       session[:message] = "error ~ empty name!"
       redirect '/createItem'
     end
 
+    #TODO add helper here
     begin
       !(Integer(price))
     rescue ArgumentError
@@ -43,6 +42,7 @@ class ItemCreate < Sinatra::Application
       redirect '/createItem'
     end
 
+    #TODO add helper here
     begin
       !(Integer(quantity))
     rescue ArgumentError
@@ -50,6 +50,7 @@ class ItemCreate < Sinatra::Application
       redirect '/createItem'
     end
 
+    #TODO add helper here
     if quantity.to_i <= 0
       session[:message] = "error ~ Quantity must be bigger than zero"
       redirect '/createItem'
@@ -59,7 +60,6 @@ class ItemCreate < Sinatra::Application
 
     session[:message] = "message ~ You have created #{new_item.name}"
     redirect "/item/#{new_item.id}"
-
   end
 
 end

@@ -27,11 +27,13 @@ class BuyOrderCreate < Sinatra::Application
     max_price = params[:max_price]
     current_user = @database.user_by_name(session[:name])
 
+    #TODO add helper here
     if item_name == nil or item_name == "" or item_name.strip! == ""
       session[:message] = "error ~ empty name!"
       redirect '/createBuyOrder'
     end
 
+    #TODO add helper here
     begin
       !(Integer(max_price))
     rescue ArgumentError
@@ -48,7 +50,7 @@ class BuyOrderCreate < Sinatra::Application
       session[:message] = "message ~ The item your willing to buy is already available. </br> Use the search to find it."
       redirect "/"
     else
-      # Create new buy order
+
       Marketplace::BuyOrder.create(item_name, max_price.to_i, current_user)
 
       session[:message] = "message ~ You have created a new buy order"

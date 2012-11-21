@@ -15,6 +15,7 @@ class Login < Sinatra::Application
 
 
   post '/login' do
+
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
@@ -25,6 +26,7 @@ class Login < Sinatra::Application
       user = deactivated_user
     end
 
+    #TODO add helper here
     # check for any empty input or non-existent user
     if username == "" or password == ""
       session[:message] = "error ~ empty username or password - login failed!"

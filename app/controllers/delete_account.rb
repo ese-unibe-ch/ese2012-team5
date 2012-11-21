@@ -12,22 +12,12 @@ class DeleteAccount < Sinatra::Application
       redirect '/settings'
     end
 
-    username = params[:username]
+
     password = params[:password]
-    user = @database.user_by_name(username)
+    current_user = @database.user_by_name(session[:name])
 
-    if Helper::Checker.check_password?(user, password)
-      for item in user.items
-        if item.pictures.size > 0
-          item.pictures.each{ |image_url| Helper::ImageUploader.delete_image(image_url, settings.root) }
-        end
-      end
-
-      if user.picture != nil
-        Helper::ImageUploader.delete_image(user.picture, settings.root)
-      end
-
-      @database.delete_user(user)
+    if Helper::Checker.check_password?(current_user, password)
+      current_user.delete
       session[:message] = "message ~ Account deleted. See you around!"
       session[:name] = nil
       redirect '/'

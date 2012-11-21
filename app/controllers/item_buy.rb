@@ -4,23 +4,14 @@ class ItemBuy < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-  # The user with current session buys the item with given id
-  # If no session exists, you will be redirected to '/login'
-  # If user doesn't own enough credits or item is not active
-  # or user is already owner, the transaction will fail
+
   post "/item/:id/buy" do
 
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
     quantity = params[:quantity].to_i
 
-
-    # Check for guests playing around
-    if !current_user
-      session[:message] = "error ~ Log in to buy items"
-      redirect '/login'
-    end
-
+    #TODO add helper here
     # Checks if quantity is wrong
     if quantity <= 0 or quantity > current_item.quantity
       session[:message] = "error ~ Quantity #{quantity} not valid!"
@@ -34,19 +25,11 @@ class ItemBuy < Sinatra::Application
     end
 
 
-    #
-    # Start with buy-algorithm
-    #
-
-    # Store seller
     seller = current_item.owner
-
-    # Let the buyer buy the item
     bought_item = current_user.buy(current_item, quantity)
 
-    session[:message] = "message ~ You bought #{bought_item.name}(Amount:#{bought_item.quantity})"
+    session[:message] = "message ~ You bought #{bought_item.quantity}x #{bought_item.name} from #{seller.name})"
     redirect "/user/#{current_user.name}"
-
   end
 
 end
