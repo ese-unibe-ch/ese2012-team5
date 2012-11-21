@@ -169,12 +169,6 @@ module Marketplace
       category.sort! {|a,b| a.price <=> b.price}
     end
 
-    def set_all_active_and_add(*items)
-      items.each do |item|
-        item.active = true
-        self.add_item(item)
-      end
-    end
 
   #--------
   #User
@@ -188,6 +182,11 @@ module Marketplace
     def delete_user(user)
       user.items.each{ |item| delete_item(item)}
       user.delete
+
+      # Delete all buy_orders of user
+      buy_orders = buy_orders_by_user(user)
+      buy_orders.each{ |buy_order| delete_buy_order(buy_order) }
+
       @users.delete(user)
     end
 
@@ -209,11 +208,11 @@ module Marketplace
     end
 
   #--------
-  #EMails
+  #Deactivated Users
   #--------
 
     # save this user to the deactivated-user list
-    def store_deactivated_user(user)
+    def add_deactivated_user(user)
       @users_deactivated << user
     end
 
@@ -223,13 +222,22 @@ module Marketplace
       user.items.each{ |item|
         item.deactivate
       }
-      store_deactivated_user(user)
-      @users.delete(user)
+      # Delete all buy_orders of user
+      buy_orders = buy_orders_by_user(user)
+      buy_orders.each{ |buy_order| delete_buy_order(buy_order) }
+
+      add_deactivated_user(user)
+      @users.delete(user) #TODO use delete_user(user) when cleaned up
+    end
+
+    def activate_user(user)
+      delete_deactivated_user(user)
+      add_user(user)
     end
 
     # @param [String] mail address of the desired user
     # @return [User] desired user
-    def get_deactivated_user_by_name(username)
+    def deactivated_user_by_name(username)
       @users_deactivated.detect{ |user| user.name == username}
     end
 
@@ -237,6 +245,11 @@ module Marketplace
     def delete_deactivated_user(user)
       @users_deactivated.delete(user)
     end
+
+
+    #--------
+    #EMails
+    #--------
 
     def all_emails
       emails = Array.new
