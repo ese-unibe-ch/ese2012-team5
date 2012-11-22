@@ -6,7 +6,7 @@ module Marketplace
     # ID for a unique identification of each item
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures
+    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description
 
     # Constructor that will automatic add new item to database
     # @param [String] name of the new item
@@ -16,8 +16,6 @@ module Marketplace
     # @return [Item] created item
     def self.create(name, price, quantity, owner)
       item = self.new
-      item.id = @@id
-      @@id += 1
       item.name = name
       item.price = price
       item.quantity = quantity
@@ -29,7 +27,10 @@ module Marketplace
 
     # Initial property of an item
     def initialize
+      self.id = @@id
+      @@id += 1
       self.active = false
+      self.description = "No description"
     end
 
     # Splits the item into two separate items

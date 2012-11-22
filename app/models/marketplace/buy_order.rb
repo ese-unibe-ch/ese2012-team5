@@ -16,14 +16,18 @@ module Marketplace
     # @return [BuyOrder] created buy_order
     def self.create(item_name, max_price, user)
       buy_order = self.new
-      buy_order.id = @@id
-      @@id += 1
       buy_order.item_name = item_name
       buy_order.max_price = max_price
-      buy_order.quantity = 1
       buy_order.user = user
       Marketplace::Database.instance.add_buy_order(buy_order)
       buy_order
+    end
+
+    # Initial property of an item
+    def initialize
+      self.id = @@id
+      @@id += 1
+      self.quantity = 1
     end
 
     # Called every time a item changes
