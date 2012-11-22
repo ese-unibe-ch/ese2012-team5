@@ -36,11 +36,17 @@ class ItemEdit < Sinatra::Application
     id = params[:id].to_i
     new_name = params[:name]
     new_price = params[:price]
+    new_description = params[:description]
     current_item = @database.item_by_id(id)
     current_user = @database.user_by_name(session[:name])
 
     if (new_name == nil or new_name == "" or new_name.strip! == "")
       session[:message] = "error ~ Empty name!"
+      redirect "/item/#{id}/edit"
+    end
+
+    if (new_description == nil or new_description == "")
+      session[:message] = "error ~ Empty description!"
       redirect "/item/#{id}/edit"
     end
 
@@ -53,6 +59,7 @@ class ItemEdit < Sinatra::Application
 
     current_item.name = new_name
     current_item.price = new_price.to_i
+    current_item.description = new_description
 
     redirect "/item/#{id}"
 

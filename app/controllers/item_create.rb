@@ -29,6 +29,7 @@ class ItemCreate < Sinatra::Application
     name = params[:name]
     price = params[:price]
     quantity = params[:quantity]
+    description = params[:description]
     current_user = @database.user_by_name(session[:name])
 
     if name == nil or name == "" or name.strip! == ""
@@ -55,7 +56,13 @@ class ItemCreate < Sinatra::Application
       redirect '/createItem'
     end
 
+    if description == nil or description == ""
+      session[:message] = "error ~ empty description!"
+      redirect '/createItem'
+    end
+
     new_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
+    new_item.description = description
 
     session[:message] = "message ~ You have created #{new_item.name}"
     redirect "/item/#{new_item.id}"

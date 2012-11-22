@@ -5,7 +5,7 @@ module Marketplace
     # static variables: id for a unique identification
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures
+    attr_accessor :id, :name, :price, :description, :owner, :active, :quantity, :pictures
 
     # constructor
     # @param [String] name of the new item
@@ -30,6 +30,7 @@ module Marketplace
     # initial property of an item
     def initialize
       self.active = false
+      self.description = "nothing"
     end
 
     # splits the item into two separate items

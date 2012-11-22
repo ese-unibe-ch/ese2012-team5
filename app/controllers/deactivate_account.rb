@@ -6,11 +6,6 @@ class DeactivateAccount < Sinatra::Application
 
   post '/deactivate_account' do
 
-    if params[:confirm] != "true"
-      session[:message] = "error ~ You must confirm that you want to deactivate your account."
-      redirect '/settings'
-    end
-
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
