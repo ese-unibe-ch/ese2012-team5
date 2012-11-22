@@ -18,7 +18,9 @@ module Marketplace
       #TODO rename that stuff into more intuitive names
       # These are two hashmaps with the generated hash (link) as a key
       # mapped to an array of values which holds the user [0] and the timestamp [1]
+      #TODO pw_reset
       @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
+      #TODO verification
       @verification_hashmap = Hash.new{ |values,key| values[key] = []}
 
 
@@ -225,36 +227,40 @@ module Marketplace
       emails.include?(email)
     end
 
-  #TODO use nicer variable names
+
   #--------
-  #Methods for Pw-Reset and Verification Mail hashs
+  #Password reset
   #--------
 
-    #Methods for the @reset_pw_hashmap
-
+    #TODO add_pw_reset
     def add_to_rp_hashmap(hash,user,timestamp)
       @reset_pw_hashmap[hash][0] = user
       @reset_pw_hashmap[hash][1] = timestamp
     end
 
+    #TODO pw_reset_user_by_hash(hash)
     def get_user_from_rp_hashmap_by(hash)
       @reset_pw_hashmap[hash][0]
     end
 
+    #TODO pw_reset_timestamp_by_hash(hash)
     def get_timestamp_from_rp_hashmap_by(hash)
       @reset_pw_hashmap[hash][1]
     end
 
+    #TODO pw_reset_has?(hash)
     def hash_exists_in_rp_hashmap?(hash)
       @reset_pw_hashmap.has_key?(hash)
     end
 
+    #TODO delete_pw_reset(hash)
     def delete_from_rp_hashmap(hash)
       @reset_pw_hashmap.delete(hash)
     end
 
     #deletes entries that are older than
     # @param [int] hours
+    #TODO clean_pw_reset_older_as(hours)
     def delete_old_entries_from_rp_hashmap(hours)
       @reset_pw_hashmap.each_key {|hash|
         time_now = Time.new
@@ -266,25 +272,33 @@ module Marketplace
       }
     end
 
-    #Methods for the @verification_hashmap
 
+    #--------
+    #Verification
+    #--------
+
+    #TODO add_verification
     def add_to_ver_hashmap(hash,user,timestamp)
       @verification_hashmap[hash][0] = user
       @verification_hashmap[hash][1] = timestamp
     end
 
+    #TODO verification_user_by_hash(hash)
     def get_user_from_ver_hashmap_by(hash)
       @verification_hashmap[hash][0]
     end
 
+    #TODO verification_timestamp_by_hash(hash)
     def get_timestamp_from_ver_hashmap_by(hash)
       @verification_hashmap[hash][1]
     end
 
+    #TODO verification_has?(hash)
     def hash_exists_in_ver_hashmap?(hash)
       @verification_hashmap.has_key?(hash)
     end
 
+    #TODO delete_verification(hash)
     def delete_entry_from_ver_hashmap(hash)
       @verification_hashmap.delete(hash)
     end
