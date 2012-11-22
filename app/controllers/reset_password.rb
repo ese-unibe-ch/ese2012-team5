@@ -4,7 +4,6 @@ class ResetPassword < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-  #TODO rename stuff
 
   get '/forgot_password' do
     message = session[:message]

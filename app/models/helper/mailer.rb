@@ -64,7 +64,7 @@ Date: #{Time.now.rfc2822}
 
 Hi, #{user.name}
 follow this link to verify your account.
-http://localhost:4567/verify_acc/#{hash}
+http://localhost:4567/verify_account/#{hash}
 
 Regards,
 Your item|market - Team

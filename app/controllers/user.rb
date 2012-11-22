@@ -28,7 +28,6 @@ class User < Sinatra::Application
                                         :user => user,
                                         :items_user => user_items }
     end
-
   end
 
 end

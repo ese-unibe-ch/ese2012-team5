@@ -5,7 +5,7 @@ class Verify < Sinatra::Application
   end
 
 
-  get '/verify_acc/:hash' do
+  get '/verify_account/:hash' do
 
     message = session[:message]
     session[:message] = nil
