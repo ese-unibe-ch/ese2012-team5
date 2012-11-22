@@ -14,7 +14,7 @@ class BuyOrderCreate < Sinatra::Application
       session[:message] = nil
       haml :buy_order_create, :locals => {:info => message }
     else
-      session[:message] = "error ~ Log in to create buy orders"
+      session[:message] = "~error~Log in to create buy orders!"
       redirect '/login'
     end
 
@@ -27,33 +27,26 @@ class BuyOrderCreate < Sinatra::Application
     max_price = params[:max_price]
     current_user = @database.user_by_name(session[:name])
 
-    #TODO add helper here
-    if item_name == nil or item_name == "" or item_name.strip! == ""
-      session[:message] = "error ~ empty name!"
-      redirect '/createBuyOrder'
-    end
 
-    #TODO add helper here
-    begin
-      !(Integer(max_price))
-    rescue ArgumentError
-      session[:message] = "error ~ Price was not a number!"
+    session[:message] = ""
+    session[:message] += Helper::Validator.validate_string(item_name, "name")
+    session[:message] += Helper::Validator.validate_integer(max_price, "max price", 0, nil)
+    if session[:message] != ""
       redirect '/createBuyOrder'
     end
 
     # Check if buy_order is already satisfiable
+    # If yes, go back home and tell user to find it himself
     possible_items = Marketplace::Database.instance.item_by_name(item_name)
     count = possible_items.count{ |item| item.name == item_name and
                                   item.price < max_price.to_i and
                                   item.owner != current_user}
     if count > 0
-      session[:message] = "message ~ The item your willing to buy is already available. </br> Use the search to find it."
+      session[:message] = "~note~the item your willing to buy is already available.</br>use the search to find it."
       redirect "/"
     else
-
       Marketplace::BuyOrder.create(item_name, max_price.to_i, current_user)
-
-      session[:message] = "message ~ You have created a new buy order"
+      session[:message] = "~note~you have created a new buy order."
       redirect "/user/#{current_user.name}"
     end
 

@@ -32,7 +32,7 @@ class ItemMerge < Sinatra::Application
 
     current_item.merge(other_item)
 
-    session[:message] = "message ~ Merge was successful!"
+    session[:message] = "~note~merge was successful!"
     redirect "/user/#{current_user.name}"
   end
 

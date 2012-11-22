@@ -25,7 +25,7 @@ class Settings < Sinatra::Application
       filename = Helper::ImageUploader.upload_image(file, settings.root)
       user.picture = filename
     else
-      session[:message] = "error ~ Please choose a file to upload"
+      session[:message] = "~error~please choose a file to upload"
     end
 
     redirect '/settings'
@@ -60,11 +60,11 @@ class Settings < Sinatra::Application
       end
       user.change_password(new_password)
     else
-      session[:message] = "error ~ old password was not correct!"
+      session[:message] = "~error~old password was not correct!"
       redirect '/settings'
     end
 
-    session[:message] = "message ~ password changed!"
+    session[:message] = "~note~password changed!"
     redirect '/settings'
   end
 

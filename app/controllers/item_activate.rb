@@ -15,17 +15,17 @@ class ItemActivate < Sinatra::Application
       current_item.switch_active # Will toggle Event(for buy_orders) when item is activated
 
       if current_item.active
-        session[:message] = "message ~ Item is now active."
+        session[:message] = "~note~item is now active."
       else
-        session[:message] = "message ~ Item is now inactive."
+        session[:message] = "~note~item is now inactive."
       end
 
       # In case of buy_order the item is already sold or if its quantity is higher than one, one piece maybe sold
-      session[:message] << "</br>And Item was already sold!" if current_item.owner != current_user
-      session[:message] << "</br>And one piece of Item was already sold!" if current_item.quantity != quantity_before
+      session[:message] += "~note~item was already sold!" if current_item.owner != current_user
+      session[:message] += "~note~one piece of Item was already sold!" if current_item.quantity != quantity_before
       redirect "/user/#{current_user.name}"
     else
-      session[:message] = "error ~ You are not the owner of this item!"
+      session[:message] = "~error~you are not the owner of this item!"
       redirect "/item/#{current_item.id}"
     end
 

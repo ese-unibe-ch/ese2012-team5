@@ -8,7 +8,7 @@ class DeactivateAccount < Sinatra::Application
   post '/deactivate_account' do
 
     if params[:confirm] != "true"
-      session[:message] = "error ~ You must confirm that you want to deactivate your account."
+      session[:message] = "~error~you must confirm that you want to deactivate your account!"
       redirect '/settings'
     end
 
@@ -18,11 +18,11 @@ class DeactivateAccount < Sinatra::Application
 
     if Helper::Checker.check_password?(user, password)
       user.deactivate
-      session[:message] = "message ~ Account deactivated. See you around!"
+      session[:message] = "~note~account deactivated.</br>see you around!"
       session[:name] = nil
       redirect '/'
     else
-      session[:message] = "error ~ The password isn't correct"
+      session[:message] = "~error~the password isn't correct!"
       redirect '/settings'
     end
 

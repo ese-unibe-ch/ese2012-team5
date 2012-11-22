@@ -5,9 +5,9 @@ class Images < Sinatra::Application
   end
 
   #TODO seems as it would work without this get method, but why???
-  get '/images/:filename' do
-    filename = params[:filename]
-    Helper::ImageUploader.image(filename, settings.root)
-  end
+ # get '/images/:filename' do
+ #   filename = params[:filename]
+ #   Helper::ImageUploader.image(filename, settings.root)
+ # end
 
 end

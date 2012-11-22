@@ -14,7 +14,7 @@ class BuyOrderDelete < Sinatra::Application
 
     if current_user == buy_order.user
       buy_order.delete
-      session[:message] = "message ~ You have deleted a buy order"
+      session[:message] = "~note~you have deleted a buy order"
     end
 
     redirect "/user/#{current_user.name}"
