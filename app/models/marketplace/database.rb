@@ -61,7 +61,11 @@ module Marketplace
 
   # Calls all buy_orders (= listeners) that the item 'item' may have changed
     def call_buy_orders(item)
-      @buy_orders.each{ |buy_order| buy_order.item_changed(item) }
+      buy_orders_copy = Array.new
+      @buy_orders.each{ |buy_order| buy_orders_copy << buy_order } #NOTE by urs: need to copy array, because a buy_order deletes itself directly from @buy_orders when done!
+      buy_orders_copy.each{ |buy_order|
+        buy_order.item_changed(item)
+      }
     end
 
 
