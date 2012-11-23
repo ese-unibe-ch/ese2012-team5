@@ -14,16 +14,11 @@ module Marketplace
       @buy_orders = []
       # List for all deactivated users
       @deactivated_users = []
-      
-      #TODO rename that stuff into more intuitive names
-      # These are two hashmaps with the generated hash (link) as a key
-      # mapped to an array of values which holds the user [0] and the timestamp [1]
-      #TODO pw_reset
-      @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
-      #TODO verification
-      @verification_hashmap = Hash.new{ |values,key| values[key] = []}
 
-
+      # Both hashmaps use the generated hash (part of link) as a key
+      # And map it to an array of values which holds the user [0] and the timestamp [1]
+      @pw_reset = Hash.new{ |values,key| values[key] = []}
+      @verification = Hash.new{ |values,key| values[key] = []}
     end
 
     # Gets the only instance (SINGLETON)
@@ -236,42 +231,36 @@ module Marketplace
   #Password reset
   #--------
 
-    #TODO add_pw_reset
-    def add_to_rp_hashmap(hash,user,timestamp)
-      @reset_pw_hashmap[hash][0] = user
-      @reset_pw_hashmap[hash][1] = timestamp
+    def add_pw_reset(hash,user,timestamp)
+      @pw_reset[hash][0] = user
+      @pw_reset[hash][1] = timestamp
     end
 
-    #TODO pw_reset_user_by_hash(hash)
-    def get_user_from_rp_hashmap_by(hash)
-      @reset_pw_hashmap[hash][0]
+    def pw_reset_user_by_hash(hash)
+      @pw_reset[hash][0]
     end
 
-    #TODO pw_reset_timestamp_by_hash(hash)
-    def get_timestamp_from_rp_hashmap_by(hash)
-      @reset_pw_hashmap[hash][1]
+    def pw_reset_timestamp_by_hash(hash)
+      @pw_reset[hash][1]
     end
 
-    #TODO pw_reset_has?(hash)
-    def hash_exists_in_rp_hashmap?(hash)
-      @reset_pw_hashmap.has_key?(hash)
+    def pw_reset_has?(hash)
+      @pw_reset.has_key?(hash)
     end
 
-    #TODO delete_pw_reset(hash)
-    def delete_from_rp_hashmap(hash)
-      @reset_pw_hashmap.delete(hash)
+    def delete_pw_reset(hash)
+      @pw_reset.delete(hash)
     end
 
-    #deletes entries that are older than
+    # Deletes entries that are older than
     # @param [int] hours
-    #TODO clean_pw_reset_older_as(hours)
-    def delete_old_entries_from_rp_hashmap(hours)
-      @reset_pw_hashmap.each_key {|hash|
+    def clean_pw_reset_older_as(hours)
+      @pw_reset.each_key {|hash|
         time_now = Time.new
-        # adds 1 day in seconds = 86400 seconds
-        valid_until = get_timestamp_from_rp_hashmap_by(hash) + hours*3600
+        # Adds 1 day in seconds = 86400 seconds
+        valid_until = pw_reset_timestamp_by_hash(hash) + hours*3600
         if time_now > valid_until
-          delete_from_rp_hashmap(hash)
+          delete_pw_reset(hash)
         end
       }
     end
@@ -281,30 +270,25 @@ module Marketplace
     #Verification
     #--------
 
-    #TODO add_verification
-    def add_to_ver_hashmap(hash,user,timestamp)
-      @verification_hashmap[hash][0] = user
-      @verification_hashmap[hash][1] = timestamp
+    def add_verification(hash,user,timestamp)
+      @verification[hash][0] = user
+      @verification[hash][1] = timestamp
     end
 
-    #TODO verification_user_by_hash(hash)
-    def get_user_from_ver_hashmap_by(hash)
-      @verification_hashmap[hash][0]
+    def verification_user_by_hash(hash)
+      @verification[hash][0]
     end
 
-    #TODO verification_timestamp_by_hash(hash)
-    def get_timestamp_from_ver_hashmap_by(hash)
-      @verification_hashmap[hash][1]
+    def verification_timestamp_by_hash(hash)
+      @verification[hash][1]
     end
 
-    #TODO verification_has?(hash)
-    def hash_exists_in_ver_hashmap?(hash)
-      @verification_hashmap.has_key?(hash)
+    def verification_has?(hash)
+      @verification.has_key?(hash)
     end
 
-    #TODO delete_verification(hash)
-    def delete_entry_from_ver_hashmap(hash)
-      @verification_hashmap.delete(hash)
+    def delete_verification(hash)
+      @verification.delete(hash)
     end
 
   end

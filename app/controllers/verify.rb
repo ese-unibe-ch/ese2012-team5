@@ -12,15 +12,15 @@ class Verify < Sinatra::Application
     hash = params[:hash]
 
     #check if hash exists
-    if !(@database.hash_exists_in_ver_hashmap?(hash))
+    if !(@database.verification_has?(hash))
       session[:message] = "~error~unknown link"
       redirect '/'
     else
       #activate user
-      @database.get_user_from_ver_hashmap_by(hash).verify
+      @database.verification_user_by_hash(hash).verify
 
       #delete user from verification hashmap
-      @database.delete_entry_from_ver_hashmap(hash)
+      @database.delete_verification(hash)
       session[:message] = "~note~congratulations, your account is now activated."
       redirect '/'
     end

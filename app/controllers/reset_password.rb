@@ -34,10 +34,10 @@ class ResetPassword < Sinatra::Application
     session[:message] = nil
 
     # Delete entries older than 24h from reset password hashmap
-    @database.delete_old_entries_from_rp_hashmap(24)
+    @database.clean_pw_reset_older_as(24)
 
     #check if hash exists
-    if !(@database.hash_exists_in_rp_hashmap?(params[:hash]))
+    if !(@database.pw_reset_has?(params[:hash]))
       session[:message] = "~error~unknown/timed out link please request a new one!"
       redirect '/login'
     end
@@ -58,9 +58,9 @@ class ResetPassword < Sinatra::Application
     end
 
     #check for which user has that hash
-    user = @database.get_user_from_rp_hashmap_by(hash)
+    user = @database.pw_reset_user_by_hash(hash)
     user.change_password(password)
-    @database.delete_from_rp_hashmap(hash)
+    @database.delete_pw_reset(hash)
 
     session[:message] = "~note~password changed, now log in."
     redirect '/login'
