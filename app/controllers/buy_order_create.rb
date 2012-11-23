@@ -40,7 +40,8 @@ class BuyOrderCreate < Sinatra::Application
     possible_items = Marketplace::Database.instance.item_by_name(item_name)
     count = possible_items.count{ |item| item.name == item_name and
                                   item.price < max_price.to_i and
-                                  item.owner != current_user}
+                                  item.owner != current_user and
+                                  item.active == true }
     if count > 0
       session[:message] = "~note~the item your willing to buy is already available.</br>use the search to find it."
       redirect "/"
