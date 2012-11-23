@@ -4,10 +4,11 @@ class DeactivateAccount < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
+
   post '/deactivate_account' do
 
     if params[:confirm] != "true"
-      session[:message] = "error ~ You must confirm that you want to deactivate your account."
+      session[:message] = "~error~you must confirm that you want to deactivate your account!"
       redirect '/settings'
     end
 
@@ -16,13 +17,12 @@ class DeactivateAccount < Sinatra::Application
     user = @database.user_by_name(username)
 
     if Helper::Checker.check_password?(user, password)
-
-      @database.deactivate_user(user)
-      session[:message] = "message ~ Account deactivated. See you around!"
+      user.deactivate
+      session[:message] = "~note~account deactivated.</br>see you around!"
       session[:name] = nil
       redirect '/'
     else
-      session[:message] = "error ~ The password isn't correct"
+      session[:message] = "~error~the password isn't correct!"
       redirect '/settings'
     end
 

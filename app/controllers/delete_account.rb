@@ -8,31 +8,21 @@ class DeleteAccount < Sinatra::Application
   post '/delete_account' do
 
     if params[:confirm] != "true"
-      session[:message] = "error ~ You must confirm that you want to delete your account."
+      session[:message] = "~error~you must confirm that you want to delete your account!"
       redirect '/settings'
     end
 
-    username = params[:username]
+
     password = params[:password]
-    user = @database.user_by_name(username)
+    current_user = @database.user_by_name(session[:name])
 
-    if Helper::Checker.check_password?(user, password)
-      for item in  user.items
-        if item.pictures.size > 0
-          item.pictures.each{ |image_url| Helper::ImageUploader.remove_image(image_url, settings.root) }
-        end
-      end
-
-      if user.picture != nil
-        Helper::ImageUploader.remove_image(user.picture, settings.root)
-      end
-
-      @database.delete_user(user)
-      session[:message] = "message ~ Account deleted. See you around!"
+    if Helper::Checker.check_password?(current_user, password)
+      current_user.delete
+      session[:message] = "~note~account deleted.</br>see you around!"
       session[:name] = nil
       redirect '/'
     else
-      session[:message] = "error ~ The password isn't correct"
+      session[:message] = "~error~the password isn't correct!"
       redirect '/settings'
     end
 

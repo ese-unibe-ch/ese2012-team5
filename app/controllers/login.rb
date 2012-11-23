@@ -15,37 +15,36 @@ class Login < Sinatra::Application
 
 
   post '/login' do
+
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
     deactivated_user = @database.deactivated_user_by_name(username)
 
+    # If there is no user but a deactivated_user, swap.
     if user.nil? and !deactivated_user.nil?
-      @database.activate_user(deactivated_user)
+      deactivated_user.activate
       user = deactivated_user
     end
 
-    # check for any empty input or non-existent user
-    if username == "" or password == ""
-      session[:message] = "error ~ empty username or password - login failed!"
-      redirect '/login'
-    elsif user.nil?
-      session[:message] = "error ~ user doesn't exist - login failed!"
-      redirect '/login'
-    elsif user.verified==false
-      session[:message] = "error ~ Your account isn't verified. You must first click on the link in the email received right after registration before you can log in."
+    session[:message] = ""
+    session[:message] += Helper::Validator.validate_string(username, "username")
+    session[:message] += Helper::Validator.validate_string(password, "password")
+    session[:message] += Helper::Validator.validate_user(user)
+    if session[:message] != ""
       redirect '/login'
     end
 
-    # Check password. Compares user input with hashed password via == method. Doesn't compare in plain text!
+    # Check password if correct login
+    # If user was deactivated, activate him
     if Helper::Checker.check_password?(user, password)
       if !(deactivated_user.nil?)
-        session[:message] = "message ~ User reactivated! Your old data was recovered."
+        session[:message] = "~note~user reactivated!</br>your old data was recovered."
       end
       session[:name] = username
       redirect "/"
     else
-      session[:message] = "error ~ wrong password - try again!!"
+      session[:message] = "~error~wrong password!!"
       redirect '/login'
     end
   end
@@ -53,7 +52,7 @@ class Login < Sinatra::Application
 
   get '/logout' do
     session[:name] = nil
-    session[:message] = "message ~ logged out"
+    session[:message] = "~note~logged out."
     redirect '/login'
   end
 

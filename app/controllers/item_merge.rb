@@ -23,21 +23,16 @@ class ItemMerge < Sinatra::Application
 
 
   post "/item/:id/merge" do
+
     current_item_id = params[:id].to_i
     other_item_id = params[:other_item_id].to_i
-
     current_item = @database.item_by_id(current_item_id)
     other_item = @database.item_by_id(other_item_id)
     current_user = @database.user_by_name(session[:name])
 
     current_item.merge(other_item)
 
-    #Remove stored images of 'other_item'
-    if other_item.pictures.size > 0
-      other_item.pictures.each{ |image_url| Helper::ImageUploader.remove_image(image_url, settings.root) }
-    end
-
-    session[:message] = "message ~ Merge was successful!"
+    session[:message] = "~note~merge was successful!"
     redirect "/user/#{current_user.name}"
   end
 

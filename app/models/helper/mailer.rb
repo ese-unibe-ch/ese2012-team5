@@ -21,7 +21,7 @@ module Helper
       valid_until = timestamp + 86400
 
       # store in hashmap reset_password
-      @database.add_to_rp_hashmap(hash, user, timestamp)
+      @database.add_pw_reset(hash, user, timestamp)
 
       to = user.email
 
@@ -52,7 +52,7 @@ EOF
     def self.send_verification_mail(user)
       hash = SecureRandom.hex(24)
       timestamp = Time.new
-      @database.add_to_ver_hashmap(hash, user, timestamp)
+      @database.add_verification(hash, user, timestamp)
 
       to = user.email
 
@@ -64,7 +64,7 @@ Date: #{Time.now.rfc2822}
 
 Hi, #{user.name}
 follow this link to verify your account.
-http://localhost:4567/verify_acc/#{hash}
+http://localhost:4567/verify_account/#{hash}
 
 Regards,
 Your item|market - Team

@@ -6,6 +6,7 @@ class User < Sinatra::Application
 
 
   get "/user/:name" do
+
     current_user = @database.user_by_name(session[:name])
     user = @database.user_by_name(params[:name])
     message = session[:message]
@@ -27,7 +28,6 @@ class User < Sinatra::Application
                                         :user => user,
                                         :items_user => user_items }
     end
-
   end
 
 end

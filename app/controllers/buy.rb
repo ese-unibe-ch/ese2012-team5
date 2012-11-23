@@ -14,7 +14,7 @@ class Buy < Sinatra::Application
     items = @database.category_with_name(category)
 
     if items == nil
-      session[:message] = "error ~ Item name not found!</br>Could not create category!"
+      session[:message] = "~error~Item name not found!</br>Could not create category!"
       redirect '/'
     end
 
@@ -27,17 +27,12 @@ class Buy < Sinatra::Application
 
 
   post '/buy' do
+
     current_user = @database.user_by_name(session[:name])
 
-    # Check for guests playing around
-    if !current_user
-      session[:message] = "error ~ Log in to buy items..how did you end up there anyway?!"
-      redirect '/login'
-    end
-
     # Create a hash-table
-    # key = item.id
-    # value = quantity to buy of item.id(corresponding key)
+    # key is the 'item.id'
+    # value is the 'quantity' to buy
     x = 0
     map = Hash.new
     while params.key?("id#{x}")
@@ -47,44 +42,36 @@ class Buy < Sinatra::Application
       x = x + 1
     end
 
+    # If the map is empty the user bought nothing
     if map.empty?
-      session[:message] = "message ~ You bought nothing...congrats..."
+      session[:message] = "~note~You bought nothing...congrats..."
       redirect '/'
     end
 
-    session[:message] = "message ~ "
+
+    # Iterate over each item that was chosen to buy
+    session[:message] = "" #Note by urs: do this because of += is not allowed if its not a string, thx ruby for no declaring types, we love you....
     map.each_pair do |id,quantity|
 
       quantity = quantity.to_i
       current_item = @database.item_by_id(id.to_i)
 
-      # Checks if quantity is wrong
-      if quantity <= 0 or quantity > current_item.quantity
-        session[:message] = "error ~ Quantity #{quantity} not valid!"
+      temp = session[:message]
+      session[:message] = ""
+      session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 0, current_item.quantity) # NOTE by urs: quantity zero allowed
+      session[:message] += "~error~you can't buy this item!" if !current_user.can_buy_item?(current_item, quantity)
+      session[:message] += "~error~not for sell!" if !current_item.active
+      session[:message] += "~error~not enough credits!" if !current_user.enough_credits(current_item.price * quantity)
+      if session[:message] != ""
         redirect "/item/#{current_item.id}"
       end
+      session[:message] = temp
 
-      # Check if user isn't able to buy item
-      if !current_user.can_buy_item?(current_item, quantity)
-        session[:message] = "error ~ You can't buy this item!</br>"
-        session[:message] << "Not for sell!" if !current_item.active
-        session[:message] << "Not enough credits!" if !current_user.enough_credits(current_item.price * quantity)
-        redirect "/item/#{current_item.id}"
-      end
-
-
-      #
-      # Start with buy-algorithm
-      #
-
-      # Store seller
       seller = current_item.owner
-
-      # Let the buyer buy the item
       bought_item = current_user.buy(current_item, quantity)
-      session[:message] << "You bought #{bought_item.quantity}x #{bought_item.name} from #{seller.name}</br>"
-    end
 
+      session[:message] += "~note~you bought #{bought_item.quantity}x #{bought_item.name} from #{seller.name}."
+    end
     redirect '/'
 
   end

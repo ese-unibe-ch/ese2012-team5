@@ -1,7 +1,5 @@
 module Marketplace
 
-#TODO switch to full database use and remove redundancy between user and item and always get relational information's with database!
-
   # Simple Database-like Storage Class implemented as a Singleton
   class Database
 
@@ -14,17 +12,13 @@ module Marketplace
       @items = []
       # List for all BuyOrder
       @buy_orders = []
-
       # List for all deactivated users
-      @users_deactivated = []
-      
-      #TODO rename that stuff into more intuitive names
-      # These are two hashmaps with the generated hash (link) as a key
-      # mapped to an array of values which holds the user [0] and the timestamp [1]
-      @reset_pw_hashmap = Hash.new{ |values,key| values[key] = []}
-      @verification_hashmap = Hash.new{ |values,key| values[key] = []}
+      @deactivated_users = []
 
-
+      # Both hashmaps use the generated hash (part of link) as a key
+      # And map it to an array of values which holds the user [0] and the timestamp [1]
+      @pw_reset = Hash.new{ |values,key| values[key] = []}
+      @verification = Hash.new{ |values,key| values[key] = []}
     end
 
     # Gets the only instance (SINGLETON)
@@ -40,32 +34,34 @@ module Marketplace
   #BuyOrder
   #--------
 
-  def add_buy_order(buy_order)
-    @buy_orders << buy_order
-  end
+    def add_buy_order(buy_order)
+      @buy_orders << buy_order
+    end
 
-  def delete_buy_order(buy_order)
-    @buy_orders.delete(buy_order)
-  end
+    def delete_buy_order(buy_order)
+      @buy_orders.delete(buy_order)
+    end
 
-  def buy_order_by_id(id)
-    @buy_orders.detect{ |buy_order| buy_order.id == id}
-  end
+    def buy_order_by_id(id)
+      @buy_orders.detect{ |buy_order| buy_order.id == id}
+    end
 
-  def all_buy_orders
-    @buy_orders
-  end
+    def all_buy_orders
+      @buy_orders
+    end
 
-  def buy_orders_by_user(user)
-    @buy_orders.select{ |buy_order| buy_order.user == user}
-  end
+    def buy_orders_by_user(user)
+      @buy_orders.select{ |buy_order| buy_order.user == user}
+    end
 
-  # Calls all buy_order.item_changed with changed item
-  def call_buy_orders(item)
-    puts "start with all buy_orders"
-    @buy_orders.each{ |buy_order| buy_order.item_changed(item) }
-    puts "done with all buy_orders"
-  end
+  # Calls all buy_orders (= listeners) that the item 'item' may have changed
+    def call_buy_orders(item)
+      buy_orders_copy = Array.new
+      @buy_orders.each{ |buy_order| buy_orders_copy << buy_order } #NOTE by urs: need to copy array, because a buy_order deletes itself directly from @buy_orders when done!
+      buy_orders_copy.each{ |buy_order|
+        buy_order.item_changed(item)
+      }
+    end
 
 
   #--------
@@ -77,12 +73,9 @@ module Marketplace
     end
 
     def delete_item(item)
-      item.delete
       @items.delete(item)
     end
 
-    # @param [Integer] id of the desired item
-    # @return [Item]  item with desired id
     def item_by_id(id)
       @items.detect{ |item| item.id == id}
     end
@@ -91,20 +84,22 @@ module Marketplace
       @items.select{ |item| item.name == name }
     end
 
-    # @return [Array] all items
+    def items_by_user(user)
+      @items.select{ |item| item.owner == user }
+    end
+
     def all_items
       @items
     end
 
-    # @return [Array] all active items
     def all_active_items
       @items.select{ |item| item.active }
     end
 
 
-    #--------
-    #Item Category
-    #--------
+  #--------
+  #Item Category
+  #--------
 
     # Categories all ACTIVE items by their name
     # @return [Array of Arrays] array with arrays for every different item.name
@@ -139,7 +134,7 @@ module Marketplace
       categorized_items
     end
 
-    # Removes all items of desired user from category
+    # Deletes all items of desired user from category
     def clear_category_from_user_items(category, user)
       category.delete_if{ |item| item.owner == user }
     end
@@ -178,15 +173,7 @@ module Marketplace
       @users << user
     end
 
-    # Deletes the user and all his items
     def delete_user(user)
-      user.items.each{ |item| delete_item(item)}
-      user.delete
-
-      # Delete all buy_orders of user
-      buy_orders = buy_orders_by_user(user)
-      buy_orders.each{ |buy_order| delete_buy_order(buy_order) }
-
       @users.delete(user)
     end
 
@@ -211,45 +198,22 @@ module Marketplace
   #Deactivated Users
   #--------
 
-    # save this user to the deactivated-user list
     def add_deactivated_user(user)
-      @users_deactivated << user
+      @deactivated_users << user
     end
 
-    # deactivates a user account by first deactivating all his items,
-    # storing all information and finally deleting the user.
-    def deactivate_user(user)
-      user.items.each{ |item|
-        item.deactivate
-      }
-      # Delete all buy_orders of user
-      buy_orders = buy_orders_by_user(user)
-      buy_orders.each{ |buy_order| delete_buy_order(buy_order) }
-
-      add_deactivated_user(user)
-      @users.delete(user) #TODO use delete_user(user) when cleaned up
-    end
-
-    def activate_user(user)
-      delete_deactivated_user(user)
-      add_user(user)
-    end
-
-    # @param [String] mail address of the desired user
-    # @return [User] desired user
     def deactivated_user_by_name(username)
-      @users_deactivated.detect{ |user| user.name == username}
+      @deactivated_users.detect{ |user| user.name == username}
     end
 
-    # removes user from the list with the deactivated users
     def delete_deactivated_user(user)
-      @users_deactivated.delete(user)
+      @deactivated_users.delete(user)
     end
 
 
-    #--------
-    #EMails
-    #--------
+  #--------
+  #EMails
+  #--------
 
     def all_emails
       emails = Array.new
@@ -262,68 +226,69 @@ module Marketplace
       emails.include?(email)
     end
 
-  #TODO use nicer variable names
+
   #--------
-  #Methods for Pw-Reset and Verification Mail hashs
+  #Password reset
   #--------
 
-    #Methods for the @reset_pw_hashmap
-
-    def add_to_rp_hashmap(hash,user,timestamp)
-      @reset_pw_hashmap[hash][0] = user
-      @reset_pw_hashmap[hash][1] = timestamp
+    def add_pw_reset(hash,user,timestamp)
+      @pw_reset[hash][0] = user
+      @pw_reset[hash][1] = timestamp
     end
 
-    def get_user_from_rp_hashmap_by(hash)
-      @reset_pw_hashmap[hash][0]
+    def pw_reset_user_by_hash(hash)
+      @pw_reset[hash][0]
     end
 
-    def get_timestamp_from_rp_hashmap_by(hash)
-      @reset_pw_hashmap[hash][1]
+    def pw_reset_timestamp_by_hash(hash)
+      @pw_reset[hash][1]
     end
 
-    def hash_exists_in_rp_hashmap?(hash)
-      @reset_pw_hashmap.has_key?(hash)
+    def pw_reset_has?(hash)
+      @pw_reset.has_key?(hash)
     end
 
-    def delete_from_rp_hashmap(hash)
-      @reset_pw_hashmap.delete(hash)
+    def delete_pw_reset(hash)
+      @pw_reset.delete(hash)
     end
 
-    #deletes entries that are older than
+    # Deletes entries that are older than
     # @param [int] hours
-    def delete_old_entries_from_rp_hashmap(hours)
-      @reset_pw_hashmap.each_key {|hash|
+    def clean_pw_reset_older_as(hours)
+      @pw_reset.each_key {|hash|
         time_now = Time.new
-        # adds 1 day in seconds = 86400 seconds
-        valid_until = get_timestamp_from_rp_hashmap_by(hash) + hours*3600
+        # Adds 1 day in seconds = 86400 seconds
+        valid_until = pw_reset_timestamp_by_hash(hash) + hours*3600
         if time_now > valid_until
-          delete_from_rp_hashmap(hash)
+          delete_pw_reset(hash)
         end
       }
     end
 
-    #Methods for the @verification_hashmap
 
-    def add_to_ver_hashmap(hash,user,timestamp)
-      @verification_hashmap[hash][0] = user
-      @verification_hashmap[hash][1] = timestamp
+    #--------
+    #Verification
+    #--------
+
+    def add_verification(hash,user,timestamp)
+      @verification[hash][0] = user
+      @verification[hash][1] = timestamp
     end
 
-    def get_user_from_ver_hashmap_by(hash)
-      @verification_hashmap[hash][0]
+    def verification_user_by_hash(hash)
+      @verification[hash][0]
     end
 
-    def get_timestamp_from_ver_hashmap_by(hash)
-      @verification_hashmap[hash][1]
+    def verification_timestamp_by_hash(hash)
+      @verification[hash][1]
     end
 
-    def hash_exists_in_ver_hashmap?(hash)
-      @verification_hashmap.has_key?(hash)
+    def verification_has?(hash)
+      @verification.has_key?(hash)
     end
 
-    def delete_entry_from_ver_hashmap(hash)
-      @verification_hashmap.delete(hash)
+    def delete_verification(hash)
+      @verification.delete(hash)
     end
 
   end
