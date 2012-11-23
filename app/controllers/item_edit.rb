@@ -38,7 +38,7 @@ class ItemEdit < Sinatra::Application
 
     session[:message] = ""
     session[:message] += Helper::Validator.validate_string(new_name, "name")
-    session[:message] += Helper::Validator.validate_integer(new_price, "price", 0, nil)
+    session[:message] += Helper::Validator.validate_integer(new_price, "price", 1, nil)
     if session[:message] != ""
       redirect "/item/#{id}/edit"
     end

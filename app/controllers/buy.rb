@@ -58,7 +58,7 @@ class Buy < Sinatra::Application
 
       temp = session[:message]
       session[:message] = ""
-      session[:message] += Helper::Validator.validate_integer(quantity, "quantity", -1, current_item.quantity) # NOTE by urs: quantity zero allowed
+      session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 0, current_item.quantity) # NOTE by urs: quantity zero allowed
       session[:message] += "~error~you can't buy this item!" if !current_user.can_buy_item?(current_item, quantity)
       session[:message] += "~error~not for sell!" if !current_item.active
       session[:message] += "~error~not enough credits!" if !current_user.enough_credits(current_item.price * quantity)

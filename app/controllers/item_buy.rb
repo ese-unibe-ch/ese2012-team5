@@ -13,7 +13,7 @@ class ItemBuy < Sinatra::Application
 
 
     session[:message] = ""
-    session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 0, current_item.quantity)
+    session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 1, current_item.quantity)
     session[:message] += "~error~you can't buy this item!</br>not active or not enough credits!" if !current_user.can_buy_item?(current_item, quantity)
     if session[:message] != ""
       redirect "/item/#{current_item.id}"

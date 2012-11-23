@@ -30,7 +30,7 @@ class BuyOrderCreate < Sinatra::Application
 
     session[:message] = ""
     session[:message] += Helper::Validator.validate_string(item_name, "name")
-    session[:message] += Helper::Validator.validate_integer(max_price, "max price", 0, nil)
+    session[:message] += Helper::Validator.validate_integer(max_price, "max price", 1, nil)
     if session[:message] != ""
       redirect '/createBuyOrder'
     end

@@ -31,8 +31,8 @@ class ItemCreate < Sinatra::Application
 
     session[:message] = ""
     session[:message] += Helper::Validator.validate_string(name, "name")
-    session[:message] += Helper::Validator.validate_integer(price, "price", 0, nil)
-    session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 0, nil)
+    session[:message] += Helper::Validator.validate_integer(price, "price", 1, nil)
+    session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 1, nil)
     if session[:message] != ""
       redirect '/createItem'
     end
