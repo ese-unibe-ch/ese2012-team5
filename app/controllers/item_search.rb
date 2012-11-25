@@ -7,7 +7,10 @@ class Item_search
   # Handle AJAX requests
 
   get '/search_item/:for' do
-    query = params[:for].downcase
+
+    query = params[:for].gsub(/_/," ").downcase
+
+
     current_user = @database.user_by_name(session[:name])
     active_items = @database.all_active_items
     found_by_name = []
