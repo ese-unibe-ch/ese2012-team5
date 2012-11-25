@@ -112,18 +112,9 @@ module Marketplace
     # Categories all ACTIVE items without items of user by their name
     # @return [Array of Arrays] array with arrays for every different item.name
     def categories_items_without(user)
-      categorized_items = categories_items
-
-      categorized_items.each{ |sub_array| clear_category_from_user_items(sub_array,user) }
-      categorized_items.each{ |sub_array|
-        if sub_array.length == 0 or sub_array == nil
-          categorized_items.delete(sub_array)
-        end
-      } # NOTE by Urs: don't do both in one .each! -> bug
-      categorized_items
+      all_items = self.all_active_items
+      categories_given_without(all_items,user)
     end
-
-    ###########################Refactor.. i need this in item search #############################################
 
     # Categories given items by their name
     # @return [Array of Arrays] array with arrays for every different item.name
@@ -157,8 +148,6 @@ module Marketplace
       } # NOTE by Urs: don't do both in one .each! -> bug
       categorized_items
     end
-
-   ###########################################################################################
 
     # Deletes all items of desired user from category
     def clear_category_from_user_items(category, user)
