@@ -23,16 +23,16 @@ class Item_search
     }
 
     active_items.each { |item|
-      if item.description.downcase.include?(query)
+      desc = item.description.gsub("/,/","_")
+
+      if desc.downcase.include?(query)
         found_by_description.push(item)
 
-        desc = item.description
         start_of_find = desc.index(query)
-
         substring_start = if start_of_find-17<0 then 0 else start_of_find-17 end
         substring_end = if start_of_find+20>desc.size then desc.size else start_of_find+20 end
 
-        item.description_search = desc[substring_start..substring_end]
+        item.description_search = desc[substring_start..substring_end].gsub("/_/",",")
 
         if substring_end != desc.size
           item.description_search << "..."
