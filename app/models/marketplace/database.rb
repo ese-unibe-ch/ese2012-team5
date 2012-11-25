@@ -105,19 +105,7 @@ module Marketplace
     # @return [Array of Arrays] array with arrays for every different item.name
     def categories_items
       all_items = self.all_active_items
-      categorized_items = Array.new
-
-      all_items.each{ |item|
-        sub_array = categorized_items.detect{ |sub_item_array| sub_item_array[0].name == item.name }
-        if sub_array != nil
-          sub_array.push(item)
-        else
-          new_sub_array = Array.new
-          new_sub_array.push(item)
-          categorized_items.push(new_sub_array)
-        end
-      }
-      categorized_items
+      categories_given_items(all_items)
     end
 
 
