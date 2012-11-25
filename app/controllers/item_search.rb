@@ -22,6 +22,7 @@ class Item_search
     active_items.each { |item|
       if item.description.downcase.include?(query)
         found_by_description.push(item)
+
         desc = item.description
         start_of_find = desc.index(query)
         substring_start = start_of_find-12<0 ? 0 : start_of_find-12
@@ -40,7 +41,7 @@ class Item_search
       end
     }
 
-    found_items = found_by_name || found_by_description
+    found_items = found_by_name | found_by_description
 
 
     categorized_found = @database.categories_given_without(found_items,current_user)
