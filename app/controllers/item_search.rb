@@ -28,8 +28,9 @@ class Item_search
 
         desc = item.description
         start_of_find = desc.index(query)
-        substring_start = start_of_find-12<0 ? 0 : start_of_find-12
-        substring_end = start_of_find+15>desc.length ? desc.size : start_of_find+15
+
+        substring_start = if start_of_find-17<0 then 0 else start_of_find-17 end
+        substring_end = if start_of_find+20>desc.size then desc.size else start_of_find+20 end
 
         item.description_search = desc[substring_start..substring_end]
 
