@@ -55,7 +55,7 @@
               #{category.size}
               %img{:src => "icons/user_silhouette.png"}
             -else
-              %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}
+              %a{:href => "/user/#{category[0].owner.name}", :id=>"ignore"} #{category[0].owner.name}
           %td
             -if category[0].description_search.size < 1
               #{category[0].description}
