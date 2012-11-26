@@ -81,7 +81,6 @@ class Item_search
         factor2 = Rational(found_hash[item],helper_factor2)
         final_factor= if factor1+factor2>1 then 1 else factor1+factor2 end
 
-        puts item.name
         found_hash[item]
         item.search_relevance = (final_factor.to_f * 100).round()
         found_items.push(item)
