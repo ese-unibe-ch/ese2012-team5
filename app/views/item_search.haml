@@ -15,6 +15,7 @@
 %table#search
   %thead
     %tr
+      %th Relevance
       %th Picture
       %th Name
       %th Quantity
@@ -30,6 +31,8 @@
     -else
       -for category in found_items
         %tr
+          %td{:width => "15"}
+            #{category[0].search_relevance}#{" %"}
           %td{:width => "74"}
             %img{:height => "70", :width => "70", :src => "#{category[0].image_path(0)}" }
           %td{:align => "center"}

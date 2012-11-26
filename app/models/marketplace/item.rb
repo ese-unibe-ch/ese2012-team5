@@ -6,7 +6,7 @@ module Marketplace
     # ID for a unique identification of each item
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_search
+    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_search , :search_relevance
 
     # Constructor that will automatic add new item to database
     # @param [String] name of the new item
@@ -32,6 +32,7 @@ module Marketplace
       self.active = false
       self.description = "No description"
       self.description_search = ""
+      self.search_relevance=0
     end
 
     # Splits the item into two separate items
