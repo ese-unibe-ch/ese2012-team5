@@ -3,7 +3,7 @@
 :javascript
   $(document).ready(function() {
     $("#search tbody").highlight($("#search_query").val());
-    $("#ignore").removeHighlight();
+    $("#search #ignore").removeHighlight();
     });
 
 %h1 Item search:
@@ -42,18 +42,18 @@
             -for item in category
               -i = i + item.quantity
             #{i}
-            %img{:src => "icons/package.png"}
+            %img{:src => "../icons/package.png"}
           %td{:align => "center"}
             -if category.length > 1
               %h3{:id=>"ignore"} starting at
               #{category[0].price}
             -else
               #{category[0].price}
-            %img{:src => "icons/coins.png"}
+            %img{:src => "../icons/coins.png"}
           %td{:align => "center"}
             -if category.size >1
               #{category.size}
-              %img{:src => "icons/user_silhouette.png"}
+              %img{:src => "../icons/user_silhouette.png"}
             -else
               %a{:href => "/user/#{category[0].owner.name}", :id=>"ignore"} #{category[0].owner.name}
           %td
