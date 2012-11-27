@@ -36,7 +36,7 @@
   %tbody
     -if found_items.length < 1
       %tr(id="noresults")
-        %td(colspan="6")
+        %td(colspan="6" id="ignore")
           No Results
     -else
       -for category in found_items
