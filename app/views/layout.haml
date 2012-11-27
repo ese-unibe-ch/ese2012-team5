@@ -9,13 +9,45 @@
   %link{:rel =>"stylesheet", :type=>"text/css", :href=> url("jquery-ui.css")}
   %script(type= "text/javascript" src= "/jquery-1.8.2.js")
   %script(type= "text/javascript" src= "/jquery-ui.js")
-  %script(type= "text/javascript" src= "/jquery.quicksearch.js")
+  %script(type= "text/javascript" src= "/jquery.highlight-4.js")
 
   :javascript
     function Navigate_to(theUrl)
       {
       document.location.href = theUrl;
       }
+
+  :javascript
+    $(function() {
+    $("#search_query").keyup(function(){
+        var q = $("#search_query").val().split(' ').join('_');
+        if(q != ""){
+        var url = "/search_item/"+q;
+        $('#results').load(url);
+
+        $("#content").css("display","none");
+        $("#results").css("display","inline");
+
+        }
+        else{
+        $("#content").css("display","inline");
+        $("#results").css("display","none");
+        }}); });
+
+  :javascript
+    function disableEnterKey(e)
+    {
+         var key;
+         if(window.event)
+               key = window.event.keyCode;     //IE
+          else
+               key = e.which;     //firefox
+
+         if(key == 13)
+               return false;
+          else
+               return true;
+    }
 
 %body
   #pageContainer
@@ -72,8 +104,7 @@
               %li.chromestyle
 
                 %form.chromestyle( action="/search_item" method="GET")
-                  %input(type="text" id="search_query" name="search_query"  size="15" value="")
-                  %input(type="submit" value="Search")
+                  %input(type="text" id="search_query" name="search_query"  size="15" value="Type to search" onclick="value=''" onKeyPress="return disableEnterKey(event)" )
 
             - else
               %li.chromestyle
@@ -88,5 +119,8 @@
 
       #content
         = yield
+
+      #results(style="display=none")
+
     #footer
       %a{:href => "https://github.com/ese-unibe-ch/ese2012-team5"} Visit Team 5 on Github

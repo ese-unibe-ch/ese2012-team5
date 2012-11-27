@@ -63,8 +63,11 @@ Items of users
           #{i}
           %img{:src => "icons/package.png"}
         %td{:align => "center"}
-          %h3 starting at
-          #{category[0].price}
+          -if category.length > 1
+            %h3 starting at
+            #{category[0].price}
+          -else
+            #{category[0].price}
           %img{:src => "icons/coins.png"}
         %td{:align => "center"}
           -if category.size >1

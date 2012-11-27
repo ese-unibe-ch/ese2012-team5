@@ -105,9 +105,24 @@ module Marketplace
     # @return [Array of Arrays] array with arrays for every different item.name
     def categories_items
       all_items = self.all_active_items
+      categories_given_items(all_items)
+    end
+
+
+    # Categories all ACTIVE items without items of user by their name
+    # @return [Array of Arrays] array with arrays for every different item.name
+    def categories_items_without(user)
+      all_items = self.all_active_items
+      categories_given_without(all_items,user)
+    end
+
+    # Categories given items by their name
+    # @return [Array of Arrays] array with arrays for every different item.name
+    def categories_given_items(items)
+
       categorized_items = Array.new
 
-      all_items.each{ |item|
+      items.each{ |item|
         sub_array = categorized_items.detect{ |sub_item_array| sub_item_array[0].name == item.name }
         if sub_array != nil
           sub_array.push(item)
@@ -120,10 +135,10 @@ module Marketplace
       categorized_items
     end
 
-    # Categories all ACTIVE items without items of user by their name
+    # Categories given items without items of user by their name
     # @return [Array of Arrays] array with arrays for every different item.name
-    def categories_items_without(user)
-      categorized_items = categories_items
+    def categories_given_without(items,user)
+      categorized_items = categories_given_items(items)
 
       categorized_items.each{ |sub_array| clear_category_from_user_items(sub_array,user) }
       categorized_items.each{ |sub_array|
