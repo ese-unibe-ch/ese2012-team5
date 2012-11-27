@@ -2,7 +2,18 @@
 
 :javascript
   $(document).ready(function() {
-    $("#search tbody").highlight($("#search_query").val());
+    var wholequery = $("#search_query").val()
+    var query_array = wholequery.split(" ");
+    var len = query_array.length;
+    if(len>1){
+      for (var i = 0; i < len ; i++) {
+        if (i in query_array) {
+        var s = query_array[i];
+        $("#search tbody").highlight(s);
+       }}}
+    else{
+        $("#search tbody").highlight(wholequery);
+    }
     $("#search #ignore").removeHighlight();
     });
 
