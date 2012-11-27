@@ -49,7 +49,7 @@ class Item_search
           substring_start = if start_of_find-17<0 then 0 else start_of_find-17 end
           substring_end = if start_of_find+20>desc.size then desc.size else start_of_find+20 end
 
-          item.description_search = desc[substring_start..substring_end].gsub("/~/",",")
+          item.description_search = desc[substring_start..(substring_end-1)].gsub("/~/",",")
 
           if substring_end != desc.size
             item.description_search << "..."
@@ -99,7 +99,6 @@ class Item_search
 
     categorized_found = @database.categories_given_without(found_items,current_user)
     categorized_sorted_found = @database.sort_categories_by_price(categorized_found).reverse!
-
 
 
     haml :item_search,:layout => false ,
