@@ -68,10 +68,7 @@
             -else
               %a{:href => "/user/#{category[0].owner.name}", :id=>"ignore"} #{category[0].owner.name}
           %td
-            -if category[0].description_search.size < 1
-              #{category[0].description}
-            -else
-              #{category[0].description_search}
+            #{description_map[category[0]]}
           %td
             -if category[0].price <= current_user.credits
               %form( action="/buy" method="GET" )
