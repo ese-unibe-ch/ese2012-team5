@@ -6,7 +6,7 @@ module Marketplace
     # ID for a unique identification of each item
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description
+    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log
 
     # Constructor that will automatic add new item to database
     # @param [String] name of the new item
@@ -21,6 +21,9 @@ module Marketplace
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
+      item.description_log = Array.new
+      time_now = Time.new
+      item.add_description(time_now, item.description, price)
       Marketplace::Database.instance.add_item(item)
       item
     end
@@ -87,6 +90,43 @@ module Marketplace
       else
         self.activate
       end
+    end
+
+    def add_description(timestamp, description, price)
+      sub_array = [timestamp, description, price]
+      self.description_log.push(sub_array)
+      self.description = get_description_from_log(timestamp)
+      self.price = get_price_from_log(timestamp)
+    end
+
+    def get_description_from_log(timestamp)
+      description = ""
+      self.description_log.each{ |sub_array|
+        if sub_array[0] == timestamp
+          description = sub_array[1]
+        end
+      }
+      description
+    end
+
+    def get_price_from_log(timestamp)
+      price = 0
+      self.description_log.each{ |sub_array|
+        if sub_array[0] == timestamp
+          price = sub_array[2]
+        end
+      }
+      price
+    end
+
+    # Deletes description from description log array
+    # @param [Time] Timestamp of the entry to delete
+    def delete_description_at(timestamp)
+      self.description_log.each{ |sub_array|
+        if sub_array[0] == timestamp
+          self.description_log.delete(sub_array)
+        end
+      }
     end
 
     def add_image(url)

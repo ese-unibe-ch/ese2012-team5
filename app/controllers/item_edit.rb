@@ -46,8 +46,8 @@ class ItemEdit < Sinatra::Application
     end
 
     current_item.name = new_name
-    current_item.price = new_price.to_i
-    current_item.description = new_description
+    time_now = Time.new
+    current_item.add_description(time_now, new_description, new_price.to_i)
 
     redirect "/item/#{id}"
   end
@@ -84,6 +84,14 @@ class ItemEdit < Sinatra::Application
     current_item = @database.item_by_id(id)
     current_item.select_front_image(pos)
     redirect "item/#{id}/edit"
+  end
+
+  post '/item_add_description' do
+    timestamp =  params[:timestamp]
+    id =  params[:item_id].to_i
+    current_item = @database.item_by_id(id)
+    current_item.add_description(timestamp, current_item.get_description_from_log(timestamp), current_item.get_price_from_log(timestamp))
+    redirect "item/#{id}"
   end
 
 end
