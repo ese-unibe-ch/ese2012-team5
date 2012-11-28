@@ -26,7 +26,7 @@ module Marketplace
         active_items.each { |item|
           if item.name.gsub(/_/," ").downcase.include?(query)
             found_by_name.push(item)
-            self.description_map[item]=item.description
+            self.description_map[item]=if item.description.size>=30 then item.description[0..27]+"..." else item.description end
           end
         }
 

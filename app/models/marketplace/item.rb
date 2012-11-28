@@ -30,7 +30,7 @@ module Marketplace
       self.id = @@id
       @@id += 1
       self.active = false
-      self.description = "No description"
+      self.description = "No description table fridge house lord who is the red fidge lots of stuff long table fridge red biiig message test this rings"
     end
 
     # Splits the item into two separate items
