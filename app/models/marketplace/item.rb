@@ -95,28 +95,26 @@ module Marketplace
     def add_description(timestamp, description, price)
       sub_array = [timestamp, description, price]
       self.description_log.push(sub_array)
-      self.description = get_description_from_log(timestamp)
-      self.price = get_price_from_log(timestamp)
     end
 
     def get_description_from_log(timestamp)
       description = ""
       self.description_log.each{ |sub_array|
-        if sub_array[0] == timestamp
+        if sub_array[0] = timestamp
           description = sub_array[1]
         end
       }
-      description
+      return description
     end
 
     def get_price_from_log(timestamp)
       price = 0
       self.description_log.each{ |sub_array|
-        if sub_array[0] == timestamp
+        if sub_array[0] = timestamp
           price = sub_array[2]
         end
       }
-      price
+      return price
     end
 
     # Deletes description from description log array
@@ -127,6 +125,10 @@ module Marketplace
           self.description_log.delete(sub_array)
         end
       }
+    end
+
+    def get_status_changed(description,price)
+      description != self.description_log.last[1] || price != self.description_log.last[2]
     end
 
     def add_image(url)
