@@ -1,5 +1,7 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
-%h1 Login
+
+
+%h1 Create Buy Order
 %br
 
 //SHOW MESSAGES AND ERRORS
@@ -29,24 +31,21 @@
             %h4 #{text}
 
 
-
   %br
 
-%form( action="/login" method="POST" )
-  %table#table_new(style="width:auto;")
+
+%form( action="/createBuyOrder" method="POST" )
+  %table#table_new
     %tr
       %td
-        %label Username:
-        %input(type="text" name="username" value="Username" onfocus="this.value=''")
+        %label Itemname
+      %td
+        %input(type="text" name="item_name" )
     %tr
       %td
-        %label Password:&nbsp
-        %input(type="password" name="password"value="Password" onfocus="this.value=''")
-    %tr
+        %label Max. Price
       %td
-        %input(type="submit" value="Login")
-        or
-        %a{:href => "/register"} Register
+        %input(type="text" name="max_price")
     %tr
-      %td
-        %a{:href => "/forgot_password"} Forgot Password
+      %td{:colspan => 2}
+        %input(type="submit" value="Create")

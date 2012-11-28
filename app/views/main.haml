@@ -5,23 +5,35 @@
 %br
 
 //SHOW MESSAGES AND ERRORS
--if info != nil
+-if info != nil and info != ""
+  -messages = info.split"~"
+  -messages.delete_if{ |s| s.strip == "" }
   %table#table_new
-    -if (info.split(" ~ ").first()=="error")
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/error.png"}
-      %td
-        %h2 #{info}
-    -else
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/success.png"}
-      %td
-        %h4 #{info}
+    -while(!messages.empty?)
+      %tr
+        -type = messages.delete_at(0)
+        -type = type.strip
+
+        -if type =="error"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/error.png"}
+          %td
+            %h2 #{text}
+        -elsif type == "note"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/note.png"}
+          %td
+            %h4 #{text}
+        -else
+          %td{:colspan => 2}
+            %h4 #{text}
+
+
   %br
 
-%h3 My Items
+%h3 Your Items
 %table#table_new
   %thead
     %th Picture
@@ -33,25 +45,20 @@
     - for item in current_items
       %tr
         %td(width = "74" onclick="Navigate_to('/item/#{item.id}');")
-          - if item.pictures.size > 0
-            %img{:height => "70", :width => "70", :src => "/item_images/#{item.pictures[0]}"}
-          - else
-            %img{:height => "70", :width => "70", :src => "/item_images/default_image.jpg"}
+          %img{:height => "70", :width => "70", :src => item.image_path(0) }
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           %a #{item.name}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.quantity}
-          %img{:src => "/icons/package.png"}
+          %img{:src => "icons/package.png"}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.price}
-          %img{:src => "/icons/coins.png"}
+          %img{:src => "icons/coins.png"}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           - if item.active
-            %img{:src => "/icons/accept.png"}
+            %img{:src => "icons/accept.png"}
           - else
-            %img{:src => "/icons/cross.png"}
-          -if item.is_in_auction_mode?
-            %img{:src => "/icons/auction.png"}
+            %img{:src => "icons/cross.png"}
 %br
 
 
@@ -69,10 +76,7 @@
     -for category in categories
       %tr
         %td{:width => "74"}
-          - if category[0].pictures.size > 0
-            %img{:height => "70", :width => "70", :src => "/item_images/#{category[0].pictures[0]}"}
-          - else
-            %img{:height => "70", :width => "70", :src => "/item_images/default_image.jpg"}
+          %img{:height => "70", :width => "70", :src => category[0].image_path(0) }
         %td{:align => "center"}
           -if category.length > 1
             #{category[0].name}
@@ -83,36 +87,26 @@
           -for item in category
             -i = i + item.quantity
           #{i}
-          %img{:src => "/icons/package.png"}
+          %img{:src => "icons/package.png"}
         %td{:align => "center"}
-          -if !category[0].is_in_auction_mode?
-            -if category.length > 1
-              %h3 starting at
-              #{category[0].price}
-            -else
-              #{category[0].price}
-            %img{:src => "/icons/coins.png"}
+          -if category.length > 1
+            %h3 starting at
+            #{category[0].price}
           -else
-            #{item.get_auction_selling_price}+
-            %img{:src => "/icons/coins.png"}
-            %img{:src => "/icons/auction.png"}
-
+            #{category[0].price}
+          %img{:src => "icons/coins.png"}
         %td{:align => "center"}
           -if category.size >1
             #{category.size}
-            %img{:src => "/icons/user_silhouette.png"}
+            %img{:src => "icons/user_silhouette.png"}
           -else
             %a{:href => "/user/#{category[0].owner.name}"} #{category[0].owner.name}
         %td
-          -if !category[0].is_in_auction_mode?
-            -if category[0].price <= current_user.credits
-              %form( action="/buy" method="GET" )
-                %input(type="text" name="quantity" value=1 size=1)
-                %input(type='hidden' name="category" value="#{category[0].name}")
-                %input(type="submit" value="Continue")
-            -else
-              %form( action="/buy" method="GET" )
-                %input(type="submit" disabled="disabled" value="Continue")
+          -if category[0].price <= current_user.credits
+            %form( action="/buy" method="GET" )
+              %input(type="text" name="quantity" value=1 size=1)
+              %input(type='hidden' name="category" value="#{category[0].name}")
+              %input(type="submit" value="Continue")
           -else
-            This is an auction
-            %img{:src => "/icons/auction.png"}
+            %form( action="/buy" method="GET" )
+              %input(type="submit" disabled="disabled" value="Continue")

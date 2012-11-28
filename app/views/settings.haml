@@ -5,20 +5,32 @@
 %br
 
 //SHOW MESSAGES AND ERRORS
--if info != nil
+-if info != nil and info != ""
+  -messages = info.split"~"
+  -messages.delete_if{ |s| s.strip == "" }
   %table#table_new
-    -if (info.split(" ~ ").first()=="error")
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/error.png"}
-      %td
-        %h2 #{info}
-    -else
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/success.png"}
-      %td
-        %h4 #{info}
+    -while(!messages.empty?)
+      %tr
+        -type = messages.delete_at(0)
+        -type = type.strip
+
+        -if type =="error"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/error.png"}
+          %td
+            %h2 #{text}
+        -elsif type == "note"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/note.png"}
+          %td
+            %h4 #{text}
+        -else
+          %td{:colspan => 2}
+            %h4 #{text}
+
+
   %br
 
 
@@ -26,7 +38,7 @@
   %td
     %h3 Current picture:
     %br
-    %img{:height => "200", :width => "200", :src => "images/#{user.picture}"}
+    %img{:height => "200", :width => "200", :src => user.image_path }
     %br
     %td
       %h3 Upload new picture
@@ -68,5 +80,15 @@
         %br
         %label Please enter password to ensure verification:
         %input(type="password" name="password")
-        %input(type="hidden" name="username" value="#{user.name}")
         %input(type="submit" value="Delete my account")
+    %tr
+      %td{:colspan => "2"}
+        %h3 Deactivate account
+        %p All information will be restored in case of you login again.
+        %form( action="/deactivate_account" method="POST" )
+          %input(type="checkbox" name="confirm" value="true") Yes, I want to deactivate my account.
+          %br
+          %label Please enter password to ensure verification:
+          %input(type="password" name="password")
+          %input(type="hidden" name="username" value="#{user.name}")
+          %input(type="submit" value="Deactivate my account")

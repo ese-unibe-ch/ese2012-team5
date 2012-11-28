@@ -12,7 +12,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     owner = Marketplace::User.create('John','pW123','test@testmail1.com')
     item = Marketplace::Item.create('The Lord of The Rings, Books', 10, 12, owner)
-    item.activate
+    item.active = true
     assert(owner.items.include?(item), "List should include active items" )
   end
 

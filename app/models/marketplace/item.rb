@@ -2,19 +2,13 @@ module Marketplace
 
   class Item
 
-    # static variables: id for a unique identification
+    # Static variable
+    # ID for a unique identification of each item
     @@id = 1
 
-    attr_accessor :id,
-                  :name,
-                  :price,
-                  :owner,
-                  :active,
-                  :quantity,
-                  :pictures,
-                  :auction
+    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description
 
-    # constructor
+    # Constructor that will automatic add new item to database
     # @param [String] name of the new item
     # @param [Float] price of the new item
     # @param [Integer] quantity of the new item
@@ -22,120 +16,118 @@ module Marketplace
     # @return [Item] created item
     def self.create(name, price, quantity, owner)
       item = self.new
-      item.id = @@id
-      @@id += 1
       item.name = name
       item.price = price
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
-      owner.add_item(item)
+      Marketplace::Database.instance.add_item(item)
       item
     end
 
-    def is_in_auction_mode?
-      return self.auction != nil
-    end
-
-    def update_auction
-      self.auction.update if self.is_in_auction_mode?
-    end
-
-    def get_auction_selling_price
-      if self.auction.has_bids?
-        return self.auction.current_winning_price
-      else
-         return self.auction.minimal_price
-      end
-    end
-
-
-    def close_auction
-      self.price = auction.current_winning_price
-      self.auction = nil
-    end
-
-    # items can only be editied if they are not in auction mode or have no bids
-    def can_be_deactivated?
-      return !self.is_in_auction_mode? || !self.auction.has_bids?
-    end
-
-    # initial property of an item
+    # Initial property of an item
     def initialize
+      self.id = @@id
+      @@id += 1
       self.active = false
+      self.description = "No description table fridge house lord who is the red fidge lots of stuff long table fridge red biiig message test this rings"
     end
 
-    # splits the item into two separate items
-    # this items quantity will be 'at' and the
-    # new created items quantity will be the rest
-    # @param [Integer] index where to split the item
-    # @return [Item] new item with quantity 'rest'
+    # Splits the item into two separate items
+    # This item will have quantity (self.quantity - at)
+    # @param [Integer] at index where to split the item
+    # @return [Item] new item with quantity 'at'
     def split(at)
       if self.quantity < at
-        raise ArgumentError
+        throw NotImplementedError
       else
         rest = self.quantity - at
         self.quantity = rest
         item = Item.create(self.name, self.price, at, self.owner)
-        Marketplace::Database.instance.add_item(item)
-        item.activate
+        item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
         item
       end
     end
 
-    # merges two similar items together
+    # Merges two similar items together
+    # [NotImplementedError] if this and item are not mergeable
     def merge(item)
       if mergeable?(item)
         self.quantity = self.quantity + item.quantity
-        Marketplace::Database.instance.delete_item(item)
+        item.delete
       else
-        throw TypeError
+        throw NotImplementedError
       end
     end
 
-    # checks if two items are similar
+    # Checks if two items are similar
+    # Similar means:
+    # *same name
+    # *same price
+    # *but different objects
     def mergeable?(item)
-      self.name == item.name and self.price == item.price
+      self.name == item.name and self.price == item.price and item != self
     end
 
+    # Activates item and fires Item(=Event) to all buy_orders
+    # @note If you don't want to fire the Event use "item.active = true" instead!
     def activate
       self.active = true
+      Marketplace::Database.instance.call_buy_orders(self)
     end
 
     def deactivate
       self.active = false
     end
 
+    # Switches between active and inactive
     def switch_active
-      self.active = !self.active
+      if self.active
+        self.deactivate
+      else
+        self.activate
+      end
     end
 
-    # append image at the end
     def add_image(url)
         self.pictures.push(url)
     end
 
-    # remove image at position
-    # @param [Integer] position
-    def del_image_by_nr(nr)
-      self.pictures.delete_at(nr)
+    # Deletes image from pictures array and file
+    # @param [Integer] position in pictures array
+    def delete_image_at(position)
+      filename = self.pictures.delete_at(position)
+      Helper::ImageUploader.delete_image(filename, settings.root)
       self.pictures.reject{ |c| c.empty? }
     end
 
-    # move image to position 0 (profile)
-    # @param [Integer] position
-    def move_image_to_front (nr)
-      temp = self.pictures.at(0)
-      self.pictures[0] = self.pictures[nr]
-      self.pictures[nr] = temp
+    # Selects the image at 'position' in pictures as front image
+    # The front image is at position 0 in pictures
+    # @param [Integer] position in pictures array
+    def select_front_image(position)
+      old_front_image = self.pictures.at(0)
+      self.pictures[0] = self.pictures[position]
+      self.pictures[position] = old_front_image
     end
 
+    # Deletes the item and all its profile pictures
     def delete
-      self.owner.remove_item(self)
+      self.pictures.each{ |image_url| Helper::ImageUploader.delete_image(image_url, settings.root) }
+      Marketplace::Database.instance.delete_item(self)
     end
 
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
+    end
+
+    # @param [Integer] index of image in pictures array
+    # @return [String] path of item profile picture at 'index'
+    def image_path(index)
+      if self.pictures[index] == nil
+        return File.join("", "images", "default_item.jpg")
+      else
+        return File.join("", "images", self.pictures[index])
+      end
     end
 
   end

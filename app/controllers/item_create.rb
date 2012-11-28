@@ -4,7 +4,7 @@ class ItemCreate < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-  # Displays the view to create new items
+
   get '/createItem' do
 
     current_user = @database.user_by_name(session[:name])
@@ -14,62 +14,36 @@ class ItemCreate < Sinatra::Application
       session[:message] = nil
       haml :item_create, :locals => {:info => message }
     else
-      session[:message] = "error ~ Log in to create items"
+      session[:message] = "~error~log in to create items!"
       redirect '/login'
     end
 
   end
 
-  # Will create a new item according to given params
-  # If name or price is not valid, creation will fail
-  # If creation succeeds, it will redirect to profile of new item
+
   post '/createItem' do
 
     name = params[:name]
     price = params[:price]
     quantity = params[:quantity]
+    description = params[:description]
     current_user = @database.user_by_name(session[:name])
 
-    if name == nil or name == "" or name.strip! == ""
-      session[:message] = "error ~ empty name!"
+
+    session[:message] = ""
+    session[:message] += Helper::Validator.validate_string(name, "name")
+    session[:message] += Helper::Validator.validate_integer(price, "price", 1, nil)
+    session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 1, nil)
+    session[:message] += Helper::Validator.validate_string(description, "description")
+    if session[:message] != ""
       redirect '/createItem'
     end
 
-    begin
-      !(Integer(price))
-    rescue ArgumentError
-      session[:message] = "error ~ Price was not a number!"
-      redirect '/createItem'
-    end
-
-    begin
-      !(Integer(quantity))
-    rescue ArgumentError
-      session[:message] = "error ~ Quantity was not a number!"
-      redirect '/createItem'
-    end
-
-    if quantity.to_i <= 0
-      session[:message] = "error ~ Quantity must be bigger than zero"
-      redirect '/createItem'
-    end
-
-    # Create new item
     new_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
-    @database.add_item(new_item)
+    new_item.description = description
 
-    # Check if the creator already owns a similar item, do we need to merge these items?
-    need_merge = false
-    current_user.items.each{ |item| need_merge = true if !item.equal?(new_item) and item.mergeable?(new_item)}
-
-
-    if need_merge
-      haml :item_merge, :locals => {:new_item => new_item}
-    else
-      session[:message] = "message ~ You have created #{new_item.name}"
-      redirect "/item/#{new_item.id}"
-    end
-
+    session[:message] = "~note~you have created #{new_item.name}"
+    redirect "/item/#{new_item.id}"
   end
 
 end

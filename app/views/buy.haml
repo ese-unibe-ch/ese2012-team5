@@ -56,10 +56,7 @@
 
     %tr
       %td{:height => "200", :width => "200"}
-        -if item.pictures.length > 0
-          %img{:height => "200", :width => "200", :src => "/item_images/#{item.pictures[0]}"}
-        -else
-          %img{:height => "200", :width => "200", :src => "/item_images/default_image.jpg"}
+        %img{:height => "200", :width => "200", :src => item.image_path(0) }
       %td
         Name:  #{item.name}
         %br
@@ -71,15 +68,15 @@
         %input( type="text" readonly="readonly" id="amount#{item.id}")
         of
         #{item.quantity}
-        %img{:src => "/icons/package.png"}
+        %img{:src => "icons/package.png"}
       %td{:align => "right"}
         à #{item.price}
-        %img{:src => "/icons/coins.png"}
+        %img{:src => "icons/coins.png"}
     %tr
       %td{:colspan => 2, :align => "right"}
         Sub-Total:
         %input( type="text" readonly="readonly" id="total#{item.id}")
-        %img{:src => "/icons/coins.png"}
+        %img{:src => "icons/coins.png"}
     -count = count + 1
     -break if quantity == 0
   %tr
@@ -97,8 +94,8 @@
     %td{ :align => "right"}
       Total:
       %input(type='text' readonly="readonly" id='global_total')
-      %img{:src => "/icons/coins.png"}
-      %div{:align => "right", :id=>"message"}
+      %img{:src => "icons/coins.png"}
+      %div{:align => "right", :id => "message"}
   %tr
     %td{:align => "left"}
       %form(action = "/" method = "GET")

@@ -5,91 +5,65 @@
 %br
 
 //SHOW MESSAGES AND ERRORS
--if info != nil
+-if info != nil and info != ""
+  -messages = info.split"~"
+  -messages.delete_if{ |s| s.strip == "" }
   %table#table_new
-    -if (info.split(" ~ ").first()=="error")
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/error.png"}
-      %td
-        %h2 #{info}
-    -else
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/success.png"}
-      %td
-        %h4 #{info}
+    -while(!messages.empty?)
+      %tr
+        -type = messages.delete_at(0)
+        -type = type.strip
+
+        -if type =="error"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/error.png"}
+          %td
+            %h2 #{text}
+        -elsif type == "note"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/note.png"}
+          %td
+            %h4 #{text}
+        -else
+          %td{:colspan => 2}
+            %h4 #{text}
+
+
   %br
 
 %table#table_new
   %tr
     %td{:height => 300, :width => 200}
-      -if item.pictures.size != 0
-        %img{:height => "200", :width => "200", :src => "/item_images/#{item.pictures[0]}"}
-        %br
-        %img{:height => "98", :width => "98", :src => "/item_images/#{item.pictures[1]}"}
-        %img{:height => "98", :width => "98", :src => "/item_images/#{item.pictures[2]}"}
-      - else
-        %img{:height => "200", :width => "200", :src => "/item_images/default_image.jpg"}
-        %br
-        %img{:height => "98", :width => "98", :src => "/item_images/default_image.jpg"}
-        %img{:height => "98", :width => "98", :src => "/item_images/default_image.jpg"}
-
+      %img{:height => "200", :width => "200", :src => item.image_path(0) }
+      %br
+      %img{:height => "98", :width => "98", :src => item.image_path(1) }
+      %img{:height => "98", :width => "98", :src => item.image_path(2) }
     %td
-      -if !item.is_in_auction_mode?
-        Price: #{item.price}
-        %img{:src => "/icons/coins.png"}
-        %br
-        For sale:
-        -if item.active
-          %img{:src => "/icons/accept.png"}
-        -else
-          %img{:src => "/icons/cross.png"}
-        %br
-        Quantity: #{item.quantity}
-        %img{:src => "/icons/package.png"}
+      Price: #{item.price}
+      %img{:src => "../icons/coins.png"}
+      %br
+      Description: #{item.description}
+      %br
+      For sale:
+      -if item.active
+        %img{:src => "../icons/accept.png"}
       -else
-        This item is up for auction
-        %img{:src => "/icons/auction.png"}
-        The auction ends at #{item.auction.end_time.to_s}
-        %br
-        Current selling price:
-        #{item.auction.current_winning_price}
-        %img{:src => "/icons/coins.png"}
-        (Price on the normal market: #{item.price}
-        %img{:src => "/icons/coins.png"}
-        )
-        %br
-        Increment: #{item.auction.increment}
-        %br
-        Current winner:
-        -if !item.auction.has_bids?
-          No bids yet, be the first!
-        -else
-          %a{:href => "/user/#{item.auction.current_winner}"} #{item.auction.current_winner.name}
+        %img{:src => "../icons/cross.png"}
+      %br
+      Quantity: #{item.quantity}
+      %img{:src => "../icons/package.png"}
       %br
       Owner:
       %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
   %tr
     %td{:colspan => 2, :align => "center"}
-      -if !item.is_in_auction_mode?
-        -if canBuy
-          Amount (#{item.quantity} available):
-          %form( action="/item/#{item.id}/buy" method="POST" )
-            %input(type="text" name="quantity" value=1 size =1)
-            %input(type="submit" value="Buy")
-        -else
-          %form( action="/item/#{item.id}/buy" method="POST" )
-            %input(type="submit" disabled="disabled" value="Buy")
+      -if canBuy
+        Amount (#{item.quantity} available):
+        %form( action="/item/#{item.id}/buy" method="POST" )
+          %input(type="text" name="quantity" value=1 size =1)
+          %input(type="submit" value="Buy")
       -else
-        -if canBuy
-          Place bid (maximum value):
-          %form( action="/item/#{item.id}/place_bid" method="POST" )
-            %input(type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.auction.increment : item.price}" size=1)
-            %input(type="submit" value="Bid!")
-        -else
-          %form( action="/item/#{item.id}/place_bid" method="POST" )
-            %input(disabled="disabled" type="text" name="bid" value="#{item.auction.has_bids? ? item.auction.current_winning_price+item.auction.increment : item.price}" size=1)
-            %input(disabled="disabled" type="submit" value="Bid!")
-
-
+        %form( action="/item/#{item.id}/buy" method="POST" )
+          %input(type="submit" disabled="disabled" value="Buy")

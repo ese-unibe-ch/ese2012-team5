@@ -8,8 +8,8 @@ class BuyConfirm < Sinatra::Application
   post '/buy/confirm' do
 
     # Create a hash-table
-    # key = item.id
-    # value = quantity to buy of item.id(corresponding key)
+    # key is the 'item.id'
+    # value is the 'quantity' to buy
     x = 0
     map = Hash.new
     while params.key?("id#{x}")

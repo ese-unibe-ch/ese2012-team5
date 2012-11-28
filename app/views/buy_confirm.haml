@@ -24,24 +24,21 @@
         -total_price += item.price*(quantity).to_i
         %tr
           %td{:width => "74"}
-            -if item.pictures.length > 0
-              %img{:height => "200", :width => "200", :src => "/item_images/#{item.pictures[0]}"}
-            -else
-              %img{:height => "200", :width => "200", :src => "/item_images/default_image.jpg"}
+            %img{:height => "200", :width => "200", :src => item.image_path(0) }
           %td{:align => "center"}
             %a{:href => "/item/#{item.id}"} #{item.name}
           %td{:align => "center"}
             #{quantity}
-            %img{:src => "/icons/package.png"}
+            %img{:src => "../icons/package.png"}
           %td{:align => "center"}
             #{item.owner.name}
           %td{:align => "center"}
             #{item.price}
-            %img{:src => "/icons/coins.png"}
+            %img{:src => "../icons/coins.png"}
     %tr
       %td{:colspan => 5, :align => "right"}
         Total-Price: #{total_price}
-        %img{:src => "/icons/coins.png"}
+        %img{:src => "../icons/coins.png"}
   %tr
     %td{:colspan => 3, :align => "left"}
       %form(action = "/" method = "GET")

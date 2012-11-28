@@ -8,12 +8,13 @@ require 'require_relative'
 
 require_relative 'models/marketplace/user.rb'
 require_relative 'models/marketplace/item.rb'
-require_relative 'models/marketplace/auction.rb'
-require_relative 'models/marketplace/bid.rb'
+require_relative 'models/marketplace/buy_order.rb'
+require_relative 'models/marketplace/search_result.rb'
 require_relative 'models/marketplace/database.rb'
 require_relative 'models/helper/mailer.rb'
 require_relative 'models/helper/validator.rb'
 require_relative 'models/helper/checker.rb'
+require_relative 'models/helper/image_uploader.rb'
 
 require_relative 'controllers/main.rb'
 require_relative 'controllers/login.rb'
@@ -27,16 +28,22 @@ require_relative 'controllers/item_activate.rb'
 require_relative 'controllers/item_buy.rb'
 require_relative 'controllers/item_create.rb'
 require_relative 'controllers/item_merge.rb'
+require_relative 'controllers/item_search.rb'
 require_relative 'controllers/delete_account.rb'
+require_relative 'controllers/deactivate_account.rb'
 require_relative 'controllers/buy.rb'
 require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
+require_relative 'controllers/buy_order_create.rb'
+require_relative 'controllers/buy_order_delete.rb'
+require_relative 'controllers/images.rb'
 
 
 class App < Sinatra::Base
 
   use Login
   use DeleteAccount
+  use DeactivateAccount
   use Register
   use Main
   use User
@@ -51,14 +58,18 @@ class App < Sinatra::Base
   use BuyConfirm
   use ResetPassword
   use Verify
+  use BuyOrderCreate
+  use BuyOrderDelete
+  use Images
 
 
   enable :sessions
 
-  set :public_folder, 'app/public'
-  set :show_exceptions, false
+  set :show_exceptions, true
   set :root, File.dirname(__FILE__)
   set :public_folder, Proc.new { File.join(root, "public")}
+
+
 
   configure :development do
     database = Marketplace::Database.instance
@@ -78,7 +89,7 @@ class App < Sinatra::Base
     lukas.add_credits(400)
     oliver.add_credits(400)
     rene.add_credits(4000)
-    urs.add_credits(1000)
+    urs.add_credits(100000)
     ese.add_credits(1000)
 
     # Verify users
@@ -89,11 +100,12 @@ class App < Sinatra::Base
     rene.verify
     ese.verify
 
+
     # Create some items
     item1 = Marketplace::Item.create('Table', 100, 20, daniel)
-    item2 = Marketplace::Item.create('Dvd', 10, 30, joel)
+    item2 = Marketplace::Item.create('Inception, Dvd', 10, 30, joel)
     item3 = Marketplace::Item.create('Bed', 50, 2, lukas)
-    item4 = Marketplace::Item.create('Book', 20, 1, oliver)
+    item4 = Marketplace::Item.create('Tolkien, Lord of the Rings 1, Book', 20, 1, oliver)
     item5 = Marketplace::Item.create('Shoes', 80, 7, rene)
     item6 = Marketplace::Item.create('Trousers', 60, 99, urs)
     item7 = Marketplace::Item.create('Bed', 60, 4, joel)
@@ -103,8 +115,20 @@ class App < Sinatra::Base
     item11 = Marketplace::Item.create('Fridge', 300, 5, lukas)
     item12 = Marketplace::Item.create('Fridge', 279, 10, rene)
     item13 = Marketplace::Item.create('Red Fridge', 400, 10, joel)
-    item14 = Marketplace::Item.create('Spicy Chily', 35, 1, ese)
-    item15 = Marketplace::Item.create('Can of Beans', 3, 1, ese)
+    item14 = Marketplace::Item.create('Spicy Chily', 35, 15, ese)
+    item15 = Marketplace::Item.create('Apple', 3, 15, ese)
+    item16 = Marketplace::Item.create('Apple', 3, 10, ese)
+    item17 = Marketplace::Item.create('Can of Beans', 3, 8, ese)
+    item18 = Marketplace::Item.create('SuperMan Costume', 3, 60, oliver)
+    item19 = Marketplace::Item.create('Bravo  Hits 5, CD', 2, 1, ese)
+    item20 = Marketplace::Item.create('The Matrix, DVD', 20, 3, joel)
+    item21 = Marketplace::Item.create('Golden Rolex', 1000, 1, urs)
+    item22 = Marketplace::Item.create('Vestax VCI 400 Dj Controller', 400, 1, lukas)
+    item23 = Marketplace::Item.create('THE one and only Magic Ring', 30000, 1, rene)
+    item24 = Marketplace::Item.create('Cool Runnings, DVD', 40, 4, ese)
+    item25 = Marketplace::Item.create('Bag of Dubplates', 10, 7, rene)
+    item26 = Marketplace::Item.create('AK 47', 1000, 3, ese)
+    item27 = Marketplace::Item.create('Dreamcatcher', 10, 40, daniel)
 
     # Set the items state
     item1.active = true
@@ -112,7 +136,7 @@ class App < Sinatra::Base
     item3.active = true
     item4.active = true
     item5.active = true
-    item6.active = true
+    item6.active = false
     item7.active = true
     item8.active = true
     item9.active = true
@@ -120,40 +144,13 @@ class App < Sinatra::Base
     item11.active = true
     item12.active = true
     item13.active = true
-    item14.active = false
-    item15.active = false
+    item14.active = true
+    item15.active = true
+    item16.active = true
+    item17.active = true
+    item18.active = true
+    item19.active = true
 
-    # add auctions
-    auction14 = Marketplace::Auction.create(item14,(Time.now + 3*60), 1, 10, Helper::Mailer)
-    auction15 = Marketplace::Auction.create(item15, (Time.now + 3*60), 5, 10, Helper::Mailer)
-
-    item14.auction = auction14
-    item15.auction = auction15
-
-    # Add users and items to database
-    database.add_item(item1)
-    database.add_item(item2)
-    database.add_item(item3)
-    database.add_item(item4)
-    database.add_item(item5)
-    database.add_item(item6)
-    database.add_item(item7)
-    database.add_item(item8)
-    database.add_item(item9)
-    database.add_item(item10)
-    database.add_item(item11)
-    database.add_item(item12)
-    database.add_item(item13)
-    database.add_item(item14)
-    database.add_item(item15)
-
-    database.add_user(daniel)
-    database.add_user(joel)
-    database.add_user(lukas)
-    database.add_user(oliver)
-    database.add_user(rene)
-    database.add_user(urs)
-    database.add_user(ese)
 
   end
 

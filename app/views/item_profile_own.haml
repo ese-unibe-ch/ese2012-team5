@@ -1,85 +1,69 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 
-%h1 My Item: #{item.name}
+%h1 Item: #{item.name}
 %br
 
 //SHOW MESSAGES AND ERRORS
--if info != nil
+-if info != nil and info != ""
+  -messages = info.split"~"
+  -messages.delete_if{ |s| s.strip == "" }
   %table#table_new
-    -if (info.split(" ~ ").first()=="error")
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/error.png"}
-      %td
-        %h2 #{info}
-    -else
-      -info = info.split(" ~ ").last()
-      %td
-        %img{:src => "/icons/success.png"}
-      %td
-        %h4 #{info}
+    -while(!messages.empty?)
+      %tr
+        -type = messages.delete_at(0)
+        -type = type.strip
+
+        -if type =="error"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/error.png"}
+          %td
+            %h2 #{text}
+        -elsif type == "note"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/note.png"}
+          %td
+            %h4 #{text}
+        -else
+          %td{:colspan => 2}
+            %h4 #{text}
+
+
   %br
 
 %table#table_new
   %tr
     %td{:height => 300, :width => 200}
-      -if item.pictures.size != 0
-        %img{:height => "200", :width => "200", :src => "/item_images/#{item.pictures[0]}"}
-        %br
-        %img{:height => "98", :width => "98", :src => "/item_images/#{item.pictures[1]}"}
-        %img{:height => "98", :width => "98", :src => "/item_images/#{item.pictures[2]}"}
-      -else
-        %img{:height => "200", :width => "200", :src => "/item_images/default_image.jpg"}
-        %br
-        %img{:height => "98", :width => "98", :src => "/item_images/default_image.jpg"}
-        %img{:height => "98", :width => "98", :src => "/item_images/default_image.jpg"}
+      %img{:height => "200", :width => "200", :src => item.image_path(0) }
+      %br
+      %img{:height => "98", :width => "98", :src => item.image_path(1) }
+      %img{:height => "98", :width => "98", :src => item.image_path(2) }
     %td
-
-
-      -if !item.is_in_auction_mode?
-        Price: #{item.price}
-        %img{:src => "/icons/coins.png"}
-        %br
-        For sale:
-        -if item.active
-          %img{:src => "/icons/accept.png"}
-        %br
-        Quantity: #{item.quantity}
-        %img{:src => "/icons/package.png"}
+      Price: #{item.price}
+      %img{:src => "../icons/coins.png"}
+      %br
+      Description: #{item.description}
+      %br
+      For sale:
+      -if item.active
+        %img{:src => "../icons/accept.png"}
       -else
-        %img{:src => "/icons/accept.png"} This item is up for auction
-        %img{:src => "/icons/auction.png"}
-        The auction ends at #{item.auction.end_time.to_s}
-        %br
-        Current selling price:
-        #{item.auction.current_winning_price}
-        %img{:src => "/icons/coins.png"}
-        (Price on the normal market: #{item.price}
-        %img{:src => "/icons/coins.png"}
-        )
-        %br
-        Increment: #{item.auction.increment}
-        %br
-        Current winner:
-        -if !item.auction.current_winner
-          No bids yet.
-        -else
-          %a{:href => "/user/#{item.auction.current_winner.name}"} #{item.auction.current_winner.name}
+        %img{:src => "../icons/cross.png"}
+      %br
+      Quantity: #{item.quantity}
+      %img{:src => "../icons/package.png"}
+      %br
+      Owner:
+      %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
   %tr
     %td{:colspan => 2, :align => "center"}
       -if item.active
-        -if item.can_be_deactivated?
-          %form( action="/item/#{item.id}/activate" method="POST" )
-            %input(type="submit" value="Deactivate")
-        -else
-          %form( action="/item/#{item.id}/activate" method="POST" )
-            %input(type="submit" disabled="disabled" value="Deactivate")
-            %label Cannot deactivate items with bidders.
-
+        %form( action="/item/#{item.id}/activate" method="POST" )
+          %input(type="submit" value="Deactivate")
         %form( action="/item/#{item.id}/edit" method="POST" )
           %input(type="submit" disabled="disabled" value="Edit")
-          %label Cannot edit active items.
       -else
         %form( action="/item/#{item.id}/activate" method="POST" )
           %input(type="submit" value="Activate")
