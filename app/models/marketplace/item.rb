@@ -100,7 +100,7 @@ module Marketplace
     def get_description_from_log(timestamp)
       description = ""
       self.description_log.each{ |sub_array|
-        if sub_array[0] = timestamp
+        if sub_array[0].to_s == timestamp.to_s then
           description = sub_array[1]
         end
       }
@@ -110,7 +110,7 @@ module Marketplace
     def get_price_from_log(timestamp)
       price = 0
       self.description_log.each{ |sub_array|
-        if sub_array[0] = timestamp
+        if sub_array[0].to_s == timestamp.to_s then
           price = sub_array[2]
         end
       }
@@ -121,7 +121,7 @@ module Marketplace
     # @param [Time] Timestamp of the entry to delete
     def delete_description_at(timestamp)
       self.description_log.each{ |sub_array|
-        if sub_array[0] == timestamp
+        if sub_array[0] = timestamp
           self.description_log.delete(sub_array)
         end
       }

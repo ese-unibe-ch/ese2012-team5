@@ -92,8 +92,7 @@ class ItemEdit < Sinatra::Application
     current_item = @database.item_by_id(id)
     description = current_item.get_description_from_log(timestamp)
     price = current_item.get_price_from_log(timestamp)
-    puts(timestamp)
-    puts(description)
+    puts(description )
     puts(price)
     current_item.add_description(timestamp, description, price)
     redirect "item/#{id}"
