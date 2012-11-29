@@ -94,7 +94,7 @@ class ItemEdit < Sinatra::Application
     price = current_item.get_price_from_log(timestamp)
     if current_item.get_status_changed(description, price) then
       time_now = Time.new
-      current_item.add_description(time_now, description, price)
+      current_item.add_description(time_now, description, price.to_i)
       session[:message] = "~note~description and price reset to earlier version"
     else
       session[:message] = "~error~description and price already have these values"

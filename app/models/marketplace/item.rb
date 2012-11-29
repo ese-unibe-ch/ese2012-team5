@@ -119,6 +119,12 @@ module Marketplace
       return price
     end
 
+    def clean_description_log
+      array_temp = self.description_log.last
+      self.description_log.clear
+      self.description_log.push(array_temp)
+    end
+
     # Deletes description from description log array
     # @param [Time] Timestamp of the entry to delete
     def delete_description_at(timestamp)

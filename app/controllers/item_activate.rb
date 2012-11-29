@@ -18,7 +18,7 @@ class ItemActivate < Sinatra::Application
         session[:message] = "~note~item is now active."
         if current_item.get_status_changed(current_item.description, current_item.price)
           time_now = Time.new
-          current_item.add_description(time_now, current_item.description, current_item.price)
+          current_item.add_description(time_now, current_item.description, current_item.price.to_i)
         end
       else
         session[:message] = "~note~item is now inactive."

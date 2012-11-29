@@ -52,6 +52,7 @@ module Marketplace
         item_to_buy.owner = self
         self.remove_credits(item_to_buy.price * quantity)
         item_to_buy.deactivate
+        item_to_buy.clean_description_log
       else
         throw NotImplementedError
       end
