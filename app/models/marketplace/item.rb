@@ -95,6 +95,8 @@ module Marketplace
     def add_description(timestamp, description, price)
       sub_array = [timestamp, description, price]
       self.description_log.push(sub_array)
+      self.description = description
+      self.price = price
     end
 
     def get_description_from_log(timestamp)
@@ -121,7 +123,7 @@ module Marketplace
     # @param [Time] Timestamp of the entry to delete
     def delete_description_at(timestamp)
       self.description_log.each{ |sub_array|
-        if sub_array[0] = timestamp
+        if sub_array[0].to_s == timestamp.to_s
           self.description_log.delete(sub_array)
         end
       }
