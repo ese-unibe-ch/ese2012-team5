@@ -14,9 +14,10 @@ module Marketplace
     # @param [Integer] quantity of the new item
     # @param [User] owner of the new item
     # @return [Item] created item
-    def self.create(name, price, quantity, owner)
+    def self.create(name, description, price, quantity, owner)
       item = self.new
       item.name = name
+      item.description = description
       item.price = price
       item.quantity = quantity
       item.owner = owner
@@ -33,7 +34,6 @@ module Marketplace
       self.id = @@id
       @@id += 1
       self.active = false
-      self.description = "No description table fridge house lord who is the red fidge lots of stuff long table fridge red biiig message test this rings"
     end
 
     # Splits the item into two separate items
@@ -46,7 +46,7 @@ module Marketplace
       else
         rest = self.quantity - at
         self.quantity = rest
-        item = Item.create(self.name, self.price, at, self.owner)
+        item = Item.create(self.name, self.description, self.price, at, self.owner)
         item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
         item
       end
