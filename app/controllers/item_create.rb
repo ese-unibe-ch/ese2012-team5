@@ -41,7 +41,8 @@ class ItemCreate < Sinatra::Application
 
     new_item = Marketplace::Item.create(name, price.to_i, quantity.to_i, current_user)
     time_now = Time.new
-    # Add new description and price into the description log
+    # Add new description into log and delete standard entry
+    new_item.description_log.clear
     new_item.add_description(time_now,description,price.to_i)
 
     session[:message] = "~note~you have created #{new_item.name}"
