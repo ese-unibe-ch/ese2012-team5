@@ -6,7 +6,7 @@ module Marketplace
     # ID for a unique identification of each item
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description
+    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log
 
     # Constructor that will automatic add new item to database
     # @param [String] name of the new item
@@ -14,13 +14,17 @@ module Marketplace
     # @param [Integer] quantity of the new item
     # @param [User] owner of the new item
     # @return [Item] created item
-    def self.create(name, price, quantity, owner)
+    def self.create(name, description, price, quantity, owner)
       item = self.new
       item.name = name
+      item.description = description
       item.price = price
       item.quantity = quantity
       item.owner = owner
       item.pictures = Array.new
+      item.description_log = Array.new
+      time_now = Time.new
+      item.add_description(time_now, item.description, price)
       Marketplace::Database.instance.add_item(item)
       item
     end
@@ -30,7 +34,6 @@ module Marketplace
       self.id = @@id
       @@id += 1
       self.active = false
-      self.description = "No description table fridge house lord who is the red fidge lots of stuff long table fridge red biiig message test this rings"
     end
 
     # Splits the item into two separate items
@@ -43,7 +46,7 @@ module Marketplace
       else
         rest = self.quantity - at
         self.quantity = rest
-        item = Item.create(self.name, self.price, at, self.owner)
+        item = Item.create(self.name, self.description, self.price, at, self.owner)
         item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
         item
       end
@@ -87,6 +90,49 @@ module Marketplace
       else
         self.activate
       end
+    end
+
+    # Adds a new Array with the description and the price of the item into the description log array
+    # Sets the actual description and price of the item with these new values
+    # @param [Time] timestamp to add
+    # @param [String] description to add
+    # @param [Integer] price to add
+    def add_description(timestamp, description, price)
+      sub_array = [timestamp, description, price]
+      self.description_log.push(sub_array)
+      self.description = description
+      self.price = price
+    end
+
+    # Returns the description from the description log, depending on the parameter timestamp
+    # @param [Time] timestamp (key of the array)
+    # @return [String] description to the timestamp
+    def description_from_log(timestamp)
+      sub_array = self.description_log.detect{ |sub_item_array| sub_item_array[0].to_s == timestamp.to_s }
+      return sub_array[1]
+    end
+
+    # Returns the price from the description log, depending on the parameter timestamp
+    # @param [Time] timestamp (key of the array)
+    # @return [Integer] price to the timestamp
+    def price_from_log(timestamp)
+      sub_array = self.description_log.detect{ |sub_item_array| sub_item_array[0].to_s == timestamp.to_s }
+      return sub_array[2]
+    end
+
+    # Deletes all entries in the description log, except the last one (used when an item was bought)
+    # @return [Array] new array with one entry
+    def clean_description_log
+      array_temp = self.description_log.last
+      self.description_log.clear
+      self.description_log.push(array_temp)
+    end
+
+    # Compares the parameters with the description and price from the last entry in the log!
+    # @param [String] description to compare
+    # @param [Integer] price to compare
+    def status_changed(description,price)
+      description != self.description_log.last[1] || price != self.description_log.last[2]
     end
 
     def add_image(url)

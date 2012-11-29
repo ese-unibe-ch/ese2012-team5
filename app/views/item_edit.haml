@@ -95,3 +95,26 @@
       %td{:colspan => 2}
         %h3 Pictures
         %img{:height => "200", :width => "200", :src => item.image_path(0)}
+
+%br
+%h3 Description Log
+%table#table_new
+  %thead
+    %th Date
+    %th Description
+    %th Price
+    %th Set as active
+  %tbody
+    -for array in item.description_log
+      %tr
+        %td
+          #{array[0]}
+        %td
+          #{array[1]}
+        %td
+          #{array[2]}
+        %td
+          %form( action="/item_add_description" method="POST" )
+            %input(type="hidden" value="#{array[0]}" name="timestamp")
+            %input(type="hidden" value="#{item.id}" name="item_id")
+            %input(type='submit' value='Select')

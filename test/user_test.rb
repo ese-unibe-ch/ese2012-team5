@@ -11,7 +11,7 @@ class UserTest < Test::Unit::TestCase
   def test_list
     database = Marketplace::Database.instance
     owner = Marketplace::User.create('John','pW123','test@testmail1.com')
-    item = Marketplace::Item.create('The Lord of The Rings, Books', 10, 12, owner)
+    item = Marketplace::Item.create('The Lord of The Rings, Books', 'No Description', 10, 12, owner)
     item.active = true
     assert(owner.items.include?(item), "List should include active items" )
   end
@@ -53,7 +53,7 @@ class UserTest < Test::Unit::TestCase
     # list is empty now
     owner = Marketplace::User.create("Serioso","pW123",'test@testmail1.com')
     assert(owner.items.length == 0, "list should be empty empty")
-    itemX = Marketplace::Item.create("itemX",300,21,owner)
+    itemX = Marketplace::Item.create("itemX", 'No Description',300,21,owner)
     owner.add_item(itemX)
     assert(owner.items.include?(itemX), "item was not added!")
   end
@@ -62,7 +62,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     seller = Marketplace::User.create('John','pW123','test@testmail1.com')
     buyer = Marketplace::User.create('Jack','pW123','test@testmail1.com')
-    item = Marketplace::Item.create('The Lord of The Rings, Books', 10,1, seller)
+    item = Marketplace::Item.create('The Lord of The Rings, Books', 'No Description', 10,1, seller)
     item.active= true
     buyer.buy(item)
     assert(!item.active, "Item should be inactive")
@@ -72,7 +72,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     seller = Marketplace::User.create('John','pW123','test@testmail1.com')
     buyer = Marketplace::User.create('Jack','pW123','test@testmail1.com')
-    item = Marketplace::Item.create('The Lord of The Rings, Books', 101, 1,seller)
+    item = Marketplace::Item.create('The Lord of The Rings, Books', 'No Description', 101, 1,seller)
     item.active= true
     assert_raise(NameError){user.buy(item)}
     assert(seller.items.include?(item), "Item should still be on the sellers list")
@@ -84,7 +84,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     seller = Marketplace::User.create('John','pW123','test@testmail1.com')
     buyer = Marketplace::User.create('Jack','pW123','test@testmail1.com')
-    item = Marketplace::Item.create('The Lord of The Rings, Books', 10,1, seller)
+    item = Marketplace::Item.create('The Lord of The Rings, Books', 'No Description', 10,1, seller)
     item.active= false
     assert_raise(NameError){user.buy(item)}
     assert(seller.items.include?(item), "Item should still be on the sellers list")
@@ -96,7 +96,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     user = Marketplace::User.create("Buyer",'pW123','test@testmail1.com')
     owner = Marketplace::User.create("Owner",'pW123','test@testmail1.com')
-    item = Marketplace::Item.create("someItem", 100,1, owner)
+    item = Marketplace::Item.create("someItem", 'No Description', 100,1, owner)
     item.active= true
     user.buy(item)
     assert(user.items.size == 1, "user was not able to buy!")
@@ -107,7 +107,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     user = Marketplace::User.create("Buyer",'pW123','test@testmail1.com')
     owner = Marketplace::User.create("Owner",'pW123','test@testmail1.com')
-    item = Marketplace::Item.create("normalItem",100,1,owner)
+    item = Marketplace::Item.create("normalItem", 'No Description',100,1,owner)
     item.active= true
     user.buy(item)
     assert(user.credits == 0, "user has too much credit!")
@@ -118,7 +118,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     user = Marketplace::User.create("Buyer",'pW123','test@testmail1.com')
     owner = Marketplace::User.create("Owner",'pW123','test@testmail1.com')
-    item = Marketplace::Item.create("normalItem",100,1,owner)
+    item = Marketplace::Item.create("normalItem", 'No Description',100,1,owner)
     item.active= true
     user.buy(item)
     assert(owner.items.length == 0, "owner still has the item on his list!")
@@ -128,7 +128,7 @@ class UserTest < Test::Unit::TestCase
     database = Marketplace::Database.instance
     user = Marketplace::User.create("Buyer",'pW123','test@testmail1.com')
     owner = Marketplace::User.create("Owner",'pW123','test@testmail1.com')
-    item = Marketplace::Item.create("Whoot",10,1,owner)
+    item = Marketplace::Item.create("Whoot", 'No Description',10,1,owner)
     assert_raise(TypeError){user.buy(item)}
   end
 
