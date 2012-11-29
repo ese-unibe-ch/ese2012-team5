@@ -52,6 +52,7 @@ module Marketplace
         item_to_buy.owner = self
         self.remove_credits(item_to_buy.price * quantity)
         item_to_buy.deactivate
+        #delete the history in the description log, except the newest entry
         item_to_buy.clean_description_log
       else
         throw NotImplementedError

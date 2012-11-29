@@ -92,6 +92,11 @@ module Marketplace
       end
     end
 
+    # Adds a new Array with the description and the price of the item into the description log array
+    # Sets the actual description and price of the item with these new values
+    # @param [Time] timestamp to add
+    # @param [String] description to add
+    # @param [Integer] price to add
     def add_description(timestamp, description, price)
       sub_array = [timestamp, description, price]
       self.description_log.push(sub_array)
@@ -99,43 +104,34 @@ module Marketplace
       self.price = price
     end
 
-    def get_description_from_log(timestamp)
-      description = ""
-      self.description_log.each{ |sub_array|
-        if sub_array[0].to_s == timestamp.to_s then
-          description = sub_array[1]
-        end
-      }
-      return description
+    # Returns the description from the description log, depending on the parameter timestamp
+    # @param [Time] timestamp (key of the array)
+    # @return [String] description to the timestamp
+    def description_from_log(timestamp)
+      sub_array = self.description_log.detect{ |sub_item_array| sub_item_array[0].to_s == timestamp.to_s }
+      return sub_array[1]
     end
 
-    def get_price_from_log(timestamp)
-      price = 0
-      self.description_log.each{ |sub_array|
-        if sub_array[0].to_s == timestamp.to_s then
-          price = sub_array[2]
-        end
-      }
-      return price
+    # Returns the price from the description log, depending on the parameter timestamp
+    # @param [Time] timestamp (key of the array)
+    # @return [Integer] price to the timestamp
+    def price_from_log(timestamp)
+      sub_array = self.description_log.detect{ |sub_item_array| sub_item_array[0].to_s == timestamp.to_s }
+      return sub_array[2]
     end
 
+    # Deletes all entries in the description log, except the last one (used when an item was bought)
+    # @return [Array] new array with one entry
     def clean_description_log
       array_temp = self.description_log.last
       self.description_log.clear
       self.description_log.push(array_temp)
     end
 
-    # Deletes description from description log array
-    # @param [Time] Timestamp of the entry to delete
-    def delete_description_at(timestamp)
-      self.description_log.each{ |sub_array|
-        if sub_array[0].to_s == timestamp.to_s
-          self.description_log.delete(sub_array)
-        end
-      }
-    end
-
-    def get_status_changed(description,price)
+    # Compares the parameters with the description and price from the last entry in the log!
+    # @param [String] description to compare
+    # @param [Integer] price to compare
+    def status_changed(description,price)
       description != self.description_log.last[1] || price != self.description_log.last[2]
     end
 

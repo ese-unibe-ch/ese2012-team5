@@ -68,7 +68,6 @@ class ItemEdit < Sinatra::Application
     redirect "item/#{item_id}/edit"
   end
 
-
   post '/item_image_delete' do
     pos =  params[:image_pos].to_i
     id = params[:item_id].to_i
@@ -76,7 +75,6 @@ class ItemEdit < Sinatra::Application
     current_item.delete_image_at(pos)
     redirect "item/#{id}/edit"
   end
-
 
   post '/item_image_to_profile' do
     pos =  params[:image_pos].to_i
@@ -86,13 +84,16 @@ class ItemEdit < Sinatra::Application
     redirect "item/#{id}/edit"
   end
 
+  # Adds a new entry in the log with a new timestamp and the description & log from
+  # Is called if an earlier entry in the description log is selected to use
   post '/item_add_description' do
     timestamp =  params[:timestamp]
     id =  params[:item_id].to_i
     current_item = @database.item_by_id(id)
-    description = current_item.get_description_from_log(timestamp)
-    price = current_item.get_price_from_log(timestamp)
-    if current_item.get_status_changed(description, price) then
+    description = current_item.description_from_log(timestamp)
+    price = current_item.price_from_log(timestamp)
+    # Only add new description into log if status of description and price changed
+    if current_item.status_changed(description, price.to_i) then
       time_now = Time.new
       current_item.add_description(time_now, description, price.to_i)
       session[:message] = "~note~description and price reset to earlier version"
