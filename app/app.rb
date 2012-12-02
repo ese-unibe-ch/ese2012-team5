@@ -6,6 +6,8 @@ require 'webget_ruby_secure_random'
 require 'tlsmail'
 require 'require_relative'
 
+require_relative 'models/marketplace/entity.rb'
+require_relative 'models/marketplace/activity.rb'
 require_relative 'models/marketplace/user.rb'
 require_relative 'models/marketplace/item.rb'
 require_relative 'models/marketplace/buy_order.rb'
@@ -37,6 +39,9 @@ require_relative 'controllers/verify'
 require_relative 'controllers/buy_order_create.rb'
 require_relative 'controllers/buy_order_delete.rb'
 require_relative 'controllers/images.rb'
+require_relative 'controllers/user_follow.rb'
+require_relative 'controllers/item_follow.rb'
+require_relative 'controllers/activity_log.rb'
 
 
 class App < Sinatra::Base
@@ -61,6 +66,9 @@ class App < Sinatra::Base
   use BuyOrderCreate
   use BuyOrderDelete
   use Images
+  use UserFollow
+  use ItemFollow
+  use ActivityLog
 
 
   enable :sessions

@@ -20,11 +20,15 @@ class Item < Sinatra::Application
       if current_user != nil
         haml :item_profile, :locals => {  :item => current_item,
                                           :info => message,
-                                          :canBuy => current_user.can_buy_item?(current_item,1) }
+                                          :canBuy => current_user.can_buy_item?(current_item,1),
+                                          :is_following => current_user.subscriptions.include?(current_item),
+                                          :is_guest => false }
       else
         haml :item_profile, :locals => {  :item => current_item,
                                           :info => message,
-                                          :canBuy => false }
+                                          :canBuy => false,
+                                          :is_following => nil,
+                                          :is_guest => true }
       end
     end
 

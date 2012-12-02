@@ -1,6 +1,6 @@
 module Marketplace
 
-  class Item
+  class Item  < Entity
 
     # Static variable
     # ID for a unique identification of each item
@@ -26,11 +26,13 @@ module Marketplace
       time_now = Time.new
       item.add_description(time_now, item.description, price)
       Marketplace::Database.instance.add_item(item)
+      Marketplace::Activity.create(Activity.ITEM_CREATED, item, "#{item.name} has been created by #{item.owner.name}")
       item
     end
 
     # Initial property of an item
     def initialize
+      super
       self.id = @@id
       @@id += 1
       self.active = false
@@ -77,10 +79,12 @@ module Marketplace
     def activate
       self.active = true
       Marketplace::Database.instance.call_buy_orders(self)
+      Marketplace::Activity.create(Activity.ITEM_ACTIVATE, self, "#{self.name} has been activated")
     end
 
     def deactivate
       self.active = false
+      Marketplace::Activity.create(Activity.ITEM_DEACTIVATE, self, "#{self.name} has been deactivated")
     end
 
     # Switches between active and inactive
@@ -159,6 +163,7 @@ module Marketplace
     # Deletes the item and all its profile pictures
     def delete
       self.pictures.each{ |image_url| Helper::ImageUploader.delete_image(image_url, settings.root) }
+      Marketplace::Database.instance.call_users(self)
       Marketplace::Database.instance.delete_item(self)
     end
 

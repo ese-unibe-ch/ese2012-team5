@@ -209,6 +209,14 @@ module Marketplace
       @users
     end
 
+    def call_users(entity)
+      all_users.each{ |user|
+        if user.subscriptions.include?(entity)
+          user.delete_subscription(entity)
+        end
+      }
+    end
+
   #--------
   #Deactivated Users
   #--------
@@ -225,6 +233,16 @@ module Marketplace
       @deactivated_users.delete(user)
     end
 
+
+  #--------
+  #Entities
+  #--------
+    def all_entities
+      entities = Array.new
+      entities << @users
+      entities << @items
+      entities
+    end
 
   #--------
   #EMails

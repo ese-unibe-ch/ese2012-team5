@@ -1,8 +1,8 @@
 module Marketplace
 
-  class User
+  class User < Entity
 
-    attr_accessor :name, :credits, :picture, :password, :email, :details, :verified
+    attr_accessor :name, :credits, :picture, :password, :email, :details, :verified , :subscriptions
 
     # Constructor that will automatic add new user to database
     # @param [String] name of the new user
@@ -15,15 +15,18 @@ module Marketplace
       user.email = email
       user.password = BCrypt::Password.create(password)
       Marketplace::Database.instance.add_user(user)
+      Marketplace::Activity.create(Activity.USER_CREATED, user, "#{user.name} has been created")
       user
     end
 
     # Initial properties of a user
     def initialize
+      super
       self.credits = 100
       self.picture = nil
       self.details = "No description"
       self.verified = false
+      self.subscriptions = Array.new
     end
 
     def enough_credits(amount)
@@ -52,6 +55,8 @@ module Marketplace
         item_to_buy.owner = self
         self.remove_credits(item_to_buy.price * quantity)
         item_to_buy.deactivate
+        Marketplace::Activity.create(Activity.ITEM_BOUGHT, item, "#{item.name} has been bought by #{self.name}")
+        Marketplace::Activity.create(Activity.USER_BOUGHT_ITEM, self, "#{self.name} bought #{item.name}")
         #delete the history in the description log, except the newest entry
         item_to_buy.clean_description_log
       else
@@ -64,6 +69,8 @@ module Marketplace
     # @param [Item] item the user want to sell
     def sell(item)
       self.add_credits(item.price * item.quantity)
+      Marketplace::Activity.create(Activity.ITEM_SOLD, item, "#{item.name} has been sold by #{self.name}")
+      Marketplace::Activity.create(Activity.USER_SOLD_ITEM, self, "#{self.name} sold #{item.name}")
     end
 
     def add_credits(amount)
@@ -95,6 +102,7 @@ module Marketplace
 
     # Deletes the user, its profile picture and all its items
     def delete
+      Marketplace::Database.instance.call_users(self)
       Marketplace::Database.instance.delete_user(self)
       Helper::ImageUploader.delete_image(self.picture, settings.root) if self.picture != nil
       items = Marketplace::Database.instance.items_by_user(self)
@@ -113,11 +121,13 @@ module Marketplace
 
       Marketplace::Database.instance.add_deactivated_user(self)
       Marketplace::Database.instance.delete_user(self)
+      Marketplace::Activity.create(Activity.USER_DEACTIVATE, self, "#{self.name} has been deactivated")
     end
 
     def activate
       Marketplace::Database.instance.delete_deactivated_user(self)
       Marketplace::Database.instance.add_user(self)
+      Marketplace::Activity.create(Activity.USER_REACTIVATE, self, "#{self.name} has been reactivated")
     end
 
     def to_s
@@ -136,6 +146,15 @@ module Marketplace
         return File.join("", "images", self.picture)
       end
     end
+
+    def add_subscription(entity)
+      subscriptions << entity
+    end
+
+    def delete_subscription(entity)
+      subscriptions.delete(entity)
+    end
+
 
   end
 

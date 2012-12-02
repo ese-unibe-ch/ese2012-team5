@@ -1,6 +1,15 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 %h1 #{user.name}
+
+-if !is_guest
+  -if !is_following
+    %form( action="/user/#{user.name}/follow" method="POST" )
+      %input(type="submit" value="Follow")
+  -else
+    %form( action="/user/#{user.name}/unfollow" method="POST" )
+      %input(type="submit" value="Unfollow")
+
 %br
 
 //SHOW MESSAGES AND ERRORS

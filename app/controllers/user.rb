@@ -23,10 +23,21 @@ class User < Sinatra::Application
     else
       user_items = user.items
 
-      haml :user_profile, :locals => {  :info => message,
-                                        :current_user => current_user,
-                                        :user => user,
-                                        :items_user => user_items }
+      if current_user != nil
+        haml :user_profile, :locals => {  :info => message,
+                                          :current_user => current_user,
+                                          :user => user,
+                                          :items_user => user_items,
+                                          :is_following => current_user.subscriptions.include?(user),
+                                          :is_guest => false }
+      else
+        haml :user_profile, :locals => {  :info => message,
+                                          :current_user => current_user,
+                                          :user => user,
+                                          :items_user => user_items,
+                                          :is_following => nil,
+                                          :is_guest => true }
+      end
     end
   end
 
