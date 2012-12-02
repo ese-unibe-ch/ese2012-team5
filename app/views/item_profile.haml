@@ -2,6 +2,15 @@
 
 
 %h1 Item: #{item.name}
+
+-if !is_guest
+  -if !is_following
+    %form( action="/item/#{item.id}/follow" method="POST" )
+      %input(type="submit" value="Follow")
+  -else
+    %form( action="/item/#{item.id}/unfollow" method="POST" )
+      %input(type="submit" value="Unfollow")
+
 %br
 
 //SHOW MESSAGES AND ERRORS
@@ -31,7 +40,7 @@
             %h4 #{text}
 
 
-  %br
+%br
 
 %table#table_new
   %tr
