@@ -37,6 +37,7 @@ require_relative 'controllers/verify'
 require_relative 'controllers/buy_order_create.rb'
 require_relative 'controllers/buy_order_delete.rb'
 require_relative 'controllers/images.rb'
+require_relative 'controllers/activities.rb'
 
 
 class App < Sinatra::Base
@@ -61,6 +62,7 @@ class App < Sinatra::Base
   use BuyOrderCreate
   use BuyOrderDelete
   use Images
+  use Activities
 
 
   enable :sessions

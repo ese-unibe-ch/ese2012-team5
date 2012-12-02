@@ -23,6 +23,8 @@ module Marketplace
       item.owner = owner
       item.pictures = Array.new
       item.description_log = Array.new
+      item.activities = Array.new
+      item.add_activity("was created.")
       time_now = Time.new
       item.add_description(time_now, item.description, price)
       Marketplace::Database.instance.add_item(item)
@@ -77,10 +79,14 @@ module Marketplace
     def activate
       self.active = true
       Marketplace::Database.instance.call_buy_orders(self)
+      self.owner.add_activity("activated #{self.name}.")
+      self.add_activity("has been activated.")
     end
 
     def deactivate
       self.active = false
+      self.owner.add_activity("deactivated #{self.name}.")
+      self.add_activity("has been deactivated.")
     end
 
     # Switches between active and inactive
@@ -140,7 +146,12 @@ module Marketplace
     end
 
     def add_activity(activity)
-      self.activities.push(activity)
+      sub_array = [Time.now, activity]
+      self.activities.push(sub_array)
+    end
+
+    def is_user?
+      false
     end
 
     def add_image(url)

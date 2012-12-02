@@ -1,0 +1,57 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Following
+%br
+
+//SHOW MESSAGES AND ERRORS
+-if info != nil and info != ""
+  -messages = info.split"~"
+  -messages.delete_if{ |s| s.strip == "" }
+  %table#table_new
+    -while(!messages.empty?)
+      %tr
+        -type = messages.delete_at(0)
+        -type = type.strip
+
+        -if type =="error"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/error.png"}
+          %td
+            %h2 #{text}
+        -elsif type == "note"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "icons/note.png"}
+          %td
+            %h4 #{text}
+        -else
+          %td{:colspan => 2}
+            %h4 #{text}
+
+
+  %br
+- for followable in follow_list
+  %table
+    %tbody
+      %tr
+        %td
+          #{followable.name}
+        %td
+          -if followable.is_user?
+            %form( action="/unfollow_user" method="POST" )
+              %input(type="hidden" name="name" value="#{followable.name}")
+              %input(type="submit" value="Unfollow")
+          -else
+            %form( action="/unfollow_item" method="POST" )
+              %input(type="hidden" name="id" value="#{followable.id}")
+              %input(type="submit" value="Unfollow")
+  %table
+    %tbody
+      %tr
+        %td
+    - for activity in followable.get_activities
+      %tr
+        %td
+          #{activity.first} #{followable.name} #{activity.last}
+  %br

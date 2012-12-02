@@ -26,7 +26,8 @@ class User < Sinatra::Application
       haml :user_profile, :locals => {  :info => message,
                                         :current_user => current_user,
                                         :user => user,
-                                        :items_user => user_items }
+                                        :items_user => user_items,
+                                        :guest => current_user==nil }
     end
   end
 

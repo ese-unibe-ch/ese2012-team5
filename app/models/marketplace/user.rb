@@ -9,11 +9,13 @@ module Marketplace
     # @param [String] email address
     # @param [String] password of the new user
     # @return [Item] created item
-    def self.create(name, password,email)
+    def self.create(name, password, email)
       user = self.new
       user.name = name
       user.email = email
       user.password = BCrypt::Password.create(password)
+      user.activities = Array.new
+      user.add_activity("was created.")
       Marketplace::Database.instance.add_user(user)
       user
     end
@@ -55,6 +57,8 @@ module Marketplace
         item_to_buy.deactivate
         #delete the history in the description log, except the newest entry
         item_to_buy.clean_description_log
+        self.add_activity("bought #{quantity}x #{item.name}.")
+        item.add_activity("was sold to #{self.name}.")
       else
         throw NotImplementedError
       end
@@ -65,6 +69,7 @@ module Marketplace
     # @param [Item] item the user want to sell
     def sell(item)
       self.add_credits(item.price * item.quantity)
+      self.add_activity("sold #{item.name}.")
     end
 
     def add_credits(amount)
@@ -130,13 +135,21 @@ module Marketplace
     end
 
     def follow(followable)
-      self.follow_list.push(followable)
+      if !self.follows?(followable)
+        self.follow_list.push(followable)
+        self.add_activity("started following #{followable.name}.")
+      end
     end
 
     def unfollow(followable)
       if self.follow_list.include?(followable)
         self.follow_list.delete(followable)
+        self.add_activity("stopped following #{followable.name}.")
       end
+    end
+
+    def follows?(followable)
+      self.follow_list.include?(followable)
     end
 
     def get_activities
@@ -144,7 +157,12 @@ module Marketplace
     end
 
     def add_activity(activity)
-      self.activities.push(activity)
+      sub_array = [Time.now, activity]
+      self.activities.push(sub_array)
+    end
+
+    def is_user?
+      true
     end
 
     # @return [String] path of user profile picture

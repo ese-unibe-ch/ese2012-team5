@@ -2,7 +2,14 @@
 
 
 %h1 Item: #{item.name}
-%br
+-if user.follows?(item)
+  %form( action="/unfollow_item" method="POST" )
+    %input(type="hidden" name="id" value="#{item.id}")
+    %input(type="submit" value="Unfollow")
+-else
+  %form(action="/follow_item" method="POST")
+    %input(type="hidden" name= "id" value="#{item.id}")
+    %input(type="submit" value="Follow")
 
 //SHOW MESSAGES AND ERRORS
 -if info != nil and info != ""

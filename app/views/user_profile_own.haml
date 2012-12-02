@@ -1,7 +1,14 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
 %h1 #{user.name}
-%br
+-if user.follows?(user)
+  %form( action="/unfollow_user" method="POST" )
+    %input(type="hidden" name="name" value="#{user.name}")
+    %input(type="submit" value="Unfollow")
+-else
+  %form(action="/follow_user" method="POST")
+    %input(type="hidden" name= "name" value="#{user.name}")
+    %input(type="submit" value="Follow")
 
 //SHOW MESSAGES AND ERRORS
 -if info != nil and info != ""
