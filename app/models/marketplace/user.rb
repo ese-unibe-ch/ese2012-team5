@@ -2,7 +2,7 @@ module Marketplace
 
   class User
 
-    attr_accessor :name, :credits, :picture, :password, :email, :details, :verified
+    attr_accessor :name, :credits, :picture, :password, :email, :details, :verified, :activities, :follow_list
 
     # Constructor that will automatic add new user to database
     # @param [String] name of the new user
@@ -23,6 +23,7 @@ module Marketplace
       self.credits = 100
       self.picture = nil
       self.details = "No description"
+      self.follow_list = Array.new
       self.verified = false
     end
 
@@ -126,6 +127,24 @@ module Marketplace
 
     def verify
        self.verified = true
+    end
+
+    def follow(followable)
+      self.follow_list.push(followable)
+    end
+
+    def unfollow(followable)
+      if self.follow_list.include?(followable)
+        self.follow_list.delete(followable)
+      end
+    end
+
+    def get_activities
+     self.activities
+    end
+
+    def add_activity(activity)
+      self.activities.push(activity)
     end
 
     # @return [String] path of user profile picture

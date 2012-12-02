@@ -6,7 +6,7 @@ module Marketplace
     # ID for a unique identification of each item
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log
+    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log, :activities
 
     # Constructor that will automatic add new item to database
     # @param [String] name of the new item
@@ -133,6 +133,14 @@ module Marketplace
     # @param [Integer] price to compare
     def status_changed(description,price)
       description != self.description_log.last[1] || price != self.description_log.last[2]
+    end
+
+    def get_activities
+      self.activities
+    end
+
+    def add_activity(activity)
+      self.activities.push(activity)
     end
 
     def add_image(url)
