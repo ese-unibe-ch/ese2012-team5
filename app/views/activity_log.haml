@@ -41,7 +41,10 @@ You are following:
 
 %br
 %hr
-
+%p
+  These are the last
+  #{items_p_page}
+  entries.
 %table#table_new
   %thead
     %th Entity
@@ -57,3 +60,18 @@ You are following:
           #{activity.message}
         %td
           #{activity.time}
+
+
+%button(type="button" id="show_more")
+  Show More
+
+%input(type='hidden' name="itemsPerPage" id="ipp" value="#{items_p_page}")
+
+:javascript
+  $(document).ready(function() {
+      $('#show_more').click(function() {
+         var ipp = parseInt($('#ipp').val())+5;
+         var url = "/activity_log/show/"+ipp;
+         $('#content').load(url);
+      });
+  });
