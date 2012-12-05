@@ -6,7 +6,6 @@ class ItemCreate < Sinatra::Application
 
 
   get '/createItem' do
-
     current_user = @database.user_by_name(session[:name])
 
     if current_user
@@ -17,12 +16,9 @@ class ItemCreate < Sinatra::Application
       session[:message] = "~error~log in to create items!"
       redirect '/login'
     end
-
   end
 
-
   post '/createItem' do
-
     name = params[:name]
     price = params[:price]
     quantity = params[:quantity]

@@ -11,7 +11,7 @@ class UserFollow < Sinatra::Application
 
     current_user.add_subscription(user)
 
-    session[:message] = "~note~You are now following #{user.name}"
+    session[:message] = "~note~You are now following #{user.name}."
     redirect "user/#{current_user.name}"
   end
 

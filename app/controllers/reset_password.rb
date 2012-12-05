@@ -11,16 +11,15 @@ class ResetPassword < Sinatra::Application
     haml :forgot_password, :locals => { :info => message }
   end
 
-
   post '/forgot_password' do
     email = params[:email]
+    user = @database.user_by_email(email)
 
-    if (!@database.email_exists?(email))
+    if !@database.email_exists?(email)
       session[:message] = "~error~email '#{email}' don't exists in database!"
       redirect '/forgot_password'
     end
 
-    user = @database.user_by_email(email)
     # Send email
     Helper::Mailer.send_pw_reset_mail(user)
 
@@ -37,13 +36,13 @@ class ResetPassword < Sinatra::Application
     @database.clean_pw_reset_older_as(24)
 
     #check if hash exists
-    if !(@database.pw_reset_has?(params[:hash]))
+    if !@database.pw_reset_has?(params[:hash])
       session[:message] = "~error~unknown/timed out link please request a new one!"
       redirect '/login'
     end
 
     haml :user_reset_password, :locals => { :info => message,
-                                           :hash => params[:hash]}
+                                            :hash => params[:hash] }
   end
 
 

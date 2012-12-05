@@ -6,9 +6,9 @@ class Item < Sinatra::Application
 
 
   get "/item/:id" do
-
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
+
 
     message = session[:message]
     session[:message] = nil
@@ -31,7 +31,6 @@ class Item < Sinatra::Application
                                           :is_guest => true }
       end
     end
-
   end
 
 end

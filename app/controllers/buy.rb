@@ -6,15 +6,15 @@ class Buy < Sinatra::Application
 
 
   get '/buy' do
-    redirect '/login' unless session[:name]
-
     quantity = params[:quantity].to_i
     category = params[:category]
     current_user = @database.user_by_name(session[:name])
     items = @database.category_with_name(category)
 
+    redirect '/login' if current_user == nil
+
     if items == nil
-      session[:message] = "~error~Item name not found!</br>Could not create category!"
+      session[:message] = "~error~Item name not found!~error~Could not create category!"
       redirect '/'
     end
 
@@ -25,9 +25,7 @@ class Buy < Sinatra::Application
                             :items => sorted_items }
   end
 
-
   post '/buy' do
-
     current_user = @database.user_by_name(session[:name])
 
     # Create a hash-table
@@ -52,9 +50,9 @@ class Buy < Sinatra::Application
     # Iterate over each item that was chosen to buy
     session[:message] = "" #Note by urs: do this because of += is not allowed if its not a string, thx ruby for no declaring types, we love you....
     map.each_pair do |id,quantity|
-
       quantity = quantity.to_i
       current_item = @database.item_by_id(id.to_i)
+
 
       temp = session[:message]
       session[:message] = ""
@@ -73,7 +71,6 @@ class Buy < Sinatra::Application
       session[:message] += "~note~you bought #{bought_item.quantity}x #{bought_item.name} from #{seller.name}."
     end
     redirect '/'
-
   end
 
 end

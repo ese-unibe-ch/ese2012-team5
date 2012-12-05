@@ -6,9 +6,6 @@ class Verify < Sinatra::Application
 
 
   get '/verify_account/:hash' do
-
-    message = session[:message]
-    session[:message] = nil
     hash = params[:hash]
 
     #check if hash exists

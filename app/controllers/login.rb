@@ -13,9 +13,7 @@ class Login < Sinatra::Application
     haml :login, :locals => { :info => message}
   end
 
-
   post '/login' do
-
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
@@ -49,10 +47,10 @@ class Login < Sinatra::Application
     end
   end
 
-
   get '/logout' do
     session[:name] = nil
     session[:message] = "~note~logged out."
+
     redirect '/login'
   end
 

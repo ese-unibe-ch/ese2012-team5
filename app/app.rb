@@ -13,10 +13,11 @@ require_relative 'models/marketplace/item.rb'
 require_relative 'models/marketplace/buy_order.rb'
 require_relative 'models/marketplace/search_result.rb'
 require_relative 'models/marketplace/database.rb'
-require_relative 'models/helper/mailer.rb'
-require_relative 'models/helper/validator.rb'
-require_relative 'models/helper/checker.rb'
-require_relative 'models/helper/image_uploader.rb'
+
+require_relative 'helper/mailer.rb'
+require_relative 'helper/validator.rb'
+require_relative 'helper/checker.rb'
+require_relative 'helper/image_uploader.rb'
 
 require_relative 'controllers/main.rb'
 require_relative 'controllers/login.rb'
@@ -80,7 +81,6 @@ class App < Sinatra::Base
 
 
   configure :development do
-    database = Marketplace::Database.instance
 
     # Create some users
     daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
@@ -107,37 +107,36 @@ class App < Sinatra::Base
     lukas.verify
     rene.verify
     ese.verify
-
+    oliver.verify
 
     # Create some items
-    description = "No Description"
-    item1 = Marketplace::Item.create('Table', description, 100, 20, daniel)
-    item2 = Marketplace::Item.create('Inception, Dvd', description, 10, 30, joel)
-    item3 = Marketplace::Item.create('Bed', description, 50, 2, lukas)
-    item4 = Marketplace::Item.create('Tolkien, Lord of the Rings 1, Book', description, 20, 1, oliver)
-    item5 = Marketplace::Item.create('Shoes', description, 80, 7, rene)
-    item6 = Marketplace::Item.create('Trousers', description, 60, 99, urs)
-    item7 = Marketplace::Item.create('Bed', description, 60, 4, joel)
-    item8 = Marketplace::Item.create('Bed', description, 30, 5, oliver)
-    item9 = Marketplace::Item.create('Shoes', description, 20, 4, oliver)
-    item10 = Marketplace::Item.create('Fridge', description, 210, 2, oliver)
-    item11 = Marketplace::Item.create('Fridge', description, 300, 5, lukas)
-    item12 = Marketplace::Item.create('Fridge', description, 279, 10, rene)
-    item13 = Marketplace::Item.create('Red Fridge', description, 400, 10, joel)
-    item14 = Marketplace::Item.create('Spicy Chily', description, 35, 15, ese)
-    item15 = Marketplace::Item.create('Apple', description, 3, 15, ese)
-    item16 = Marketplace::Item.create('Apple', description, 3, 10, ese)
-    item17 = Marketplace::Item.create('Can of Beans', description, 3, 8, ese)
-    item18 = Marketplace::Item.create('SuperMan Costume', description, 3, 60, oliver)
-    item19 = Marketplace::Item.create('Bravo  Hits 5, CD', description, 2, 1, ese)
-    item20 = Marketplace::Item.create('The Matrix, DVD', description, 20, 3, joel)
-    item21 = Marketplace::Item.create('Golden Rolex', description, 1000, 1, urs)
-    item22 = Marketplace::Item.create('Vestax VCI 400 Dj Controller', description, 400, 1, lukas)
-    item23 = Marketplace::Item.create('THE one and only Magic Ring', description, 30000, 1, rene)
-    item24 = Marketplace::Item.create('Cool Runnings, DVD', description, 40, 4, ese)
-    item25 = Marketplace::Item.create('Bag of Dubplates', description, 10, 7, rene)
-    item26 = Marketplace::Item.create('AK 47', description, 1000, 3, ese)
-    item27 = Marketplace::Item.create('Dreamcatcher', description, 10, 40, daniel)
+    item1 = Marketplace::Item.create('Table', "No Description", 100, 20, daniel)
+    item2 = Marketplace::Item.create('Inception, Dvd', "No Description", 10, 30, joel)
+    item3 = Marketplace::Item.create('Bed', "No Description", 50, 2, lukas)
+    item4 = Marketplace::Item.create('Tolkien, Lord of the Rings 1, Book', "No Description", 20, 1, oliver)
+    item5 = Marketplace::Item.create('Shoes', "No Description", 80, 7, rene)
+    item6 = Marketplace::Item.create('Trousers', "No Description", 60, 99, urs)
+    item7 = Marketplace::Item.create('Bed', "No Description", 60, 4, joel)
+    item8 = Marketplace::Item.create('Bed', "No Description", 30, 5, oliver)
+    item9 = Marketplace::Item.create('Shoes', "No Description", 20, 4, oliver)
+    item10 = Marketplace::Item.create('Fridge', "No Description", 210, 2, oliver)
+    item11 = Marketplace::Item.create('Fridge', "No Description", 300, 5, lukas)
+    item12 = Marketplace::Item.create('Fridge', "No Description", 279, 10, rene)
+    item13 = Marketplace::Item.create('Red Fridge', "No Description", 400, 10, joel)
+    item14 = Marketplace::Item.create('Spicy Chily', "No Description", 35, 15, ese)
+    item15 = Marketplace::Item.create('Apple', "No Description", 3, 15, ese)
+    item16 = Marketplace::Item.create('Apple', "No Description", 3, 10, ese)
+    item17 = Marketplace::Item.create('Can of Beans', "No Description", 3, 8, ese)
+    item18 = Marketplace::Item.create('SuperMan Costume', "No Description", 3, 60, oliver)
+    item19 = Marketplace::Item.create('Bravo  Hits 5, CD', "No Description", 2, 1, ese)
+    item20 = Marketplace::Item.create('The Matrix, DVD', "No Description", 20, 3, joel)
+    item21 = Marketplace::Item.create('Golden Rolex', "No Description", 1000, 1, urs)
+    item22 = Marketplace::Item.create('Vestax VCI 400 Dj Controller', "No Description", 400, 1, lukas)
+    item23 = Marketplace::Item.create('THE one and only Magic Ring', "No Description", 30000, 1, rene)
+    item24 = Marketplace::Item.create('Cool Runnings, DVD', "No Description", 40, 4, ese)
+    item25 = Marketplace::Item.create('Bag of Dubplates', "No Description", 10, 7, rene)
+    item26 = Marketplace::Item.create('AK 47', "No Description", 1000, 3, ese)
+    item27 = Marketplace::Item.create('Dreamcatcher', "No Description", 10, 40, daniel)
 
     # Set the items state
     item1.active = true
@@ -159,7 +158,14 @@ class App < Sinatra::Base
     item17.active = true
     item18.active = true
     item19.active = true
-
+    item20.active = true
+    item21.active = true
+    item22.active = true
+    item23.active = true
+    item24.active = true
+    item25.active = true
+    item26.active = true
+    item27.active = true
 
   end
 

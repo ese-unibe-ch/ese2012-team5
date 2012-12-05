@@ -3,54 +3,23 @@
 %h1 ActivityLog
 %br
 
-//SHOW MESSAGES AND ERRORS
--if info != nil and info != ""
-  -messages = info.split"~"
-  -messages.delete_if{ |s| s.strip == "" }
-  %table#table_new
-    -while(!messages.empty?)
-      %tr
-        -type = messages.delete_at(0)
-        -type = type.strip
+=haml :'message_template', :locals => { :info => info }
 
-        -if type =="error"
-          -text = messages.delete_at(0)
-          %td
-            %img{:src => "icons/error.png"}
-          %td
-            %h2 #{text}
-        -elsif type == "note"
-          -text = messages.delete_at(0)
-          %td
-            %img{:src => "icons/note.png"}
-          %td
-            %h4 #{text}
-        -else
-          %td{:colspan => 2}
-            %h4 #{text}
-
-
-%br
-
-You are following:
+%p You are following:
 %table#table_new
   -for subscription in subscriptions
     %tr
       %td
         #{subscription.name}
 
-%br
 %hr
-%p
-  These are the last
-  #{items_p_page}
-  entries.
+
+%p These are the last #{items_per_page} entries:
 %table#table_new
   %thead
     %th Entity
     %th Message
     %th Time
-
   %tbody
     - for activity in activities
       %tr
@@ -61,17 +30,16 @@ You are following:
         %td
           #{activity.time}
 
-
-%button(type="button" id="show_more")
-  Show More
-
-%input(type='hidden' name="itemsPerPage" id="ipp" value="#{items_p_page}")
+%div{:align => "center"}
+  %button{:type => "button", :id => "show_more"}
+    Show More
+    %input{:type => 'hidden', :name => "itemsPerPage", :id => "ipp", :value => "#{items_per_page}"}
 
 :javascript
   $(document).ready(function() {
       $('#show_more').click(function() {
          var ipp = parseInt($('#ipp').val())+5;
-         var url = "/activity_log/show/"+ipp;
+         var url = "/activity_log/"+ipp;
          $('#content').load(url);
       });
   });

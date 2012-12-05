@@ -6,9 +6,9 @@ class ItemActivate < Sinatra::Application
 
 
   post "/item/:id/activate" do
-
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
+
 
     if current_user == current_item.owner
       quantity_before = current_item.quantity
@@ -34,7 +34,6 @@ class ItemActivate < Sinatra::Application
       session[:message] = "~error~you are not the owner of this item!"
       redirect "/item/#{current_item.id}"
     end
-
   end
 
 end

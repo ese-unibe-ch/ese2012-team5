@@ -6,11 +6,10 @@ class BuyOrderDelete < Sinatra::Application
 
 
   post '/deleteBuyOrder' do
-
     id = params[:id].to_i
     current_user = @database.user_by_name(session[:name])
-
     buy_order = @database.buy_order_by_id(id)
+
 
     if current_user == buy_order.user
       buy_order.delete
@@ -18,7 +17,6 @@ class BuyOrderDelete < Sinatra::Application
     end
 
     redirect "/user/#{current_user.name}"
-
   end
 
 end

@@ -75,12 +75,12 @@
                 %img{:height => "40", :width => "40", :align => "center", :src => Marketplace::Database.instance.user_by_name(session[:name]).image_path}
               %td(onclick="Navigate_to('/user/#{session[:name]}');")
                 %label{style="float = 'auto'"}
-                Logged in as:&nbsp
+                Logged in as:
                 %br
                 #{session[:name]}
             %tr
               %td(onclick="Navigate_to('/user/#{session[:name]}');" colspan="2")
-                Current credit:&nbsp
+                Current credit:
                 %br
                 #{Marketplace::Database.instance.user_by_name(session[:name]).credits}
                 %img{:src => "../icons/coins.png"}
@@ -98,7 +98,7 @@
               %li.chromestyle
                 %a.chromestyle{:href => url("/createBuyOrder")} Add BuyOrder
               %li.chromestyle
-                %a.chromestyle{:href => url("/activity_log/show/5")} ActivityLog
+                %a.chromestyle{:href => url("/activity_log/5")} ActivityLog
               %li.chromestyle
                 %a.chromestyle{:href => url("/settings")} Settings
               %li.chromestyle

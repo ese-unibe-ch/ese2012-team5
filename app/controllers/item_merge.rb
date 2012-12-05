@@ -21,9 +21,7 @@ class ItemMerge < Sinatra::Application
                                   :item2 => other_item }
   end
 
-
   post "/item/:id/merge" do
-
     current_item_id = params[:id].to_i
     other_item_id = params[:other_item_id].to_i
     current_item = @database.item_by_id(current_item_id)

@@ -6,7 +6,6 @@ class ItemBuy < Sinatra::Application
 
 
   post "/item/:id/buy" do
-
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
     quantity = params[:quantity].to_i

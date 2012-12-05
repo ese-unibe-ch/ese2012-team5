@@ -6,10 +6,10 @@ class ItemEdit < Sinatra::Application
 
 
   get '/item/:id/edit' do
-
     id = params[:id].to_i
     current_item = @database.item_by_id(id)
     current_user = @database.user_by_name(session[:name])
+
 
     if current_user != current_item.owner
       session[:message] = "~error~you can't edit a item of an other user."
@@ -27,9 +27,7 @@ class ItemEdit < Sinatra::Application
                                  :info => message }
   end
 
-
   post '/item/:id/edit' do
-
     id = params[:id].to_i
     new_name = params[:name]
     new_price = params[:price]
@@ -52,7 +50,6 @@ class ItemEdit < Sinatra::Application
     redirect "/item/#{id}"
   end
 
-
   post '/item_image_upload' do
     file = params[:file_upload]
     item_id =  params[:item_id].to_i
@@ -72,7 +69,9 @@ class ItemEdit < Sinatra::Application
     pos =  params[:image_pos].to_i
     id = params[:item_id].to_i
     current_item = @database.item_by_id(id)
+
     current_item.delete_image_at(pos)
+
     redirect "item/#{id}/edit"
   end
 
@@ -80,7 +79,9 @@ class ItemEdit < Sinatra::Application
     pos =  params[:image_pos].to_i
     id =  params[:item_id].to_i
     current_item = @database.item_by_id(id)
+
     current_item.select_front_image(pos)
+
     redirect "item/#{id}/edit"
   end
 
@@ -92,6 +93,7 @@ class ItemEdit < Sinatra::Application
     current_item = @database.item_by_id(id)
     description = current_item.description_from_log(timestamp)
     price = current_item.price_from_log(timestamp)
+
     # Only add new description into log if status of description and price changed
     if current_item.status_changed(description, price.to_i) then
       time_now = Time.new
@@ -100,6 +102,7 @@ class ItemEdit < Sinatra::Application
     else
       session[:message] = "~error~description and price already have these values"
     end
+
     redirect "item/#{id}"
   end
 
