@@ -19,20 +19,36 @@
 
   :javascript
     $(function() {
-    $("#search_query").keyup(function(){
-        var q = $("#search_query").val().split(' ').join('_');
-        if(q != ""){
-        var url = "/search_item/"+q;
-        $('#results').load(url);
 
-        $("#content").css("display","none");
-        $("#results").css("display","inline");
+    $("#search_query").keyup(function() {
+    dosearch(); });
 
-        }
-        else{
-        $("#content").css("display","inline");
-        $("#results").css("display","none");
-        }}); });
+    $("#get_new_result").live("click", function() {
+    var closest = $("#closest_string").val();
+    $("#search_query").val(closest);
+    dosearch(); });
+
+
+
+     function dosearch(){
+       var q = $("#search_query").val().split(' ').join('_');
+             if(q != ""){
+             var url = "/search_item/"+q;
+             $('#results').load(url);
+
+             $("#content").css("display","none");
+             $("#results").css("display","inline");
+
+             }
+             else{
+             $("#content").css("display","inline");
+             $("#results").css("display","none");
+             }
+
+     }
+
+
+      });
 
   :javascript
     function disableEnterKey(e)
@@ -116,8 +132,6 @@
               %li.chromestyle
                 %a.chromestyle{:href => url("/register")} Register
 
-        :javascript
-          cssdropdown.startchrome("chromemenu")
 
       #content
         = yield

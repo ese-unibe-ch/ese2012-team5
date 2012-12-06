@@ -22,7 +22,8 @@ class Item_search
     haml :item_search,:layout => false ,
          :locals => {  :found_items => categorized_sorted_found,
                        :current_user => current_user,
-                       :description_map => search_result.description_map
+                       :description_map => search_result.description_map,
+                       :closest_string => search_result.closest_string
          }
 
 
