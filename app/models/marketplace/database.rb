@@ -15,7 +15,7 @@ module Marketplace
       # List for all deactivated users
       @deactivated_users = []
 
-      # Both hashmaps use the generated hash (part of link) as a key
+      # Both hash maps use the generated hash (which is part of link) as a key
       # And map it to an array of values which holds the user [0] and the timestamp [1]
       @pw_reset = Hash.new{ |values,key| values[key] = []}
       @verification = Hash.new{ |values,key| values[key] = []}
@@ -100,6 +100,8 @@ module Marketplace
   #--------
   #Item Category
   #--------
+    #TODO outsource all category mehtods into Categorizer
+=begin
 
     # Categories all ACTIVE items by their name
     # @return [Array of Arrays] array with arrays for every different item.name
@@ -170,7 +172,7 @@ module Marketplace
         else
           sorted_categories.push(sub_array)
         end
-     }
+      }
       sorted_categories
     end
 
@@ -179,6 +181,7 @@ module Marketplace
       category.sort! {|a,b| a.price <=> b.price}
     end
 
+=end
 
   #--------
   #User
@@ -237,6 +240,7 @@ module Marketplace
   #--------
   #Entities
   #--------
+
     def all_entities
       entities = Array.new
       entities << @users

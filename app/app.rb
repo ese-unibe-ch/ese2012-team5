@@ -18,6 +18,8 @@ require_relative 'helper/mailer.rb'
 require_relative 'helper/validator.rb'
 require_relative 'helper/checker.rb'
 require_relative 'helper/image_uploader.rb'
+require_relative 'helper/categorizer.rb'
+
 
 require_relative 'controllers/main.rb'
 require_relative 'controllers/login.rb'

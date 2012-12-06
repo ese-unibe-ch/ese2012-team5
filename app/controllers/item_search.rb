@@ -5,6 +5,7 @@ class Item_search
   end
 
 
+  #TODO change method name and maybe model
   # Handle AJAX requests
   get '/search_item/:for' do
     query = params[:for]
@@ -15,11 +16,11 @@ class Item_search
 
     found_items = search_result.found_items
 
-    categorized_found = @database.categories_given_without(found_items,current_user)
-    categorized_sorted_found = @database.sort_categories_by_price(categorized_found)
+    categories_found = Helper::Categorizer.categories_active_items_without(found_items, current_user) #@database.categories_given_without(found_items,current_user)
+    categories_sorted_found = Helper::Categorizer.sort_categories_by_price(categories_found) #@database.sort_categories_by_price(categorized_found)
 
 
-    haml :item_search, :layout => false, :locals => {:found_items => categorized_sorted_found,
+    haml :item_search, :layout => false, :locals => {:found_items => categories_sorted_found,
                                                      :current_user => current_user,
                                                      :description_map => search_result.description_map }
   end
