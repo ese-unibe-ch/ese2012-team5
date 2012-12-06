@@ -29,7 +29,7 @@ module Marketplace
       self.subscriptions = Array.new
     end
 
-    def enough_credits(amount)
+    def has_enough_credits?(amount)
       self.credits >= amount
     end
 
@@ -42,7 +42,7 @@ module Marketplace
     # @param [Item] item the user want to buy
     # @param [Integer] quantity of the item to buy
     # @return [Item] item that has been bought with 'quantity'
-    # [NotImplementedError] when user can't do this purchase
+    # throw [NotImplementedError] when user can't do this purchase
     def buy(item, quantity)
       if can_buy_item?(item, quantity)
         if quantity < item.quantity
@@ -97,7 +97,7 @@ module Marketplace
     # @param [Integer] quantity how much of the item
     # @return [Boolean] True if user has enough credits, is not owner and item is active
     def can_buy_item?(item, quantity)
-      self != item.owner and enough_credits(item.price * quantity) and item.quantity >= quantity and item.active
+      self != item.owner and has_enough_credits?(item.price * quantity) and item.quantity >= quantity and item.active
     end
 
     # Deletes the user, its profile picture and all its items
@@ -154,7 +154,6 @@ module Marketplace
     def delete_subscription(entity)
       subscriptions.delete(entity)
     end
-
 
   end
 

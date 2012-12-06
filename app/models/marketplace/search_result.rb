@@ -1,21 +1,25 @@
 module Marketplace
+
   class SearchResult
 
     attr_accessor :query, :found_items, :description_map
 
-    # @return [Search_result] created Search
+    # Constructor for search_result
+    # @param [String] query that was entered
+    # @return [search_result] created search_result
     def self.create(query)
       search_result = self.new
       search_result.query = query
       search_result
     end
 
+    # Initial property of an search_result
     def initialize
       self.description_map = Hash.new
       self.found_items = []
     end
 
-    #Does the search
+    # Does the search
     def get
       query_array = query.gsub(/_/," ").downcase.split
       active_items = Marketplace::Database.instance.all_active_items
