@@ -21,29 +21,33 @@ module Marketplace
     end
 
     # Does the searching
+    # A search_result object will only provide results after calling this method
     # @param [Array] items that can be found
     def find(items)
       query_array = query.gsub(/_/," ").downcase.split
-      found_by_name = []
-      found_by_description = []
 
-      query_array.each{ |query|
-        items.each { |item|
-          if item.name.gsub(/_/," ").downcase.include?(query)
-            found_by_name.push(item)
-            self.description_map[item] = if item.description.size>=30 then item.description[0..27] + "..." else item.description end
-          end
-
+      results = []
+      items.each{ |item|
+        match_all = true
+        query_array.each{ |query|
           description = item.description.gsub("/,/","~")
-          if description.gsub(/_/," ").downcase.include?(query)
-            found_by_description.push(item)
-            self.description_map[item] = map_description_part(description, query)
+          if !item.name.gsub(/_/," ").downcase.include?(query) and !description.gsub(/_/," ").downcase.include?(query)
+            match_all = false
+          else
+            if description.gsub(/_/," ").downcase.include?(query)
+              self.description_map[item] = map_description_part(description, query)
+            else
+              self.description_map[item] = if item.description.size>=30 then item.description[0..27] + "..." else item.description end
+            end
           end
         }
+        if match_all
+          results.push(item)
+        end
       }
 
-      self.found_items = found_by_name | found_by_description
-      if self.found_items.size == 0 && self.query.size >= 2
+      self.found_items = results
+      if self.found_items.size == 0 and self.query.size >= 2
         suggest_other_query(items, query)
       end
 
@@ -76,22 +80,23 @@ module Marketplace
     # @param [String] query that the user is looking for
     def suggest_other_query(items, query)
       distance = 100
-      puts "for query: #{query}"
-      puts "starts closest---------------"
+      word = ""
+
       items.each{ |item|
-        puts "::::#{item.name}::::"
         name_array = item.name.downcase.split
         name_array.each{ |name_part|
           new_distance = Text::Levenshtein.distance(name_part.downcase , query.downcase)
-          puts name_part
-          if new_distance < distance
-            self.closest_string = item.name
-            puts "-------------->closer dist #{new_distance}"
+          if new_distance < distance and name_part.length >= query.length
+            word = item.name
             distance = new_distance
           end
         }
       }
-      puts "end closest---------------"
+
+      if distance < 3
+        self.closest_string = word
+      end
+
     end
 
   end

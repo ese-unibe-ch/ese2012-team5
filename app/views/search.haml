@@ -5,7 +5,7 @@
     var wholequery = $("#search_query").val()
     var query_array = wholequery.split(" ");
     var len = query_array.length;
-    if(len>1){
+    if(len > 1){
       for (var i = 0; i < len ; i++) {
         if (i in query_array) {
           var s = query_array[i];
@@ -82,7 +82,7 @@
 
 %br
 
--if found_items.length < 1 && closest_string != ""
+-if found_items.length < 1 and !closest_string.nil? and closest_string != ""
   %h2 Did you mean:
   %button(type="button" id = "get_new_result") #{closest_string}
   %input(type="hidden" id="closest_string" value="#{closest_string}")
