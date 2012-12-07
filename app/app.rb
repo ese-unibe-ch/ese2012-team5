@@ -35,7 +35,7 @@ require_relative 'controllers/item_activate.rb'
 require_relative 'controllers/item_buy.rb'
 require_relative 'controllers/item_create.rb'
 require_relative 'controllers/item_merge.rb'
-require_relative 'controllers/item_search.rb'
+require_relative 'controllers/search.rb'
 require_relative 'controllers/delete_account.rb'
 require_relative 'controllers/deactivate_account.rb'
 require_relative 'controllers/buy.rb'
@@ -62,8 +62,8 @@ class App < Sinatra::Base
   use ItemActivate
   use ItemBuy
   use ItemCreate
-  use Settings
   use ItemMerge
+  use Settings
   use Buy
   use BuyConfirm
   use ResetPassword
