@@ -36,7 +36,7 @@ class Login < Sinatra::Application
     # Check password if correct login
     # If user was deactivated, activate him
     if Helper::Checker.check_password?(user, password)
-      if !(deactivated_user.nil?)
+      if !deactivated_user.nil?
         session[:message] = "~note~user reactivated!</br>your old data was recovered."
       end
       session[:name] = username

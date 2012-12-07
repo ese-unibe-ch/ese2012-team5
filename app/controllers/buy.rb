@@ -7,22 +7,22 @@ class Buy < Sinatra::Application
 
   get '/buy' do
     quantity = params[:quantity].to_i
-    category = params[:category]
+    category_name = params[:category]
     current_user = @database.user_by_name(session[:name])
-    items = @database.category_with_name(category)
 
     redirect '/login' if current_user == nil
 
-    if items == nil
+
+    category = Helper::Categorizer.category_by_name_without(category_name, current_user)
+    sorted_category = Helper::Categorizer.sort_category_by_price(category)
+
+    if sorted_category == nil
       session[:message] = "~error~Item name not found!~error~Could not create category!"
       redirect '/'
     end
 
-    items_cleaned = @database.clear_category_from_user_items(items,current_user)
-    sorted_items = @database.sort_category_by_price(items_cleaned)
-
     haml :buy, :locals => { :quantity => quantity,
-                            :items => sorted_items }
+                            :items => sorted_category }
   end
 
   post '/buy' do

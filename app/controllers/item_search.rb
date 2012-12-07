@@ -16,8 +16,8 @@ class Item_search
 
     found_items = search_result.found_items
 
-    categories_found = Helper::Categorizer.categories_active_items_without(found_items, current_user) #@database.categories_given_without(found_items,current_user)
-    categories_sorted_found = Helper::Categorizer.sort_categories_by_price(categories_found) #@database.sort_categories_by_price(categorized_found)
+    categories_found = Helper::Categorizer.categories_active_items_without(found_items, current_user)
+    categories_sorted_found = Helper::Categorizer.sort_categories_by_price(categories_found)
 
 
     haml :item_search, :layout => false, :locals => {:found_items => categories_sorted_found,
