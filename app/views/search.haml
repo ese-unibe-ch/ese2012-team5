@@ -8,14 +8,15 @@
     if(len>1){
       for (var i = 0; i < len ; i++) {
         if (i in query_array) {
-        var s = query_array[i];
-        $("#search tbody").highlight(s);
-       }}}
-    else{
-        $("#search tbody").highlight(wholequery);
+          var s = query_array[i];
+          $("#search tbody").highlight(s);
+        }
+      }
+    } else {
+      $("#search tbody").highlight(wholequery);
     }
-    $("#search #ignore").removeHighlight();
-    });
+  $("#search #ignore").removeHighlight();
+  });
 
 %h1 Search
 %br

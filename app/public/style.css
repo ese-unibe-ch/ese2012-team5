@@ -43,6 +43,7 @@ body
     border:2px solid #616161;
 }
 
+
 /********************************/
 /********Header layout***********/
 /********************************/
@@ -81,7 +82,6 @@ body
      max-width: 150px;
 }
 
-
 #topUserInfo
 {
     font: Arial;
@@ -99,37 +99,8 @@ body
     min-width: 153px;
     max-width: 155px;
 }
-/*
-#topButton1
-{
-    font: Arial;
-    font-size: 12pt;
-    text-align: center;
-    background: rgba(255, 252, 211, 0.40);
-    border-top:2px solid #616161;
-    border-right:2px solid #616161;
-    position: absolute;
-    left:643px;
-    bottom: 0;
-    width: 105px;
-    height: 20px;
-}
 
-#topButton2
-{
-    font: Arial;
-    font-size: 12pt;
-    text-align: center;
-    background: rgba(255, 252, 211, 0.40);
-    border-left:2px solid #616161;
-    border-top:2px solid #616161;
-    position: absolute;
-    left:748px;
-    bottom: 0;
-    width: 50px;
-    height: 20px;
-}
-*/
+
 /********************************/
 /***********Footer***************/
 /********************************/
@@ -164,8 +135,6 @@ body
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
 }
-
-
 
 #table_new td, #table_new th
 {
@@ -219,8 +188,6 @@ body
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
 }
-
-
 
 #search td, #search th
 {
@@ -290,34 +257,37 @@ body
 }
 
 
-
-
 /********************************/
 /**************Menu_bar**********/
 /********************************/
 
-#head_entry {
+#head_entry
+{
     position: relative;
     padding: 1px;
     vertical-align: bottom;
 }
 
-#head_login_reg{
+#head_login_reg
+{
     position: relative;
 }
 
-#menu {
+#menu
+{
     float:left;
     height:24px;
     width:793px;
 }
 
-.chromestyle{
+.chromestyle
+{
     width: 99%;
     font-weight: normal;
 }
 
-ul.chromestyle{
+ul.chromestyle
+{
     border: 0px solid black;
     width: 793px;
     background: url(images/cromebg.png) center center repeat-x;
@@ -328,12 +298,14 @@ ul.chromestyle{
     border-bottom: 2px solid #616161;
 }
 
-li.chromestyle{
+li.chromestyle
+{
     display: inline;
     text-decoration-color: red;
 }
 
-a.chromestyle{
+a.chromestyle
+{
     font: 15px Arial;
     font-weight: normal;
     color: black;
@@ -343,7 +315,8 @@ a.chromestyle{
     border-right: 1px solid silver;
 }
 
-form.chromestyle{
+form.chromestyle
+{
     display: inline;
     font: 15px Arial;
     font-weight: normal;
@@ -353,14 +326,16 @@ form.chromestyle{
     text-decoration: none;
 }
 
-a.chromestyle:hover, .chromestyle a.selected{
+a.chromestyle:hover, .chromestyle a.selected
+{
 /*script dynamically adds a class of "selected" to the current active menu item*/
     color: #666;
 }
 
 /* Style für Drop Down Menu */
 
-.dropmenudiv{
+.dropmenudiv
+{
     /*position: absolute; */
     top: 0;
     border: 1px solid gray;
@@ -374,7 +349,8 @@ a.chromestyle:hover, .chromestyle a.selected{
     /*visibility: hidden;*/
 }
 
-a.dropmenudiv{
+a.dropmenudiv
+{
     width: auto;
     height: 20;
     display: block;
@@ -386,13 +362,16 @@ a.dropmenudiv{
     color: black;
 }
 
-a.dropmenudiv{ /*Hack für IE */
+a.dropmenudiv
+{ /*Hack für IE */
     width: 100%;
 }
 
-a.dropmenudiv:hover{
+a.dropmenudiv:hover
+{
     background: url(java/chromebg-over.jpg) center center repeat-x;
 }
+
 
 /********************************/
 /**********Text/Link-styles******/
@@ -419,16 +398,15 @@ h4
     font-size: 14px;
 }
 
-
 h3
 {
     color: #616161;
     margin: 0px;
-    font-size: 14px;
+    font-size: 18px;
 }
 
-
-a{
+a
+{
     color: #616161;
     margin: 0px;
 }
@@ -438,11 +416,13 @@ a:visited
    color: #616161;
 }
 
-a:hover{
+a:hover
+{
     color: #616162;
  }
 
-.highlight {
+.highlight
+{
     background: #eeff92;
     color: #ff6b38;
 }

@@ -15,7 +15,7 @@ class Search
 
 
     search_result = Marketplace::SearchResult.create(query)
-    search_result.get
+    search_result.find(Marketplace::Database.instance.all_active_items)
 
     current_user = @database.user_by_name(session[:name])
 
