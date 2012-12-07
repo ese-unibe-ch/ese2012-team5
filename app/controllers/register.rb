@@ -11,7 +11,6 @@ class Register < Sinatra::Application
     haml :register, :locals => { :info => message}
   end
 
-
   post '/register' do
     username = params[:username]
     password = params[:password]

@@ -39,7 +39,9 @@ module Marketplace
     end
 
     # Splits the item into two separate items
-    # This item will have quantity (self.quantity - at)
+    # This item will have the rest quantity '(self.quantity - at)'
+    # The new created items quantity will be 'at'
+    # throws [NotImplementedError] if its not possible to split item at 'at'
     # @param [Integer] at index where to split the item
     # @return [Item] new item with quantity 'at'
     def split(at)
@@ -55,7 +57,7 @@ module Marketplace
     end
 
     # Merges two similar items together
-    # [NotImplementedError] if this and item are not mergeable
+    # throws [NotImplementedError] if this and item are not mergeable
     def merge(item)
       if mergeable?(item)
         self.quantity = self.quantity + item.quantity
@@ -67,9 +69,9 @@ module Marketplace
 
     # Checks if two items are similar
     # Similar means:
-    # *same name
-    # *same price
-    # *but different objects
+    # * same name
+    # * same price
+    # * but different objects
     def mergeable?(item)
       self.name == item.name and self.price == item.price and item != self
     end

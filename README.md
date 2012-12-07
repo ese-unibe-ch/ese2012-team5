@@ -17,7 +17,7 @@ __Mac OSX__
 __Linux__
 * Install Ruby (Version 1.8.7 or later)
 * Enter <code>sudo gem install bundler</code> in terminal
-* Navigare to project folder and enter <code>sudo bundle install</code> in terminal
+* Navigate to project folder and enter <code>sudo bundle install</code> in terminal
 
 
 Run

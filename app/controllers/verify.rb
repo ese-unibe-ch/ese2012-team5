@@ -6,13 +6,10 @@ class Verify < Sinatra::Application
 
 
   get '/verify_account/:hash' do
-
-    message = session[:message]
-    session[:message] = nil
     hash = params[:hash]
 
     #check if hash exists
-    if !(@database.verification_has?(hash))
+    if !@database.verification_has?(hash)
       session[:message] = "~error~unknown link"
       redirect '/'
     else

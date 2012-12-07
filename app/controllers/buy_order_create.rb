@@ -6,7 +6,6 @@ class BuyOrderCreate < Sinatra::Application
 
 
   get '/createBuyOrder' do
-
     current_user = @database.user_by_name(session[:name])
 
     if current_user
@@ -17,12 +16,9 @@ class BuyOrderCreate < Sinatra::Application
       session[:message] = "~error~Log in to create buy orders!"
       redirect '/login'
     end
-
   end
 
-
   post '/createBuyOrder' do
-
     item_name = params[:item_name]
     max_price = params[:max_price]
     current_user = @database.user_by_name(session[:name])
@@ -43,8 +39,8 @@ class BuyOrderCreate < Sinatra::Application
                                   item.owner != current_user and
                                   item.active == true }
     if count > 0
-      session[:message] = "~note~the item your willing to buy is already available.</br>use the search to find it."
-      redirect "/"
+      session[:message] = "~note~the item your willing to buy is already available.~note~use the search to find it."
+      redirect '/'
     else
       Marketplace::BuyOrder.create(item_name, max_price.to_i, current_user)
       session[:message] = "~note~you have created a new buy order."

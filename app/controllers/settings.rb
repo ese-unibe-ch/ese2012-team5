@@ -16,7 +16,6 @@ class Settings < Sinatra::Application
                                   :info => message  }
   end
 
-
   post '/upload' do
     file = params[:file_upload]
     user = @database.user_by_name(session[:name])
@@ -31,11 +30,9 @@ class Settings < Sinatra::Application
     redirect '/settings'
   end
 
-
   post '/details' do
     username = params[:user]
     new_details = params[:details]
-
     user = @database.user_by_name(username)
 
     user.details = new_details
@@ -49,8 +46,8 @@ class Settings < Sinatra::Application
     old_password = params[:old_password]
     new_password = params[:new_password]
     conf_password = params[:conf_password]
-
     user = @database.user_by_name(username)
+
 
     if Helper::Checker.check_password?(user, old_password)
       message = Helper::Validator.validate_password(new_password, conf_password, 4)

@@ -1,59 +1,35 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
-
 %h1 Register
 %br
 
-//SHOW MESSAGES AND ERRORS
--if info != nil and info != ""
-  -messages = info.split"~"
-  -messages.delete_if{ |s| s.strip == "" }
-  %table#table_new
-    -while(!messages.empty?)
-      %tr
-        -type = messages.delete_at(0)
-        -type = type.strip
-
-        -if type =="error"
-          -text = messages.delete_at(0)
-          %td
-            %img{:src => "icons/error.png"}
-          %td
-            %h2 #{text}
-        -elsif type == "note"
-          -text = messages.delete_at(0)
-          %td
-            %img{:src => "icons/note.png"}
-          %td
-            %h4 #{text}
-        -else
-          %td{:colspan => 2}
-            %h4 #{text}
-
-
-  %br
+=haml :'message_template', :locals => { :info => info }
 
 %h3 Username can be 3 to 12 characters.
 %h3 Password must have at least 4 characters and there must be at least one uppercase letter, one lowercase letter and one number.
-%br
+
 %form( action="/register" method="POST" )
   %table#table_new(style="width:auto;")
     %tr
       %td
         %label Enter Username:
+      %td
         %input(type="text" name="username")
     %tr
       %td
         %label Enter E-Mail:
+      %td
         %input(type="text" name="email")
     %tr
       %td
-        %label Enter Password:&nbsp
+        %label Enter Password:
+      %td
         %input(type="password" name="password")
     %tr
       %td
         %label Confirm Password:
+      %td
         %input(type="password" name="password_conf")
     %tr
-      %td
+      %td{:colspan => 2}
         %input(type="submit" value="Register")

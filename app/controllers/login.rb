@@ -13,9 +13,7 @@ class Login < Sinatra::Application
     haml :login, :locals => { :info => message}
   end
 
-
   post '/login' do
-
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
@@ -38,7 +36,7 @@ class Login < Sinatra::Application
     # Check password if correct login
     # If user was deactivated, activate him
     if Helper::Checker.check_password?(user, password)
-      if !(deactivated_user.nil?)
+      if !deactivated_user.nil?
         session[:message] = "~note~user reactivated!</br>your old data was recovered."
       end
       session[:name] = username
@@ -49,10 +47,10 @@ class Login < Sinatra::Application
     end
   end
 
-
   get '/logout' do
     session[:name] = nil
     session[:message] = "~note~logged out."
+
     redirect '/login'
   end
 

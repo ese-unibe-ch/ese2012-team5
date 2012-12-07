@@ -1,18 +1,22 @@
-class Entity
+module Marketplace
 
-  attr_accessor :activities
+  class Entity
 
+    attr_accessor :activities
 
-  def initialize
-    self.activities = Array.new
-  end
+    # Initial property of a entity
+    def initialize
+      self.activities = Array.new
+    end
 
-  def add_activity(activity)
-    activities << activity
-  end
+    def add_activity(activity)
+      activities << activity
+    end
 
-  def delete_activity(activity)
-    activities.delete(activity)
+    def delete_activity(activity)
+      activities.delete(activity)
+    end
+
   end
 
 end
