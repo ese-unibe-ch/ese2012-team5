@@ -19,6 +19,11 @@
         %input(type="text" name="price" value="#{item.price}")
     %tr
       %td
+        %label Quantity
+      %td
+        %input(type="text" name="quantity" value="#{item.quantity}")
+    %tr
+      %td
         %label Description
       %td
         %textarea(cols="50" rows="4" name="description") #{item.description}

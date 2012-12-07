@@ -24,6 +24,7 @@ class ItemCreate < Sinatra::Application
     quantity = params[:quantity]
     description = params[:description]
     current_user = @database.user_by_name(session[:name])
+    file = params[:file_upload]
 
 
     session[:message] = ""
@@ -36,6 +37,11 @@ class ItemCreate < Sinatra::Application
     end
 
     new_item = Marketplace::Item.create(name, description, price.to_i, quantity.to_i, current_user)
+
+    if file != nil and file != ""
+      filename = Helper::ImageUploader.upload_image(file, settings.root)
+      new_item.add_image(filename)
+    end
 
     session[:message] = "~note~you have created #{new_item.name}"
     redirect "/item/#{new_item.id}"

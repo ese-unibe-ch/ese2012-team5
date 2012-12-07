@@ -31,6 +31,7 @@ class ItemEdit < Sinatra::Application
     id = params[:id].to_i
     new_name = params[:name]
     new_price = params[:price]
+    new_quantity = params[:quantity]
     new_description = params[:description]
     current_item = @database.item_by_id(id)
 
@@ -38,14 +39,16 @@ class ItemEdit < Sinatra::Application
     session[:message] = ""
     session[:message] += Helper::Validator.validate_string(new_name, "name")
     session[:message] += Helper::Validator.validate_integer(new_price, "price", 1, nil)
+    session[:message] += Helper::Validator.validate_integer(new_quantity, "quantity", 1, nil)
     session[:message] += Helper::Validator.validate_string(new_description, "description")
     if session[:message] != ""
       redirect "/item/#{id}/edit"
     end
 
     current_item.name = new_name
-    current_item.description = new_description
     current_item.price = new_price
+    current_item.quantity = new_quantity
+    current_item.description = new_description
 
     redirect "/item/#{id}"
   end
