@@ -57,9 +57,16 @@
       %td{:height => "200", :width => "200"}
         %img{:height => "200", :width => "200", :src => item.image_path(0) }
       %td
-        Name:  #{item.name}
+        Name:
+        %a{:href => "/item/#{item.id}"} #{item.name}
         %br
-        Owner: #{item.owner.name}
+        Owner:
+        %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
+        %br
+        Description: #{item.description}
+        %br
+        -if !item.comments.first.nil?
+          Latest Comment: #{item.comments.first[1]}
     %tr
       %td
         %div(id="slider#{count}")
