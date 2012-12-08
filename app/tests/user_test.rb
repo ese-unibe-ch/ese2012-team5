@@ -7,18 +7,18 @@ require 'webget_ruby_secure_random'
 require 'require_relative'
 
 
-require '../../../app/models/marketplace/entity.rb'
-require '../../../app/models/marketplace/user.rb'
-require '../../../app/models/marketplace/activity.rb'
-require '../../../app/models/marketplace/user.rb'
-require '../../../app/models/marketplace/item.rb'
-require '../../../app/models/marketplace/buy_order.rb'
-require '../../../app/models/marketplace/search_result.rb'
-require '../../../app/models/marketplace/database.rb'
-require '../../../app/helper/mailer.rb'
-require '../../../app/helper/validator.rb'
-require '../../../app/helper/checker.rb'
-require '../../../app/helper/image_uploader.rb'
+require '../../app/models/marketplace/entity.rb'
+require '../../app/models/marketplace/user.rb'
+require '../../app/models/marketplace/activity.rb'
+require '../../app/models/marketplace/user.rb'
+require '../../app/models/marketplace/item.rb'
+require '../../app/models/marketplace/buy_order.rb'
+require '../../app/models/marketplace/search_result.rb'
+require '../../app/models/marketplace/database.rb'
+require '../../app/helper/mailer.rb'
+require '../../app/helper/validator.rb'
+require '../../app/helper/checker.rb'
+require '../../app/helper/image_uploader.rb'
 
 class User_Tests  < Test::Unit::TestCase
 
@@ -33,10 +33,7 @@ class User_Tests  < Test::Unit::TestCase
   end
 
   def test_user_trading
-
     user1 = Marketplace::User.create('user1','pW123','test@testmail1.com')
-
-
     user2 = Marketplace::User.create('user2','pW123','test@testmail2.com')
     user2.add_credits(2000)
 
