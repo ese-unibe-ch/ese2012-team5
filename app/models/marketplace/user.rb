@@ -59,6 +59,7 @@ module Marketplace
         Marketplace::Activity.create(Activity.USER_BOUGHT_ITEM, self, "#{self.name} bought #{item.name}")
         #delete the history in the description log, except the newest entry
         item_to_buy.clean_description_log
+        item_to_buy.clean_comments
       else
         throw NotImplementedError
       end

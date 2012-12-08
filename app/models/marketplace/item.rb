@@ -6,7 +6,7 @@ module Marketplace
     # ID for a unique identification of each item
     @@id = 1
 
-    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log
+    attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log, :comments
 
     # Constructor that will automatic add new item to database
     # @param [String] name of the new item
@@ -23,6 +23,7 @@ module Marketplace
       item.owner = owner
       item.pictures = Array.new
       item.description_log = Array.new
+      item.comments = Array.new
       time_now = Time.new
       item.add_description(time_now, item.description, price)
       Marketplace::Database.instance.add_item(item)
@@ -139,6 +140,29 @@ module Marketplace
     # @param [Integer] price to compare
     def status_changed(description,price)
       description != self.description_log.last[1] || price != self.description_log.last[2]
+    end
+
+    # Adds a new comment into the comment array
+    # @param [Time] timestamp to add
+    # @param [String] comment to add
+    # @param [User] user (author of the comment) to add
+    def add_comment(timestamp, comment, user)
+      username = user.name
+      sub_array = [timestamp, comment, username]
+      self.comments.push(sub_array)
+      self.comments.sort! {|a,b| b[0] <=> a[0] }
+    end
+
+    # Delete entry with this timestamp
+    # @param [Time] timestamp of the entry to delete
+    def delete_comment(timestamp)
+      sub_array = self.comments.detect{ |sub_item_array| sub_item_array[0].to_s == timestamp.to_s }
+      self.comments.delete(sub_array)
+    end
+
+    # Deletes all entries in the comment array
+    def clean_comments
+      self.comments.clear
     end
 
     def add_image(url)
