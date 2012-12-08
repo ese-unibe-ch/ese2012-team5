@@ -96,4 +96,5 @@
         %td
           %form( action="/item_add_description" method="POST" )
             %input(type="hidden" value="#{array[0]}" name="timestamp")
+            %input(type="hidden" value="#{item.id}" name="item_id")
             %input(type='submit' value='Select')
