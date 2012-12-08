@@ -12,41 +12,52 @@
   %script(type= "text/javascript" src= "/jquery.highlight-4.js")
 
   :javascript
-    function Navigate_to(theUrl)
-      {
+    function Navigate_to(theUrl) {
       document.location.href = theUrl;
-      }
+    }
 
   :javascript
     $(function() {
-    $("#search_query").keyup(function(){
-        var q = $("#search_query").val().split(' ').join('_');
-        if(q != ""){
-        var url = "/search_item/"+q;
-        $('#results').load(url);
 
+      $("#search_query").keyup(
+        function() {
+          dosearch();
+        }
+      );
+
+    $("#get_new_result").live("click", function() {
+        var closest = $("#closest_string").val();
+        $("#search_query").val(closest);
+        dosearch();
+      }
+    );
+
+    function dosearch() {
+      var q = $("#search_query").val().split(' ').join('_');
+
+      if(q != "") {
+        var url = "/search/"+q;
+        $('#results').load(url);
         $("#content").css("display","none");
         $("#results").css("display","inline");
-
-        }
-        else{
+      } else {
         $("#content").css("display","inline");
         $("#results").css("display","none");
-        }}); });
+      }
+    }});
 
   :javascript
-    function disableEnterKey(e)
-    {
-         var key;
-         if(window.event)
-               key = window.event.keyCode;     //IE
-          else
-               key = e.which;     //firefox
+    function disableEnterKey(e) {
+      var key;
+      if(window.event)
+        key = window.event.keyCode;     //IE
+      else
+        key = e.which;     //firefox
 
-         if(key == 13)
-               return false;
-          else
-               return true;
+      if(key == 13)
+        return false;
+      else
+        return true;
     }
 
 %body
@@ -105,7 +116,7 @@
                 %a.chromestyle{:href => url("/logout")} Logout
               %li.chromestyle
 
-                %form.chromestyle( action="/search_item" method="GET")
+                %form.chromestyle( action="/search" method="GET")
                   %input(type="text" id="search_query" name="search_query"  size="15" value="Type to search" onclick="value=''" onKeyPress="return disableEnterKey(event)" )
 
             - else
@@ -116,8 +127,6 @@
               %li.chromestyle
                 %a.chromestyle{:href => url("/register")} Register
 
-        :javascript
-          cssdropdown.startchrome("chromemenu")
 
       #content
         = yield

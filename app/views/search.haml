@@ -5,22 +5,24 @@
     var wholequery = $("#search_query").val()
     var query_array = wholequery.split(" ");
     var len = query_array.length;
-    if(len>1){
+    if(len > 1){
       for (var i = 0; i < len ; i++) {
         if (i in query_array) {
-        var s = query_array[i];
-        $("#search tbody").highlight(s);
-       }}}
-    else{
-        $("#search tbody").highlight(wholequery);
+          var s = query_array[i];
+          $("#search tbody").highlight(s);
+        }
+      }
+    } else {
+      $("#search tbody").highlight(wholequery);
     }
-    $("#search #ignore").removeHighlight();
-    });
+  $("#search #ignore").removeHighlight();
+  });
 
-%h1 Item search:
+%h1 Search
 %br
 
-%h3 Search Results
+%h3 Search Results for "#{query}"
+%br
 
 %table#search
   %thead
@@ -77,3 +79,10 @@
             -else
               %form( action="/buy" method="GET" )
                 %input(type="submit" disabled="disabled" value="Continue")
+
+%br
+
+-if found_items.length < 1 and !closest_string.nil? and closest_string != ""
+  %h2 Did you mean:
+  %button(type="button" id = "get_new_result") #{closest_string}
+  %input(type="hidden" id="closest_string" value="#{closest_string}")
