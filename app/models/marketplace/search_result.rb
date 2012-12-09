@@ -79,21 +79,31 @@ module Marketplace
     # @param [Array] items that can be found
     # @param [String] query that the user is looking for
     def suggest_other_query(items, query)
-      distance = 100
+      query = query.gsub(/_/," ").downcase
+
+      distance_Levenshtein = 100
+      longest_subseq = 0
       word = ""
+
+      matcher1 = Amatch::Levenshtein.new(query)
+      matcher2 = Amatch::LongestSubsequence.new(query)
 
       items.each{ |item|
         name_array = item.name.downcase.split
-        name_array.each{ |name_part|
-          new_distance = Text::Levenshtein.distance(name_part.downcase , query.downcase)
-          if new_distance < distance and name_part.length >= query.length
-            word = item.name
-            distance = new_distance
-          end
-        }
+        name_array.push(item.name.downcase)
+
+        new_distance_array_Levenshtein = matcher1.match(name_array).sort
+        new_longest_subseq_array = matcher2.match(name_array).sort.reverse
+
+        if new_distance_array_Levenshtein[0] < distance_Levenshtein and new_longest_subseq_array[0] >= longest_subseq
+          word = item.name
+          distance_Levenshtein = new_distance_array_Levenshtein[0]
+          longest_subseq = new_longest_subseq_array[0]
+        end
+
       }
 
-      if distance < 3
+      if distance_Levenshtein <= 3 and longest_subseq >=2
         self.closest_string = word
       end
 
