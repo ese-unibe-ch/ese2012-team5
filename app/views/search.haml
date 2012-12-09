@@ -21,7 +21,7 @@
 %h1 Search
 %br
 
-%h3 Search Results for "#{query}"
+%h3 Search Results for "#{query.gsub("_"," ")}"
 %br
 
 %table#search
@@ -71,7 +71,7 @@
           %td
             #{description_map[category[0]]}
           %td
-            -if category[0].price <= current_user.credits
+            -if category[0].price <= current_user.credits && category[0].owner.name != session[:name]
               %form( action="/buy" method="GET" )
                 %input(type="text" name="quantity" value=1 size=1)
                 %input(type='hidden' name="category" value="#{category[0].name}")
