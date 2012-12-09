@@ -17,7 +17,7 @@ module Marketplace
     end
 
     #Does the search
-    def get
+    def get_result_for(user)
       query_array = query.gsub(/_/," ").downcase.split
       active_items = Marketplace::Database.instance.all_active_items
       found_by_name = []
@@ -37,14 +37,13 @@ module Marketplace
           if desc.gsub(/_/," ").downcase.include?(query)
             found_by_description.push(item)
             map_description_part(desc, item, query)
-
           end
         }
       }
       self.found_items = found_by_name | found_by_description
 
       if self.found_items.size == 0 && self.query.size >= 2
-        get_closest_item_name_to(query)
+        get_closest_item_name_to(query,user)
       end
 
 
@@ -70,10 +69,17 @@ module Marketplace
     end
 
     #updates closest string
-    def get_closest_item_name_to(query)
+    def get_closest_item_name_to(query,user)
       all_active_items = Marketplace::Database.instance.all_active_items
+      all_active_items_without_user = []
+      all_active_items.each{|item|
+        if item.owner != user
+          all_active_items_without_user.push(item)
+        end
+      }
       distance = 100
-        all_active_items.each{|item|
+
+        all_active_items_without_user.each{|item|
           name_array= item.name.downcase.split
           name_array.each{|name_part|
             new_distance = Text::Levenshtein.distance(name_part.downcase,query.downcase)

@@ -9,9 +9,10 @@ class Item_search
   get '/search_item/:for' do
     query = params[:for]
     search_result = Marketplace::SearchResult.create(query)
-    search_result.get
-
     current_user = @database.user_by_name(session[:name])
+    search_result.get_result_for(current_user)
+
+
 
     found_items = search_result.found_items
 
