@@ -19,7 +19,7 @@ class Register < Sinatra::Application
     email = params[:email]
 
     session[:message] = ""
-    session[:message] += Helper::Validator.validate_username(username, 3, 12)
+    session[:message] += Helper::Validator.validate_username(username, 3, 12) # AK what is `3`, what is `12`? watch out for magic numbers
     session[:message] += Helper::Validator.validate_password(password, password_conf, 4)
     session[:message] += Helper::Validator.validate_email(email)
     if session[:message] != ""

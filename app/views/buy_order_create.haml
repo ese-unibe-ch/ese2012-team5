@@ -6,7 +6,7 @@
 
 //SHOW MESSAGES AND ERRORS
 -if info != nil and info != ""
-  -messages = info.split"~"
+  -messages = info.split"~" # AK look up how to define helpers in HAML. And you should really consider putting this in the layout.haml
   -messages.delete_if{ |s| s.strip == "" }
   %table#table_new
     -while(!messages.empty?)

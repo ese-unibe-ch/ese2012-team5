@@ -17,7 +17,7 @@ class Settings < Sinatra::Application
   end
 
 
-  post '/upload' do
+  post '/upload' do #AK shouldn't you make the url a bit more specific?
     file = params[:file_upload]
     user = @database.user_by_name(session[:name])
 
@@ -60,7 +60,7 @@ class Settings < Sinatra::Application
       end
       user.change_password(new_password)
     else
-      session[:message] = "~error~old password was not correct!"
+      session[:message] = "~error~old password was not correct!" # AK prefer early return to nested ifs
       redirect '/settings'
     end
 

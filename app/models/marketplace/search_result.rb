@@ -16,22 +16,33 @@ module Marketplace
     end
 
     #Does the search
+    #
+    # AK this methods needs a face lift. it's too long, too nested and has mvc
+    # problems.
     def get
       query_array = query.gsub(/_/," ").downcase.split
       active_items = Marketplace::Database.instance.all_active_items
       found_by_name = []
       found_by_description = []
 
+      # AK write out the algorithm in natural language and then translate it
+      # into code.
+      #
+      # E.g.
+      # For every item, put it in the returned array if it matches by the name or the description.
+      #
+      # This way, you can see, how the method can be split, how it should be
+      # structured and often it even gives better run-times.
       query_array.each{|query|
         active_items.each { |item|
           if item.name.gsub(/_/," ").downcase.include?(query)
             found_by_name.push(item)
-            self.description_map[item]=if item.description.size>=30 then item.description[0..27]+"..." else item.description end
+            self.description_map[item]=if item.description.size>=30 then item.description[0..27]+"..." else item.description end # AK first of all, this is not very readable, second of all, this is view stuff and thus a MVC breach.
           end
         }
 
         active_items.each { |item|
-          desc = item.description.gsub("/,/","~")
+          desc = item.description.gsub("/,/","~") # AK why?
 
           if desc.gsub(/_/," ").downcase.include?(query)
             found_by_description.push(item)

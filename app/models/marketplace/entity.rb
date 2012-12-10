@@ -1,3 +1,5 @@
+#AK documentation? Why is this useful? The functionality
+# seems easy enough to put in a mixin.
 class Entity
 
   attr_accessor :activities

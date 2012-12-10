@@ -41,8 +41,8 @@ class BuyOrderCreate < Sinatra::Application
     count = possible_items.count{ |item| item.name == item_name and
                                   item.price < max_price.to_i and
                                   item.owner != current_user and
-                                  item.active == true }
-    if count > 0
+                                  item.active == true } # AK item.active == true ==> item.active
+    if count > 0 # AK Instead of using the count, you could `detect` such an item and either give a link or just give the same message. 
       session[:message] = "~note~the item your willing to buy is already available.</br>use the search to find it."
       redirect "/"
     else

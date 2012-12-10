@@ -1,4 +1,5 @@
 module Marketplace
+  #AK what is the responsibility? Class doc
 
   class User < Entity
 

@@ -17,8 +17,8 @@ class ItemActivate < Sinatra::Application
       if current_item.active
         session[:message] = "~note~item is now active."
         # Add new description into log, only if status of description and price changed
-        if current_item.status_changed(current_item.description, current_item.price.to_i)
-          time_now = Time.new
+        if current_item.status_changed(current_item.description, current_item.price.to_i) # AK this nesting is a bit too deep. You can possibly reduce it by figuring out a default path and using early `return`.
+          time_now = Time.new # AK `Time.now` gives a better idea of what happens
           current_item.add_description(time_now, current_item.description, current_item.price.to_i)
         end
       else

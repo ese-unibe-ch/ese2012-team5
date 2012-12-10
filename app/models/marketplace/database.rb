@@ -1,6 +1,12 @@
 module Marketplace
 
   # Simple Database-like Storage Class implemented as a Singleton
+  #
+  # AK this is a very stuffed class low cohesion. I'd suggest to
+  # split it into serveral sub-databases with only one responsibility.
+  # This can be done as modules. If you don't want to change the interface
+  # you can then `include` all these modules here. You can document, change and
+  # even test every part on its own and still use a nice facade.
   class Database
 
     @@instance = nil
@@ -22,7 +28,7 @@ module Marketplace
     end
 
     # Gets the only instance (SINGLETON)
-    def self.instance
+    def self.instance # AK there is the Singleton module, so that you don't need to do this yourselves
       if(@@instance == nil)
         @@instance = Database.new
       end
@@ -55,12 +61,12 @@ module Marketplace
     end
 
   # Calls all buy_orders (= listeners) that the item 'item' may have changed
-    def call_buy_orders(item)
-      buy_orders_copy = Array.new
+    def call_buy_orders(item) # AK copying should be done with `#dup`:
+      buy_orders_copy = Array.new # @buy_orders.dup
       @buy_orders.each{ |buy_order| buy_orders_copy << buy_order } #NOTE by urs: need to copy array, because a buy_order deletes itself directly from @buy_orders when done!
       buy_orders_copy.each{ |buy_order|
         buy_order.item_changed(item)
-      }
+      } #AK multiline blocks should be done with `do |...| ... end`
     end
 
 
@@ -122,6 +128,16 @@ module Marketplace
 
       categorized_items = Array.new
 
+      # AK:
+      # I'm not sure what this is supposed to do, but I think
+      #
+      # items.group_by {|i| i.name}
+      #
+      # should do something similar. If it's not, then I still think that a hash
+      # with a default of the empty list would be better.
+      #
+      # categorized = Hash.new { [] }
+
       items.each{ |item|
         sub_array = categorized_items.detect{ |sub_item_array| sub_item_array[0].name == item.name }
         if sub_array != nil
@@ -165,7 +181,7 @@ module Marketplace
     def sort_categories_by_price(categorized_items)
       sorted_categories = Array.new
       categorized_items.each{ |sub_array|
-        if sub_array.size > 1
+        if sub_array.size > 1 # AK this distrinction should be irrelevant
           sorted_categories.push(sort_category_by_price(sub_array))
         else
           sorted_categories.push(sub_array)
@@ -176,7 +192,7 @@ module Marketplace
 
     # Sorts a category by the price
     def sort_category_by_price(category)
-      category.sort! {|a,b| a.price <=> b.price}
+      category.sort! {|a,b| a.price <=> b.price} # AK category.sort_by(&:price)
     end
 
 
@@ -238,7 +254,7 @@ module Marketplace
   #Entities
   #--------
     def all_entities
-      entities = Array.new
+      entities = Array.new # AK []
       entities << @users
       entities << @items
       entities
@@ -250,13 +266,14 @@ module Marketplace
 
     def all_emails
       emails = Array.new
-      @users.each{ |user| emails.push(user.email)}
+      @users.each{ |user| emails.push(user.email)} #AK @users.collect(&:email)
       emails
     end
 
     def email_exists?(email)
-      emails = all_emails()
+      emails = all_emails() # AK shorter is better
       emails.include?(email)
+      # all_emails.include? email
     end
 
 

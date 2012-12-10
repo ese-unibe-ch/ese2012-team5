@@ -14,7 +14,7 @@ class Buy < Sinatra::Application
     items = @database.category_with_name(category)
 
     if items == nil
-      session[:message] = "~error~Item name not found!</br>Could not create category!"
+      session[:message] = "~error~Item name not found!</br>Could not create category!" # AK I'd regard this as a slight MVC violation. 
       redirect '/'
     end
 
@@ -30,6 +30,13 @@ class Buy < Sinatra::Application
 
     current_user = @database.user_by_name(session[:name])
 
+    # AK: Put this in a helper method. If you have an upper limit for 
+    # items buying then you can get rid of the explicit increment:
+    # (0.upto UPPER_BOUND).each do |x| ... end
+    #
+    # You use this again in buy_confirm.rb, so the helper should be in a
+    # separate file.
+    #
     # Create a hash-table
     # key is the 'item.id'
     # value is the 'quantity' to buy
@@ -44,16 +51,21 @@ class Buy < Sinatra::Application
 
     # If the map is empty the user bought nothing
     if map.empty?
-      session[:message] = "~note~You bought nothing...congrats..."
+      session[:message] = "~note~You bought nothing...congrats..." # AK couldn't you store 'note' and 'error' in different parts of the session, e.g. `session[:error] = '...'` instead of `session[:message] = "~error~..."`?
       redirect '/'
     end
 
 
+    # session.default = "" # AK allows you to define, that sessions per default
+                           # contain strings. Can be placed e.g. in the before
+    
     # Iterate over each item that was chosen to buy
     session[:message] = "" #Note by urs: do this because of += is not allowed if its not a string, thx ruby for no declaring types, we love you....
+    # AK instead of pushing into a string, you can push to an array and #join
+    # afterwards
     map.each_pair do |id,quantity|
 
-      quantity = quantity.to_i
+      quantity = quantity.to_i # AK why didn't you convert on the first go?
       current_item = @database.item_by_id(id.to_i)
 
       temp = session[:message]

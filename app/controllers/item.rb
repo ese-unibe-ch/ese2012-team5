@@ -17,12 +17,12 @@ class Item < Sinatra::Application
       haml :item_profile_own, :locals => {  :item => current_item,
                                             :info => message }
     else
-      if current_user != nil
+      if current_user != nil # AK `nil` is recognized as `false`, so you should do `if current_user`
         haml :item_profile, :locals => {  :item => current_item,
                                           :info => message,
                                           :canBuy => current_user.can_buy_item?(current_item,1),
                                           :is_following => current_user.subscriptions.include?(current_item),
-                                          :is_guest => false }
+                                          :is_guest => false } # AK I like the delegation, I'm not a fan of the nested `if`s
       else
         haml :item_profile, :locals => {  :item => current_item,
                                           :info => message,

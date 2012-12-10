@@ -19,10 +19,10 @@ class Login < Sinatra::Application
     username = params[:username]
     password = params[:password]
     user = @database.user_by_name(username)
-    deactivated_user = @database.deactivated_user_by_name(username)
+    deactivated_user = @database.deactivated_user_by_name(username) # AK do you need to handle this differently?
 
     # If there is no user but a deactivated_user, swap.
-    if user.nil? and !deactivated_user.nil?
+    if user.nil? and !deactivated_user.nil? # AK `!deactivated_user.nil?` ==> `deactivated_user`
       deactivated_user.activate
       user = deactivated_user
     end

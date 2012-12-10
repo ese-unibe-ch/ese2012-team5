@@ -7,9 +7,9 @@ class Verify < Sinatra::Application
 
   get '/verify_account/:hash' do
 
-    message = session[:message]
-    session[:message] = nil
-    hash = params[:hash]
+    message = session[:message] # AK You should abstract from this by introducing a `pop_message` helper.
+    session[:message] = nil     # In Ruby, you can either introduce this in a separate module
+    hash = params[:hash]        # or add the method to the class of the session directly.
 
     #check if hash exists
     if !(@database.verification_has?(hash))

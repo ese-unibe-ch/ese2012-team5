@@ -1,5 +1,6 @@
 module Helper
 
+  #AK use `module`s instead of `class`es if you don't have non-static methods.
   class ImageUploader
 
     #TODO fix issue for multiple images with same name--> should not override
