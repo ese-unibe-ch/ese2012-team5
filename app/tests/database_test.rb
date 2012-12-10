@@ -1,10 +1,11 @@
 require "test/unit"
 require 'rubygems'
-#require 'sinatra'
+require 'sinatra'
 require 'bcrypt'
 require 'tilt/haml'
 require 'webget_ruby_secure_random'
 require 'require_relative'
+require "rspec"
 
 require '../../app/models/marketplace/entity.rb'
 require '../../app/models/marketplace/user.rb'
