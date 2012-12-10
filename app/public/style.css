@@ -391,6 +391,13 @@ h2
     font-size: 14px;
 }
 
+h3
+{
+    color: #616161;
+    margin: 0px;
+    font-size: 18px;
+}
+
 h4
 {
     color: #35a928;
@@ -398,11 +405,11 @@ h4
     font-size: 14px;
 }
 
-h3
+h5
 {
-    color: #616161;
+    color: #404041;
     margin: 0px;
-    font-size: 18px;
+    font-size: 10px;
 }
 
 a
