@@ -6,7 +6,7 @@ class Login < Sinatra::Application
 
 
   get '/login' do
-    redirect '/' unless session[:name] == nil
+    redirect '/' if session[:name]
 
     message = session[:message]
     session[:message] = nil

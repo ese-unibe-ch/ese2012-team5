@@ -3,12 +3,11 @@ class ActivityLog < Sinatra::Application
   before do
     @database = Marketplace::Database.instance
     @current_user = @database.user_by_name(session[:name])
-
-    redirect '/login' unless @current_user
   end
 
 
   get "/activity_log/:items_per_page" do
+    redirect '/login' unless @current_user
     items_per_page = params[:items_per_page].to_i
 
 

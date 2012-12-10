@@ -26,7 +26,7 @@ class Register < Sinatra::Application
     end
 
     user = Marketplace::User.create(username, password, email)
-    session[:message] = "~note~#{user.name} created.</br>before you are able to log in, you must first verify your account by following the link sent to your email."
+    session[:message] = "~note~#{user.name} created.~note~before you are able to log in, you must first verify your account by following the link sent to your email."
     Helper::Mailer.send_verification_mail(user)
 
     redirect '/'

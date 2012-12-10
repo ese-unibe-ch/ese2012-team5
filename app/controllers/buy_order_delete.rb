@@ -3,8 +3,6 @@ class BuyOrderDelete < Sinatra::Application
   before do
     @database = Marketplace::Database.instance
     @current_user = @database.user_by_name(session[:name])
-
-    redirect '/login' unless @current_user
   end
 
 

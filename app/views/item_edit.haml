@@ -48,13 +48,11 @@
           %td{:width => 220, :align => "center"}
             %img{:height => "200", :width => "200", :src => item.image_path(index) }
         %td
-          %form(action = "/item_image_delete" method = "POST")
-            %input(type='hidden' name="item_id" value="#{item.id}")
+          %form(action = "/item/#{item.id}/image_delete" method = "POST")
             %input(type='hidden' name="image_pos" value="#{index}")
             %input(type='submit' value='Delete')
           -if index != 0
-            %form(action = "/item_image_to_profile" method = "POST")
-              %input(type='hidden' name="item_id" value="#{item.id}")
+            %form(action = "/item/#{item.id}/image_to_profile" method = "POST")
               %input(type='hidden' name="image_pos" value="#{index}")
               %input(type='submit' value='Select as profile picture')
 -else
@@ -64,12 +62,11 @@
         %h3 Pictures
         %img{:height => "200", :width => "200", :src => item.image_path(0)}
 -if item.pictures.size < 3
-  %form(action = "/item_image_upload" method = "POST" enctype="multipart/form-data")
+  %form(action = "/item/#{item.id}/image_upload" method = "POST" enctype="multipart/form-data")
     %table#table_new
       %tr
         %td
           %h3 Upload picture
-          %input(type='hidden' name="item_id" value="#{item.id}")
           %input(type='file' name="file_upload" accept="image/*")
         %td
           %input(type='submit' value='Upload')
@@ -94,7 +91,6 @@
         %td
           #{array[2]}
         %td
-          %form( action="/item_add_description" method="POST" )
+          %form( action="/item/#{item.id}/add_description" method="POST" )
             %input(type="hidden" value="#{array[0]}" name="timestamp")
-            %input(type="hidden" value="#{item.id}" name="item_id")
             %input(type='submit' value='Select')

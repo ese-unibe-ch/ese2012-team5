@@ -7,6 +7,8 @@ class ItemCreate < Sinatra::Application
 
 
   get '/createItem' do
+    redirect '/login' unless @current_user
+
     if @current_user
       message = session[:message]
       session[:message] = nil

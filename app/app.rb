@@ -48,6 +48,7 @@ require_relative 'controllers/images.rb'
 require_relative 'controllers/user_follow.rb'
 require_relative 'controllers/item_follow.rb'
 require_relative 'controllers/activity_log.rb'
+require_relative 'controllers/paradise.rb'
 
 
 class App < Sinatra::Base
@@ -76,6 +77,7 @@ class App < Sinatra::Base
   use ActivityLog
   use UserFollow
   use ItemFollow
+  use Paradise
 
 
 

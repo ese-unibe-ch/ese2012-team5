@@ -3,12 +3,11 @@ class Buy < Sinatra::Application
   before do
     @database = Marketplace::Database.instance
     @current_user = @database.user_by_name(session[:name])
-
-    redirect '/login' unless @current_user
   end
 
 
   get '/buy' do
+    redirect '/login' unless @current_user
     quantity = params[:quantity].to_i
     category_name = params[:category]
 

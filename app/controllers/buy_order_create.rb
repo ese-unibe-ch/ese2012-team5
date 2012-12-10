@@ -3,12 +3,11 @@ class BuyOrderCreate < Sinatra::Application
   before do
     @database = Marketplace::Database.instance
     @current_user = @database.user_by_name(session[:name])
-
-    redirect '/login' unless @current_user
   end
 
 
   get '/createBuyOrder' do
+    redirect '/login' unless @current_user
     message = session[:message]
     session[:message] = nil
     haml :buy_order_create, :locals => {:info => message }
