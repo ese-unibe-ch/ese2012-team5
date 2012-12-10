@@ -1,11 +1,10 @@
 require "test/unit"
 require 'rubygems'
-require 'sinatra'
 require 'bcrypt'
 require 'tilt/haml'
 require 'webget_ruby_secure_random'
 require 'require_relative'
-require "rspec"
+
 
 require '../../app/models/marketplace/entity.rb'
 require '../../app/models/marketplace/user.rb'
@@ -30,7 +29,7 @@ class Database_Tests < Test::Unit::TestCase
     user2 = Marketplace::User.create('John2','pW123','test@testmail2.com')
 
     assert(database.all_users.include?(user),"User not included")
-    assert(database.user_by_name('John')==user,"Username Wrong")
+    assert(database.user_by_name('John2')!=user)
 
     user1 = database.user_by_email('test@testmail1.com')
 
@@ -39,7 +38,7 @@ class Database_Tests < Test::Unit::TestCase
 
     users=database.all_users
 
-    assert_equal(users.size,5)
+    assert_equal(users.size,7)
 
 
 
@@ -49,7 +48,7 @@ class Database_Tests < Test::Unit::TestCase
 
     users=database.all_users
 
-    assert_equal(users.size,4)
+    assert_equal(users.size,6)
 
 
 
@@ -79,15 +78,40 @@ class Database_Tests < Test::Unit::TestCase
     #todo
   end
 
-  def test_item_category_functions
+  def test_buy_orders
     database = Marketplace::Database.instance
+    user = Marketplace::User.create('John','pW123','test@testmail1.com')
+    user2 = Marketplace::User.create('John2','pW1232','test@testmail2.com')
+    item1 = Marketplace::Item.create('Table', "No Description", 100, 20, user2)
+    buy_order=  Marketplace::BuyOrder.create("Table",100,user)
 
-    #todo
+
+
+    assert(database.all_buy_orders.size ==1)
+
+
+
   end
 
-  def test_hashmaps
+  def test_verification
+
+    database = Marketplace::Database.instance
+    hash = "asjhakfad12lj3lkehkf2342h3hk4j"
+    user = Marketplace::User.create('John','pW123','test@testmail1.com')
+    timestamp = Time.new
+    hash = "asjhakfad12lj3lkehkf2342h3hk4j"
 
 
+    assert(user.verified == false)
+
+    database.add_verification(hash, user, timestamp)
+
+    database.verification_user_by_hash(hash).verify
+
+    database.delete_verification(hash)
+
+
+    assert(user.verified == true)
 
   end
 
