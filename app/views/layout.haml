@@ -75,7 +75,7 @@
                 %img{:height => "40", :width => "40", :align => "center", :src => Marketplace::Database.instance.user_by_name(session[:name]).image_path}
               %td(onclick="Navigate_to('/user/#{session[:name]}');")
                 %label{style="float = 'auto'"}
-                Logged in as:&nbsp
+                Logged in as:&nbsp <!-- you're missing a `;` to end the entity-->
                 %br
                 #{session[:name]}
             %tr

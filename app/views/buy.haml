@@ -5,12 +5,12 @@
 %br
 
 -current_user = Marketplace::Database.instance.user_by_name(session[:name])
--count = 0
+-count = 0 # AK don't assign in views...
 %table#table_new
-  -for item in items
+  -for item in items # ...instead you could use `items.each_with_index`
     -if quantity >= item.quantity
       -quantity_for_this_item = item.quantity
-      -quantity = quantity - item.quantity
+      -quantity = quantity - item.quantity # AK could you instead do something with `min` and `max`?
     -else
       -quantity_for_this_item = quantity
       -quantity = 0
@@ -84,7 +84,7 @@
       -if quantity != 0
         That's all... I'm sorry. You wanted #{quantity} more..
       -elsif count < items.length
-        -sum = 0
+        -sum = 0 # AK `items.collect(&:quantity).inject(&:+)` or put something in the Array class (e.g. the sum method)
         -for i in 0..count do
           -sum += items[i].quantity
         %form(action = "/buy" method = "GET")
@@ -95,7 +95,7 @@
       Total:
       %input(type='text' readonly="readonly" id='global_total')
       %img{:src => "icons/coins.png"}
-      %div{:align => "right", :id => "message"}
+      %div{:align => "right", :id => "message"} <!-- AK try to avoid style in templates -->
   %tr
     %td{:align => "left"}
       %form(action = "/" method = "GET")
@@ -103,7 +103,7 @@
       %td{:align => "right"}
         %form(action = "/buy/confirm" method = "POST")
           -x = 0
-          -for item in items
+          -for item in items # AK each_with_index
             %input(type='hidden' name="id#{x}" value="#{item.id}")
             %input(type='hidden' name="quantity#{x}" id="amount_#{item.id}")
             -x = x + 1

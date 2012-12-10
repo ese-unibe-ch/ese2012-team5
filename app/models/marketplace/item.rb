@@ -44,7 +44,7 @@ module Marketplace
     # @return [Item] new item with quantity 'at'
     def split(at)
       if self.quantity < at
-        throw NotImplementedError
+        throw NotImplementedError # AK This implies that you plan to implement it? Use `ArgumentError`
       else
         rest = self.quantity - at
         self.quantity = rest
@@ -103,7 +103,10 @@ module Marketplace
     # @param [Integer] price to add
     def add_description(timestamp, description, price)
       sub_array = [timestamp, description, price]
-      self.description_log.push(sub_array)
+      self.description_log.push(sub_array) # AK avoid needless variables and just put
+      # self.description_log << [timestamp, description, price]
+      # or even better:
+      # self.description_log[timestamp] = { :description => description, :price => price }
       self.description = description
       self.price = price
     end
@@ -122,6 +125,9 @@ module Marketplace
     def price_from_log(timestamp)
       sub_array = self.description_log.detect{ |sub_item_array| sub_item_array[0].to_s == timestamp.to_s }
       return sub_array[2]
+      # AK why do you use an array here, if an hash could be more intuitive?
+      #
+      # self.description_log[timestamp][:price]
     end
 
     # Deletes all entries in the description log, except the last one (used when an item was bought)

@@ -34,7 +34,7 @@
       %th Description
       %th Buy
   %tbody
-    -if found_items.length < 1
+    -if found_items.length < 1 # AK found_items.empty?
       %tr(id="noresults")
         %td(colspan="6" id="ignore")
           No Results
@@ -45,11 +45,11 @@
             %img{:height => "70", :width => "70", :src => "#{category[0].image_path(0)}" }
           %td{:align => "center"}
             -if category.length > 1
-              #{category[0].name}
+              #{category[0].name} <!-- AK use `= category[0].name` -->
             -else
               %a{:href => "/item/#{category[0].id}"}#{category[0].name}
           %td{:align => "center"}
-            -i = 0
+            -i = 0 # AK beep
             -for item in category
               -i = i + item.quantity
             #{i}
@@ -68,7 +68,7 @@
             -else
               %a{:href => "/user/#{category[0].owner.name}", :id=>"ignore"} #{category[0].owner.name}
           %td
-            #{description_map[category[0]]}
+            #{description_map[category[0]]} <!-- AK Why is index 0 special anyway? -->
           %td
             -if category[0].price <= current_user.credits
               %form( action="/buy" method="GET" )

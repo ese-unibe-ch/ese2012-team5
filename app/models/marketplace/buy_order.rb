@@ -1,5 +1,6 @@
 module Marketplace
 
+  #AK What is the responsibility of this class? Documentation
   class BuyOrder
 
     # Static variable
@@ -8,6 +9,8 @@ module Marketplace
 
     attr_accessor :id, :item_name, :max_price, :quantity, :user
 
+    #AK Floats should not be used for financial things.
+    #
     # Constructor that will automatic add new buy_order to database
     # @note by urs: quantity is at moment always 1
     # @param [String] item_name of the wanted item
@@ -36,6 +39,12 @@ module Marketplace
     # the item must have the same name and its price must be lower
     # than max_price
     def item_changed(item)
+#      return unless item.name == self.item_name and item.price <= self.max_price
+#      return unless item.active
+#      return unless self.user.can_buy_item?(item, self.quantity)
+#
+#      bought_item = self.user.buy(item, self.quantity)
+#      self.delete
       if item.name == self.item_name and item.price <= self.max_price
         if item.active
           if self.user.can_buy_item?(item, self.quantity)

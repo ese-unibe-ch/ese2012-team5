@@ -1,5 +1,7 @@
 class ItemEdit < Sinatra::Application
 
+  # AK this seems underused: here, you could also fetch `current_item` and
+  # `current_user` here.
   before do
     @database = Marketplace::Database.instance
   end
