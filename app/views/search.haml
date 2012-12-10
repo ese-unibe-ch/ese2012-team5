@@ -21,7 +21,7 @@
 %h1 Search
 %br
 
-%h3 Search Results for "#{query}"
+%h3 Search Results for "#{query.gsub("_"," ")}"
 %br
 
 %table#search
@@ -57,7 +57,7 @@
             %img{:src => "../icons/package.png"}
           %td{:align => "center"}
             -if category.length > 1
-              %h3{:id=>"ignore"} starting at
+              %h5{:id=>"ignore"} starting at
               #{category[0].price}
             -else
               #{category[0].price}

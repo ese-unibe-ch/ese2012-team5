@@ -5,7 +5,7 @@ require 'tilt/haml'
 require 'webget_ruby_secure_random'
 require 'tlsmail'
 require 'require_relative'
-require 'text'
+require 'amatch'
 
 
 require_relative 'models/marketplace/entity.rb'
