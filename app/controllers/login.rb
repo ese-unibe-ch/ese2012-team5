@@ -1,7 +1,7 @@
 class Login < Sinatra::Application
 
   before do
-    @database=Marketplace::Database.instance
+    @database = Marketplace::Database.instance
   end
 
 
@@ -20,7 +20,7 @@ class Login < Sinatra::Application
     deactivated_user = @database.deactivated_user_by_name(username)
 
     # If there is no user but a deactivated_user, swap.
-    if user.nil? and !deactivated_user.nil?
+    if user.nil? and deactivated_user
       deactivated_user.activate
       user = deactivated_user
     end
@@ -36,9 +36,7 @@ class Login < Sinatra::Application
     # Check password if correct login
     # If user was deactivated, activate him
     if Helper::Checker.check_password?(user, password)
-      if !deactivated_user.nil?
-        session[:message] = "~note~user reactivated!</br>your old data was recovered."
-      end
+      session[:message] = "~note~user reactivated!</br>your old data was recovered." if deactivated_user
       session[:name] = username
       redirect "/"
     else

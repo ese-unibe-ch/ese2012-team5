@@ -156,6 +156,10 @@ module Marketplace
       subscriptions.delete(entity)
     end
 
+    def follows?(entity)
+      subscriptions.include?(entity)
+    end
+
   end
 
 end

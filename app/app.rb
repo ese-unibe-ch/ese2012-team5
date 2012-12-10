@@ -53,29 +53,30 @@ require_relative 'controllers/activity_log.rb'
 class App < Sinatra::Base
 
   use Login
-  use DeleteAccount
-  use DeactivateAccount
   use Register
+  use Images
+  use ResetPassword
+  use Verify
   use Main
   use User
   use Item
+  use DeleteAccount
+  use DeactivateAccount
   use ItemEdit
   use ItemActivate
   use ItemBuy
   use ItemCreate
   use ItemComments
-  use Settings
   use ItemMerge
+  use Settings
   use Buy
   use BuyConfirm
-  use ResetPassword
-  use Verify
   use BuyOrderCreate
   use BuyOrderDelete
-  use Images
+  use ActivityLog
   use UserFollow
   use ItemFollow
-  use ActivityLog
+
 
 
   enable :sessions
