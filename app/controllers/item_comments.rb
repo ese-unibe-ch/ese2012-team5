@@ -6,7 +6,7 @@ class ItemComments < Sinatra::Application
   end
 
 
-  post "/item/:id/comments" do
+  post '/item/:id/comments' do
     current_item = @database.item_by_id(params[:id].to_i)
     new_comment = params[:comment]
 
@@ -22,7 +22,7 @@ class ItemComments < Sinatra::Application
     redirect "/item/#{current_item.id}"
   end
 
-  post "/item/:id/delete_comment" do
+  post '/item/:id/delete_comment' do
     current_item = @database.item_by_id(params[:id].to_i)
 
     current_item.delete_comment(params[:timestamp])

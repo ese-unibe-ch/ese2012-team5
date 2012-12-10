@@ -5,11 +5,10 @@ class ItemBuy < Sinatra::Application
   end
 
 
-  post "/item/:id/buy" do
+  post '/item/:id/buy' do
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
     quantity = params[:quantity].to_i
-
 
     session[:message] = ""
     session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 1, current_item.quantity) # At least 1

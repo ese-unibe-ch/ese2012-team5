@@ -6,7 +6,7 @@ class ItemMerge < Sinatra::Application
   end
 
 
-  get "/item/:id/merge" do
+  get '/item/:id/merge' do
     redirect '/login' unless @current_user
     current_item = @database.item_by_id(params[:id].to_i)
     other_item = @database.item_by_id(params[:other_item_id].to_i)
@@ -19,7 +19,7 @@ class ItemMerge < Sinatra::Application
                                   :item2 => other_item }
   end
 
-  post "/item/:id/merge" do
+  post '/item/:id/merge' do
     current_item = @database.item_by_id(params[:id].to_i)
     other_item = @database.item_by_id(params[:other_item_id].to_i)
 

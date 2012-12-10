@@ -6,7 +6,7 @@ class ActivityLog < Sinatra::Application
   end
 
 
-  get "/activity_log/:items_per_page" do
+  get '/activity_log/:items_per_page' do
     redirect '/login' unless @current_user
     items_per_page = params[:items_per_page].to_i
 

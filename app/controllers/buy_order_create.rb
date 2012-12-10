@@ -17,7 +17,6 @@ class BuyOrderCreate < Sinatra::Application
     item_name = params[:item_name]
     max_price = params[:max_price]
 
-
     session[:message] = ""
     session[:message] += Helper::Validator.validate_string(item_name, "name")
     session[:message] += Helper::Validator.validate_integer(max_price, "max price", 1, nil)
@@ -29,9 +28,9 @@ class BuyOrderCreate < Sinatra::Application
     # If yes, go back home and provide a link to such an item
     possible_items = Marketplace::Database.instance.item_by_name(item_name)
     possible_item = possible_items.detect{ |item| item.name == item_name and
-                                  item.price < max_price.to_i and
-                                  item.owner != @current_user and
-                                  item.active }
+                                                  item.price < max_price.to_i and
+                                                  item.owner != @current_user and
+                                                  item.active }
     if possible_item
       session[:message] = "~note~the item your willing to buy is already available.~item~#{possible_item.id}~#{possible_item.name}"
       redirect '/'
@@ -40,7 +39,6 @@ class BuyOrderCreate < Sinatra::Application
       session[:message] = "~note~you have created a new buy order."
       redirect "/user/#{@current_user.name}"
     end
-
   end
 
 end

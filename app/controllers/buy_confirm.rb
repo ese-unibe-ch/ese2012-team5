@@ -7,15 +7,16 @@ class BuyConfirm < Sinatra::Application
 
   post '/buy/confirm' do
     #TODO factor this out
-    # Create a hash-table
-    # key is the 'item.id'
-    # value is the 'quantity' to buy
-    x = 0
-    map = Hash.new
-    while params.key?("id#{x}")
-      map[params["id#{x}"]] = params["quantity#{x}"]
-      x = x + 1
-    end
+            # Create a hash-table
+            # key is the 'item.id'
+            # value is the 'quantity' to buy
+            x = 0
+            map = Hash.new
+            while params.key?("id#{x}")
+              map[params["id#{x}"]] = params["quantity#{x}"]
+              x = x + 1
+            end
+    #TODO yeap
 
     haml :buy_confirm, :locals => { :map => map }
   end

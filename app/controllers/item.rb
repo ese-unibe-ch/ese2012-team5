@@ -5,7 +5,7 @@ class Item < Sinatra::Application
   end
 
 
-  get "/item/:id" do
+  get '/item/:id' do
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
 

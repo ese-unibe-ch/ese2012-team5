@@ -5,7 +5,7 @@ class User < Sinatra::Application
   end
 
 
-  get "/user/:name" do
+  get '/user/:name' do
     current_user = @database.user_by_name(session[:name])
     user = @database.user_by_name(params[:name])
 

@@ -11,7 +11,6 @@ class Buy < Sinatra::Application
     quantity = params[:quantity].to_i
     category_name = params[:category]
 
-
     category = Helper::Categorizer.category_by_name_without(category_name, @current_user)
     sorted_category = Helper::Categorizer.sort_category_by_price(category)
 
@@ -39,12 +38,10 @@ class Buy < Sinatra::Application
             end
     #TODO yep that
 
-    # If the map is empty the user bought nothing
     if map.empty?
       session[:message] = "~note~You bought nothing...congrats..."
       redirect '/'
     end
-
 
     # Iterate over each item that was chosen to buy
     session[:message] = "" #Note by urs: do this because of += is not allowed if its not a string, thx ruby for no declaring types, we love you....

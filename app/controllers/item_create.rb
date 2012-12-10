@@ -26,7 +26,6 @@ class ItemCreate < Sinatra::Application
     description = params[:description]
     file = params[:file_upload]
 
-
     session[:message] = ""
     session[:message] += Helper::Validator.validate_string(name, "name")
     session[:message] += Helper::Validator.validate_integer(price, "price", 1, nil)

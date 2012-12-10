@@ -6,7 +6,7 @@ class ItemFollow < Sinatra::Application
   end
 
 
-  post "/item/:id/follow" do
+  post '/item/:id/follow' do
     current_item = @database.item_by_id(params[:id].to_i)
 
     @current_user.add_subscription(current_item)
@@ -15,7 +15,7 @@ class ItemFollow < Sinatra::Application
     redirect "user/#{@current_user.name}"
   end
 
-  post "/item/:id/unfollow" do
+  post '/item/:id/unfollow' do
     current_item = @database.item_by_id(params[:id].to_i)
 
     @current_user.delete_subscription(current_item)

@@ -6,7 +6,7 @@ class UserFollow < Sinatra::Application
   end
 
 
-  post "/user/:name/follow" do
+  post '/user/:name/follow' do
     user = @database.user_by_name(params[:name])
 
     @current_user.add_subscription(user)
@@ -15,7 +15,7 @@ class UserFollow < Sinatra::Application
     redirect "user/#{@current_user.name}"
   end
 
-  post "/user/:name/unfollow" do
+  post '/user/:name/unfollow' do
     user = @database.user_by_name(params[:name])
 
     @current_user.delete_subscription(user)
