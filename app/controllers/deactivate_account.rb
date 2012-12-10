@@ -2,17 +2,17 @@ class DeactivateAccount < Sinatra::Application
 
   before do
     @database = Marketplace::Database.instance
+    @current_user = @database.user_by_name(session[:name])
+
+    redirect '/login' unless @current_user
   end
 
 
   post '/deactivate_account' do
-    username = params[:username]
     password = params[:password]
-    user = @database.user_by_name(username)
 
-
-    if Helper::Checker.check_password?(user, password)
-      user.deactivate
+    if Helper::Checker.check_password?(@current_user, password)
+      @current_user.deactivate
       session[:message] = "~note~account deactivated."
       session[:name] = nil
       redirect '/'

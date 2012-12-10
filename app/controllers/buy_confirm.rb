@@ -6,6 +6,7 @@ class BuyConfirm < Sinatra::Application
 
 
   post '/buy/confirm' do
+    #TODO factor this out
     # Create a hash-table
     # key is the 'item.id'
     # value is the 'quantity' to buy
