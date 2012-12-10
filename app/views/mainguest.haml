@@ -33,7 +33,7 @@ and join the wonderful world of trading.
           %img{:src => "icons/package.png"}
         %td{:align => "center"}
           -if category.items.length > 1
-            %h3 starting at
+            %h3{:id=>"ignore"}starting at
             #{category.min_price}
           -else
             #{category.min_price}

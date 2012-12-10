@@ -35,46 +35,43 @@
       %th Description
       %th Buy
   %tbody
-    -if found_items.length < 1
+    -if found_categories.length < 1
       %tr(id="noresults")
         %td(colspan="6" id="ignore")
           No Results
     -else
-      -for category in found_items
+      -for category in found_categories
         %tr
           %td{:width => "74"}
-            %img{:height => "70", :width => "70", :src => "#{category[0].image_path(0)}" }
+            %img{:height => "70", :width => "70", :src => "#{category.items.first.image_path(0)}" }
           %td{:align => "center"}
-            -if category.length > 1
-              #{category[0].name}
+            -if category.items.length > 1
+              #{category.name}
             -else
-              %a{:href => "/item/#{category[0].id}"}#{category[0].name}
+              %a{:href => "/item/#{category.items.first.id}"}#{category.name}
           %td{:align => "center"}
-            -i = 0
-            -for item in category
-              -i = i + item.quantity
-            #{i}
+            #{category.quantity}
             %img{:src => "../icons/package.png"}
           %td{:align => "center"}
-            -if category.length > 1
+            -if category.owners.length > 1
               %h3{:id=>"ignore"} starting at
-              #{category[0].price}
+              #{category.min_price}
             -else
-              #{category[0].price}
+              #{category.min_price}
             %img{:src => "../icons/coins.png"}
           %td{:align => "center"}
-            -if category.size >1
-              #{category.size}
+            -if category.owners.length >1
+              #{category.owners.length}
               %img{:src => "../icons/user_silhouette.png"}
             -else
-              %a{:href => "/user/#{category[0].owner.name}", :id=>"ignore"} #{category[0].owner.name}
+              %a{:href => "/user/#{category.owners.first.name}", :id=>"ignore"} #{category.owners.first.name}
           %td
-            #{description_map[category[0]]}
+            #{description_map[category.items.first]}
           %td
-            -if category[0].price <= current_user.credits
+            -if category.min_price <= current_user.credits
               %form( action="/buy" method="GET" )
                 %input(type="text" name="quantity" value=1 size=1)
-                %input(type='hidden' name="category" value="#{category[0].name}")
+                %input(type='hidden' name="category" value="#{category.name}")
                 %input(type="submit" value="Continue")
             -else
               %form( action="/buy" method="GET" )
@@ -82,7 +79,7 @@
 
 %br
 
--if found_items.length < 1 and !closest_string.nil? and closest_string != ""
+-if found_categories.length < 1 and !closest_string.nil? and closest_string != ""
   %h2 Did you mean:
   %button(type="button" id = "get_new_result") #{closest_string}
   %input(type="hidden" id="closest_string" value="#{closest_string}")
