@@ -81,7 +81,7 @@ module Marketplace
     def suggest_other_query(items, query)
       query = query.gsub(/_/," ").downcase
 
-      distance_Levenshtein = 100
+      distance_levenshtein = 100
       longest_subseq = 0
       word = ""
 
@@ -92,18 +92,18 @@ module Marketplace
         name_array = item.name.downcase.split
         name_array.push(item.name.downcase)
 
-        new_distance_array_Levenshtein = matcher1.match(name_array).sort
+        new_distance_array_levenshtein = matcher1.match(name_array).sort
         new_longest_subseq_array = matcher2.match(name_array).sort.reverse
 
-        if new_distance_array_Levenshtein[0] < distance_Levenshtein and new_longest_subseq_array[0] >= longest_subseq
+        if new_distance_array_levenshtein[0] < distance_levenshtein and new_longest_subseq_array[0] >= longest_subseq
           word = item.name
-          distance_Levenshtein = new_distance_array_Levenshtein[0]
+          distance_levenshtein = new_distance_array_levenshtein[0]
           longest_subseq = new_longest_subseq_array[0]
         end
 
       }
 
-      if distance_Levenshtein <= 3 and longest_subseq >=2
+      if distance_levenshtein <= 3 and longest_subseq >=2
         self.closest_string = word
       end
 
