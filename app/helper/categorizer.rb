@@ -5,21 +5,21 @@ module Helper
     @database = Marketplace::Database.instance
 
 
-    # Categories all ACTIVE items by their name
+    # Categorizes all ACTIVE items by their name
     # @return [Array of Arrays] array with arrays for every different item.name
-    def self.categories_all_active_items
+    def self.categorize_all_active_items
       items = @database.all_active_items
-      categories_items(items)
+      categorize_items(items)
     end
 
-    # Categories all given ACTIVE items by their name
+    # Categorizes all given ACTIVE items by their name
     # @return [Array of Arrays] array with arrays for every different item.name
     def self.categories_active_items(items)
       items.select{ |item| item.active }
       categories_items(items)
     end
 
-    # Categories all ACTIVE items without items of user by their name
+    # Categorizes all ACTIVE items without items of user by their name
     # @return [Array of Arrays] array with arrays for every different item.name
     def self.categories_all_active_items_without(user)
       items = @database.all_active_items.select{ |item| item.owner != user }
@@ -36,22 +36,18 @@ module Helper
 
     # Categories all given items by their name
     # @return [Array of Arrays] array with arrays for every different item.name
-    def self.categories_items(items)
-      categorized_items = Array.new
-
-      return categorized_items if items.nil? or items.empty?
-
+    def self.categorize_items(items)
+      categories = Array.new
+      #   return categorized_items if items.nil? or items.empty?
       items.each{ |item|
-        sub_array = categorized_items.detect{ |sub_item_array| sub_item_array[0].name == item.name }
-        if sub_array != nil
-          sub_array.push(item)
+        category = categories.detect{ |category| category.name == item.name }
+        if category != nil
+          category.add(item)
         else
-          new_sub_array = Array.new
-          new_sub_array.push(item)
-          categorized_items.push(new_sub_array)
+          categories.push(Marketplace::Category.create(item))
         end
       }
-      categorized_items
+      categories
     end
 
     # Detects category by name from a list of categories

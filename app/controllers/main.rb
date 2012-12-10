@@ -21,11 +21,9 @@ class Main < Sinatra::Application
                                 :current_user => current_user,
                                 :categories => sorted_categories }
     else
-      categories = Helper::Categorizer.categories_all_active_items
-      sorted_categories = Helper::Categorizer.sort_categories_by_price(categories)
-
+      categories = Helper::Categorizer.categorize_all_active_items
       haml :mainguest, :locals => { :info => message,
-                                    :categories => sorted_categories }
+                                    :categories => categories }
     end
   end
 
