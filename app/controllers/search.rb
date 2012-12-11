@@ -21,12 +21,11 @@ class Search
 
     found_items = search_result.found_items
 
-    categories_found = Helper::Categorizer.categories_active_items_without(found_items, current_user)
-    categories_sorted_found = Helper::Categorizer.sort_categories_by_price(categories_found)
+    found_categories = Helper::Categorizer.categorize_active_items_without(found_items, current_user)
 
 
     haml :search, :layout => false, :locals => { :query => query,
-                                                 :found_items => categories_sorted_found,
+                                                 :found_categories => found_categories,
                                                  :current_user => current_user,
                                                  :description_map => search_result.description_map,
                                                  :closest_string => search_result.closest_string }

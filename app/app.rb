@@ -15,6 +15,7 @@ require_relative 'models/marketplace/item.rb'
 require_relative 'models/marketplace/buy_order.rb'
 require_relative 'models/marketplace/search_result.rb'
 require_relative 'models/marketplace/database.rb'
+require_relative 'models/marketplace/category.rb'
 
 require_relative 'helper/mailer.rb'
 require_relative 'helper/validator.rb'

@@ -13,19 +13,16 @@ class Main < Sinatra::Application
 
     if current_user
       current_items = current_user.items
-      categories = Helper::Categorizer.categories_all_active_items_without(current_user)
-      sorted_categories = Helper::Categorizer.sort_categories_by_price(categories)
+      categories = Helper::Categorizer.categorize_all_active_items_without(current_user)
 
       haml :main, :locals => {  :info => message,
                                 :current_items => current_items,
                                 :current_user => current_user,
-                                :categories => sorted_categories }
+                                :categories => categories }
     else
-      categories = Helper::Categorizer.categories_all_active_items
-      sorted_categories = Helper::Categorizer.sort_categories_by_price(categories)
-
+      categories = Helper::Categorizer.categorize_all_active_items
       haml :mainguest, :locals => { :info => message,
-                                    :categories => sorted_categories }
+                                    :categories => categories }
     end
   end
 
