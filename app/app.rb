@@ -146,7 +146,7 @@ class App < Sinatra::Base
     item24 = Marketplace::Item.create('Cool Runnings, DVD', "No Description", 40, 4, ese)
     item25 = Marketplace::Item.create('Bag of Dubplates', "No Description", 10, 7, rene)
     item26 = Marketplace::Item.create('AK 47', "No Description", 1000, 3, ese)
-    item27 = Marketplace::Item.create('Dreamcatcher', "No Description", 10, 40, daniel)
+    item27 = Marketplace::Item.create('Trousers', "sdfdsf", 60, 40, urs)
 
     # Set the items state
     item1.active = true
@@ -154,7 +154,7 @@ class App < Sinatra::Base
     item3.active = true
     item4.active = true
     item5.active = true
-    item6.active = false
+    item6.active = true
     item7.active = true
     item8.active = true
     item9.active = true

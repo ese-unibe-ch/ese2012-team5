@@ -49,25 +49,23 @@
     -for category in categories
       %tr
         %td{:width => "74"}
-          %img{:height => "70", :width => "70", :src => category.items.first.image_path(0) }
+          %img{:height => "70", :width => "70", :src => category.front_image }
         %td{:align => "center"}
-          -if category.items.length > 1
-            #{category.name}
+          -if category.has_multiple_items
+            #{category.name} (#{category.item_count}x)
           -else
             %a{:href => "/item/#{category.items.first.id}"}#{category.name}
         %td{:align => "center"}
           #{category.quantity}
           %img{:src => "icons/package.png"}
         %td{:align => "center"}
-          -if category.items.length > 1
-            %h3{:id=>"ignore"} starting at
-            #{category.min_price}
-          -else
-            #{category.min_price}
+          -if category.has_multiple_items
+            %h5{:id=>"ignore"} starting at
+          #{category.min_price}
           %img{:src => "icons/coins.png"}
         %td{:align => "center"}
-          -if category.owners.length >1
-            #{category.owners.length}
+          -if category.has_multiple_owners
+            #{category.owner_count}
             %img{:src => "icons/user_silhouette.png"}
           -else
             %a{:href => "/user/#{category.owners.first.name}"} #{category.owners.first.name}

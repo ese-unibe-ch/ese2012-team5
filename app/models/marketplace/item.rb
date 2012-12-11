@@ -42,12 +42,12 @@ module Marketplace
     # Splits the item into two separate items
     # This item will have the rest quantity '(self.quantity - at)'
     # The new created items quantity will be 'at'
-    # throws [NotImplementedError] if its not possible to split item at 'at'
+    # raise [NotImplementedError] if its not possible to split item at 'at'
     # @param [Integer] at index where to split the item
     # @return [Item] new item with quantity 'at'
     def split(at)
       if self.quantity < at
-        throw NotImplementedError
+        raise NotImplementedError
       else
         rest = self.quantity - at
         self.quantity = rest
@@ -58,13 +58,13 @@ module Marketplace
     end
 
     # Merges two similar items together
-    # throws [NotImplementedError] if this and item are not mergeable
+    # raise [NotImplementedError] if this and item are not mergeable
     def merge(item)
       if mergeable?(item)
         self.quantity = self.quantity + item.quantity
         item.delete
       else
-        throw NotImplementedError
+        raise NotImplementedError
       end
     end
 
