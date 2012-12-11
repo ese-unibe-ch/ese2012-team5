@@ -14,7 +14,7 @@ class DeleteAccount < Sinatra::Application
       redirect '/settings'
     end
 
-    if Helper::Checker.check_password?(@current_user, password)
+    if Checker.check_password?(@current_user, password)
       @current_user.delete
       session[:message] = "~note~account deleted."
       session[:name] = nil

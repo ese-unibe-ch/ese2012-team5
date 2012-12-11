@@ -43,7 +43,7 @@ class Settings < Sinatra::Application
     conf_password = params[:conf_password]
 
 
-    if Helper::Checker.check_password?(@current_user, old_password)
+    if Checker.check_password?(@current_user, old_password)
       message = Helper::Validator.validate_password(new_password, conf_password, 4)
       if message != ""
         session[:message] = message

@@ -5,7 +5,8 @@ class Buy < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+  # Displays the Buy view where the current user can change the quantity of the choosen items.
+  # If multiple similar items exist they will be available here.
   get '/buy' do
     redirect '/login' unless @current_user
     quantity = params[:quantity].to_i

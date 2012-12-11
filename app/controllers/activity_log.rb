@@ -5,7 +5,8 @@ class ActivityLog < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+  # Displays the ActivityLog view where the current user can see it's subscriptions and
+  # their activities. The :items_per_page defines how many activities are displayed at once.
   get '/activity_log/:items_per_page' do
     redirect '/login' unless @current_user
     items_per_page = params[:items_per_page].to_i

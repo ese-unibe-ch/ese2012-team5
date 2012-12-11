@@ -14,7 +14,7 @@ class DeactivateAccount < Sinatra::Application
       redirect '/settings'
     end
 
-    if Helper::Checker.check_password?(@current_user, password)
+    if Checker.check_password?(@current_user, password)
       @current_user.deactivate
       session[:message] = "~note~account deactivated."
       session[:name] = nil
