@@ -14,7 +14,7 @@ module Marketplace
       category = self.new
       category.items.push(item)
       category.name = item.name
-      category.min_price = item.price
+      category.min_price = item.price.to_i
       category.owners.push(item.owner)
       category.quantity = item.quantity
       category
@@ -31,8 +31,8 @@ module Marketplace
     def add(item)
       raise NotImplementedError if item.name != self.name
       self.items.push(item)
-      if self.min_price > item.price
-        self.min_price = item.price
+      if self.min_price > item.price.to_i
+        self.min_price = item.price.to_i
       end
       self.owners.push(item.owner)
       self.owners = self.owners.uniq
