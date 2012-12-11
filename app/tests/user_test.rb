@@ -37,24 +37,23 @@ class User_Tests  < Test::Unit::TestCase
   end
 
   def teardown
-    @database = nil
-    @user = nil
+    #TODO
   end
 
   def test_user_initialization
-    assert(!@user1.name.nil? ,"user name does not exist")
+    assert(!@user1.name.nil? ,"user name is nil")
     assert_equal("user1", @user1.name, "wrong User name")
 
-    assert(!@user1.password.nil? ,"password does not exist")
+    assert(!@user1.password.nil? ,"password is nil")
 
-    assert(!@user1.email.nil? ,"email does not exist")
+    assert(!@user1.email.nil? ,"email is nil")
     assert_equal("test@testmail1.com", @user1.email, "wrong email")
 
     assert_equal(100, @user1.credits, "wrong Credits")
     assert_equal(nil, @user1.picture, "wrong Pic ")
     assert_equal("No description", @user1.details, "wrong description")
     assert(!@user1.verified, "wrong verified value")
-    assert_equal(0, @user1.subscriptions.length(), "wrong subscriptions value")
+    assert_equal(0, @user1.subscriptions.length(), "wrong subscriptions length")
   end
 
   def test_user_has_enough_credits
@@ -142,6 +141,7 @@ class User_Tests  < Test::Unit::TestCase
     @user1.buy(@item1,5)
     assert_equal(@user2.items.size, 2)
     assert_equal(@user1.items.size, 3)
+    teardown
   end
 
 end
