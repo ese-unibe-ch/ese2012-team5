@@ -63,6 +63,7 @@ class User_Tests  < Test::Unit::TestCase
     item2.active = true
     user2.add_credits(2000)
 
+    #a active item should be able to be bought if the is enough money and items
     assert(user2.can_buy_item?(item2,2))
 
 

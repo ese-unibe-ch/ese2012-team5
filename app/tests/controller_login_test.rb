@@ -7,12 +7,10 @@ require 'tlsmail'
 require 'require_relative'
 
 
-require "rubygems"
-require "selenium/webdriver"
-
 require "test/unit"
 require 'require_relative'
-
+require "rubygems"
+require "selenium/webdriver"
 
 
 class Controller_Login_Test <Test::Unit::TestCase

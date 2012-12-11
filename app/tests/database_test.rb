@@ -28,16 +28,15 @@ class Database_Tests < Test::Unit::TestCase
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     user2 = Marketplace::User.create('John2','pW123','test@testmail2.com')
 
+    #user is included in database
     assert(database.all_users.include?(user),"User not included")
+    #the database gives the right user back when searching for names
     assert(database.user_by_name('John2')!=user)
 
     user1 = database.user_by_email('test@testmail1.com')
 
-    assert(user2.name=="John2")
-
-
     users=database.all_users
-
+    #all user are added to the singleton database
     assert_equal(users.size,7)
 
 
@@ -48,6 +47,7 @@ class Database_Tests < Test::Unit::TestCase
 
     users=database.all_users
 
+    #a user is removed
     assert_equal(users.size,6)
 
 
@@ -72,7 +72,18 @@ class Database_Tests < Test::Unit::TestCase
 
     items = database.all_active_items
 
+    #the amount of activated is items correct
     assert_equal(items.size, 2)
+
+
+    database.delete_item(item1)
+    items = database.all_active_items
+
+    #a deleted file is also from the active item removed
+    assert_equal(items.size, 1)
+
+
+
 
 
     #todo
@@ -83,13 +94,17 @@ class Database_Tests < Test::Unit::TestCase
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     user2 = Marketplace::User.create('John2','pW1232','test@testmail2.com')
     item1 = Marketplace::Item.create('Table', "No Description", 100, 20, user2)
+    item2 = Marketplace::Item.create('Bed', "No Description", 100, 20, user2)
     buy_order=  Marketplace::BuyOrder.create("Table",100,user)
+    buy_order2=  Marketplace::BuyOrder.create("Table",110,user)
 
 
 
-    assert(database.all_buy_orders.size ==1)
 
-
+    #the number of orders is correct
+    assert(database.all_buy_orders.size ==2)
+    #the right number of involved orders of a item is returned
+    assert_equal(database.call_buy_orders(item2).size,2)
 
   end
 
@@ -101,7 +116,7 @@ class Database_Tests < Test::Unit::TestCase
     timestamp = Time.new
     hash = "asjhakfad12lj3lkehkf2342h3hk4j"
 
-
+    #a new user is not verified
     assert(user.verified == false)
 
     database.add_verification(hash, user, timestamp)
@@ -110,7 +125,7 @@ class Database_Tests < Test::Unit::TestCase
 
     database.delete_verification(hash)
 
-
+    #a user is verified after submitting the correct hash
     assert(user.verified == true)
 
   end
