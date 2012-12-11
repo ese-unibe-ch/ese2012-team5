@@ -29,7 +29,7 @@ class Item_Test < Test::Unit::TestCase
   end
 
   def teardown
-    Marketplace::Database.instance.reset_database
+    Marketplace::Database.reset_database
   end
 
   def test_user_initialization

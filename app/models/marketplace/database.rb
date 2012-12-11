@@ -33,7 +33,20 @@ module Marketplace
 
     #is only used for testing
     def self.reset_database
-      @@instance = nil
+      # List for all Users
+      @users = []
+      # List for all Items
+      @items = []
+      # List for all BuyOrder
+      @buy_orders = []
+      # List for all deactivated users
+      @deactivated_users = []
+
+      # Both hash maps use the generated hash (which is part of link) as a key
+      # And map it to an array of values which holds the user [0] and the timestamp [1]
+      # And map it to an array of values which holds the user [0] and the timestamp [1]
+      @pw_reset = Hash.new{ |values,key| values[key] = []}
+      @verification = Hash.new{ |values,key| values[key] = []}
     end
 
 
