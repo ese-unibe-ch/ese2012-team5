@@ -17,6 +17,7 @@
 %p These are the last #{items_per_page} entries:
 %table#table_new
   %thead
+    %th
     %th Entity
     %th Message
     %th Time
@@ -24,11 +25,13 @@
     - for activity in activities
       %tr
         %td
+          %img{:src => activity.type }
+        %td
           #{activity.owner.name}
         %td
           #{activity.message}
-        %td
-          #{activity.time}
+        %td{:width => 20}
+          #{activity.formated_time}
 
 %div{:align => "center"}
   %button{:type => "button", :id => "show_more"}

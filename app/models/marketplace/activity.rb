@@ -5,17 +5,16 @@ module Marketplace
     attr_accessor :type, :owner, :message, :time
 
     # All possible types that an activity can have
-    @USER_CREATED ||= "User has been created"
-    @USER_DEACTIVATE  ||= "User's account has been deactivated"
-    @USER_REACTIVATE  ||= "User's account has been reactivated"
-    @USER_SOLD_ITEM ||= "User has sold an item"
-    @USER_BOUGHT_ITEM ||= "User has bought an item"
-
-    @ITEM_ACTIVATE  ||= "Item has been activated"
-    @ITEM_DEACTIVATE  ||= "Item has been deactivated"
-    @ITEM_SOLD  ||= "Item has been sold"
-    @ITEM_CREATED  ||= "Item has been created"
-    @ITEM_BOUGHT ||= "Item has been bought"
+    @USER_CREATED     ||= "/icons/user_created.png"
+    @USER_DEACTIVATE  ||= "/icons/user_deactivate.png"
+    @USER_REACTIVATE  ||= "/icons/user_reactivate.png"
+    @USER_SOLD_ITEM   ||= "/icons/sold.png"
+    @USER_BOUGHT_ITEM ||= "/icons/bought.png"
+    @ITEM_ACTIVATE    ||= "/icons/item_activate.png"
+    @ITEM_DEACTIVATE  ||= "/icons/item_deactivate.png"
+    @ITEM_CREATED     ||= "/icons/item_created.png"
+    @ITEM_SOLD        ||= "/icons/sold.png"
+    @ITEM_BOUGHT      ||= "/icons/bought.png"
 
     class << self
       attr_reader :USER_CREATED, :USER_DEACTIVATE, :USER_REACTIVATE, :USER_SOLD_ITEM, :USER_BOUGHT_ITEM
@@ -23,7 +22,7 @@ module Marketplace
     end
 
     # Constructor that will automatic add new activity to owner
-    # @param [String] type of the new activity
+    # @param [String] type of the new activity (directly used for icon at moment)
     # @param [Entity] owner of the new activity
     # @param [String] message of the new activity
     # @param [Time] time when activity was created
@@ -38,5 +37,10 @@ module Marketplace
       activity
     end
 
+    def formated_time
+      self.time.strftime("%Y-%m-%d %H:%M:%S")
+    end
+
   end
+
 end
