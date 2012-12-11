@@ -47,12 +47,13 @@ class Search_Result_Test  < Test::Unit::TestCase
   assert(found_items[0].name=="Table")
 
 
-  search_result = Marketplace::SearchResult.create("Tab")
+  search_result = Marketplace::SearchResult.create("tab_")
   search_result.get
   found_items = search_result.found_items
   #only one table should be found, even if th query is incomplete
   assert(found_items.size==1)
   assert(found_items[0].name=="Table")
+
 
 
   item1.active = false
