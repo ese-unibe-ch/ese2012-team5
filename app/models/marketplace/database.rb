@@ -31,9 +31,12 @@ module Marketplace
     end
 
 
-    def self.create_for_testing
-      @@instance = Database.new
+    #is only used for testing
+    def self.reset_database
+      @@instance = nil
     end
+
+
 
   #--------
   #BuyOrder

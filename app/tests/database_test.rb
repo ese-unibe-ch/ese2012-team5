@@ -24,7 +24,8 @@ require '../../app/helper/image_uploader.rb'
 
 class Database_Tests < Test::Unit::TestCase
   def test_user_functions
-    database = Marketplace::Database.create_for_testing
+    Marketplace::Database.reset_database
+    database = Marketplace::Database.instance
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     user2 = Marketplace::User.create('John2','pW123','test@testmail2.com')
 
@@ -53,8 +54,8 @@ class Database_Tests < Test::Unit::TestCase
     end
 
   def test_item_functions
-    database = Marketplace::Database.create_for_testing
-
+    Marketplace::Database.reset_database
+    database = Marketplace::Database.instance
     daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
     joel = Marketplace::User.create('Joel','test','joel.guggisberg@students.unibe.ch')
     lukas = Marketplace::User.create('Lukas','lol','lukas.v.rotz@gmail.com')
@@ -72,15 +73,16 @@ class Database_Tests < Test::Unit::TestCase
 
     #the amount of activated is items correct
     assert_equal(items.size, 2)
-
+    #the total should not be changed
+    assert(database.all_items.size==3)
 
     database.delete_item(item1)
     items = database.all_active_items
 
     #a deleted file is also from the active item removed
     assert_equal(items.size, 1)
-
-
+    #the total should also be changed
+    assert(database.all_items.size==2)
 
 
 
@@ -88,7 +90,8 @@ class Database_Tests < Test::Unit::TestCase
   end
 
   def test_buy_orders
-    database = Marketplace::Database.create_for_testing
+    Marketplace::Database.reset_database
+    database = Marketplace::Database.instance
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     user2 = Marketplace::User.create('John2','pW1232','test@testmail2.com')
     item1 = Marketplace::Item.create('Table', "No Description", 100, 20, user2)
@@ -104,11 +107,14 @@ class Database_Tests < Test::Unit::TestCase
     #the right number of involved orders of a item is returned
     assert_equal(database.call_buy_orders(item2).size,2)
 
+    Marketplace::Database.reset_database
   end
 
   def test_verification
 
-    database = Marketplace::Database.create_for_testing
+    Marketplace::Database.reset_database
+    database = Marketplace::Database.instance
+
     hash = "asjhakfad12lj3lkehkf2342h3hk4j"
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     timestamp = Time.new
@@ -129,7 +135,9 @@ class Database_Tests < Test::Unit::TestCase
   end
 
   def test_password_reset
-    database = Marketplace::Database.create_for_testing
+    Marketplace::Database.reset_database
+    database = Marketplace::Database.instance
+
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     timestamp = Time.new - 7201
     hash = "asjhakfad12lj3lkehkf2342h3hk4j"
