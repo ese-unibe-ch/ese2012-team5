@@ -5,15 +5,15 @@ class ItemBuy < Sinatra::Application
   end
 
 
-  post "/item/:id/buy" do
+  post '/item/:id/buy' do
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
     quantity = params[:quantity].to_i
 
-
     session[:message] = ""
-    session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 1, current_item.quantity)
-    session[:message] += "~error~you can't buy this item!</br>not active or not enough credits!" if !current_user.can_buy_item?(current_item, quantity)
+    session[:message] += Validator.validate_integer(quantity, "quantity", 1, current_item.quantity) # At least 1
+    session[:message] += "~error~you don't have enough credits!" if !current_user.has_enough_credits?(current_item.price * quantity)
+    session[:message] += "~error~the item is not for sale!" if !current_item.active
     if session[:message] != ""
       redirect "/item/#{current_item.id}"
     end
@@ -21,7 +21,7 @@ class ItemBuy < Sinatra::Application
     seller = current_item.owner
     bought_item = current_user.buy(current_item, quantity)
 
-    session[:message] = "~note~you bought #{bought_item.quantity}x #{bought_item.name} from #{seller.name})"
+    session[:message] = "~note~you bought #{bought_item.quantity}x #{bought_item.name} from #{seller.name}"
     redirect "/user/#{current_user.name}"
   end
 

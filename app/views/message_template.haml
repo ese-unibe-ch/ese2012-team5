@@ -11,15 +11,23 @@
         -if type =="error"
           -text = messages.delete_at(0)
           %td
-            %img{:src => "icons/error.png"}
+            %img{:src => "/icons/error.png"}
           %td
             %h2 #{text}
         -elsif type == "note"
           -text = messages.delete_at(0)
           %td
-            %img{:src => "icons/note.png"}
+            %img{:src => "/icons/note.png"}
           %td
             %h4 #{text}
+        -elsif type == "item"
+          -id = messages.delete_at(0)
+          -name = messages.delete_at(0)
+          %td
+            %img{:src => "/icons/link.png"}
+          %td
+            profile of item:
+            %a{:href => "/item/#{id}"} #{name}
         -else
           %td{:colspan => 2}
             %h4 #{text}

@@ -42,7 +42,7 @@ module Marketplace
     # @param [Item] item the user want to buy
     # @param [Integer] quantity of the item to buy
     # @return [Item] item that has been bought with 'quantity'
-    # throw [NotImplementedError] when user can't do this purchase
+    # raise [NotImplementedError] when user can't do this purchase
     def buy(item, quantity)
       if can_buy_item?(item, quantity)
         if quantity < item.quantity
@@ -61,7 +61,7 @@ module Marketplace
         item_to_buy.clean_description_log
         item_to_buy.clean_comments
       else
-        throw NotImplementedError
+        raise NotImplementedError
       end
       item_to_buy
     end
@@ -105,7 +105,7 @@ module Marketplace
     def delete
       Marketplace::Database.instance.call_users(self)
       Marketplace::Database.instance.delete_user(self)
-      Helper::ImageUploader.delete_image(self.picture, settings.root) if self.picture != nil
+      ImageUploader.delete_image(self.picture, settings.root) if self.picture != nil
       items = Marketplace::Database.instance.items_by_user(self)
       items.each{ |item| item.delete }
     end
@@ -132,7 +132,7 @@ module Marketplace
     end
 
     def to_s
-      "Name: #{name} Credits:#{self.credits} Items:#{self.items}"
+      "Name: #{name} Credits:#{self.credits} ItemsCount:#{self.items.length}"
     end
 
     def verify
@@ -154,6 +154,10 @@ module Marketplace
 
     def delete_subscription(entity)
       subscriptions.delete(entity)
+    end
+
+    def follows?(entity)
+      subscriptions.include?(entity)
     end
 
   end

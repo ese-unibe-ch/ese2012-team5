@@ -5,7 +5,7 @@ class Item < Sinatra::Application
   end
 
 
-  get "/item/:id" do
+  get '/item/:id' do
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])
 
@@ -17,11 +17,11 @@ class Item < Sinatra::Application
                                             :info => message,
                                             :comments => current_item.comments }
     else
-      if current_user != nil
+      if current_user
         haml :item_profile, :locals => {  :item => current_item,
                                           :info => message,
-                                          :canBuy => current_user.can_buy_item?(current_item,1),
-                                          :is_following => current_user.subscriptions.include?(current_item),
+                                          :canBuy => current_user.can_buy_item?(current_item,1), # At least one
+                                          :is_following => current_user.follows?(current_item),
                                           :is_guest => false,
                                           :comments => current_item.comments }
       else

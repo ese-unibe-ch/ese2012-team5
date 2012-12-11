@@ -2,21 +2,20 @@ class DeleteAccount < Sinatra::Application
 
   before do
     @database = Marketplace::Database.instance
+    @current_user = @database.user_by_name(session[:name])
   end
 
 
   post '/delete_account' do
     password = params[:password]
-    current_user = @database.user_by_name(session[:name])
-
 
     if params[:confirm] != "true"
       session[:message] = "~error~you must confirm that you want to delete your account!"
       redirect '/settings'
     end
 
-    if Helper::Checker.check_password?(current_user, password)
-      current_user.delete
+    if Checker.check_password?(@current_user, password)
+      @current_user.delete
       session[:message] = "~note~account deleted."
       session[:name] = nil
       redirect '/'

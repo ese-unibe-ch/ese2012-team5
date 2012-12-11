@@ -18,16 +18,16 @@ class Register < Sinatra::Application
     email = params[:email]
 
     session[:message] = ""
-    session[:message] += Helper::Validator.validate_username(username, 3, 12)
-    session[:message] += Helper::Validator.validate_password(password, password_conf, 4)
-    session[:message] += Helper::Validator.validate_email(email)
+    session[:message] += Validator.validate_username(username, 3, 12)
+    session[:message] += Validator.validate_password(password, password_conf, 4)
+    session[:message] += Validator.validate_email(email)
     if session[:message] != ""
       redirect '/register'
     end
 
     user = Marketplace::User.create(username, password, email)
-    session[:message] = "~note~#{user.name} created.</br>before you are able to log in, you must first verify your account by following the link sent to your email."
-    Helper::Mailer.send_verification_mail(user)
+    session[:message] = "~note~#{user.name} created.~note~before you are able to log in, you must first verify your account by following the link sent to your email."
+    Mailer.send_verification_mail(user)
 
     redirect '/'
   end

@@ -5,7 +5,7 @@ class User < Sinatra::Application
   end
 
 
-  get "/user/:name" do
+  get '/user/:name' do
     current_user = @database.user_by_name(session[:name])
     user = @database.user_by_name(params[:name])
 
@@ -22,7 +22,7 @@ class User < Sinatra::Application
                                             :buy_orders => current_buy_orders }
     else
       user_items = user.items
-      if current_user != nil
+      if current_user
         haml :user_profile, :locals => {  :info => message,
                                           :current_user => current_user,
                                           :user => user,
@@ -31,7 +31,7 @@ class User < Sinatra::Application
                                           :is_guest => false }
       else
         haml :user_profile, :locals => {  :info => message,
-                                          :current_user => current_user,
+                                          :current_user => nil,
                                           :user => user,
                                           :items_user => user_items,
                                           :is_following => nil,

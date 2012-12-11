@@ -20,8 +20,7 @@ class ResetPassword < Sinatra::Application
       redirect '/forgot_password'
     end
 
-    # Send email
-    Helper::Mailer.send_pw_reset_mail(user)
+    Mailer.send_pw_reset_mail(user)
 
     session[:message] = "~note~email sent.</br>please check your mails for reset-link."
     redirect '/login'
@@ -35,9 +34,8 @@ class ResetPassword < Sinatra::Application
     # Delete entries older than 24h from reset password hashmap
     @database.clean_pw_reset_older_as(24)
 
-    #check if hash exists
     if !@database.pw_reset_has?(params[:hash])
-      session[:message] = "~error~unknown/timed out link please request a new one!"
+      session[:message] = "~error~unknown or timed out link, please request a new one!"
       redirect '/login'
     end
 
@@ -51,7 +49,7 @@ class ResetPassword < Sinatra::Application
     password_conf = params[:password_conf]
     hash = params[:hash]
 
-    session[:message] = Helper::Validator.validate_password(password, password_conf, 4)
+    session[:message] = Validator.validate_password(password, password_conf, 4)
     if session[:message] != ""
       redirect "/reset_password/#{hash}"
     end

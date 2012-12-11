@@ -23,7 +23,6 @@
       %br
       %form( action="/details" method="POST" )
         %textarea(cols="50" rows="4" name="details") #{user.details}
-        %input(type="hidden" name="user" value="#{user.name}")
         %input(type="submit" value="submit")
   %tr
     %td{:colspan => "2"}
@@ -39,7 +38,6 @@
         %label Confirm new password:
         %input(type="password" name="conf_password")
         %br
-        %input(type="hidden" name="user" value="#{user.name}")
         %input(type="submit" value="Change")
   %tr
     %td{:colspan => "2"}
@@ -61,5 +59,4 @@
           %br
           %label Please enter password to ensure verification:
           %input(type="password" name="password")
-          %input(type="hidden" name="username" value="#{user.name}")
           %input(type="submit" value="Deactivate my account")

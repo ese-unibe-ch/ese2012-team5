@@ -15,6 +15,7 @@ require_relative 'models/marketplace/item.rb'
 require_relative 'models/marketplace/buy_order.rb'
 require_relative 'models/marketplace/search_result.rb'
 require_relative 'models/marketplace/database.rb'
+require_relative 'models/marketplace/category.rb'
 
 require_relative 'helper/mailer.rb'
 require_relative 'helper/validator.rb'
@@ -48,34 +49,37 @@ require_relative 'controllers/images.rb'
 require_relative 'controllers/user_follow.rb'
 require_relative 'controllers/item_follow.rb'
 require_relative 'controllers/activity_log.rb'
+require_relative 'controllers/paradise.rb'
 
 
 class App < Sinatra::Base
 
   use Login
-  use DeleteAccount
-  use DeactivateAccount
   use Register
+  use Images
+  use ResetPassword
+  use Verify
   use Main
   use User
   use Item
+  use DeleteAccount
+  use DeactivateAccount
   use ItemEdit
   use ItemActivate
   use ItemBuy
   use ItemCreate
   use ItemComments
-  use Settings
   use ItemMerge
+  use Settings
   use Buy
   use BuyConfirm
-  use ResetPassword
-  use Verify
   use BuyOrderCreate
   use BuyOrderDelete
-  use Images
+  use ActivityLog
   use UserFollow
   use ItemFollow
-  use ActivityLog
+  use Paradise
+
 
 
   enable :sessions
@@ -142,7 +146,7 @@ class App < Sinatra::Base
     item24 = Marketplace::Item.create('Cool Runnings, DVD', "No Description", 40, 4, ese)
     item25 = Marketplace::Item.create('Bag of Dubplates', "No Description", 10, 7, rene)
     item26 = Marketplace::Item.create('AK 47', "No Description", 1000, 3, ese)
-    item27 = Marketplace::Item.create('Dreamcatcher', "No Description", 10, 40, daniel)
+    item27 = Marketplace::Item.create('Trousers', "sdfdsf", 60, 40, urs)
 
     # Set the items state
     item1.active = true
@@ -150,7 +154,7 @@ class App < Sinatra::Base
     item3.active = true
     item4.active = true
     item5.active = true
-    item6.active = false
+    item6.active = true
     item7.active = true
     item8.active = true
     item9.active = true
