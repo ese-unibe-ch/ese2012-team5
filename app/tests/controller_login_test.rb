@@ -5,6 +5,8 @@ require 'tilt/haml'
 require 'webget_ruby_secure_random'
 require 'tlsmail'
 require 'require_relative'
+require '../../app/controllers/login.rb'
+require '../../app/controllers/main.rb'
 
 
 require "test/unit"

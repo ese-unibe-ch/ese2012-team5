@@ -72,15 +72,16 @@ class Database_Tests < Test::Unit::TestCase
 
     #the amount of activated is items correct
     assert_equal(items.size, 2)
-
+    #the total should not be changed
+    assert(database.all_items.size==3)
 
     database.delete_item(item1)
     items = database.all_active_items
 
     #a deleted file is also from the active item removed
     assert_equal(items.size, 1)
-
-
+    #the total should also be changed
+    assert(database.all_items.size==2)
 
 
 
