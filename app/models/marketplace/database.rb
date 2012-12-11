@@ -17,6 +17,7 @@ module Marketplace
 
       # Both hash maps use the generated hash (which is part of link) as a key
       # And map it to an array of values which holds the user [0] and the timestamp [1]
+      # And map it to an array of values which holds the user [0] and the timestamp [1]
       @pw_reset = Hash.new{ |values,key| values[key] = []}
       @verification = Hash.new{ |values,key| values[key] = []}
     end
