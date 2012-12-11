@@ -19,7 +19,7 @@ class Settings < Sinatra::Application
     file = params[:file_upload]
 
     if file != nil
-      filename = Helper::ImageUploader.upload_image(file, settings.root)
+      filename = ImageUploader.upload_image(file, settings.root)
       @current_user.picture = filename
     else
       session[:message] = "~error~please choose a file to upload"
@@ -44,7 +44,7 @@ class Settings < Sinatra::Application
 
 
     if Checker.check_password?(@current_user, old_password)
-      message = Helper::Validator.validate_password(new_password, conf_password, 4)
+      message = Validator.validate_password(new_password, conf_password, 4)
       if message != ""
         session[:message] = message
         redirect '/settings'

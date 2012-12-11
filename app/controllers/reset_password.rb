@@ -20,7 +20,7 @@ class ResetPassword < Sinatra::Application
       redirect '/forgot_password'
     end
 
-    Helper::Mailer.send_pw_reset_mail(user)
+    Mailer.send_pw_reset_mail(user)
 
     session[:message] = "~note~email sent.</br>please check your mails for reset-link."
     redirect '/login'
@@ -49,7 +49,7 @@ class ResetPassword < Sinatra::Application
     password_conf = params[:password_conf]
     hash = params[:hash]
 
-    session[:message] = Helper::Validator.validate_password(password, password_conf, 4)
+    session[:message] = Validator.validate_password(password, password_conf, 4)
     if session[:message] != ""
       redirect "/reset_password/#{hash}"
     end

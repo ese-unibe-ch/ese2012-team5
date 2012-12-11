@@ -7,7 +7,7 @@ class Images < Sinatra::Application
 
   #get '/images/:filename' do
   #  filename = params[:filename]
-  #  Helper::ImageUploader.image(filename, settings.root)
+  #  ImageUploader.image(filename, settings.root)
   #end
 
 end

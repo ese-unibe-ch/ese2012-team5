@@ -173,7 +173,7 @@ module Marketplace
     # @param [Integer] position in pictures array
     def delete_image_at(position)
       filename = self.pictures.delete_at(position)
-      Helper::ImageUploader.delete_image(filename, settings.root)
+      ImageUploader.delete_image(filename, settings.root)
       self.pictures.reject{ |c| c.empty? }
     end
 
@@ -188,7 +188,7 @@ module Marketplace
 
     # Deletes the item and all its profile pictures
     def delete
-      self.pictures.each{ |image_url| Helper::ImageUploader.delete_image(image_url, settings.root) }
+      self.pictures.each{ |image_url| ImageUploader.delete_image(image_url, settings.root) }
       Marketplace::Database.instance.call_users(self)
       Marketplace::Database.instance.delete_item(self)
     end

@@ -27,10 +27,10 @@ class ItemCreate < Sinatra::Application
     file = params[:file_upload]
 
     session[:message] = ""
-    session[:message] += Helper::Validator.validate_string(name, "name")
-    session[:message] += Helper::Validator.validate_integer(price, "price", 1, nil)
-    session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 1, nil)
-    session[:message] += Helper::Validator.validate_string(description, "description")
+    session[:message] += Validator.validate_string(name, "name")
+    session[:message] += Validator.validate_integer(price, "price", 1, nil)
+    session[:message] += Validator.validate_integer(quantity, "quantity", 1, nil)
+    session[:message] += Validator.validate_string(description, "description")
     if session[:message] != ""
       redirect '/createItem'
     end
@@ -38,7 +38,7 @@ class ItemCreate < Sinatra::Application
     new_item = Marketplace::Item.create(name, description, price.to_i, quantity.to_i, @current_user)
 
     if file != nil and file != ""
-      filename = Helper::ImageUploader.upload_image(file, settings.root)
+      filename = ImageUploader.upload_image(file, settings.root)
       new_item.add_image(filename)
     end
 

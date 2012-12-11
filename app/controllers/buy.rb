@@ -12,8 +12,8 @@ class Buy < Sinatra::Application
     quantity = params[:quantity].to_i
     category_name = params[:category]
 
-    category = Helper::Categorizer.category_by_name_without(category_name, @current_user)
-    sorted_category = Helper::Categorizer.sort_category_by_price(category)
+    category = Categorizer.category_by_name_without(category_name, @current_user)
+    sorted_category = Categorizer.sort_category_by_price(category)
 
     if sorted_category.nil?
       session[:message] = "~error~Item name not found!~error~Could not create category!"
@@ -51,7 +51,7 @@ class Buy < Sinatra::Application
 
       temp = session[:message]
       session[:message] = ""
-      session[:message] += Helper::Validator.validate_integer(quantity, "quantity", 0, current_item.quantity) # NOTE by urs: quantity zero allowed
+      session[:message] += Validator.validate_integer(quantity, "quantity", 0, current_item.quantity) # NOTE by urs: quantity zero allowed
       session[:message] += "~error~you can't buy this item!" if !@current_user.can_buy_item?(current_item, quantity)
       session[:message] += "~error~not for sell!" if !current_item.active
       session[:message] += "~error~not enough credits!" if !@current_user.has_enough_credits?(current_item.price * quantity)

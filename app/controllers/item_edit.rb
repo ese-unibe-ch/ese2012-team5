@@ -35,10 +35,10 @@ class ItemEdit < Sinatra::Application
 
 
     session[:message] = ""
-    session[:message] += Helper::Validator.validate_string(new_name, "name")
-    session[:message] += Helper::Validator.validate_integer(new_price, "price", 1, nil)
-    session[:message] += Helper::Validator.validate_integer(new_quantity, "quantity", 1, nil)
-    session[:message] += Helper::Validator.validate_string(new_description, "description")
+    session[:message] += Validator.validate_string(new_name, "name")
+    session[:message] += Validator.validate_integer(new_price, "price", 1, nil)
+    session[:message] += Validator.validate_integer(new_quantity, "quantity", 1, nil)
+    session[:message] += Validator.validate_string(new_description, "description")
     if session[:message] != ""
       redirect "/item/#{current_item.id}/edit"
     end
@@ -56,7 +56,7 @@ class ItemEdit < Sinatra::Application
     file = params[:file_upload]
 
     if file != nil
-      filename = Helper::ImageUploader.upload_image(file, settings.root)
+      filename = ImageUploader.upload_image(file, settings.root)
       current_item.add_image(filename)
     else
       session[:message] = "~error~please choose a file to upload"

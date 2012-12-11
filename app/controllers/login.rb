@@ -26,9 +26,9 @@ class Login < Sinatra::Application
     end
 
     session[:message] = ""
-    session[:message] += Helper::Validator.validate_string(username, "username")
-    session[:message] += Helper::Validator.validate_string(password, "password")
-    session[:message] += Helper::Validator.validate_user(user)
+    session[:message] += Validator.validate_string(username, "username")
+    session[:message] += Validator.validate_string(password, "password")
+    session[:message] += Validator.validate_user(user)
     if session[:message] != ""
       redirect '/login'
     end

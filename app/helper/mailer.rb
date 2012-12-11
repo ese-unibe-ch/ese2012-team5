@@ -1,31 +1,24 @@
-module Helper
+module Mailer
 
-  #takes care of sending mails to users
-  class Mailer
+  @database = Marketplace::Database.instance
 
-    @database = Marketplace::Database.instance
+  #itemmarket email address and password
+  @from = 'itemmarket.mail@gmail.com'
+  @pw = 'itemmarket123'
 
-    #itemmarket email address and password
-    @from = 'itemmarket.mail@gmail.com'
-    @pw = 'itemmarket123'
+  # Send a reset password mail with hash to given user
+  # @param [User] user
+  def self.send_pw_reset_mail(user)
+    # Generate hash(24 digits in hex) and timestamp
+    hash = SecureRandom.hex(24)
+    # Set it valid for 24 hours
+    timestamp = Time.new
+    valid_until = timestamp + 86400
 
-    #Send reset password mail with hash to
-    # @param [User] user
-    def self.send_pw_reset_mail(user)
+    @database.add_pw_reset(hash, user, timestamp)
 
-      # generate hash(24 digits in hex) and timestamp
-      hash = SecureRandom.hex(24)
-
-      # valid for 24 hours
-      timestamp = Time.new
-      valid_until = timestamp + 86400
-
-      # store in hashmap reset_password
-      @database.add_pw_reset(hash, user, timestamp)
-
-      to = user.email
-
-      content = <<EOF
+    to = user.email
+    content = <<EOF
 From: #{@from}
 To: #{to}
 subject: "Item|Market PW Reset"
@@ -40,23 +33,22 @@ Regards,
 Your item|market - Team
 EOF
 
-      Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
-      Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', @from, @pw, :login) do |smtp|
-        smtp.send_message(content, @from, to)
-      end
+    Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
+    Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', @from, @pw, :login) do |smtp|
+      smtp.send_message(content, @from, to)
     end
+  end
 
+  # Send a verification mail with hash to given user
+  # @param [User] user
+  def self.send_verification_mail(user)
+    hash = SecureRandom.hex(24)
+    timestamp = Time.new
 
-    #Send verification mail with hash to
-    # @param [User] user
-    def self.send_verification_mail(user)
-      hash = SecureRandom.hex(24)
-      timestamp = Time.new
-      @database.add_verification(hash, user, timestamp)
+    @database.add_verification(hash, user, timestamp)
 
-      to = user.email
-
-      content = <<EOF
+    to = user.email
+    content = <<EOF
 From: #{@from}
 To: #{to}
 subject: "Item|Market Register Verification"
@@ -70,11 +62,11 @@ Regards,
 Your item|market - Team
 EOF
 
-      Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
-      Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', @from, @pw, :login) do |smtp|
-        smtp.send_message(content, @from, to)
-      end
+    Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
+    Net::SMTP.start('smtp.gmail.com', 587, 'gmail.com', @from, @pw, :login) do |smtp|
+      smtp.send_message(content, @from, to)
     end
-
   end
+
+
 end

@@ -5,5 +5,4 @@ module Checker
     proper_password == input_password
   end
 
-
 end

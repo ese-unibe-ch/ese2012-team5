@@ -105,7 +105,7 @@ module Marketplace
     def delete
       Marketplace::Database.instance.call_users(self)
       Marketplace::Database.instance.delete_user(self)
-      Helper::ImageUploader.delete_image(self.picture, settings.root) if self.picture != nil
+      ImageUploader.delete_image(self.picture, settings.root) if self.picture != nil
       items = Marketplace::Database.instance.items_by_user(self)
       items.each{ |item| item.delete }
     end

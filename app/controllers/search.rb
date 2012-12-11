@@ -21,7 +21,7 @@ class Search
 
     found_items = search_result.found_items
 
-    found_categories = Helper::Categorizer.categorize_active_items_without(found_items, current_user)
+    found_categories = Categorizer.categorize_active_items_without(found_items, current_user)
 
 
     haml :search, :layout => false, :locals => { :query => query,
