@@ -20,8 +20,9 @@ require '../../app/helper/checker.rb'
 require '../../app/helper/image_uploader.rb'
 
 class Search_Result_Test  < Test::Unit::TestCase
-  database = Marketplace::Database.instance
+
   def test_searching_functions
+  database = Marketplace::Database.create_for_testing
   daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
   joel = Marketplace::User.create('Joel','test','joel.guggisberg@students.unibe.ch')
   lukas = Marketplace::User.create('Lukas','lol','lukas.v.rotz@gmail.com')
@@ -38,7 +39,11 @@ class Search_Result_Test  < Test::Unit::TestCase
   search_result.get
   found_items = search_result.found_items
   #only one table should be found
+  puts  found_items[0].name
+
+
   assert(found_items.size==1)
+
   assert(found_items[0].name=="Table")
 
 

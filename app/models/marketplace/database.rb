@@ -31,6 +31,10 @@ module Marketplace
     end
 
 
+    def self.create_for_testing
+      @@instance = Database.new
+    end
+
   #--------
   #BuyOrder
   #--------

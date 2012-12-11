@@ -25,7 +25,7 @@ class Item_Test < Test::Unit::TestCase
   def test_item
 
 
-    database = Marketplace::Database.instance
+    database = Marketplace::Database.create_for_testing
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     user2 = Marketplace::User.create('John2','pW1232','test@testmail2.com')
     item1 = Marketplace::Item.create('Table', "No Description", 100, 20, user2)

@@ -24,7 +24,7 @@ require '../../app/helper/image_uploader.rb'
 
 class Database_Tests < Test::Unit::TestCase
   def test_user_functions
-    database = Marketplace::Database.instance
+    database = Marketplace::Database.create_for_testing
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     user2 = Marketplace::User.create('John2','pW123','test@testmail2.com')
 
@@ -35,10 +35,10 @@ class Database_Tests < Test::Unit::TestCase
     assert(database.email_exists?('test@testmail1.com'))
     user1 = database.user_by_email('test@testmail1.com')
     #should have as many email addresses as user
-    assert(database.all_emails.size,8)
+    assert(database.all_emails.size,2)
     users=database.all_users
     #all user are added to the singleton database
-    assert_equal(users.size,8)
+    assert_equal(users.size,2)
 
 
 
@@ -46,14 +46,14 @@ class Database_Tests < Test::Unit::TestCase
     database.delete_deactivated_user(user1)
     users=database.all_users
     #a user is removed
-    assert_equal(users.size,7)
+    assert_equal(users.size,1)
 
 
 
     end
 
   def test_item_functions
-    database = Marketplace::Database.instance
+    database = Marketplace::Database.create_for_testing
 
     daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
     joel = Marketplace::User.create('Joel','test','joel.guggisberg@students.unibe.ch')
@@ -88,7 +88,7 @@ class Database_Tests < Test::Unit::TestCase
   end
 
   def test_buy_orders
-    database = Marketplace::Database.instance
+    database = Marketplace::Database.create_for_testing
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     user2 = Marketplace::User.create('John2','pW1232','test@testmail2.com')
     item1 = Marketplace::Item.create('Table', "No Description", 100, 20, user2)
@@ -108,7 +108,7 @@ class Database_Tests < Test::Unit::TestCase
 
   def test_verification
 
-    database = Marketplace::Database.instance
+    database = Marketplace::Database.create_for_testing
     hash = "asjhakfad12lj3lkehkf2342h3hk4j"
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     timestamp = Time.new
@@ -129,7 +129,7 @@ class Database_Tests < Test::Unit::TestCase
   end
 
   def test_password_reset
-    database = Marketplace::Database.instance
+    database = Marketplace::Database.create_for_testing
     user = Marketplace::User.create('John','pW123','test@testmail1.com')
     timestamp = Time.new - 7201
     hash = "asjhakfad12lj3lkehkf2342h3hk4j"
