@@ -19,6 +19,7 @@ require '../../app/helper/validator.rb'
 require '../../app/helper/checker.rb'
 require '../../app/helper/image_uploader.rb'
 
+
 class Item_Test < Test::Unit::TestCase
   def setup
     @user1 = Marketplace::User.create('user1','pW123','test@testmail1.com')
@@ -119,6 +120,5 @@ class Item_Test < Test::Unit::TestCase
     @item_test = @item1
     @item1.delete
     assert(!@user1.items.include?(@item_test),"Item should be deleted")
-    teardown
   end
 end

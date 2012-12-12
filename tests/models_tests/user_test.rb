@@ -1,6 +1,5 @@
 require "test/unit"
 require 'rubygems'
-#require 'sinatra'
 require 'bcrypt'
 require 'tilt/haml'
 require 'webget_ruby_secure_random'
@@ -141,7 +140,7 @@ class User_Tests  < Test::Unit::TestCase
     @user1.buy(@item1,5)
     assert_equal(@user2.items.size, 2)
     assert_equal(@user1.items.size, 3)
-    teardown
+
   end
 
 end
