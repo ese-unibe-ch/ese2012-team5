@@ -1,9 +1,10 @@
-require "test/unit"
+require 'test/unit'
 require 'rubygems'
 require 'bcrypt'
 require 'tilt/haml'
 require 'webget_ruby_secure_random'
 require 'require_relative'
+require 'amatch'
 
 
 require '../../app/models/marketplace/entity.rb'
@@ -47,7 +48,7 @@ class Search_Result_Test  < Test::Unit::TestCase
     @item3.active = false
 
     search_result = Marketplace::SearchResult.create("Table")
-    search_result.get
+    search_result.find(@database.all_active_items)
     found_items = search_result.found_items
     #only one table should be found
 
@@ -56,7 +57,7 @@ class Search_Result_Test  < Test::Unit::TestCase
     assert_equal(found_items[0].name,"Table")
 
     search_result = Marketplace::SearchResult.create("tab_")
-    search_result.get
+    search_result.find(@database.all_active_items)
     found_items = search_result.found_items
     #only one table should be found, even if th query is incomplete
     assert_equal(found_items.size,1)
@@ -65,7 +66,7 @@ class Search_Result_Test  < Test::Unit::TestCase
     @item1.active = false
 
     search_result = Marketplace::SearchResult.create("Table")
-    search_result.get
+    search_result.find(@database.all_active_items)
     found_items = search_result.found_items
 
     #since the Table is not active, nothing should be found
