@@ -1,5 +1,7 @@
 module Marketplace
 
+  #todo:fix bug with too expensive buy orders
+
   class BuyOrder
 
     # Static variable

@@ -2,14 +2,21 @@ module Validator
 
   @database = Marketplace::Database.instance
 
+  #todo create static final values
+
+  @@min_username_length = 3
+  @@max_username_length = 12
+
+  @@min_password_length = 4
+
   # Checks if username is already in use and if length of username is within the given limits
   # @param [String] username name to check
   # @param [Integer] min minimal length username must have
   # @param [Integer] max maximal length username can have
-  def self.validate_username(username, min, max)
+  def self.validate_username(username)
     return "~error~username already taken." if @database.user_by_name(username) || @database.deactivated_user_by_name(username)
-    return "~error~username too short." if username.length<min
-    return "~error~username too long." if username.length>max
+    return "~error~username too short." if username.length < @@min_username_length
+    return "~error~username too long." if username.length > @@max_username_length
     return ""
   end
 
