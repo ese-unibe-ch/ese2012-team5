@@ -1,0 +1,48 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 ActivityLog
+%br
+
+=haml :'message_template', :locals => { :info => info }
+
+%p You are following:
+%table#table_new
+  -for subscription in subscriptions
+    %tr
+      %td
+        #{subscription.name}
+
+%hr
+
+%p These are the last #{items_per_page} entries:
+%table#table_new
+  %thead
+    %th
+    %th Entity
+    %th Message
+    %th Time
+  %tbody
+    - for activity in activities
+      %tr
+        %td
+          %img{:src => activity.type }
+        %td
+          #{activity.owner.name}
+        %td
+          #{activity.message}
+        %td{:width => 20}
+          #{activity.formated_time}
+
+%div{:align => "center"}
+  %button{:type => "button", :id => "show_more"}
+    Show More
+    %input{:type => 'hidden', :name => "itemsPerPage", :id => "ipp", :value => "#{items_per_page}"}
+
+:javascript
+  $(document).ready(function() {
+      $('#show_more').click(function() {
+         var ipp = parseInt($('#ipp').val())+5;
+         var url = "/activity_log/"+ipp;
+         $('#content').load(url);
+      });
+  });

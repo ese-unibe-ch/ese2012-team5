@@ -1,0 +1,25 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Login
+%br
+
+=haml :'message_template', :locals => { :info => info }
+
+%form( action="/login" method="POST" )
+  %table#table_new(style="width:auto;")
+    %tr
+      %td
+        %label Username:
+        %input(type="text" name="username" value="Username" onfocus="this.value=''")
+    %tr
+      %td
+        %label Password:&nbsp
+        %input(type="password" name="password"value="Password" onfocus="this.value=''")
+    %tr
+      %td
+        %input(type="submit" value="Login")
+        or
+        %a{:href => "/register"} Register
+    %tr
+      %td
+        %a{:href => "/forgot_password"} Forgot Password

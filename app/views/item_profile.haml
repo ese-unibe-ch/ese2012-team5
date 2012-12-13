@@ -1,0 +1,82 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Item: #{item.name}
+%br
+
+-if !is_guest
+  -if !is_following
+    %div{:align => "right"}
+      %form( action="/item/#{item.id}/follow" method="POST" )
+        %input(type="submit" value="Follow")
+  -else
+    %div{:align => "right"}
+      %form( action="/item/#{item.id}/unfollow" method="POST" )
+        %input(type="submit" value="Unfollow")
+%br
+
+=haml :'message_template', :locals => { :info => info }
+
+%table#table_new
+  %tr
+    %td{:height => 300, :width => 200}
+      %img{:height => "200", :width => "200", :src => item.image_path(0) }
+      %br
+      %img{:height => "98", :width => "98", :src => item.image_path(1) }
+      %img{:height => "98", :width => "98", :src => item.image_path(2) }
+    %td
+      Price: #{item.price}
+      %img{:src => "../icons/coins.png"}
+      %br
+      Description: #{item.description}
+      %br
+      For sale:
+      -if item.active
+        %img{:src => "../icons/accept.png"}
+      -else
+        %img{:src => "../icons/cross.png"}
+      %br
+      Quantity: #{item.quantity}
+      %img{:src => "../icons/package.png"}
+      %br
+      Owner:
+      %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
+
+  %tr
+    %td{:colspan => 2, :align => "center"}
+      -if canBuy
+        Amount (#{item.quantity} available):
+        %form( action="/item/#{item.id}/buy" method="POST" )
+          %input(type="text" name="quantity" value=1 size =1)
+          %input(type="submit" value="Buy")
+      -else
+        %form( action="/item/#{item.id}/buy" method="POST" )
+          %input(type="submit" disabled="disabled" value="Buy")
+
+-if !is_guest
+  %hr
+  %h3 Comments
+  %br
+  Add new Comment:
+  %br
+  %form( action="/item/#{item.id}/comments" method="POST" )
+    %textarea(cols="50" rows="4" name="comment")
+    %input(type="submit" value="submit")
+  %br
+  %br
+  %table#table_new
+    %thead
+      %th Comment
+      %th Author
+      %th Time
+    %tbody
+      -for array in comments
+        %tr
+          %td
+            #{array[1]}
+          %td
+            -if Marketplace::Database.instance.user_by_name(array[2]).nil?
+              #{array[2]}
+            -else
+              %a{:href => "/user/#{array[2]}"} #{array[2]}
+          %td
+            #{array[0]}
