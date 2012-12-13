@@ -1,7 +1,6 @@
 require 'test/unit'
 require 'rubygems'
 require 'bcrypt'
-require 'tilt/haml'
 require 'webget_ruby_secure_random'
 require 'require_relative'
 
@@ -11,15 +10,10 @@ require_relative '../../app/models/marketplace/activity.rb'
 require_relative '../../app/models/marketplace/user.rb'
 require_relative '../../app/models/marketplace/item.rb'
 require_relative '../../app/models/marketplace/buy_order.rb'
-require_relative '../../app/models/marketplace/search_result.rb'
 require_relative '../../app/models/marketplace/database.rb'
-require_relative '../../app/helper/mailer.rb'
-require_relative '../../app/helper/validator.rb'
-require_relative '../../app/helper/checker.rb'
-require_relative '../../app/helper/image_uploader.rb'
 
 
-class Database_Tests < Test::Unit::TestCase
+class DatabaseTest < Test::Unit::TestCase
 
   def setup
     @database = Marketplace::Database.instance

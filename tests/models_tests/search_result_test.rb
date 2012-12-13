@@ -14,7 +14,7 @@ require_relative '../../app/models/marketplace/search_result.rb'
 require_relative '../../app/models/marketplace/database.rb'
 
 
-class Search_Result_Test < Test::Unit::TestCase
+class SearchResultTest < Test::Unit::TestCase
 
   def setup
     @database = Marketplace::Database.instance
