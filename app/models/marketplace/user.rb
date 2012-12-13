@@ -61,7 +61,7 @@ module Marketplace
         item_to_buy.clean_description_log
         item_to_buy.clean_comments
       else
-        raise NotImplementedError
+        raise ArgumentError
       end
       item_to_buy
     end
