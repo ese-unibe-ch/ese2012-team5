@@ -20,15 +20,15 @@ module Categorizer
   # Categorizes all ACTIVE items without items of user by their name
   # @return [Array of Categories] array with categories for every different item.name
   def self.categorize_all_active_items_without(user)
-    items = @database.all_active_items.select{ |item| item.owner != user }
-    categorize_items(items)
+    items_without = @database.all_active_items.select{ |item| item.owner != user }
+    categorize_items(items_without)
   end
 
   # Categorizes all given ACTIVE items without items of user by their name
   # @return [Array of Categories] array with categories for every different item.name
   def self.categorize_active_items_without(items, user)
-    items.select{ |item| item.owner != user }
-    categorize_items(items)
+    items_without = items.select{ |item| item.owner != user }
+    categorize_items(items_without)
   end
 
 

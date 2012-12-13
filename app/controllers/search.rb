@@ -2,11 +2,12 @@ class Search
 
   before do
     @database = Marketplace::Database.instance
+    @searchable_items = Marketplace::Database.instance.all_active_items
   end
 
 
-  #TODO change method name and maybe model
-  # Handle AJAX requests
+  # Searches through all @searchable_items for matching items and
+  # displays result and may query suggestions
   get '/search/:for' do
     current_user = @database.user_by_name(session[:name])
     query = params[:for]
@@ -15,14 +16,9 @@ class Search
 
 
     search_result = Marketplace::SearchResult.create(query)
-    search_result.find(Marketplace::Database.instance.all_active_items)
-
-    current_user = @database.user_by_name(session[:name])
-
+    search_result.find(@searchable_items)
     found_items = search_result.found_items
-
     found_categories = Categorizer.categorize_active_items_without(found_items, current_user)
-
 
     haml :search, :layout => false, :locals => { :query => query,
                                                  :found_categories => found_categories,
