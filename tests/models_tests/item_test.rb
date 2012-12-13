@@ -1,4 +1,4 @@
-require "test/unit"
+require 'test/unit'
 require 'rubygems'
 require 'bcrypt'
 require 'tilt/haml'
@@ -6,21 +6,22 @@ require 'webget_ruby_secure_random'
 require 'require_relative'
 
 
-require '../../app/models/marketplace/entity.rb'
-require '../../app/models/marketplace/user.rb'
-require '../../app/models/marketplace/activity.rb'
-require '../../app/models/marketplace/user.rb'
-require '../../app/models/marketplace/item.rb'
-require '../../app/models/marketplace/buy_order.rb'
-require '../../app/models/marketplace/search_result.rb'
-require '../../app/models/marketplace/database.rb'
-require '../../app/helper/mailer.rb'
-require '../../app/helper/validator.rb'
-require '../../app/helper/checker.rb'
-require '../../app/helper/image_uploader.rb'
+require_relative '../../app/models/marketplace/entity.rb'
+require_relative '../../app/models/marketplace/user.rb'
+require_relative '../../app/models/marketplace/activity.rb'
+require_relative '../../app/models/marketplace/user.rb'
+require_relative '../../app/models/marketplace/item.rb'
+require_relative '../../app/models/marketplace/buy_order.rb'
+require_relative '../../app/models/marketplace/search_result.rb'
+require_relative '../../app/models/marketplace/database.rb'
+require_relative '../../app/helper/mailer.rb'
+require_relative '../../app/helper/validator.rb'
+require_relative '../../app/helper/checker.rb'
+require_relative '../../app/helper/image_uploader.rb'
 
 
 class Item_Test < Test::Unit::TestCase
+
   def setup
     @user1 = Marketplace::User.create('user1','pW123','test@testmail1.com')
     @user2 = Marketplace::User.create('user2','pW123','test@testmail2.com')

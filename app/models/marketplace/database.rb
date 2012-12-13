@@ -156,6 +156,10 @@ module Marketplace
       @deactivated_users.delete(user)
     end
 
+    def all_deactivated_users
+      @deactivated_users
+    end
+
 
   #--------
   #Entities
@@ -213,10 +217,9 @@ module Marketplace
     # @param [int] hours
     def clean_pw_reset_older_as(hours)
       @pw_reset.each_key {|hash|
-        time_now = Time.new
         # Adds 1 day in seconds = 86400 seconds
-        valid_until = pw_reset_timestamp_by_hash(hash) + hours*3600
-        if time_now > valid_until
+        valid_until = pw_reset_timestamp_by_hash(hash) + hours * 3600
+        if Time.now > valid_until
           delete_pw_reset(hash)
         end
       }
