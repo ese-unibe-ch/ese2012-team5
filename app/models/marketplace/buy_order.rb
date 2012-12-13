@@ -41,8 +41,11 @@ module Marketplace
       if item.name == self.item_name and item.price <= self.max_price
         if item.active
           if self.user.can_buy_item?(item, self.quantity)
-            bought_item = self.user.buy(item, self.quantity)
-            self.delete
+            begin
+              bought_item = self.user.buy(item, self.quantity)
+              self.delete
+            rescue ArgumentError
+            end
           end
         end # @note by urs: not all ifs in one for better overview
       end
