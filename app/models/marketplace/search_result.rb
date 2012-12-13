@@ -22,6 +22,10 @@ module Marketplace
 
     # Does the searching
     # A search_result object will only provide results after calling this method
+    # The results depend of the given items, the search will return all matching items
+    # even if they are deactivated or belong to any current user.
+    # If you want to exclude some type of items you can exclude these items from the
+    # parameter 'items' or you can do it in the result 'found_items'
     # @param [Array] items that can be found
     def find(items)
       query_array = query.gsub(/_/," ").downcase.split

@@ -30,12 +30,10 @@ module Marketplace
       return @@instance
     end
 
-
-    #is only used for testing
+    # Is only used for testing
     def self.reset_database
       @@instance = nil
     end
-
 
 
   #--------
