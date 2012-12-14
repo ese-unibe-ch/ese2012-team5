@@ -81,18 +81,18 @@ class DatabaseTest < Test::Unit::TestCase
     assert_equal(@database.all_users.size, 3, "not exactly 3 users in database")
     assert_equal(@database.all_emails.size, 3, "not exactly 3 users in database")
     assert_equal(@database.all_deactivated_users.size, 0, "not exactly 0 deactivated users in database")
-    assert_equal(@database.deactivated_user_by_name(@joel.name), nil, "Joel has not beed deactivated in database")
+    assert_nil(@database.deactivated_user_by_name(@joel.name), "Joel has not beed deactivated in database")
   end
 
   def test_user_joel_exists_in_database
     assert(@database.all_users.include?(@joel), "joel is not in database")
-    assert_equal(@database.user_by_name('ET'), nil, "ET exists! RUN!")
+    assert_nil(@database.user_by_name('ET'), "ET exists! RUN!")
     assert_equal(@database.user_by_name(@joel.name), @joel, "not correct Joel recieved!")
   end
 
   def test_email_in_database
     assert(@database.all_emails.include?(@joel.email), "joel is not in database")
-    assert_equal(@database.user_by_email('ET@earth.com'), nil, "ET exists! RUN!")
+    assert_nil(@database.user_by_email('ET@earth.com'), "ET exists! RUN!")
     assert(@database.email_exists?(@joel.email), "Joel don't exists!")
     assert_equal(@database.user_by_email(@joel.email), @joel, "not correct Joel recieved!")
   end

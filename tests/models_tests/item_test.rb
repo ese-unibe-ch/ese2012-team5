@@ -29,7 +29,7 @@ class ItemTest < Test::Unit::TestCase
     Marketplace::Database.reset_database
   end
 
-  def test_user_initialization
+  def test_item_initialization
     assert(!@table.name.nil? ,"item name is nil")
     assert_equal("Table", @table.name, "wrong item name")
 
@@ -55,66 +55,70 @@ class ItemTest < Test::Unit::TestCase
   end
 
   def test_item_split_and_merge
-    @table.split(10)
-    assert(@table.quantity,"Wrong split quantity")
-    @user_items = @daniel.items
-    @item4 = @user_items[3]
-    assert(@table.mergeable?(@item4),"The same Items should be mergeable")
-    assert(!@table.mergeable?(@chair),"Different Items should not be mergeable")
-    @table.merge(@item4)
-    assert(@table.quantity==20,"Wrong merge quantity")
+    table_rest = @table.split(8)
+    assert_equal(@table.quantity, 12, "wrong split quantity")
+    assert_equal(table_rest.quantity, 8, "wrong split quantity")
+
+
+    assert(@table.mergeable?(table_rest), "same items should be mergeable")
+    assert(!@table.mergeable?(@chair), "different items should not be mergeable")
+
+    @table.merge(table_rest)
+    assert_equal(@table.quantity, 20, "wrong merge quantity")
   end
 
   def test_item_activate_deactivate
     @table.activate
-    assert(@table.active,"Item should be active when activated")
+    assert(@table.active, "item should be active when activated")
     @table.deactivate
-    assert(!@table.active,"Item should be inactive when deactivated")
+    assert(!@table.active, "item should be inactive when deactivated")
     @table.switch_active
-    assert(@table.active,"Item should be active when switechd from inactive")
+    assert(@table.active, "item should be active when switechd from inactive")
     @table.switch_active
-    assert(!@table.active,"Item should be inactive when switeched from active")
+    assert(!@table.active, "item should be inactive when switeched from active")
   end
 
   def test_item_description_and_description_log
-    @time_now = Time.new
-    @table.add_description(@time_now,"Number1",10)
-    assert(@table.description=="Number1","descriptions is wrong")
-    assert(@table.price==10,"price is wrong")
-    assert(@table.description_log.length==2,"old description wasnt added to log")
-    @table.add_description(Time.new,"Number2",20)
-    assert(@table.description=="Number2","descriptions is wrong")
-    assert(@table.price==20,"price is wrong")
-    assert(@table.description_log.length==3,"old description wasnt added to log")
+    time_now = Time.now
 
-    assert(@table.description_from_log(@time_now)=="No Description","retrieving description from log failed")
-    assert(@table.price_from_log(@time_now)==100,"retrieving price from log failed")
+    @table.add_description(time_now, "Number1", 10)
+    assert_equal(@table.description, "Number1", "descriptions is wrong")
+    assert_equal(@table.price, 10, "price is wrong")
+    assert_equal(@table.description_log.length, 2, "old description wasnt added to log")
 
-    assert(@table.status_changed("Number1",10),"Status has changed")
-    assert(!@table.status_changed("Number2",20),"Status hasnt changed")
+    @table.add_description(Time.new, "Number2", 20)
+    assert_equal(@table.description, "Number2", "descriptions is wrong")
+    assert_equal(@table.price, 20, "price is wrong")
+    assert_equal(@table.description_log.length, 3, "old description wasnt added to log")
+
+    assert_equal(@table.description_from_log(time_now), "No Description", "retrieving description from log failed")
+    assert_equal(@table.price_from_log(time_now), 100, "retrieving price from log failed")
+
+    assert(@table.status_changed("Number1",10), "status has changed")
+    assert(!@table.status_changed("Number2",20), "status hasn't changed")
 
     @table.clean_description_log
-    assert(@table.description_log.length==1,"old description should be deleted")
+    assert_equal(@table.description_log.length, 1, "old description should be deleted")
   end
 
   def test_item_image_handling
     @table.add_image("new_image.jpg")
-    assert(@table.pictures[0]=="new_image.jpg","Images wasnt added")
+    assert_equal(@table.pictures[0], "new_image.jpg", "images wasnt added")
     @table.add_image("new_image1.jpg")
-    assert(@table.pictures[0]=="new_image.jpg","Images wasnt added")
+    assert_equal(@table.pictures[1], "new_image1.jpg", "images wasnt added")
     @table.select_front_image(1)
-    assert(@table.pictures[0]=="new_image1.jpg","Images wasnt put in front")
+    assert_equal(@table.pictures[0], "new_image1.jpg", "images wasnt put in front")
   end
 
   def test_item_image_path
-    assert(@table.image_path(0)=="/images/default_item.jpg","didnt get default image ")
+    assert_equal(@table.image_path(0), "/images/default_item.jpg", "didnt get default image ")
     @table.add_image("xxx.jpg")
-    assert(@table.image_path(0)=="/images/xxx.jpg","current image path is wrong")
+    assert_equal(@table.image_path(0), "/images/xxx.jpg", "current image path is wrong")
   end
 
   def test_image_delete
     @table.delete
-    assert(!@daniel.items.include?(@table),"Item should be deleted")
+    assert(!@daniel.items.include?(@table), "item should be deleted")
   end
 
 end
