@@ -156,13 +156,61 @@ class DatabaseTest < Test::Unit::TestCase
   #BuyOrders
   #--------
 
-  def test_buy_orders
-
-    #TODO write good buy_order test!
-    buy_order1 = Marketplace::BuyOrder.create("Table", 100, @lukas)
-    buy_order2 = Marketplace::BuyOrder.create("Table", 110, @lukas)
-
+  def test_buy_orders_lukas_buy_woman_but_no_CD
+    Marketplace::BuyOrder.create("Woman", 60, @lukas)
+    Marketplace::BuyOrder.create("CD", 200, @lukas)
     assert_equal(@database.all_buy_orders.size, 2, "size of buy_orders not 2!")
+
+    woman = Marketplace::Item.create("Woman", "buy me", 55, 10, @joel)
+    assert_equal(woman.owner, @joel, "joels doesn't have a woman anymore")
+    assert_equal(woman.quantity, 10, "the woman should have quantity 10")
+    assert_equal(@lukas.credits, 100)
+
+    woman.activate
+    assert_equal(@database.all_buy_orders.size, 1, "size of buy_orders not 1!")
+    assert_equal(woman.owner, @joel, "joels doesn't have a woman anymore")
+    assert_equal(woman.quantity, 9, "the woman should have quantity 9")
+    assert_equal(@lukas.credits, 45)
+
+    lukas_woman = @lukas.items.detect{ |item| item.name == "Woman" }
+    assert_not_nil(lukas_woman, "lukas should have a woman now")
+    assert_equal(lukas_woman.quantity, 1, "should be exactly 1 woman")
+
+    cd = Marketplace::Item.create("CD", "i have music on me", 201, 12, @joel)
+    assert_equal(@database.all_buy_orders.size, 1, "size of buy_orders not 1!")
+    assert_equal(cd.owner, @joel, "joels doesn't have a cd anymore")
+    assert_equal(cd.quantity, 12, "the cd should have quantity 12")
+    assert_equal(@lukas.credits, 45)
+  end
+
+  def test_buy_orders_lukas_wants_snow_but_it_already_exists
+    assert_equal(@database.all_buy_orders.size, 0, "size of buy_orders not 0!")
+
+    snow = Marketplace::Item.create("Snow", "white and good", 10, 50000000, @joel)
+    snow.activate
+    assert_equal(snow.owner, @joel, "joels doesn't have a snow anymore")
+    assert_equal(snow.quantity, 50000000, "the snow should have quantity 50000000")
+    assert_equal(@lukas.credits, 100)
+
+    # NOTE buy_orders do not check the current existing items, so if there is a already matching item, it needs to be
+    # de- and reactivated. actualy you should never create a buy_order if it can be solved from the begining!
+    Marketplace::BuyOrder.create("Snow", 60, @lukas)
+    assert_equal(@database.all_buy_orders.size, 1, "size of buy_orders not 1!")
+    assert_equal(snow.owner, @joel, "joels doesn't have a snow anymore")
+    assert_equal(snow.quantity, 50000000, "the snow should have quantity 50000000")
+    assert_equal(@lukas.credits, 100)
+
+    snow.switch_active
+    snow.switch_active
+
+    assert_equal(@database.all_buy_orders.size, 0, "size of buy_orders not 0!")
+    assert_equal(snow.owner, @joel, "joels doesn't have a snow anymore")
+    assert_equal(snow.quantity, 49999999, "the snow should have quantity 49999999")
+    assert_equal(@lukas.credits, 90)
+
+    lukas_snow = @lukas.items.detect{ |item| item.name == "Snow" }
+    assert_not_nil(lukas_snow, "lukas should have snow now")
+    assert_equal(lukas_snow.quantity, 1, "should be exactly 1 snow")
   end
 
 
