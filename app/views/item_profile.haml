@@ -6,12 +6,12 @@
 -if !is_guest
   -if !is_following
     %div{:align => "right"}
-      %form( action="/item/#{item.id}/follow" method="POST" )
-        %input(type="submit" value="Follow")
+      %form( action="/item/#{item.id}/follow" method="POST")
+        %input(type="submit" value="Follow" id = "follow")
   -else
     %div{:align => "right"}
       %form( action="/item/#{item.id}/unfollow" method="POST" )
-        %input(type="submit" value="Unfollow")
+        %input(type="submit" value="Unfollow" id="unfollow")
 %br
 
 =haml :'message_template', :locals => { :info => info }
