@@ -32,8 +32,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_status
-    element = @driver.find_element :id => "first_entry"
-    element.click
+    @driver.get("localhost:4567/item/14")
     element = @driver.find_element :name => "change_status"
     element.submit
     element = @driver.find_element :id => "table_new"
@@ -42,8 +41,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_comment
-    element = @driver.find_element :id => "first_entry"
-    element.click
+    @driver.get("localhost:4567/item/14")
     element = @driver.find_element :name => "comment"
     element.send_keys "new_comment"
     element.submit
@@ -54,8 +52,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_add
-    element = @driver.find_element :link => "Add Item"
-    element.click
+    @driver.get("localhost:4567/createItem")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"

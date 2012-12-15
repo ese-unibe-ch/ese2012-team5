@@ -25,8 +25,7 @@ class ControllerEmailTest <Test::Unit::TestCase
   end
 
   def test_invalid_email
-    element = @driver.find_element :link => "Register"
-    element.click
+    @driver.get("localhost:4567/register")
     element = @driver.find_element :name => "username"
     element.send_keys "User1"
     element = @driver.find_element :name => "email"

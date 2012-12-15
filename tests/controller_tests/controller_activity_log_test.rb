@@ -35,21 +35,16 @@ class ControllerActivityLogTest <Test::Unit::TestCase
   end
 
   def test_activity_log_item
-    element = @driver.find_element :link => "Table"
-    element.click
+    @driver.get("localhost:4567/item/1")
     element = @driver.find_element :id => "follow"
     element.click
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("You are now following Table."), "item could not be followed")
     assert_equal(@driver.current_url, "http://localhost:4567/user/ese")
-    element = @driver.find_element :link => "ActivityLog"
-    element.click
+    @driver.get("http://localhost:4567/activity_log/5")
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("Table"), "you're not following table")
-    element = @driver.find_element :link => "Home"
-    element.click
-    element = @driver.find_element :link => "Table"
-    element.click
+    @driver.get("localhost:4567/item/1")
     element = @driver.find_element :id => "unfollow"
     element.click
     element = @driver.find_element :id => "table_new"
@@ -58,21 +53,16 @@ class ControllerActivityLogTest <Test::Unit::TestCase
   end
 
   def test_activity_log_user
-    element = @driver.find_element :link => "Daniel"
-    element.click
+    @driver.get("localhost:4567/user/Daniel")
     element = @driver.find_element :id => "follow"
     element.click
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("You are now following Daniel."), "user could not be followed")
     assert_equal(@driver.current_url, "http://localhost:4567/user/ese")
-    element = @driver.find_element :link => "ActivityLog"
-    element.click
+    @driver.get("http://localhost:4567/activity_log/5")
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("Daniel"), "you're not following Daniel")
-    element = @driver.find_element :link => "Home"
-    element.click
-    element = @driver.find_element :link => "Daniel"
-    element.click
+    @driver.get("localhost:4567/user/Daniel")
     element = @driver.find_element :id => "unfollow"
     element.click
     element = @driver.find_element :id => "table_new"
