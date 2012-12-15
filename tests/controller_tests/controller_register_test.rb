@@ -71,7 +71,7 @@ class ControllerRegisterTest <Test::Unit::TestCase
     element.submit
 
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("password too short!"), "wrong password not detected")
+    assert(element.text.include?("password too short!"), "too short password not detected")
     assert_equal(@driver.current_url, "http://localhost:4567/register")
   end
 
@@ -88,7 +88,7 @@ class ControllerRegisterTest <Test::Unit::TestCase
     element.submit
 
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("no number in password!"), "wrong password not detected")
+    assert(element.text.include?("no number in password!"), "no number in password not detected")
     assert_equal(@driver.current_url, "http://localhost:4567/register")
   end
 
@@ -105,7 +105,7 @@ class ControllerRegisterTest <Test::Unit::TestCase
     element.submit
 
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("no uppercase letter in password!"), "wrong password not detected")
+    assert(element.text.include?("no uppercase letter in password!"), "no uppercase letter in password not detected")
     assert_equal(@driver.current_url, "http://localhost:4567/register")
   end
 
