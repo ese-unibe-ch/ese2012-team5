@@ -104,7 +104,7 @@ class ControllerItemTest <Test::Unit::TestCase
     element.send_keys "No Description"
     element.submit
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("price was smaller than minimum 1!"), "invalid price not detected")
+    assert(element.text.include?("price was smaller than minimum 1!"), "too small price not detected")
 
     @driver.get("localhost:4567/createItem")
     element = @driver.find_element :name => "name"
@@ -117,7 +117,7 @@ class ControllerItemTest <Test::Unit::TestCase
     element.send_keys "No Description"
     element.submit
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("price was not a number!"), "invalid price not detected")
+    assert(element.text.include?("price was not a number!"), "letter in price not detected")
   end
 
   def test_item_add_invalid_quantity
@@ -132,7 +132,7 @@ class ControllerItemTest <Test::Unit::TestCase
     element.send_keys "No Description"
     element.submit
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("quantity was smaller than minimum 1!"), "invalid quantity not detected")
+    assert(element.text.include?("quantity was smaller than minimum 1!"), "too small quantity not detected")
 
     @driver.get("localhost:4567/createItem")
     element = @driver.find_element :name => "name"
@@ -145,7 +145,7 @@ class ControllerItemTest <Test::Unit::TestCase
     element.send_keys "No Description"
     element.submit
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("quantity was not a number!"), "invalid quantity not detected")
+    assert(element.text.include?("quantity was not a number!"), "letter in quantity not detected")
   end
 
   def test_item_add_invalid_description
