@@ -11,55 +11,6 @@
   %script(type= "text/javascript" src= "/jquery-ui.js")
   %script(type= "text/javascript" src= "/jquery.highlight-4.js")
 
-  :javascript
-    function Navigate_to(theUrl) {
-      document.location.href = theUrl;
-    }
-
-  :javascript
-    $(function() {
-
-      $("#search_query").keyup(
-        function() {
-          dosearch();
-        }
-      );
-
-    $("#get_new_result").live("click", function() {
-        var closest = $("#closest_string").val();
-        $("#search_query").val(closest);
-        dosearch();
-      }
-    );
-
-    function dosearch() {
-      var q = $("#search_query").val().split(' ').join('_');
-
-      if(q != "") {
-        var url = "/search/"+q;
-        $('#results').load(url);
-        $("#content").css("display","none");
-        $("#results").css("display","inline");
-      } else {
-        $("#content").css("display","inline");
-        $("#results").css("display","none");
-      }
-    }});
-
-  :javascript
-    function disableEnterKey(e) {
-      var key;
-      if(window.event)
-        key = window.event.keyCode;     //IE
-      else
-        key = e.which;     //firefox
-
-      if(key == 13)
-        return false;
-      else
-        return true;
-    }
-
 %body
   #pageContainer
     #header
@@ -135,3 +86,68 @@
 
     #footer
       %a{:href => "https://github.com/ese-unibe-ch/ese2012-team5"} Visit Team 5 on Github
+
+
+/*Javascripts*/
+
+:javascript
+  function Navigate_to(theUrl) {
+    document.location.href = theUrl;
+  }
+
+/*Function handling Searches*/
+:javascript
+
+  $(function() {
+
+  /*Handles the Keyup event on the search input*/
+    $("#search_query").keyup(
+      function() {
+        dosearch();}
+    );
+
+  /*Handles the click event on the "did you mean button"*/
+  $("#get_new_result").live("click", function() {
+      var closest = $("#closest_string").val();
+      $("#search_query").val(closest);
+      dosearch();}
+  );
+
+  /*Fires the Ajax request,hides and shows the page content and search results*/
+  function dosearch() {
+    var q = $("#search_query").val().split(' ').join('_');
+
+    if(q != "") {
+      var url = "/search/"+q;
+      $('#results').load(url);
+      $("#content").css("display","none");
+      $("#results").css("display","inline");
+    } else {
+      $("#content").css("display","inline");
+      $("#results").css("display","none");
+    }
+  }});
+
+/*Disables the enter key. Used in the search input*/
+:javascript
+  function disableEnterKey(e) {
+    var key;
+    if(window.event)
+      key = window.event.keyCode;     //IE
+    else
+      key = e.which;     //firefox
+
+    if(key == 13)
+      return false;
+    else
+      return true;
+  }
+
+/* shows tooltip on mouseover*/
+:javascript
+  $(function(){
+    $(document).live("mouseover",function() {
+      var me = $(this);
+      me.tooltip({ hide: {effect: "explode", delay: 2500, duration: 300 } });
+      });
+  });

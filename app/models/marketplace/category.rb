@@ -61,6 +61,22 @@ module Marketplace
       self.items.length > 1
     end
 
+    def get_owner_tooltip
+      owner_tooltip=""
+      self.owners.each { |owner|
+        owner_tooltip += "<a href=\"/user/"+owner.name_to_s+"\" >" +owner.name_to_s + "</a><br/> "
+      }
+      owner_tooltip
+    end
+
+    def get_items_tooltip
+      items_tooltip=""
+      self.items.each { |item|
+        items_tooltip += "<a href=\"/item/" + item.id.to_s + "\" >" + item.quantity.to_s + "x for " + item.price.to_s + " credits </a><br/> "
+      }
+      items_tooltip
+    end
+
   end
 
 end

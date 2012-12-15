@@ -433,3 +433,19 @@ a:hover
     background: #eeff92;
     color: #ff6b38;
 }
+
+.ui-tooltip
+{
+    border: 1px solid #444444; /*1px solid #FFD5AA;*/
+    background: #cfcfcf;
+    color: #fff;  /*#000;*/
+    font: bold 80%/1 Arial;
+    padding: 5px;
+    display: none;
+    white-space: nowrap;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+}
