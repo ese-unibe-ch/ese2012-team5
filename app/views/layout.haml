@@ -51,31 +51,31 @@
         #chromemenu.chromestyle
           %ul.chromestyle
             - if session[:name]
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/")} Home
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/user/#{session[:name]}")} Your profile
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/createItem")} Add Item
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/createBuyOrder")} Add BuyOrder
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/activity_log/5")} ActivityLog
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/settings")} Settings
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/logout")} Logout
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
 
                 %form.chromestyle( action="/search" method="GET")
                   %input(type="text" id="search_query" name="search_query"  size="15" value="Type to search" onclick="value=''" onKeyPress="return disableEnterKey(event)" )
 
             - else
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/")} Home
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/login")} Login
-              %li.chromestyle
+              %li.chromestyle{:id=>"nav"}
                 %a.chromestyle{:href => url("/register")} Register
 
 
@@ -97,7 +97,6 @@
 
 /*Function handling Searches*/
 :javascript
-
   $(function() {
 
   /*Handles the Keyup event on the search input*/
@@ -151,3 +150,18 @@
       me.tooltip({ hide: {effect: "explode", delay: 2500, duration: 300 } });
       });
   });
+
+:javascript
+
+  $(function() {
+    $("#nav").live("click", function() {
+
+       //Remove selected class on all buttons
+       siblings.each(function (index){
+           $(this).removeClass('selected');
+       })
+
+      $(this).addClass('selected');
+    });
+  });
+

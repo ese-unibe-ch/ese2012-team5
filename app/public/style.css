@@ -301,7 +301,6 @@ ul.chromestyle
 li.chromestyle
 {
     display: inline;
-    text-decoration-color: red;
 }
 
 a.chromestyle
@@ -329,7 +328,7 @@ form.chromestyle
 a.chromestyle:hover, .chromestyle a.selected
 {
 /*script dynamically adds a class of "selected" to the current active menu item*/
-    color: #666;
+    color: #0c0c0c;
 }
 
 /* Style für Drop Down Menu */
