@@ -261,18 +261,6 @@ body
 /**************Menu_bar**********/
 /********************************/
 
-#head_entry
-{
-    position: relative;
-    padding: 1px;
-    vertical-align: bottom;
-}
-
-#head_login_reg
-{
-    position: relative;
-}
-
 #menu
 {
     float:left;
@@ -327,9 +315,8 @@ form.nav
 
 a.nav:hover, .nav a.selected
 {
-    color: #292929;!important
-    font-weight: bold;!important
-
+    color: #292929;!important;
+    font-weight: bold;
 }
 
 /********************************/
