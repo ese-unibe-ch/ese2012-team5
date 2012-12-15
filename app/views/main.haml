@@ -19,7 +19,7 @@
       %tr
         %td(width = "74" onclick="Navigate_to('/item/#{item.id}');")
           %img{:height => "70", :width => "70", :src => item.image_path(0) }
-        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
+        %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center", :id => "first_entry"}
           %a #{item.name}
         %td{:onclick => "Navigate_to('/item/#{item.id}');", :align => "center"}
           #{item.quantity}
