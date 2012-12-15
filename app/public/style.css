@@ -280,13 +280,13 @@ body
     width:793px;
 }
 
-.chromestyle
+.nav
 {
     width: 99%;
     font-weight: normal;
 }
 
-ul.chromestyle
+ul.nav
 {
     border: 0px solid black;
     width: 793px;
@@ -298,12 +298,12 @@ ul.chromestyle
     border-bottom: 2px solid #616161;
 }
 
-li.chromestyle
+li.nav
 {
     display: inline;
 }
 
-a.chromestyle
+a.nav
 {
     font: 15px Arial;
     font-weight: normal;
@@ -314,7 +314,7 @@ a.chromestyle
     border-right: 1px solid silver;
 }
 
-form.chromestyle
+form.nav
 {
     display: inline;
     font: 15px Arial;
@@ -325,52 +325,12 @@ form.chromestyle
     text-decoration: none;
 }
 
-a.chromestyle:hover, .chromestyle a.selected
+a.nav:hover, .nav a.selected
 {
-/*script dynamically adds a class of "selected" to the current active menu item*/
-    color: #0c0c0c;
+    color: #292929;!important
+    font-weight: bold;!important
+
 }
-
-/* Style für Drop Down Menu */
-
-.dropmenudiv
-{
-    /*position: absolute; */
-    top: 0;
-    border: 1px solid gray;
-    border-bottom-width: 0;
-    font: 13px Arial;
-    font-weight: normal;
-    line-height:18px;
-    z-index:100;
-    background-color: #CCC;
-    width: 200px;
-    /*visibility: hidden;*/
-}
-
-a.dropmenudiv
-{
-    width: auto;
-    height: 20;
-    display: block;
-    text-indent: 3px;
-    border-bottom: 1px solid gray;
-    padding: 2px 0;
-    text-decoration: none;
-    font-weight: normal;
-    color: black;
-}
-
-a.dropmenudiv
-{ /*Hack für IE */
-    width: 100%;
-}
-
-a.dropmenudiv:hover
-{
-    background: url(java/chromebg-over.jpg) center center repeat-x;
-}
-
 
 /********************************/
 /**********Text/Link-styles******/
@@ -438,7 +398,7 @@ a:hover
     border: 1px solid #444444; /*1px solid #FFD5AA;*/
     background: #cfcfcf;
     color: #fff;  /*#000;*/
-    font: bold 80%/1 Arial;
+    font: normal 80%/1 Arial;
     padding: 5px;
     display: none;
     white-space: nowrap;

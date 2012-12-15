@@ -72,7 +72,7 @@ module Marketplace
     def get_items_tooltip
       items_tooltip=""
       self.items.each { |item|
-        items_tooltip += "<a href=\"/item/" + item.id.to_s + "\" >" + item.quantity.to_s + "x for " + item.price.to_s + " credits </a><br/> "
+        items_tooltip += "<a href=\"/item/" + item.id.to_s + "\" >" + item.quantity.to_s + "x for " + item.price.to_s + " credits from "+item.owner.name_to_s+ "</a><br/> "
       }
       items_tooltip
     end

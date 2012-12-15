@@ -48,35 +48,34 @@
                 %img{:src => "../icons/coins.png"}
     #main_page
       #menu
-        #chromemenu.chromestyle
-          %ul.chromestyle
-            - if session[:name]
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/")} Home
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/user/#{session[:name]}")} Your profile
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/createItem")} Add Item
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/createBuyOrder")} Add BuyOrder
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/activity_log/5")} ActivityLog
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/settings")} Settings
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/logout")} Logout
-              %li.chromestyle{:id=>"nav"}
+        %ul.nav
+          - if session[:name]
+            %li.nav{}
+              %a.nav{:href => url("/"), :id=>"home"} Home
+            %li.nav
+              %a.nav{:href => url("/user/#{session[:name]}"), :id=>"your_profile"} Your profile
+            %li.nav
+              %a.nav{:href => url("/createItem"), :id=>"add_item"} Add Item
+            %li.nav
+              %a.nav{:href => url("/createBuyOrder"), :id=>"add_buy_order"} Add BuyOrder
+            %li.nav
+              %a.nav{:href => url("/activity_log/5"), :id=>"activity_log"} ActivityLog
+            %li.nav
+              %a.nav{:href => url("/settings"), :id=>"settings"} Settings
+            %li.nav
+              %a.nav{:href => url("/logout"), :id=>"logout"} Logout
+            %li.nav
 
-                %form.chromestyle( action="/search" method="GET")
-                  %input(type="text" id="search_query" name="search_query"  size="15" value="Type to search" onclick="value=''" onKeyPress="return disableEnterKey(event)" )
+              %form.nav( action="/search" method="GET")
+                %input(type="text" id="search_query" name="search_query"  size="15" value="Type to search" onclick="value=''" onKeyPress="return disableEnterKey(event)" )
 
-            - else
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/")} Home
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/login")} Login
-              %li.chromestyle{:id=>"nav"}
-                %a.chromestyle{:href => url("/register")} Register
+          - else
+            %li.nav
+              %a.nav{:href => url("/"), :id=>"home"} Home
+            %li.nav
+              %a.nav{:href => url("/login"), :id=>"login"} Login
+            %li.nav
+              %a.nav{:href => url("/register"), :id=>"register"} Register
 
 
       #content
@@ -152,16 +151,10 @@
   });
 
 :javascript
-
-  $(function() {
-    $("#nav").live("click", function() {
-
-       //Remove selected class on all buttons
-       siblings.each(function (index){
-           $(this).removeClass('selected');
-       })
-
-      $(this).addClass('selected');
-    });
+  $(function(){
+    $(document).ready( function() {
+      var selected = $("#page-identifier").val();
+      $("#"+selected+"").addClass('selected');
+      });
   });
 
