@@ -35,7 +35,7 @@
             %tr
               %td(onclick="Navigate_to('/settings');")
                 %img{:height => "40", :width => "40", :align => "center", :src => Marketplace::Database.instance.user_by_name(session[:name]).image_path}
-              %td(onclick="Navigate_to('/user/#{session[:name]}');")
+              %td(id="username_logged_in" onclick="Navigate_to('/user/#{session[:name]}');")
                 %label{style="float = 'auto'"}
                 Logged in as:
                 %br
@@ -53,7 +53,7 @@
             %li.nav{}
               %a.nav{:href => url("/"), :id=>"home"} Home
             %li.nav
-              %a.nav{:href => url("/user/#{session[:name]}"), :id=>"user"} Your profile
+              %a.nav{:href => url("/user/#{session[:name]}"), :id=>"your_profile"} Your profile
             %li.nav
               %a.nav{:href => url("/createItem"), :id=>"createItem"} Add Item
             %li.nav
@@ -150,20 +150,37 @@
       });
   });
 
+/* determines which menu item is selected*/
 :javascript
   $(function(){
     $(document).ready( function() {
-
+      /*extract pathname*/
       var path = $(location).attr('pathname');
       path.indexOf(1);
       path.toLowerCase();
       var first = path.split("/")[1];
 
       if(first == ""){
-        first = "home"
-      }
+        first = "home";
+      };
 
+      // looks if it is exactly the profile of the user that is logged in
+      var index = -1;
+      var username_lenght = $("#username_logged_in").text().length-86;
+      var second_lenght = 0
+
+      if(first == "user"){
+        var second = path.split("/")[2];
+        index = $("#username_logged_in").text().indexOf(second)
+        second_lenght =  $("#username_logged_in").text().length;
+      };
+
+      if(index >= 0 && username_lenght == second.length){
+        first = "your_profile";
+      };
+
+      //makes that menu entry bold
       $("#"+first+"").addClass('selected');
-      });
+    });
   });
 

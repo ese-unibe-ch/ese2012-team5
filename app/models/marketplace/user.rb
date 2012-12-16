@@ -135,10 +135,6 @@ module Marketplace
       "Name: #{name} Credits:#{self.credits} ItemsCount:#{self.items.length}"
     end
 
-    def name_to_s
-      "#{name}"
-    end
-
     def verify
        self.verified = true
     end
