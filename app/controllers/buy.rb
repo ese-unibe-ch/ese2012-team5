@@ -3,6 +3,7 @@ class Buy < Sinatra::Application
   before do
     @database = Marketplace::Database.instance
     @current_user = @database.user_by_name(session[:name])
+    session.default = ""
   end
 
   # Displays the Buy view where the current user can change the quantity of the choosen items.
@@ -25,19 +26,8 @@ class Buy < Sinatra::Application
   end
 
   post '/buy' do
-    #TODO factor this out
-            # Create a hash-table
-            # key is the 'item.id'
-            # value is the 'quantity' to buy
-            x = 0
-            map = Hash.new
-            while params.key?("id#{x}")
-              if params["quantity#{x}"].to_i != 0
-                map[params["id#{x}"]] = params["quantity#{x}"].to_i
-              end
-              x = x + 1
-            end
-    #TODO yep that
+
+    map = Checker.create_buy_map(params)
 
     if map.empty?
       session[:message] = "~note~You bought nothing...congrats..."
@@ -45,7 +35,6 @@ class Buy < Sinatra::Application
     end
 
     # Iterate over each item that was chosen to buy
-    session[:message] = "" #Note by urs: do this because of += is not allowed if its not a string, thx ruby for no declaring types, we love you....
     map.each_pair do |id,quantity|
       current_item = @database.item_by_id(id.to_i)
 

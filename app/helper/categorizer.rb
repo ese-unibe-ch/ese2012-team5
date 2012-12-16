@@ -37,14 +37,14 @@ module Categorizer
   def self.categorize_items(items)
     categories = Array.new
     categories if items.nil? or items.empty?
-    items.each{ |item|
+    items.each do |item|
       category = categories.detect{ |category| category.name == item.name }
       if category != nil
         category.add(item)
       else
         categories.push(Marketplace::Category.create(item))
       end
-    }
+    end
     categories
   end
 
@@ -79,19 +79,19 @@ module Categorizer
     sorted_categories = Array.new
     return sorted_categories if categories.nil? or categories.empty?
 
-    categories.each{ |category|
-      if category.items.size > 1
-        sorted_categories.push(sort_category_by_price(category))
-      else
-        sorted_categories.push(category)
-      end
-    }
+    categories.each do |category|
+      sorted_categories.push(sort_category_by_price(category))
+    end
     sorted_categories
   end
 
   # Sorts a category (its items) by their price (hardcoded descending)
   def self.sort_category_by_price(category)
-    category.items.sort! {|a,b| a.price <=> b.price}
+    if category.items.size > 1
+      category.items.sort! {|a,b| a.price <=> b.price}
+    else
+      category
+    end
   end
 
 end

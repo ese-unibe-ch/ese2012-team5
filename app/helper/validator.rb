@@ -6,7 +6,6 @@ module Validator
 
   @@min_username_length = 3
   @@max_username_length = 12
-
   @@min_password_length = 4
 
   # Checks if username is already in use and if length of username is within the given limits
@@ -24,9 +23,9 @@ module Validator
   # @param [String] password user chooses
   # @param [String] password_conf password confirmation
   # @param [Integer] length minimal length in characters password must have
-  def self.validate_password(password, password_conf, length)
+  def self.validate_password(password, password_conf)
     return "~error~password and confirmation don't match!" unless password == password_conf
-    return "~error~password too short!" if password.length<length
+    return "~error~password too short!" if password.length < @@min_password_length
     return "~error~no number in password!" unless (password =~ /[0-9]/)
     return "~error~no uppercase letter in password!" unless (password =~ /[A-Z]/)
     return "~error~no lowercase letter in password!" unless (password =~ /[a-z]/)

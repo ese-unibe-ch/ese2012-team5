@@ -15,7 +15,7 @@ class Settings < Sinatra::Application
                                   :info => message  }
   end
 
-  post '/upload' do
+  post '/upload_profile_picture' do
     file = params[:file_upload]
 
     if file != nil
@@ -42,21 +42,14 @@ class Settings < Sinatra::Application
     new_password = params[:new_password]
     conf_password = params[:conf_password]
 
-
     if Checker.check_password?(@current_user, old_password)
-      message = Validator.validate_password(new_password, conf_password, 4)
-      if message != ""
-        session[:message] = message
-        redirect '/settings'
-      end
-
+      session[:message] = Validator.validate_password(new_password, conf_password)
+      return unless session[:message] == ""
       @current_user.change_password(new_password)
+      session[:message] = "~note~password changed!"
     else
       session[:message] = "~error~old password was not correct!"
-      redirect '/settings'
     end
-
-    session[:message] = "~note~password changed!"
     redirect '/settings'
   end
 

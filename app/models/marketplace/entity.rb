@@ -1,5 +1,7 @@
 module Marketplace
 
+  #todo documentation why is this necessary
+
   class Entity
 
     attr_accessor :activities

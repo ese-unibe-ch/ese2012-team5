@@ -1,5 +1,6 @@
 module Marketplace
 
+  # todo documentation
   class User < Entity
 
     attr_accessor :name, :credits, :picture, :password, :email, :details, :verified , :subscriptions

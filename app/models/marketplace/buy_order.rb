@@ -1,7 +1,8 @@
 module Marketplace
 
   #todo:fix bug with too expensive buy orders
-
+  # Buy orders can be created by users that want to define a specific item for a specific price they would like to buy.
+  # Every time an item gets activated every buy order gets checked if the item is of any use for it.
   class BuyOrder
 
     # Static variable
@@ -38,16 +39,13 @@ module Marketplace
     # the item must have the same name and its price must be lower
     # than max_price
     def item_changed(item)
-      if item.name == self.item_name and item.price <= self.max_price
-        if item.active
-          if self.user.can_buy_item?(item, self.quantity)
-            begin
-              bought_item = self.user.buy(item, self.quantity)
-              self.delete
-            rescue ArgumentError
-            end
-          end
-        end # @note by urs: not all ifs in one for better overview
+      return unless item.name == self.item_name and item.price <= self.max_price
+      return unless item.active
+      return unless self.user.can_buy_item?(item, self.quantity)
+      begin
+        bought_item = self.user.buy(item, self.quantity)
+        self.delete
+      rescue ArgumentError
       end
     end
 

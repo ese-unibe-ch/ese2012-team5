@@ -1,5 +1,6 @@
 module Marketplace
 
+  # todo documentation
   class Item  < Entity
 
     # Static variable
@@ -47,10 +48,9 @@ module Marketplace
     # @return [Item] new item with quantity 'at'
     def split(at)
       if self.quantity < at
-        raise NotImplementedError
+        raise ArgumentError
       else
-        rest = self.quantity - at
-        self.quantity = rest
+        self.quantity -= at
         item = Item.create(self.name, self.description, self.price, at, self.owner)
         item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
         item
@@ -105,8 +105,7 @@ module Marketplace
     # @param [String] description to add
     # @param [Integer] price to add
     def add_description(timestamp, description, price)
-      sub_array = [timestamp, description, price]
-      self.description_log.push(sub_array)
+      self.description_log << [timestamp, description, price]
       self.description = description
       self.price = price
     end

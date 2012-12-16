@@ -1,5 +1,7 @@
 %link(rel="stylesheet" type="text/css" href="/style.css")
 
+<!-- review says:use '= category.something' instead of #{category.something}. shall we bother?-->
+
 :javascript
   $(document).ready(function() {
     var wholequery = $("#search_query").val()
@@ -35,7 +37,7 @@
       %th Description
       %th Buy
   %tbody
-    -if found_categories.length < 1
+    -if found_categories.empty?
       %tr(id="noresults")
         %td(colspan="6" id="ignore")
           No Results
@@ -77,7 +79,7 @@
 
 %br
 
--if found_categories.length < 1 and !closest_string.nil? and closest_string != ""
+-if found_categories.empty? and !closest_string.nil? and closest_string != ""
   %h2 Did you mean:
   %button(type="button" id = "get_new_result") #{closest_string}
   %input(type="hidden" id="closest_string" value="#{closest_string}")
