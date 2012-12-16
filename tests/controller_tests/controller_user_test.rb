@@ -33,8 +33,7 @@ class ControllerUserTest <Test::Unit::TestCase
   end
 
   def test_user_delete_account
-    element = @driver.find_element :link => "Settings"
-    element.click
+    @driver.get("localhost:4567/settings")
     element = @driver.find_element :id => "confirm_deleting"
     element.click
     element = @driver.find_element :id => "password_deleting"
@@ -46,8 +45,7 @@ class ControllerUserTest <Test::Unit::TestCase
   end
 
   def test_user_deactivate_account
-    element = @driver.find_element :link => "Settings"
-    element.click
+    @driver.get("localhost:4567/settings")
     element = @driver.find_element :id => "confirm_deactivation"
     element.click
     element = @driver.find_element :id => "password_deactivation"
@@ -68,14 +66,12 @@ class ControllerUserTest <Test::Unit::TestCase
   end
 
   def test_user_change_description
-    element = @driver.find_element :link => "Settings"
-    element.click
+    @driver.get("localhost:4567/settings")
     element = @driver.find_element :name => "details"
     element.send_keys "new description"
     element.submit
     assert_equal(@driver.current_url, "http://localhost:4567/settings")
-    element = @driver.find_element :link => "Your profile"
-    element.click
+    @driver.get("localhost:4567/user/ese")
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("new description"), "description wasnt added")
   end

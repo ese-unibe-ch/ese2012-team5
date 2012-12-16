@@ -33,8 +33,34 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element.send_keys "ese"
     element.submit
 
-    element = @driver.find_element :link => "Add BuyOrder"
-    element.click
+    @driver.get("http://localhost:4567/createBuyOrder")
+    element = @driver.find_element :name => "item_name"
+    element.send_keys ""
+    element = @driver.find_element :name => "max_price"
+    element.send_keys "100"
+    element.submit
+    element = @driver.find_element :id => "table_new"
+    assert(element.text.include?("name was empty!"), "buy order was not created")
+    assert_equal(@driver.current_url, "http://localhost:4567/createBuyOrder")
+
+    element = @driver.find_element :name => "item_name"
+    element.send_keys "Item1"
+    element = @driver.find_element :name => "max_price"
+    element.send_keys "-1"
+    element.submit
+    element = @driver.find_element :id => "table_new"
+    assert(element.text.include?("max price was smaller than minimum 1!"), "too small price not detected")
+    assert_equal(@driver.current_url, "http://localhost:4567/createBuyOrder")
+
+    element = @driver.find_element :name => "item_name"
+    element.send_keys "Item1"
+    element = @driver.find_element :name => "max_price"
+    element.send_keys "a"
+    element.submit
+    element = @driver.find_element :id => "table_new"
+    assert(element.text.include?("max price was not a number!"), "letter in price not detected")
+    assert_equal(@driver.current_url, "http://localhost:4567/createBuyOrder")
+
     element = @driver.find_element :name => "item_name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "max_price"
@@ -43,8 +69,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("you have created a new buy order."), "buy order was not created")
     assert_equal(@driver.current_url, "http://localhost:4567/user/ese")
-    element = @driver.find_element :link => "Logout"
-    element.click
+    @driver.get("http://localhost:4567/logout")
 
     element = @driver.find_element :name => "username"
     element.send_keys "Urs"
@@ -52,8 +77,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element.send_keys "123"
     element.submit
 
-    element = @driver.find_element :link => "Add Item"
-    element.click
+    @driver.get("http://localhost:4567/createItem")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
