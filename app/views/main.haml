@@ -52,7 +52,7 @@
           %img{:height => "70", :width => "70", :src => category.front_image }
         %td{:align => "center"}
           -if category.has_multiple_items
-            %div{:title => "#{category.get_items_tooltip}"}
+            %div{:title => "#{Tooltip.items_tooltip_of(category)}"}
               #{category.name} (#{category.item_count}x)
           -else
             %a{:href => "/item/#{category.items.first.id}"}#{category.name}
@@ -67,7 +67,7 @@
         %td{:align => "center"}
           -if category.has_multiple_owners
             #{category.owner_count}
-            %img{:src => "icons/user_silhouette.png", :title => "#{category.get_owner_tooltip}"}
+            %img{:src => "icons/user_silhouette.png", :title => "#{Tooltip.owner_tooltip_of(category)}"}
           -else
             %a{:href => "/user/#{category.owners.first.name}"} #{category.owners.first.name}
         %td

@@ -53,11 +53,11 @@
             %li.nav{}
               %a.nav{:href => url("/"), :id=>"home"} Home
             %li.nav
-              %a.nav{:href => url("/user/#{session[:name]}"), :id=>"your_profile"} Your profile
+              %a.nav{:href => url("/user/#{session[:name]}"), :id=>"user"} Your profile
             %li.nav
-              %a.nav{:href => url("/createItem"), :id=>"add_item"} Add Item
+              %a.nav{:href => url("/createItem"), :id=>"createItem"} Add Item
             %li.nav
-              %a.nav{:href => url("/createBuyOrder"), :id=>"add_buy_order"} Add BuyOrder
+              %a.nav{:href => url("/createBuyOrder"), :id=>"createBuyOrder"} Add BuyOrder
             %li.nav
               %a.nav{:href => url("/activity_log/5"), :id=>"activity_log"} ActivityLog
             %li.nav
@@ -153,8 +153,17 @@
 :javascript
   $(function(){
     $(document).ready( function() {
-      var selected = $("#page-identifier").val();
-      $("#"+selected+"").addClass('selected');
+
+      var path = $(location).attr('pathname');
+      path.indexOf(1);
+      path.toLowerCase();
+      var first = path.split("/")[1];
+
+      if(first == ""){
+        first = "home"
+      }
+
+      $("#"+first+"").addClass('selected');
       });
   });
 
