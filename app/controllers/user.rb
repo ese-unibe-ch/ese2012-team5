@@ -7,6 +7,11 @@ class User < Sinatra::Application
 
   get '/user/:name' do
     current_user = @database.user_by_name(session[:name])
+
+    if(@database.user_by_name(params[:name])==nil)
+      redirect "/"
+    end
+
     user = @database.user_by_name(params[:name])
 
     message = session[:message]
