@@ -33,14 +33,14 @@
     %td{:colspan => 2, :align => "center"}
       -if item.active
         %form( action="/item/#{item.id}/activate" method="POST" )
-          %input(type="submit" value="Deactivate")
+          %input(type="submit" value="Deactivate" name="change_status")
         %form( action="/item/#{item.id}/edit" method="POST" )
-          %input(type="submit" disabled="disabled" value="Edit")
+          %input(type="submit" disabled="disabled" value="Edit" id="edit_item")
       -else
         %form( action="/item/#{item.id}/activate" method="POST" )
-          %input(type="submit" value="Activate")
+          %input(type="submit" value="Activate" name="change_status")
         %form( action="/item/#{item.id}/edit" method="GET" )
-          %input(type="submit" value="Edit")
+          %input(type="submit" value="Edit" id="edit_item")
 
 %hr
 %h3 Comments

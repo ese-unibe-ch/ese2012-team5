@@ -59,5 +59,4 @@ class ControllerLoginTest <Test::Unit::TestCase
     assert(element.text.include?("wrong password!!"), "wrong password not detected")
     assert_equal(@driver.current_url, "http://localhost:4567/login")
   end
-
 end
