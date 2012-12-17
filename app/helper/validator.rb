@@ -2,8 +2,6 @@ module Validator
 
   @database = Marketplace::Database.instance
 
-  #todo create static final values
-
   @@min_username_length = 3
   @@max_username_length = 12
   @@min_password_length = 4
@@ -48,8 +46,8 @@ module Validator
     rescue ArgumentError
       return "~error~#{declaration} was not a number!"
     end
-    return "~error~#{declaration} was smaller than minimum #{min.to_i}!" if min != nil and integer.to_i<min.to_i
-    return "~error~#{declaration} was bigger than maximum #{max.to_i}!" if max != nil and integer.to_i>max.to_i
+    return "~error~#{declaration} was smaller than minimum #{min.to_i}!" if min != nil and integer.to_i < min.to_i
+    return "~error~#{declaration} was bigger than maximum #{max.to_i}!" if max != nil and integer.to_i > max.to_i
     return ""
   end
 
@@ -57,7 +55,7 @@ module Validator
   # @param [String] string to control
   # @param [String] declaration that will be showed in error message
   def self.validate_string(string, declaration)
-    return "~error~#{declaration} was empty!" if string == "" or string.strip == "" or string == nil
+    return "~error~#{declaration} was empty!" if string == "" or string.strip == "" or string.nil?
     return ""
   end
 
@@ -65,7 +63,7 @@ module Validator
   # @param [User] user to control
   def self.validate_user(user)
     return "~error~user doesn't exist!" if user.nil?
-    return "~error~your account isn't verified.</br>You must first click on the link in the email received right after registration before you can log in." if user.verified == false
+    return "~error~your account isn't verified.</br>You must first click on the link in the email received right after registration before you can log in." if !user.verified
     return ""
   end
 

@@ -55,7 +55,6 @@ class App < Sinatra::Base
 
   use Login
   use Register
-  use Images
   use ResetPassword
   use Verify
   use Main

@@ -13,12 +13,10 @@ class Item < Sinatra::Application
     session[:message] = nil
 
     if current_user
-
       if current_user == current_item.owner
         haml :item_profile_own, :locals => {  :item => current_item,
                                               :info => message,
                                               :comments => current_item.comments }
-
       else
         haml :item_profile, :locals => {  :item => current_item,
                                           :info => message,
@@ -27,9 +25,7 @@ class Item < Sinatra::Application
                                           :is_guest => false,
                                           :comments => current_item.comments }
       end
-
     else
-
       haml :item_profile, :locals => {  :item => current_item,
                                         :info => message,
                                         :canBuy => false,
@@ -37,7 +33,6 @@ class Item < Sinatra::Application
                                         :is_guest => true,
                                         :comments => nil }
     end
-
   end
 
 end

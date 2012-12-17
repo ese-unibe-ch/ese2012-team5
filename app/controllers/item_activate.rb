@@ -15,10 +15,10 @@ class ItemActivate < Sinatra::Application
 
       if current_item.active
         session[:message] = "~note~item is now active."
-        return unless current_item.status_changed(current_item.description, current_item.price.to_i)
         # Add new description into log, only if status of description and price changed
-        time_now = Time.now
-        current_item.add_description(time_now, current_item.description, current_item.price.to_i)
+        if current_item.status_changed(current_item.description, current_item.price.to_i)
+          current_item.add_description(Time.now, current_item.description, current_item.price.to_i)
+        end
       else
         session[:message] = "~note~item is now inactive."
       end
