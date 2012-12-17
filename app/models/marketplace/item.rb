@@ -197,6 +197,8 @@ module Marketplace
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end
 
+
+
     # @param [Integer] index of image in pictures array
     # @return [String] path of item profile picture at 'index'
     def image_path(index)
