@@ -21,7 +21,8 @@ class Buy < Sinatra::Application
       redirect '/'
     end
 
-    haml :buy, :locals => { :quantity => quantity,
+    haml :buy, :locals => { :current_user => @current_user,
+                            :quantity => quantity,
                             :items => sorted_category }
   end
 
