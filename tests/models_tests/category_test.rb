@@ -12,7 +12,8 @@ require_relative '../../app/models/marketplace/item.rb'
 require_relative '../../app/models/marketplace/database.rb'
 require_relative '../../app/models/marketplace/category.rb'
 
-class MyTest < Test::Unit::TestCase
+class CategoryTest < Test::Unit::TestCase
+
   def setup
     @database = Marketplace::Database.instance
 
@@ -64,4 +65,5 @@ class MyTest < Test::Unit::TestCase
     assert(bed_category.owner_count == 3,"item added, but shouldnt because wrong name")
 
   end
+
 end
