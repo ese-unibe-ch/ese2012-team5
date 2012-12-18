@@ -63,7 +63,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_add_valid
-    @driver.get("localhost:4567/createItem")
+    @driver.get("localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
@@ -78,7 +78,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_add_invalid_name
-    @driver.get("localhost:4567/createItem")
+    @driver.get("localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys ""
     element = @driver.find_element :name => "price"
@@ -93,7 +93,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_add_invalid_price
-    @driver.get("localhost:4567/createItem")
+    @driver.get("localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
@@ -106,7 +106,7 @@ class ControllerItemTest <Test::Unit::TestCase
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("price was smaller than minimum 1!"), "too small price not detected")
 
-    @driver.get("localhost:4567/createItem")
+    @driver.get("localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
@@ -121,7 +121,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_add_invalid_quantity
-    @driver.get("localhost:4567/createItem")
+    @driver.get("localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
@@ -134,7 +134,7 @@ class ControllerItemTest <Test::Unit::TestCase
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("quantity was smaller than minimum 1!"), "too small quantity not detected")
 
-    @driver.get("localhost:4567/createItem")
+    @driver.get("localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
@@ -149,7 +149,7 @@ class ControllerItemTest <Test::Unit::TestCase
   end
 
   def test_item_add_invalid_description
-    @driver.get("localhost:4567/createItem")
+    @driver.get("localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
