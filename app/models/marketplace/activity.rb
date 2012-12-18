@@ -1,5 +1,8 @@
 module Marketplace
 
+  # Activities are actions a user or an item has performed. An activity knows its owner (an item or a user),
+  # however a user or an item does not know its activities.
+  # If a user has subscribed to another user or an item, the occurred activities can be viewed in the activity log.
   class Activity
 
     attr_accessor :type, :owner, :message, :time
@@ -37,7 +40,9 @@ module Marketplace
       activity
     end
 
-    def formated_time
+    # Formats time of activity to more readable format.
+    # @return [String] formatted time
+    def formatted_time
       self.time.strftime("%Y-%m-%d %H:%M:%S")
     end
 

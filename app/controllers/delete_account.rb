@@ -5,7 +5,7 @@ class DeleteAccount < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+  # Takes care of delete account process if a user decides to delete his account
   post '/delete_account' do
     password = params[:password]
 

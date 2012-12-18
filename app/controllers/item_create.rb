@@ -5,8 +5,8 @@ class ItemCreate < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
-  get '/createItem' do
+  # Displays item_create view to logged in users.
+  get '/create_item' do
     redirect '/login' unless @current_user
 
     if @current_user
@@ -19,7 +19,8 @@ class ItemCreate < Sinatra::Application
     end
   end
 
-  post '/createItem' do
+  # Takes care of process of creating an item.
+  post '/create_item' do
     name = params[:name]
     price = params[:price]
     quantity = params[:quantity]
@@ -32,7 +33,7 @@ class ItemCreate < Sinatra::Application
     session[:message] += Validator.validate_integer(quantity, "quantity", 1, nil)
     session[:message] += Validator.validate_string(description, "description")
     if session[:message] != ""
-      redirect '/createItem'
+      redirect '/create_item'
     end
 
     new_item = Marketplace::Item.create(name, description, price.to_i, quantity.to_i, @current_user)

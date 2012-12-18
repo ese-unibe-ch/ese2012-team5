@@ -5,7 +5,7 @@ class DeactivateAccount < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+  # Takes care of deactivating an account
   post '/deactivate_account' do
     password = params[:password]
 

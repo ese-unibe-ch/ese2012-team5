@@ -5,7 +5,7 @@ class ItemMerge < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+ # Displays the item_merge view that allows a user to merge to similar items in to one.
   get '/item/:id/merge' do
     redirect '/login' unless @current_user
     current_item = @database.item_by_id(params[:id].to_i)
@@ -19,6 +19,7 @@ class ItemMerge < Sinatra::Application
                                   :item2 => other_item }
   end
 
+  # Takes care of merging two items.
   post '/item/:id/merge' do
     current_item = @database.item_by_id(params[:id].to_i)
     other_item = @database.item_by_id(params[:other_item_id].to_i)

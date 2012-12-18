@@ -4,19 +4,9 @@ class BuyConfirm < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
+  # Displays the buy_confirm view, where users are prompted to confirm the items, item prize and item quantities they are about to buy
   post '/buy/confirm' do
-    #TODO factor this out
-            # Create a hash-table
-            # key is the 'item.id'
-            # value is the 'quantity' to buy
-            x = 0
-            map = Hash.new
-            while params.key?("id#{x}")
-              map[params["id#{x}"]] = params["quantity#{x}"]
-              x = x + 1
-            end
-    #TODO yeap
+    map = Checker.create_buy_map(params)
 
     haml :buy_confirm, :locals => { :map => map }
   end

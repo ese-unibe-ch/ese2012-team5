@@ -4,7 +4,7 @@ class User < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
+  # Displays a users profile view, which is different if a user looks at his own profile.
   get '/user/:name' do
     current_user = @database.user_by_name(session[:name])
     redirect '/' unless current_user

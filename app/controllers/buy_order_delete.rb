@@ -5,8 +5,8 @@ class BuyOrderDelete < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
-  post '/deleteBuyOrder' do
+  # Takes care of deleting a buy order
+  post '/delete_buy_order' do
     id = params[:id].to_i
     buy_order = @database.buy_order_by_id(id)
 
