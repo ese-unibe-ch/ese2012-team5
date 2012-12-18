@@ -33,7 +33,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element.send_keys "ese"
     element.submit
 
-    @driver.get("http://localhost:4567/createBuyOrder")
+    @driver.get("http://localhost:4567/create_buy_order")
     element = @driver.find_element :name => "item_name"
     element.send_keys ""
     element = @driver.find_element :name => "max_price"
@@ -41,7 +41,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element.submit
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("name was empty!"), "buy order was not created")
-    assert_equal(@driver.current_url, "http://localhost:4567/createBuyOrder")
+    assert_equal(@driver.current_url, "http://localhost:4567/create_buy_order")
 
     element = @driver.find_element :name => "item_name"
     element.send_keys "Item1"
@@ -50,7 +50,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element.submit
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("max price was smaller than minimum 1!"), "too small price not detected")
-    assert_equal(@driver.current_url, "http://localhost:4567/createBuyOrder")
+    assert_equal(@driver.current_url, "http://localhost:4567/create_buy_order")
 
     element = @driver.find_element :name => "item_name"
     element.send_keys "Item1"
@@ -59,7 +59,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element.submit
     element = @driver.find_element :id => "table_new"
     assert(element.text.include?("max price was not a number!"), "letter in price not detected")
-    assert_equal(@driver.current_url, "http://localhost:4567/createBuyOrder")
+    assert_equal(@driver.current_url, "http://localhost:4567/create_buy_order")
 
     element = @driver.find_element :name => "item_name"
     element.send_keys "Item1"
@@ -77,7 +77,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element.send_keys "123"
     element.submit
 
-    @driver.get("http://localhost:4567/createItem")
+    @driver.get("http://localhost:4567/create_item")
     element = @driver.find_element :name => "name"
     element.send_keys "Item1"
     element = @driver.find_element :name => "price"
@@ -90,7 +90,7 @@ class ControllerBuyOrderTest <Test::Unit::TestCase
     element = @driver.find_element :name => "change_status"
     element.submit
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("item was already sold!"), "buy order was not created")
+    assert(element.text.include?("item was already sold"), "item not directly sold")
     assert_equal(@driver.current_url, "http://localhost:4567/user/Urs")
   end
 end
