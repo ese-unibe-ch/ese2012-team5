@@ -24,7 +24,7 @@ class ItemActivate < Sinatra::Application
       end
 
       # In case of buy_order the item is already sold or if its quantity is higher than one, one piece maybe sold
-      session[:message] += "~note~item was already sold to #{current_item.owner}!" if current_item.owner != current_user
+      session[:message] += "~note~item was already sold to #{current_item.owner.name}!" if current_item.owner != current_user
       session[:message] += "~note~one piece of Item was already sold!" if current_item.quantity != quantity_before
 
       redirect "/user/#{current_user.name}"

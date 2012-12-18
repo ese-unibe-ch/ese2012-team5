@@ -25,7 +25,7 @@ module Marketplace
       buy_order
     end
 
-    # Initial property of an item
+    # Initial property of a buy_order
     def initialize
       self.id = @@id
       @@id += 1

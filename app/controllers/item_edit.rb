@@ -30,8 +30,8 @@ class ItemEdit < Sinatra::Application
   post '/item/:id/edit' do
     current_item = @database.item_by_id(params[:id].to_i)
     new_name = params[:name]
-    new_price = params[:price]
-    new_quantity = params[:quantity]
+    new_price = params[:price].to_i
+    new_quantity = params[:quantity].to_i
     new_description = params[:description]
 
 

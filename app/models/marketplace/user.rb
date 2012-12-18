@@ -48,7 +48,7 @@ module Marketplace
     # @param [Item] item the user want to buy
     # @param [Integer] quantity of the item to buy
     # @return [Item] item that has been bought with 'quantity'
-    # raise [NotImplementedError] when user can't do this purchase
+    # raise [ArgumentError] when user can't do this purchase
     def buy(item, quantity)
       if can_buy_item?(item, quantity)
         if quantity < item.quantity
