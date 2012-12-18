@@ -25,6 +25,8 @@ class Buy < Sinatra::Application
                             :items => sorted_category }
   end
 
+  # Takes care of buy process if items are bought via main and buy confirm views.
+  # See also item_buy.rb controller for items bought via item view.
   post '/buy' do
 
     map = Checker.create_buy_map(params)

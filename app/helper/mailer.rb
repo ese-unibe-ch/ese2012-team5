@@ -1,3 +1,4 @@
+# Module that sends all marketplace related emails. Each kind of email has its own method.
 module Mailer
 
   @database = Marketplace::Database.instance

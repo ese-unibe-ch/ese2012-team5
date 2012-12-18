@@ -4,7 +4,7 @@ class Verify < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
+  # Takes care of verifying an account from the hash-link the user gets by email.
   get '/verify_account/:hash' do
     hash = params[:hash]
 

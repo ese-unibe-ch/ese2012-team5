@@ -5,7 +5,7 @@ class Settings < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+  # Displays setting page to logged in users.
   get '/settings' do
     redirect '/login' unless @current_user
 
@@ -15,6 +15,7 @@ class Settings < Sinatra::Application
                                   :info => message  }
   end
 
+  # Takes care of uploading a user profile picture.
   post '/upload_profile_picture' do
     file = params[:file_upload]
 
@@ -28,6 +29,7 @@ class Settings < Sinatra::Application
     redirect '/settings'
   end
 
+  # Takes care of changing user details.
   post '/details' do
     new_details = params[:details]
 
@@ -36,7 +38,7 @@ class Settings < Sinatra::Application
     redirect '/settings'
   end
 
-
+  # Takes care of changing user password.
   post '/change_password' do
     old_password = params[:old_password]
     new_password = params[:new_password]

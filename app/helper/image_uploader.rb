@@ -1,6 +1,5 @@
+# Module that takes care of image upload related methods.
 module ImageUploader
-
-  #TODO fix issue for multiple images with same name--> should not override
 
   def self.upload_image(file, root)
     FileUtils::cp(file[:tempfile].path, File.join(root.to_s, "public", "images", file[:filename]))

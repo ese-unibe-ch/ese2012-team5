@@ -1,6 +1,6 @@
 module Marketplace
 
-  # todo documentation
+  # Item objects are traded between users. They can also be manipulated in many ways.
   class Item  < Entity
 
     # Static variable

@@ -4,7 +4,7 @@ class Main < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
+  # Displays main view to logged in users and mainguest view to guests.
   get '/' do
     current_user = @database.user_by_name(session[:name])
 

@@ -1,3 +1,4 @@
+# Module with methods that don't fit in any other modules
 module Checker
 
   def self.check_password?(user, input_password)

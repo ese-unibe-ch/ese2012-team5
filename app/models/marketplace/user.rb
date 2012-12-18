@@ -1,6 +1,9 @@
 module Marketplace
 
-  # todo documentation
+  # Users are created when someone registers. A user needs a name and password to login and an email address to verify himself.
+  # A user has a profile page where he can put his details and a picture. The details, the picture and the password can be changed.
+  # A user can create and sell/buy items to other users in exchange for credits.
+  # A user can also subscribe to other users and items and view their activities in the activity log.
   class User < Entity
 
     attr_accessor :name, :credits, :picture, :password, :email, :details, :verified , :subscriptions

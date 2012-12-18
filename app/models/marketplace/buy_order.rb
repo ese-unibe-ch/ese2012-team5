@@ -38,7 +38,7 @@ module Marketplace
     # the item must have the same name and its price must be lower
     # than max_price
     def item_changed(item)
-      return unless item.name == self.item_name and item.price <= self.max_price
+      return unless item.name == self.item_name and item.price.to_i <= self.max_price.to_i
       return unless item.active
       return unless self.user.can_buy_item?(item, self.quantity)
       begin

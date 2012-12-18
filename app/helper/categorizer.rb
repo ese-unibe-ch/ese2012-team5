@@ -1,3 +1,5 @@
+# Module that takes care of all methods that have to do with categorizing items into
+# categories (see also category class) and sorting these items within the categories.
 module Categorizer
 
   @database = Marketplace::Database.instance

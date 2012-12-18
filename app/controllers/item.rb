@@ -4,7 +4,10 @@ class Item < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
+  # Displays item view, which is different for each of these three cases:
+  # -Logged in user displays his own item
+  # -Logged in user displays another user's item
+  # -Guest (not logged in user) displays an item
   get '/item/:id' do
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])

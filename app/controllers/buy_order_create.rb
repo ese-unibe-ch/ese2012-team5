@@ -5,15 +5,16 @@ class BuyOrderCreate < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
-  get '/createBuyOrder' do
+  # Displays the create_buy_order view, redirects to login if user isn't logged in.
+  get '/create_buy_order' do
     redirect '/login' unless @current_user
     message = session[:message]
     session[:message] = nil
     haml :buy_order_create, :locals => {:info => message }
   end
 
-  post '/createBuyOrder' do
+  # Takes care of creating a buy_order if user input is accepted
+  post '/create_buy_order' do
     item_name = params[:item_name]
     max_price = params[:max_price]
 
@@ -21,7 +22,7 @@ class BuyOrderCreate < Sinatra::Application
     session[:message] += Validator.validate_string(item_name, "name")
     session[:message] += Validator.validate_integer(max_price, "max price", 1, nil)
     if session[:message] != ""
-      redirect '/createBuyOrder'
+      redirect '/create_buy_order'
     end
 
     # Check if buy_order is already satisfiable
