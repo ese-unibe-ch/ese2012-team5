@@ -112,17 +112,17 @@ class ControllerRegisterTest <Test::Unit::TestCase
   def test_valid_registration
     @driver.get("localhost:4567/register")
     element = @driver.find_element :id => "username_register"
-    element.send_keys "User1"
+    element.send_keys "User2"
     element = @driver.find_element :id => "email_register"
-    element.send_keys "valid_mail@lalala.com"
+    element.send_keys "valid_mail2@lalala.com"
     element = @driver.find_element :id => "password_register"
-    element.send_keys "Hallo1"
+    element.send_keys "Hallo12"
     element = @driver.find_element :id => "password_conf_register"
-    element.send_keys "Hallo1"
+    element.send_keys "Hallo12"
     element.submit
 
     element = @driver.find_element :id => "table_new"
-    assert(element.text.include?("User1 created."), "user couldnt be created")
-    assert_equal(@driver.current_url, "http://localhost:4567/register")
+    assert(element.text.include?("User2 created."), "user couldnt be created")
+    assert_equal(@driver.current_url, "http://localhost:4567/")
   end
 end
