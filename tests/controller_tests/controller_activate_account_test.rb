@@ -41,12 +41,12 @@ class ControllerActivateAccountTest < Test::Unit::TestCase
     @driver.find_element(:xpath, "(//a[contains(text(),'Register')])[2]").click
     @driver.find_element(:xpath, "(//input[@name='username'])[2]").clear
     @driver.find_element(:xpath, "(//input[@name='username'])[2]").send_keys @username
-    @driver.find_element(:id, "email").clear
-    @driver.find_element(:id, "email").send_keys @random_email
-    @driver.find_element(:id, "password").clear
-    @driver.find_element(:id, "password").send_keys "guessM33"
-    @driver.find_element(:id, "password_conf").clear
-    @driver.find_element(:id, "password_conf").send_keys "guessM33"
+    @driver.find_element(:name, "email").clear
+    @driver.find_element(:name, "email").send_keys @random_email
+    @driver.find_element(:xpath, "(//input[@name='password'])[2]").clear
+    @driver.find_element(:xpath, "(//input[@name='password'])[2]").send_keys "guessM33"
+    @driver.find_element(:name, "password_conf").clear
+    @driver.find_element(:name, "password_conf").send_keys "guessM33"
     @driver.find_element(:css, "td > input[type=\"submit\"]").click
 
     @driver.get("http://trash-mail.com/index.php")

@@ -30,7 +30,7 @@ module Marketplace
     # @return [Category] category with item
     def add(item)
       raise NotImplementedError if item.name != self.name
-      self.items.push(item)
+          self.items.push(item)
       if self.min_price > item.price.to_i
         self.min_price = item.price.to_i
       end
