@@ -40,6 +40,8 @@ module Marketplace
       activity
     end
 
+    # Formats time of activity to more readable format.
+    # @return [String] formatted time
     def formatted_time
       self.time.strftime("%Y-%m-%d %H:%M:%S")
     end

@@ -48,9 +48,12 @@ module Marketplace
       end
     end
 
+    # To String method of buy_order.
+    # @return [String] Data of buy_order object in String format.
     def to_s
       "Item Name: #{item_name} Max Price:#{self.max_price} User:#{self.user.name}"
     end
+
 
     def delete
       Marketplace::Database.instance.delete_buy_order(self)

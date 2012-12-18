@@ -85,6 +85,7 @@ module Marketplace
       Marketplace::Activity.create(Activity.ITEM_ACTIVATE, self, "#{self.name} has been activated")
     end
 
+    # Deactivates item and fires Item(=Event) to all buy_orders
     def deactivate
       self.active = false
       Marketplace::Activity.create(Activity.ITEM_DEACTIVATE, self, "#{self.name} has been deactivated")
@@ -164,6 +165,8 @@ module Marketplace
       self.comments.clear
     end
 
+    # Adds image to item pictures
+    # @param [String] picture url
     def add_image(url)
         self.pictures.push(url)
     end
@@ -192,6 +195,8 @@ module Marketplace
       Marketplace::Database.instance.delete_item(self)
     end
 
+    # To String method of Item class.
+    # @return [String] values of Item object.
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end

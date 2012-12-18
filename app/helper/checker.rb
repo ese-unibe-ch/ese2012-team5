@@ -1,6 +1,7 @@
 # Module with methods that don't fit in any other modules
 module Checker
 
+  # checks if the input password matches the saved and encrypted password of the user.
   def self.check_password?(user, input_password)
     proper_password = BCrypt::Password.new(user.password)
     proper_password == input_password
