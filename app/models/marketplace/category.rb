@@ -27,11 +27,10 @@ module Marketplace
     end
 
     # Adds an item to the category an updates attributes where required
-    # @param [Item] item to add
+    # @param [Item] item to add. item.name must be equal to category name.
     # @return [Category] category with item
     def add(item)
-      raise NotImplementedError if item.name != self.name
-          self.items.push(item)
+      self.items.push(item)
       if self.min_price > item.price.to_i
         self.min_price = item.price.to_i
       end

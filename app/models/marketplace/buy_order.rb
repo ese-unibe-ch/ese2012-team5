@@ -33,6 +33,7 @@ module Marketplace
     end
 
     # Called every time a item changes
+    # Don't call this method by yourself, it will be called by the system
     # First buy_order that is able to buy the item will get it ;)
     # To be able to buy the item, the user must have enough credits,
     # the item must have the same name and its price must be lower
@@ -41,11 +42,8 @@ module Marketplace
       return unless item.name == self.item_name and item.price.to_i <= self.max_price.to_i
       return unless item.active
       return unless self.user.can_buy_item?(item, self.quantity)
-      begin
-        self.user.buy(item, self.quantity)
-        self.delete
-      rescue ArgumentError
-      end
+      self.user.buy(item, self.quantity)
+      self.delete
     end
 
     # To String method of buy_order.

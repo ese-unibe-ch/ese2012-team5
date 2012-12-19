@@ -10,10 +10,10 @@ module Marketplace
     attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log, :comments
 
     # Constructor that will automatic add new item to database
-    # @param [String] name of the new item
-    # @param [Float] price of the new item
-    # @param [Integer] quantity of the new item
-    # @param [User] owner of the new item
+    # @param [String] name of the new item. length must be >=1.
+    # @param [Float] price of the new item. must be positive.
+    # @param [Integer] quantity of the new item. must be positive.
+    # @param [User] owner of the new item. must be a user that exists in database.
     # @return [Item] created item
     def self.create(name, description, price, quantity, owner)
       item = self.new
@@ -43,29 +43,20 @@ module Marketplace
     # Splits the item into two separate items
     # This item will have the rest quantity '(self.quantity - at)'
     # The new created items quantity will be 'at'
-    # raise [NotImplementedError] if its not possible to split item at 'at'
-    # @param [Integer] at index where to split the item
+    # @param [Integer] at index where to split the item. must be smaller than quantity of this item.
     # @return [Item] new item with quantity 'at'
     def split(at)
-      if self.quantity < at
-        raise ArgumentError
-      else
-        self.quantity -= at
-        item = Item.create(self.name, self.description, self.price, at, self.owner)
-        item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
-        item
-      end
+      self.quantity -= at
+      item = Item.create(self.name, self.description, self.price, at, self.owner)
+      item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
+      item
     end
 
     # Merges two similar items together
-    # raise [NotImplementedError] if this and item are not mergeable
+    # @param [Item] item to merge with. Must be mergeable with this item.
     def merge(item)
-      if mergeable?(item)
-        self.quantity = self.quantity + item.quantity
-        item.delete
-      else
-        raise NotImplementedError
-      end
+      self.quantity = self.quantity + item.quantity
+      item.delete
     end
 
     # Checks if two items are similar

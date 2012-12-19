@@ -11,10 +11,14 @@ module Marketplace
       self.activities = Array.new
     end
 
+    # Adds activity to activities of entity
+    # @param [Activity] activity to add
     def add_activity(activity)
       activities << activity
     end
 
+    # Deletes
+    # @param [Activity] activity to delete
     def delete_activity(activity)
       activities.delete(activity)
     end
