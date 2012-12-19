@@ -4,7 +4,7 @@ class Login < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
+  # Displays login view to not logged in users.
   get '/login' do
     redirect '/' if session[:name]
 
@@ -13,6 +13,7 @@ class Login < Sinatra::Application
     haml :login, :locals => { :info => message}
   end
 
+  # Takes care of logging in process. Redirects to login view as long as login is not successful.
   post '/login' do
     username = params[:username]
     password = params[:password]
@@ -45,9 +46,12 @@ class Login < Sinatra::Application
     end
   end
 
+  # Takes care of logging out
   get '/logout' do
-    session[:name] = nil
-    session[:message] = "~note~logged out."
+    if !session[:name].nil?
+      session[:name]= nil
+      session[:message] = "~note~logged out."
+    end
 
     redirect '/login'
   end

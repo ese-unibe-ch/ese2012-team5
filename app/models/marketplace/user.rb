@@ -1,5 +1,9 @@
 module Marketplace
 
+  # Users are created when someone registers. A user needs a name and password to login and an email address to verify himself.
+  # A user has a profile page where he can put his details and a picture. The details, the picture and the password can be changed.
+  # A user can create and sell/buy items to other users in exchange for credits.
+  # A user can also subscribe to other users and items and view their activities in the activity log.
   class User < Entity
 
     attr_accessor :name, :credits, :picture, :password, :email, :details, :verified , :subscriptions
@@ -29,6 +33,8 @@ module Marketplace
       self.subscriptions = Array.new
     end
 
+    # @param [Integer] amount of credits that user must have to perform action
+    # @return [Boolean] true if user has at least amount of credits
     def has_enough_credits?(amount)
       self.credits >= amount
     end
@@ -39,30 +45,26 @@ module Marketplace
     end
 
     # Buy method that covers the whole buy process
-    # @param [Item] item the user want to buy
-    # @param [Integer] quantity of the item to buy
+    # The user must be able to afford the price of quantity*item. CHeck with method can_buy_item?(item, quantity)
+    # @param [Item] item the user want to buy. Must be active. Must not belong to this user.
+    # @param [Integer] quantity of the item to buy. Must be in range of item quantity.
     # @return [Item] item that has been bought with 'quantity'
-    # raise [NotImplementedError] when user can't do this purchase
     def buy(item, quantity)
-      if can_buy_item?(item, quantity)
-        if quantity < item.quantity
-          item_to_buy = item.split(quantity)
-        else
-          item_to_buy = item
-        end
-        seller = item_to_buy.owner
-        seller.sell(item_to_buy)
-        item_to_buy.owner = self
-        self.remove_credits(item_to_buy.price * quantity)
-        item_to_buy.deactivate
-        Marketplace::Activity.create(Activity.ITEM_BOUGHT, item, "#{item.name} has been bought by #{self.name}")
-        Marketplace::Activity.create(Activity.USER_BOUGHT_ITEM, self, "#{self.name} bought #{item.name}")
-        #delete the history in the description log, except the newest entry
-        item_to_buy.clean_description_log
-        item_to_buy.clean_comments
+      if quantity < item.quantity
+        item_to_buy = item.split(quantity)
       else
-        raise NotImplementedError
+        item_to_buy = item
       end
+      seller = item_to_buy.owner
+      seller.sell(item_to_buy)
+      item_to_buy.owner = self
+      self.remove_credits(item_to_buy.price * quantity)
+      item_to_buy.deactivate
+      Marketplace::Activity.create(Activity.ITEM_BOUGHT, item, "#{item.name} has been bought by #{self.name}")
+      Marketplace::Activity.create(Activity.USER_BOUGHT_ITEM, self, "#{self.name} bought #{item.name}")
+      #delete the history in the description log, except the newest entry
+      item_to_buy.clean_description_log
+      item_to_buy.clean_comments
       item_to_buy
     end
 
@@ -74,10 +76,12 @@ module Marketplace
       Marketplace::Activity.create(Activity.USER_SOLD_ITEM, self, "#{self.name} sold #{item.name}")
     end
 
+    # @param [Integer] amount of credits to add to user's total
     def add_credits(amount)
       self.credits += amount
     end
 
+    # @param [Integer] amount of credits to remove from user's total
     def remove_credits(amount)
       self.credits -= amount
     end
@@ -125,16 +129,21 @@ module Marketplace
       Marketplace::Activity.create(Activity.USER_DEACTIVATE, self, "#{self.name} has been deactivated")
     end
 
+    # Activates the user
+    # Therefore re-adds user to database
     def activate
       Marketplace::Database.instance.delete_deactivated_user(self)
       Marketplace::Database.instance.add_user(self)
       Marketplace::Activity.create(Activity.USER_REACTIVATE, self, "#{self.name} has been reactivated")
     end
 
+    # To String method of User object.
+    # @return [String] data of User object
     def to_s
       "Name: #{name} Credits:#{self.credits} ItemsCount:#{self.items.length}"
     end
 
+    # Sets the verification status of User to verified
     def verify
        self.verified = true
     end
@@ -148,14 +157,20 @@ module Marketplace
       end
     end
 
+    # Adds entity to User's subscription list
+    # @param [Entity] to add
     def add_subscription(entity)
       subscriptions << entity
     end
 
+    # Removes entity from User's subscription list
+    # @param [Entity] to remove
     def delete_subscription(entity)
       subscriptions.delete(entity)
     end
 
+    # @param [Entity] to check
+    # @return [Boolean] true if User follows entity
     def follows?(entity)
       subscriptions.include?(entity)
     end

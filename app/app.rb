@@ -22,6 +22,7 @@ require_relative 'helper/validator.rb'
 require_relative 'helper/checker.rb'
 require_relative 'helper/image_uploader.rb'
 require_relative 'helper/categorizer.rb'
+require_relative 'helper/tooltip.rb'
 
 
 require_relative 'controllers/main.rb'
@@ -45,7 +46,6 @@ require_relative 'controllers/buy_confirm.rb'
 require_relative 'controllers/verify'
 require_relative 'controllers/buy_order_create.rb'
 require_relative 'controllers/buy_order_delete.rb'
-require_relative 'controllers/images.rb'
 require_relative 'controllers/user_follow.rb'
 require_relative 'controllers/item_follow.rb'
 require_relative 'controllers/activity_log.rb'
@@ -56,7 +56,6 @@ class App < Sinatra::Base
 
   use Login
   use Register
-  use Images
   use ResetPassword
   use Verify
   use Main

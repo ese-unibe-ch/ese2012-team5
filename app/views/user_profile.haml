@@ -7,11 +7,11 @@
   -if !is_following
     %div{:align => "right"}
       %form( action="/user/#{user.name}/follow" method="POST" )
-        %input(type="submit" value="Follow")
+        %input(type="submit" value="Follow" id="follow")
   -else
     %div{:align => "right"}
       %form( action="/user/#{user.name}/unfollow" method="POST" )
-        %input(type="submit" value="Unfollow")
+        %input(type="submit" value="Unfollow" id="unfollow")
 %br
 
 =haml :'message_template', :locals => { :info => info }

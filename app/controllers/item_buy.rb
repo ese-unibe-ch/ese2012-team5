@@ -4,7 +4,8 @@ class ItemBuy < Sinatra::Application
     @database = Marketplace::Database.instance
   end
 
-
+  # Takes care of buy process of an item if bought via item view.
+  # See also buy.rb controller for buy process via main and buy confirm view.
   post '/item/:id/buy' do
     current_item = @database.item_by_id(params[:id].to_i)
     current_user = @database.user_by_name(session[:name])

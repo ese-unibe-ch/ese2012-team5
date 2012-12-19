@@ -13,7 +13,7 @@
     %br
     %td
       %h3 Upload new picture
-      %form(action = "/upload" method = "POST" enctype="multipart/form-data")
+      %form(action = "/upload_profile_picture" method = "POST" enctype="multipart/form-data")
         %input(type='file' name="file_upload" accept="image/*")
         %input(type='submit' value='Upload')
 
@@ -45,18 +45,18 @@
       %br
       %h2 Note: this cannot be undone!
       %form( action="/delete_account" method="POST" )
-        %input(type="checkbox" name="confirm" value="true") Yes, I want to delete my account. I am aware that this cannot be undone.
+        %input(type="checkbox" name="confirm" value="true" id="confirm_deleting") Yes, I want to delete my account. I am aware that this cannot be undone.
         %br
         %label Please enter password to ensure verification:
-        %input(type="password" name="password")
+        %input(type="password" name="password" id="password_deleting")
         %input(type="submit" value="Delete my account")
     %tr
       %td{:colspan => "2"}
         %h3 Deactivate account
         %p All information will be restored in case of you login again.
         %form( action="/deactivate_account" method="POST" )
-          %input(type="checkbox" name="confirm" value="true") Yes, I want to deactivate my account.
+          %input(type="checkbox" name="confirm" value="true" id="confirm_deactivation") Yes, I want to deactivate my account.
           %br
           %label Please enter password to ensure verification:
-          %input(type="password" name="password")
+          %input(type="password" name="password" id="password_deactivation")
           %input(type="submit" value="Deactivate my account")

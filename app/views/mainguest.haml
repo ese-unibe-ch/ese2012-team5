@@ -28,7 +28,8 @@ and join the wonderful world of trading.
           %img{:height => "70", :width => "70", :src => category.front_image }
         %td{:align => "center"}
           -if category.has_multiple_items
-            #{category.name} (#{category.item_count}x)
+            %div{:title => "#{Tooltip.items_tooltip_of(category)}"}
+              #{category.name} (#{category.item_count}x)
           -else
             %a{:href => "/item/#{category.items.first.id}"}#{category.name}
         %td{:align => "center"}
@@ -42,6 +43,8 @@ and join the wonderful world of trading.
         %td{:align => "center"}
           -if category.has_multiple_owners
             #{category.owner_count}
-            %img{:src => "icons/user_silhouette.png" }
+            %img{:src => "icons/user_silhouette.png", :title => "#{Tooltip.owner_tooltip_of(category)}"}
           -else
             %a{:href => "/user/#{category.owners.first.name}"} #{category.owners.first.name}
+
+%input(id="page-identifier" type="hidden" value="home")

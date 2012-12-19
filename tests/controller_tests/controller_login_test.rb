@@ -12,7 +12,7 @@ require_relative '../../app/controllers/login.rb'
 require_relative '../../app/controllers/main.rb'
 
 
-class Controller_Login_Test <Test::Unit::TestCase
+class ControllerLoginTest <Test::Unit::TestCase
 
   def setup
     @driver = Selenium::WebDriver.for :firefox
@@ -59,5 +59,4 @@ class Controller_Login_Test <Test::Unit::TestCase
     assert(element.text.include?("wrong password!!"), "wrong password not detected")
     assert_equal(@driver.current_url, "http://localhost:4567/login")
   end
-
 end

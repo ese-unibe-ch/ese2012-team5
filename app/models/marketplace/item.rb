@@ -1,5 +1,6 @@
 module Marketplace
 
+  # Item objects are traded between users. They can also be manipulated in many ways.
   class Item  < Entity
 
     # Static variable
@@ -9,10 +10,10 @@ module Marketplace
     attr_accessor :id, :name, :price, :owner, :active, :quantity, :pictures, :description, :description_log, :comments
 
     # Constructor that will automatic add new item to database
-    # @param [String] name of the new item
-    # @param [Float] price of the new item
-    # @param [Integer] quantity of the new item
-    # @param [User] owner of the new item
+    # @param [String] name of the new item. length must be >=1.
+    # @param [Float] price of the new item. must be positive.
+    # @param [Integer] quantity of the new item. must be positive.
+    # @param [User] owner of the new item. must be a user that exists in database.
     # @return [Item] created item
     def self.create(name, description, price, quantity, owner)
       item = self.new
@@ -42,30 +43,20 @@ module Marketplace
     # Splits the item into two separate items
     # This item will have the rest quantity '(self.quantity - at)'
     # The new created items quantity will be 'at'
-    # raise [NotImplementedError] if its not possible to split item at 'at'
-    # @param [Integer] at index where to split the item
+    # @param [Integer] at index where to split the item. must be smaller than quantity of this item.
     # @return [Item] new item with quantity 'at'
     def split(at)
-      if self.quantity < at
-        raise NotImplementedError
-      else
-        rest = self.quantity - at
-        self.quantity = rest
-        item = Item.create(self.name, self.description, self.price, at, self.owner)
-        item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
-        item
-      end
+      self.quantity -= at
+      item = Item.create(self.name, self.description, self.price, at, self.owner)
+      item.active = true #NOTE by urs: do not use item.activate or you start the buyOrder listeners!
+      item
     end
 
     # Merges two similar items together
-    # raise [NotImplementedError] if this and item are not mergeable
+    # @param [Item] item to merge with. Must be mergeable with this item.
     def merge(item)
-      if mergeable?(item)
-        self.quantity = self.quantity + item.quantity
-        item.delete
-      else
-        raise NotImplementedError
-      end
+      self.quantity = self.quantity + item.quantity
+      item.delete
     end
 
     # Checks if two items are similar
@@ -85,6 +76,7 @@ module Marketplace
       Marketplace::Activity.create(Activity.ITEM_ACTIVATE, self, "#{self.name} has been activated")
     end
 
+    # Deactivates item and fires Item(=Event) to all buy_orders
     def deactivate
       self.active = false
       Marketplace::Activity.create(Activity.ITEM_DEACTIVATE, self, "#{self.name} has been deactivated")
@@ -105,8 +97,7 @@ module Marketplace
     # @param [String] description to add
     # @param [Integer] price to add
     def add_description(timestamp, description, price)
-      sub_array = [timestamp, description, price]
-      self.description_log.push(sub_array)
+      self.description_log << [timestamp, description, price]
       self.description = description
       self.price = price
     end
@@ -165,6 +156,8 @@ module Marketplace
       self.comments.clear
     end
 
+    # Adds image to item pictures
+    # @param [String] picture url
     def add_image(url)
         self.pictures.push(url)
     end
@@ -193,9 +186,13 @@ module Marketplace
       Marketplace::Database.instance.delete_item(self)
     end
 
+    # To String method of Item class.
+    # @return [String] values of Item object.
     def to_s
       "Name: #{name} Price:#{self.price} Quantity:#{self.quantity} Active:#{self.active} Owner:#{self.owner.name}"
     end
+
+
 
     # @param [Integer] index of image in pictures array
     # @return [String] path of item profile picture at 'index'

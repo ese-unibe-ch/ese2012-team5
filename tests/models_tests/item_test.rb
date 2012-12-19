@@ -1,124 +1,124 @@
-require "test/unit"
+require 'test/unit'
 require 'rubygems'
 require 'bcrypt'
 require 'tilt/haml'
 require 'webget_ruby_secure_random'
 require 'require_relative'
 
-
-require '../../app/models/marketplace/entity.rb'
-require '../../app/models/marketplace/user.rb'
-require '../../app/models/marketplace/activity.rb'
-require '../../app/models/marketplace/user.rb'
-require '../../app/models/marketplace/item.rb'
-require '../../app/models/marketplace/buy_order.rb'
-require '../../app/models/marketplace/search_result.rb'
-require '../../app/models/marketplace/database.rb'
-require '../../app/helper/mailer.rb'
-require '../../app/helper/validator.rb'
-require '../../app/helper/checker.rb'
-require '../../app/helper/image_uploader.rb'
+require_relative '../../app/models/marketplace/entity.rb'
+require_relative '../../app/models/marketplace/activity.rb'
+require_relative '../../app/models/marketplace/user.rb'
+require_relative '../../app/models/marketplace/item.rb'
+require_relative '../../app/models/marketplace/database.rb'
 
 
-class Item_Test < Test::Unit::TestCase
+class ItemTest < Test::Unit::TestCase
+
   def setup
-    @user1 = Marketplace::User.create('user1','pW123','test@testmail1.com')
-    @user2 = Marketplace::User.create('user2','pW123','test@testmail2.com')
-    @item1 = Marketplace::Item.create('Table', "No Description", 100, 20, @user1)
-    @item2 = Marketplace::Item.create('Chair', "No Description", 50, 20, @user1)
-    @item3 = Marketplace::Item.create('Book', "No Description", 50, 20, @user1)
+    @datebase = Marketplace::Database.instance
+
+    @daniel = Marketplace::User.create('Daniel','hallo','test@testmail1.com')
+    @joel = Marketplace::User.create('Joel','test','test@testmail2.com')
+
+    @table = Marketplace::Item.create('Table', "No Description", 100, 20, @daniel)
+    @chair = Marketplace::Item.create('Chair', "No Description", 50, 20, @daniel)
+    @book = Marketplace::Item.create('Book', "No Description", 50, 20, @daniel)
   end
 
   def teardown
     Marketplace::Database.reset_database
   end
 
-  def test_user_initialization
-    assert(!@item1.name.nil? ,"item name is nil")
-    assert_equal("Table", @item1.name, "wrong item name")
+  def test_item_initialization
+    assert(!@table.name.nil? ,"item name is nil")
+    assert_equal("Table", @table.name, "wrong item name")
 
-    assert(!@item1.description.nil? ,"description is nil")
-    assert_equal("No Description", @item1.description, "wrong description")
+    assert(!@table.description.nil? ,"description is nil")
+    assert_equal("No Description", @table.description, "wrong description")
 
-    assert(!@item1.price.nil? ,"price is nil")
-    assert_equal(100, @item1.price, "wrong price")
+    assert(!@table.price.nil? ,"price is nil")
+    assert_equal(100, @table.price, "wrong price")
 
-    assert(!@item1.quantity.nil? ,"quantity is nil")
-    assert_equal(20, @item1.quantity, "wrong quantity")
+    assert(!@table.quantity.nil? ,"quantity is nil")
+    assert_equal(20, @table.quantity, "wrong quantity")
 
-    assert(!@item1.owner.nil? ,"owner attribute is nil")
-    assert_equal(@user1, @item1.owner, "wrong owner")
+    assert(!@table.owner.nil? ,"owner attribute is nil")
+    assert_equal(@daniel, @table.owner, "wrong owner")
 
-    assert(!@item1.pictures.nil? ,"pictures attribute is nil")
-    assert_equal(0, @item1.pictures.length(), "wrong pictures length")
+    assert(!@table.pictures.nil? ,"pictures attribute is nil")
+    assert_equal(0, @table.pictures.length(), "wrong pictures length")
 
-    assert(!@item1.description_log.nil? ,"description_log attribute is nil")
-    assert_equal(1, @item1.description_log.length(), "wrong description_log length")
+    assert(!@table.description_log.nil? ,"description_log attribute is nil")
+    assert_equal(1, @table.description_log.length(), "wrong description_log length")
 
-    assert(!@item1.id.nil? ,"id attribute is nil")
+    assert(!@table.id.nil? ,"id attribute is nil")
   end
 
   def test_item_split_and_merge
-    @item1.split(10)
-    assert(@item1.quantity,"Wrong split quantity")
-    @user_items = @user1.items
-    @item4 = @user_items[3]
-    assert(@item1.mergeable?(@item4),"The same Items should be mergeable")
-    assert(!@item1.mergeable?(@item2),"Different Items should not be mergeable")
-    @item1.merge(@item4)
-    assert(@item1.quantity==20,"Wrong merge quantity")
+    table_rest = @table.split(8)
+    assert_equal(@table.quantity, 12, "wrong split quantity")
+    assert_equal(table_rest.quantity, 8, "wrong split quantity")
+
+
+    assert(@table.mergeable?(table_rest), "same items should be mergeable")
+    assert(!@table.mergeable?(@chair), "different items should not be mergeable")
+
+    @table.merge(table_rest)
+    assert_equal(@table.quantity, 20, "wrong merge quantity")
   end
 
   def test_item_activate_deactivate
-    @item1.activate
-    assert(@item1.active,"Item should be active when activated")
-    @item1.deactivate
-    assert(!@item1.active,"Item should be inactive when deactivated")
-    @item1.switch_active
-    assert(@item1.active,"Item should be active when switechd from inactive")
-    @item1.switch_active
-    assert(!@item1.active,"Item should be inactive when switeched from active")
+    @table.activate
+    assert(@table.active, "item should be active when activated")
+    @table.deactivate
+    assert(!@table.active, "item should be inactive when deactivated")
+    @table.switch_active
+    assert(@table.active, "item should be active when switechd from inactive")
+    @table.switch_active
+    assert(!@table.active, "item should be inactive when switeched from active")
   end
 
   def test_item_description_and_description_log
-    @time_now = Time.new
-    @item1.add_description(@time_now,"Number1",10)
-    assert(@item1.description=="Number1","descriptions is wrong")
-    assert(@item1.price==10,"price is wrong")
-    assert(@item1.description_log.length==2,"old description wasnt added to log")
-    @item1.add_description(Time.new,"Number2",20)
-    assert(@item1.description=="Number2","descriptions is wrong")
-    assert(@item1.price==20,"price is wrong")
-    assert(@item1.description_log.length==3,"old description wasnt added to log")
+    time_now = Time.now
 
-    assert(@item1.description_from_log(@time_now)=="No Description","retrieving description from log failed")
-    assert(@item1.price_from_log(@time_now)==100,"retrieving price from log failed")
+    @table.add_description(time_now, "Number1", 10)
+    assert_equal(@table.description, "Number1", "descriptions is wrong")
+    assert_equal(@table.price, 10, "price is wrong")
+    assert_equal(@table.description_log.length, 2, "old description wasnt added to log")
 
-    assert(@item1.status_changed("Number1",10),"Status has changed")
-    assert(!@item1.status_changed("Number2",20),"Status hasnt changed")
+    @table.add_description(Time.new, "Number2", 20)
+    assert_equal(@table.description, "Number2", "descriptions is wrong")
+    assert_equal(@table.price, 20, "price is wrong")
+    assert_equal(@table.description_log.length, 3, "old description wasnt added to log")
 
-    @item1.clean_description_log
-    assert(@item1.description_log.length==1,"old description should be deleted")
+    assert_equal(@table.description_from_log(time_now), "No Description", "retrieving description from log failed")
+    assert_equal(@table.price_from_log(time_now), 100, "retrieving price from log failed")
+
+    assert(@table.status_changed("Number1",10), "status has changed")
+    assert(!@table.status_changed("Number2",20), "status hasn't changed")
+
+    @table.clean_description_log
+    assert_equal(@table.description_log.length, 1, "old description should be deleted")
   end
 
   def test_item_image_handling
-    @item1.add_image("new_image.jpg")
-    assert(@item1.pictures[0]=="new_image.jpg","Images wasnt added")
-    @item1.add_image("new_image1.jpg")
-    assert(@item1.pictures[0]=="new_image.jpg","Images wasnt added")
-    @item1.select_front_image(1)
-    assert(@item1.pictures[0]=="new_image1.jpg","Images wasnt put in front")
+    @table.add_image("new_image.jpg")
+    assert_equal(@table.pictures[0], "new_image.jpg", "images wasnt added")
+    @table.add_image("new_image1.jpg")
+    assert_equal(@table.pictures[1], "new_image1.jpg", "images wasnt added")
+    @table.select_front_image(1)
+    assert_equal(@table.pictures[0], "new_image1.jpg", "images wasnt put in front")
   end
 
   def test_item_image_path
-    assert(@item1.image_path(0)=="/images/default_item.jpg","didnt get default image ")
-    @item1.add_image("xxx.jpg")
-    assert(@item1.image_path(0)=="/images/xxx.jpg","current image path is wrong")
+    assert_equal(@table.image_path(0), "/images/default_item.jpg", "didnt get default image ")
+    @table.add_image("xxx.jpg")
+    assert_equal(@table.image_path(0), "/images/xxx.jpg", "current image path is wrong")
   end
 
   def test_image_delete
-    @item_test = @item1
-    @item1.delete
-    assert(!@user1.items.include?(@item_test),"Item should be deleted")
+    @table.delete
+    assert(!@daniel.items.include?(@table), "item should be deleted")
   end
+
 end

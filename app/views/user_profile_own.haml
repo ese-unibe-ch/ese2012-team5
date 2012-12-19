@@ -65,6 +65,6 @@
           %td
             #{buy_order.max_price}
           %td
-            %form( action="/deleteBuyOrder" method="POST" )
+            %form( action="/delete_buy_order" method="POST" )
               %input(type="hidden" value="#{buy_order.id}" name="id")
               %input(type="submit" value="Delete")

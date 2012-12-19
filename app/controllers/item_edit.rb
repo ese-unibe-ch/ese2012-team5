@@ -5,7 +5,7 @@ class ItemEdit < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+  # Displays item_edit view to user that owns the item if item is deactivated
   get '/item/:id/edit' do
     redirect '/login' unless @current_user
     current_item = @database.item_by_id(params[:id].to_i)
@@ -26,11 +26,12 @@ class ItemEdit < Sinatra::Application
                                  :info => message }
   end
 
+  # Takes care of editing an item's attributes (name, price, quantity, description)
   post '/item/:id/edit' do
     current_item = @database.item_by_id(params[:id].to_i)
     new_name = params[:name]
-    new_price = params[:price]
-    new_quantity = params[:quantity]
+    new_price = params[:price].to_i
+    new_quantity = params[:quantity].to_i
     new_description = params[:description]
 
 
@@ -51,6 +52,7 @@ class ItemEdit < Sinatra::Application
     redirect "/item/#{current_item.id}"
   end
 
+  # Takes care of adding an image to an item.
   post '/item/:id/image_upload' do
     current_item = @database.item_by_id(params[:id].to_i)
     file = params[:file_upload]
@@ -65,6 +67,7 @@ class ItemEdit < Sinatra::Application
     redirect "item/#{current_item.id}/edit"
   end
 
+  # Takes care of deleting an image of an item.
   post '/item/:id/image_delete' do
     current_item = @database.item_by_id(params[:id].to_i)
     pos =  params[:image_pos].to_i

@@ -1,5 +1,7 @@
 module Marketplace
 
+  # Every time a user performs a search, a search result is created. It contains the original query, the items found by that
+  # query, their descriptions and optionally the closest 'similar' query.
   class SearchResult
 
     attr_accessor :query, :found_items, :description_map ,:closest_string

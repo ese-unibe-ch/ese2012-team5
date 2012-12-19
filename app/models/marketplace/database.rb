@@ -62,11 +62,10 @@ module Marketplace
 
   # Calls all buy_orders (= listeners) that the item 'item' may have changed
     def call_buy_orders(item)
-      buy_orders_copy = Array.new
-      @buy_orders.each{ |buy_order| buy_orders_copy << buy_order } #NOTE by urs: need to copy array, because a buy_order deletes itself directly from @buy_orders when done!
-      buy_orders_copy.each{ |buy_order|
+      buy_orders_copy = @buy_orders.dup
+      buy_orders_copy.each do |buy_order|
         buy_order.item_changed(item)
-      }
+      end
     end
 
 
@@ -156,6 +155,10 @@ module Marketplace
       @deactivated_users.delete(user)
     end
 
+    def all_deactivated_users
+      @deactivated_users
+    end
+
 
   #--------
   #Entities
@@ -173,14 +176,11 @@ module Marketplace
   #--------
 
     def all_emails
-      emails = Array.new
-      @users.each{ |user| emails.push(user.email)}
-      emails
+      @users.collect{ |user| user.email }
     end
 
     def email_exists?(email)
-      emails = all_emails()
-      emails.include?(email)
+      all_emails.include? email
     end
 
 
@@ -213,10 +213,9 @@ module Marketplace
     # @param [int] hours
     def clean_pw_reset_older_as(hours)
       @pw_reset.each_key {|hash|
-        time_now = Time.new
         # Adds 1 day in seconds = 86400 seconds
-        valid_until = pw_reset_timestamp_by_hash(hash) + hours*3600
-        if time_now > valid_until
+        valid_until = pw_reset_timestamp_by_hash(hash) + hours * 3600
+        if Time.now > valid_until
           delete_pw_reset(hash)
         end
       }

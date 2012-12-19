@@ -5,7 +5,7 @@ class UserFollow < Sinatra::Application
     @current_user = @database.user_by_name(session[:name])
   end
 
-
+  # Takes care of adding another user to a users subscriptions.
   post '/user/:name/follow' do
     user = @database.user_by_name(params[:name])
 
@@ -15,6 +15,7 @@ class UserFollow < Sinatra::Application
     redirect "user/#{@current_user.name}"
   end
 
+  # Takes care of removing another user from a users subscriptions.
   post '/user/:name/unfollow' do
     user = @database.user_by_name(params[:name])
 
