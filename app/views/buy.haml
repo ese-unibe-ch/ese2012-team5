@@ -1,0 +1,116 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Buy
+%br
+
+
+-count = 0
+%table#table_new
+  -for item in items
+    -if quantity >= item.quantity
+      -quantity_for_this_item = item.quantity
+      -quantity = quantity - item.quantity
+    -else
+      -quantity_for_this_item = quantity
+      -quantity = 0
+
+    :javascript
+        $(function() {
+          $( "#slider#{count}" ).slider( {
+            value:#{quantity_for_this_item},
+            min: 0,
+            max: #{item.quantity},
+            step: 1,
+            slide: function( event, ui ) {
+              $( "#amount#{item.id}" ).val( ui.value );
+              $( "#amount_#{item.id}" ).val( ui.value );
+              $( "#total#{item.id}" ).val( ui.value * #{item.price} );
+              update();
+              }
+          });
+          $( "#amount#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
+          $( "#amount_#{item.id}" ).val( $( "#slider#{count}"  ).slider( "value" ) );
+          $( "#total#{item.id}" ).val( ($( "#slider#{count}"  ).slider( "value" )) * #{item.price} );
+          update();
+          });
+        function update() {
+          var global_total = 0;
+          $("[id^=total]").each(function() {
+            global_total += parseInt($(this).val());
+          })
+          $( "#global_total" ).val( global_total );
+
+
+          if(parseInt($("#global_total").val()) > #{current_user.credits}) {
+            $("#global_total").css("background-color","red");
+            $("#message").text("Not enough credits.");
+            $("#continue_button").attr("disabled","disabled");
+          }else{
+            $("#global_total").css("background-color","white");
+            $("#message").text("");
+            $("#continue_button").removeAttr("disabled");
+          };
+        }
+
+
+    %tr
+      %td{:height => "200", :width => "200"}
+        %img{:height => "200", :width => "200", :src => item.image_path(0) }
+      %td
+        Name:
+        %a{:href => "/item/#{item.id}"} #{item.name}
+        %br
+        Owner:
+        %a{:href => "/user/#{item.owner.name}"} #{item.owner.name}
+        %br
+        Description: #{item.description}
+        %br
+        -if !item.comments.first.nil?
+          Latest Comment: #{item.comments.first[1]}
+    %tr
+      %td
+        %div(id="slider#{count}")
+        %br
+        %input( type="text" readonly="readonly" id="amount#{item.id}")
+        of
+        #{item.quantity}
+        %img{:src => "icons/package.png"}
+      %td{:align => "right"}
+        à #{item.price}
+        %img{:src => "icons/coins.png"}
+    %tr
+      %td{:colspan => 2, :align => "right"}
+        Sub-Total:
+        %input( type="text" readonly="readonly" id="total#{item.id}")
+        %img{:src => "icons/coins.png"}
+    -count = count + 1
+    -break if quantity == 0
+  %tr
+    %td{ :align => "left"}
+      -if quantity != 0
+        That's all... I'm sorry. You wanted #{quantity} more..
+      -elsif count < items.length
+        -sum = 0
+        -for i in 0..count do
+          -sum += items[i].quantity
+        %form(action = "/buy" method = "GET")
+          %input(type='hidden' name="category" value="#{items[0].name}")
+          %input(type='hidden' name="quantity" value="#{sum}")
+          %input(type='submit' value='Show more')
+    %td{ :align => "right"}
+      Total:
+      %input(type='text' readonly="readonly" id='global_total')
+      %img{:src => "icons/coins.png"}
+      %div{:align => "right", :id => "message"}
+  %tr
+    %td{:align => "left"}
+      %form(action = "/" method = "GET")
+        %input(type='submit' value='Abort')
+      %td{:align => "right"}
+        %form(action = "/buy/confirm" method = "POST")
+          -x = 0
+          -for item in items
+            %input(type='hidden' name="id#{x}" value="#{item.id}")
+            %input(type='hidden' name="quantity#{x}" id="amount_#{item.id}")
+            -x = x + 1
+          %input(type='submit' value='Continue' id='continue_button')

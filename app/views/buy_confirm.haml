@@ -1,0 +1,50 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+%h1 Confirm
+%br
+
+%h3 These are the items you are about to buy
+
+-@database = Marketplace::Database.instance
+%table#table_new
+  %thead
+    %th Picture
+    %th Name
+    %th Quantity
+    %th Seller
+    %th Price
+  %tbody
+    -total_price = 0
+    -map.each do |id,quantity|
+      -if quantity.to_i != 0
+        -item = @database.item_by_id(id.to_i)
+        -total_price += item.price*(quantity).to_i
+        %tr
+          %td{:width => "74"}
+            %img{:height => "200", :width => "200", :src => item.image_path(0) }
+          %td{:align => "center"}
+            %a{:href => "/item/#{item.id}"} #{item.name}
+          %td{:align => "center"}
+            #{quantity}
+            %img{:src => "../icons/package.png"}
+          %td{:align => "center"}
+            #{item.owner.name}
+          %td{:align => "center"}
+            #{item.price}
+            %img{:src => "../icons/coins.png"}
+    %tr
+      %td{:colspan => 5, :align => "right"}
+        Total-Price: #{total_price}
+        %img{:src => "../icons/coins.png"}
+  %tr
+    %td{:colspan => 3, :align => "left"}
+      %form(action = "/" method = "GET")
+        %input(type='submit' value='Abort')
+    %td{:colspan => 2, :align => "right"}
+      %form(action = "/buy" method = "POST")
+        -x = 0
+        -map.each do |id,quantity|
+          %input(type='hidden' name="id#{x}" value="#{id}")
+          %input(type='hidden' name="quantity#{x}" value="#{quantity}")
+          -x = x + 1
+        %input(type='submit' value='Buy')

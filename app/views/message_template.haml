@@ -1,0 +1,34 @@
+//SHOW MESSAGES AND ERRORS
+-if info != nil and info != ""
+  -messages = info.split"~"
+  -messages.delete_if{ |s| s.strip == "" }
+  %table#table_new
+    -while(!messages.empty?)
+      %tr
+        -type = messages.delete_at(0)
+        -type = type.strip
+
+        -if type =="error"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "/icons/error.png"}
+          %td
+            %h2 #{text}
+        -elsif type == "note"
+          -text = messages.delete_at(0)
+          %td
+            %img{:src => "/icons/note.png"}
+          %td
+            %h4 #{text}
+        -elsif type == "item"
+          -id = messages.delete_at(0)
+          -name = messages.delete_at(0)
+          %td
+            %img{:src => "/icons/link.png"}
+          %td
+            profile of item:
+            %a{:href => "/item/#{id}"} #{name}
+        -else
+          %td{:colspan => 2}
+            %h4 #{text}
+%br

@@ -1,0 +1,85 @@
+%link(rel="stylesheet" type="text/css" href="/style.css")
+
+
+:javascript
+  $(document).ready(function() {
+    var wholequery = $("#search_query").val()
+    var query_array = wholequery.split(" ");
+    var len = query_array.length;
+    if(len > 1){
+      for (var i = 0; i < len ; i++) {
+        if (i in query_array) {
+          var s = query_array[i];
+          $("#search tbody").highlight(s);
+        }
+      }
+    } else {
+      $("#search tbody").highlight(wholequery);
+    }
+  $("#search #ignore").removeHighlight();
+  });
+
+%h1 Search
+%br
+
+%h3 Search Results for "#{query.gsub("_"," ")}"
+%br
+
+%table#search
+  %thead
+    %tr
+      %th Picture
+      %th Name
+      %th Quantity
+      %th Value
+      %th Owner
+      %th Description
+      %th Buy
+  %tbody
+    -if found_categories.empty?
+      %tr(id="noresults")
+        %td(colspan="6" id="ignore")
+          No Results
+    -else
+      -for category in found_categories
+        %tr
+          %td{:width => "74"}
+            %img{:height => "70", :width => "70", :src => category.front_image }
+          %td{:align => "center"}
+            -if category.has_multiple_items
+              %div{:title => "#{Tooltip.items_tooltip_of(category)}"}
+                #{category.name} (#{category.item_count}x)
+            -else
+              %a{:href => "/item/#{category.items.first.id}"}  #{category.name}
+          %td{:align => "center"}
+            #{category.quantity}
+            %img{:src => "../icons/package.png"}
+          %td{:align => "center"}
+            -if category.has_multiple_items
+              %h5{:id=>"ignore"} starting at
+            #{category.min_price}
+            %img{:src => "../icons/coins.png"}
+          %td{:align => "center"}
+            -if category.has_multiple_owners
+              #{category.owner_count}
+              %img{:src => "../icons/user_silhouette.png" , :title => "#{Tooltip.owner_tooltip_of(category)}"}
+            -else
+              %a{:href => "/user/#{category.owners.first.name}", :id=>"ignore"} #{category.owners.first.name}
+          %td
+            #{description_map[category.items.first]}
+          %td
+            -if category.min_price <= current_user.credits
+              %form( action="/buy" method="GET" )
+                %input(type="text" name="quantity" value=1 size=1)
+                %input(type='hidden' name="category" value="#{category.name}")
+                %input(type="submit" value="Continue")
+            -else
+              %form( action="/buy" method="GET" )
+                %input(type="submit" disabled="disabled" value="Continue")
+
+%br
+
+-if found_categories.empty? and !closest_string.nil? and closest_string != ""
+  %h2 Did you mean:
+  %button(type="button" id = "get_new_result") #{closest_string}
+  %input(type="hidden" id="closest_string" value="#{closest_string}")
