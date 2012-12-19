@@ -57,13 +57,8 @@ class CategoryTest < Test::Unit::TestCase
     assert(bed_category.min_price == 5, "min price is not right")
     assert(bed_category.quantity == 38, "quantity is not right")
 
-
-    assert_raise NotImplementedError do
-      bed_category.add(@bed4)
-    end
-
+    bed_category.add(@bed4)
     assert(bed_category.owner_count == 3,"item added, but shouldnt because wrong name")
-
   end
 
 end
